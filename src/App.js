@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
 import Navigation from './components/Navigation'
-import Introduction from './components/Introduction'
-import About from './components/About'
+import Introduction from './components/Introduction/Introduction'
+import About from './components/About/About'
 import { initPage } from './components/main'
 import AOS from 'aos'
 

@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 
+
+
+
 export default class About extends Component {
+
   render() {
     return (
       <section className="ftco-about img ftco-section ftco-no-pt ftco-no-pb" id="about-section">
