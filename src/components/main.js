@@ -1,15 +1,6 @@
 import $ from 'jquery'
 
  function initPagejQuery() {
-	$(window).stellar({
-    responsive: true,
-    parallaxBackgrounds: true,
-    parallaxElements: true,
-    horizontalScrolling: false,
-    hideDistantElements: false,
-    scrollProperty: 'scroll'
-	});
-	
 	$('#dropdown04').on('show.bs.dropdown', function () {
 	  console.log('show');
 	});
@@ -145,8 +136,7 @@ import $ from 'jquery'
 				var comma_separator_number_step = $.animateNumber.numberStepFactories.separator(',')
 				$('.number').each(function(){
 					var $this = $(this),
-						num = $this.data('number');
-						console.log(num);
+					num = $this.data('number');
 					$this.animateNumber(
 					  {
 					    number: num,
@@ -268,13 +258,13 @@ import $ from 'jquery'
 export function initPage() {
 	fullHeight();
 	loader();
-	// Scrollax
-	//$.Scrollax();
 	burgerMenu();
 	onePageClick();
 	scrollWindow();
-	counter();
-	contentWayPoint();
+	// Counter has an animated display of numberic data
+	//counter();
+	// Waypoints for lazy loading and fading in
+	//contentWayPoint();
 	goHere();
 	window.onload(cycleWords());
 	initPagejQuery();
