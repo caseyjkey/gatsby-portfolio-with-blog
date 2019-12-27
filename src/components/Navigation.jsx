@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export default class Navigation extends Component {
 	render() {
 		return (
-			<nav className="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light site-navbar-target" id="ftco-navbar">
+			<nav className="ftco-navbar-light navbar navbar-expand-lg navbar-dark ftco_navbar  site-navbar-target" id="ftco-navbar">
         <div className="container">
           <a className="navbar-brand" href="index.html"><span>C</span>asey Key</a>
           <button className="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">

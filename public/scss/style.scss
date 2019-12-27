@@ -361,43 +361,7 @@ h1, h2, h3, h4, h5,
 }
 
 
-@-webkit-keyframes wheel-up-down {
-	100% {
-	    margin-top: 25px;
-	    opacity: 1;
-	}
-	30% {
-	    opacity: 1;
-	}
-	0% {
-	    margin-top: -10px;
-	    opacity: 0;
-	}
-}@-moz-keyframes wheel-up-down {
-	100% {
-	    margin-top: 25px;
-	    opacity: 1;
-	}
-	30% {
-	    opacity: 1;
-	}
-	0% {
-	    margin-top: -10px;
-	    opacity: 0;
-	}
-}@keyframes wheel-up-down {
-	100% {
-	    margin-top: 25px;
-	    opacity: 1;
-	}
-	30% {
-	    opacity: 1;
-	}
-	0% {
-	    margin-top: -10px;
-	    opacity: 0;
-	}
-}
+
 
 
 @-webkit-keyframes pulse {

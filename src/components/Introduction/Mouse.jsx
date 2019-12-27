@@ -49,6 +49,44 @@ const FallDown = styled.div`
   animation: 1.6s ease infinite wheel-up-down;
   color: ${props => props.theme.primaryColor};
   font-size: 30px;
+
+  @-webkit-keyframes wheel-up-down {
+    100% {
+        margin-top: 25px;
+        opacity: 1;
+    }
+    30% {
+        opacity: 1;
+    }
+    0% {
+        margin-top: -10px;
+        opacity: 0;
+    }
+  }@-moz-keyframes wheel-up-down {
+    100% {
+        margin-top: 25px;
+        opacity: 1;
+    }
+    30% {
+        opacity: 1;
+    }
+    0% {
+        margin-top: -10px;
+        opacity: 0;
+    }
+  }@keyframes wheel-up-down {
+    100% {
+        margin-top: 25px;
+        opacity: 1;
+    }
+    30% {
+        opacity: 1;
+    }
+    0% {
+        margin-top: -10px;
+        opacity: 0;
+    }
+  }
 `;
 
 export default class FallingArrow extends Component  {
