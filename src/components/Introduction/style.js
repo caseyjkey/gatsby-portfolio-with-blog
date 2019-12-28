@@ -1,5 +1,13 @@
 import styled from 'styled-components'
 
+export const HeroWrap = styled.section`
+  width: 100%;
+	height: 100%;
+	position: inherit;
+	background-size: cover;
+	background-repeat: no-repeat;
+`;
+
 export const Overlay = styled.div`
   position: absolute;
   top: 0;
@@ -24,6 +32,14 @@ export const Subheader = styled.h3`
   letter-spacing: 4px;
 `;
 
+export const Slider = styled.h2`
+  font-weight: 800;
+  .txt-rotate {
+    color: ${(props) => props.theme.primaryColor};
+    text-decoration: underline;
+  }
+`;
+
 export const Header = styled.h1`
   font-size: 60px;
   font-weight: 800;
@@ -31,14 +47,3 @@ export const Header = styled.h1`
     font-size: 40px;
   }
 `;
-
-export const Slider = styled.h2`
-  && {
-    font-weight: normal;
-  }
-  .txt-rotate {
-    color: ${(props) => props.theme.primaryColor};
-    text-decoration: underline;
-  }
-`;
-
