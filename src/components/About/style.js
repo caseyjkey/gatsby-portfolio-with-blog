@@ -1,46 +1,60 @@
 import styled from 'styled-components'
-import { fadeInUp } from 'react-animations'
+import { Section, Image } from '../style.js' // Global styles
 
-const About = styled.section`
-.ftco-about{
-	.img-about{
+export const About = styled.section`
+	${Image}
+	${Section}
+	.img-about {
 		width: 100%;
 		z-index: 0;
 		position: relative;
-		.img{
+		.img {
 			display: block;
 			width: 100%;
 			position: relative;
 			z-index: 1;
 		}
-	}
-	ul.about-info{
+  }
+	ul.about-info {
 		display: inline-block;
 		padding: 0;
 		margin: 0;
 		width: 100%;
-		li{
+		li {
 			list-style: none;
 			margin-bottom: 10px;
-			span{
+			span {
 				width: calc(100% - 130px);
-				&:first-child{
+				&:first-child {
 					font-weight: 600;
-					color: $black;
+					color: ${(props) => props.theme.black};
 					width: 130px;
 				}
 			}
 		}
+`;
+
+export const AboutImage = styled.`
+.img-about {
+	width: 100%;
+	z-index: 0;
+	position: relative;
+	.img {
+		${Image}
 	}
-	.counter-wrap{
-		.text{
-			p{
+}
+`
+
+const About = styled.section`
+	.counter-wrap {
+		.text {
+			p {
 				font-size: 20px;
-				span{
+				span {
 					font-weight: 400;
 					color: $black;
 				}
-				span.number{
+				span.number {
 					font-weight: 600;
 					color: $primary;
 				}

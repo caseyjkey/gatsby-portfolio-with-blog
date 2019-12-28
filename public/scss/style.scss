@@ -352,6 +352,9 @@ h1, h2, h3, h4, h5,
 
 
 
+
+
+
 @-webkit-keyframes pulse {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba($primary, 0.4);
@@ -1005,20 +1008,8 @@ textarea.form-control {
 }
 
 
-.ftco-section {
-	padding: 7em 0;
-	position: relative;
-	@include media-breakpoint-down(sm){
-		padding: 6em 0;
-	}
-}
 
-.ftco-no-pt{
-	padding-top: 0 !important;
-}
-.ftco-no-pb{
-	padding-bottom: 0 !important;
-}
+
 
 .ftco-bg-dark {
 	background: #3c312e;
