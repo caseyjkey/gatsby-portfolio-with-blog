@@ -13,7 +13,7 @@ export const theme = {
   secondaryColor: "#a0f669",
 };
 
-export const Section = css`
+export const Section = `
   padding: 7em 0;
   position: relative;
   @include media-breakpoint-down(sm){
@@ -21,11 +21,10 @@ export const Section = css`
   }
 `;
 
-export const Image = css`
-  display: block;
-	width: 100%;
-	position: relative;
-	z-index: 1;
+export const Image = `
+  background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
 `;
 
 export const NoPaddingTop = `
@@ -35,6 +34,3 @@ export const NoPaddingTop = `
 export const NoPaddingBottom = `
 	padding-bottom: 0 !important;
 `;
-
-.ftco-no-pb{
-}

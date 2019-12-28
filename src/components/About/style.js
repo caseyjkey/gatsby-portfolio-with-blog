@@ -1,9 +1,12 @@
 import styled from 'styled-components'
-import { Section, Image } from '../style.js' // Global styles
+import { Section, Image, NoPaddingTop, NoPaddingBottom } from '../style.js' // Global styles
 
-export const About = styled.section`
+export const AboutSection = styled.section`
 	${Image}
 	${Section}
+	${NoPaddingTop}
+	${NoPaddingBottom}
+	$
 	.img-about {
 		width: 100%;
 		z-index: 0;
@@ -34,14 +37,11 @@ export const About = styled.section`
 		}
 `;
 
-export const AboutImage = styled.`
-.img-about {
+export const AboutImage = styled.div`
 	width: 100%;
 	z-index: 0;
 	position: relative;
-	.img {
-		${Image}
-	}
+	${Image}
 }
 `
 
