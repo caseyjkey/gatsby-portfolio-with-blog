@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { Section, Image, NoPaddingTop, NoPaddingBottom } from '../style.js' // Global styles
-import Headshot from './images/about.jpg'
 
 export const AboutSection = styled.section`
 	${Image}

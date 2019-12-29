@@ -12,8 +12,7 @@ export default class Introduction extends Component  {
   }
 
 	render() {
-		return (
-      
+		return (  
       <ThemeProvider theme={theme}>
         <HeroWrap className="js-fullheight">
           <Overlay></Overlay>

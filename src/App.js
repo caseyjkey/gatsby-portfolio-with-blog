@@ -3,6 +3,7 @@ import './App.css';
 import Navigation from './components/Navigation'
 import Introduction from './components/Introduction/Introduction'
 import About from './components/About/About'
+import Partners from './components/Partners/Partners'
 import { initPage } from './components/main'
 import AOS from 'aos'
 
@@ -21,6 +22,7 @@ class App extends Component {
 				<Navigation></Navigation>
 				<Introduction></Introduction>
 				<About></About>
+				<Partners></Partners>
 			</Fragment>
     );
   }
