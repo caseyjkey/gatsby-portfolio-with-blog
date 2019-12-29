@@ -31,7 +31,13 @@ export const Subheader = styled.h3`
   color: ${(props) => props.theme.primaryColor};
   letter-spacing: 4px;
 `;
-
+export const Header = styled.h1`
+  font-size: 60px;
+  font-weight: 800;
+  @media (max-width: 767.98px) {
+    font-size: 40px;
+  }
+`;
 export const Slider = styled.h2`
   font-weight: 800;
   .txt-rotate {
@@ -40,10 +46,7 @@ export const Slider = styled.h2`
   }
 `;
 
-export const Header = styled.h1`
-  font-size: 60px;
-  font-weight: 800;
-  @include media-breakpoint-down(sm){
-    font-size: 40px;
-  }
-`;
+/*  @media (max-width: 767.98px) {
+    .slider-text h1 {
+      font-size: 40px; } }
+*/

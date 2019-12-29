@@ -16,7 +16,7 @@ export const theme = {
 export const Section = `
   padding: 7em 0;
   position: relative;
-  @include media-breakpoint-down(sm){
+  @media (max-width: 767.98px) {
     padding: 6em 0;
   }
 `;

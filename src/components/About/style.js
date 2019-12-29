@@ -1,23 +1,13 @@
 import styled from 'styled-components'
 import { Section, Image, NoPaddingTop, NoPaddingBottom } from '../style.js' // Global styles
+import Headshot from './images/about.jpg'
 
 export const AboutSection = styled.section`
 	${Image}
 	${Section}
 	${NoPaddingTop}
 	${NoPaddingBottom}
-	$
-	.img-about {
-		width: 100%;
-		z-index: 0;
-		position: relative;
-		.img {
-			display: block;
-			width: 100%;
-			position: relative;
-			z-index: 1;
-		}
-  }
+	
 	ul.about-info {
 		display: inline-block;
 		padding: 0;
@@ -38,28 +28,27 @@ export const AboutSection = styled.section`
 `;
 
 export const AboutImage = styled.div`
+  height: 735px;
 	width: 100%;
 	z-index: 0;
 	position: relative;
 	${Image}
-}
-`
 
-const About = styled.section`
-	.counter-wrap {
-		.text {
-			p {
-				font-size: 20px;
-				span {
-					font-weight: 400;
-					color: $black;
-				}
-				span.number {
-					font-weight: 600;
-					color: $primary;
-				}
-			}
-		}
+	@media (max-width: 767.98px) {
+		display: none;
 	}
 }
+`;
+
+export const Counter = styled.div`
+	font-size: 20px;
+	span {
+		font-weight: 400;
+		color: ${(props) => props.theme.black};
+	}
+	span.number {
+		color: ${(props) => props.theme.primaryColor};
+		font-weight: 600;
+	}
+	
 `;
