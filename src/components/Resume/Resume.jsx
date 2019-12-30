@@ -2,157 +2,130 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../style.js'
-import { ResumeSection } from './style.js'
+import { ResumeSection, Page } from './style.js'
+import { Nav, Link } from './Nav'
+import Entry from './Entry'
+import { GiGraduateCap, GiDiploma } from 'react-icons/gi'
+import { MdWork } from 'react-icons/md'
+import { Waypoint } from 'react-waypoint'
 
  export default class Resume extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentPage: null,
       visible: {
-        pageOne: {
-          
-        },
-        pageTwo: false,
+        education: [false, false],
+        experience: [false, false],
 
       }
     }
+
+    this.onEnter = this.onEnter.bind(this);
+    this.activatePage = this.activatePage.bind(this);
+    this.countEntries = this.countEntries.bind(this); 
+  }
+
+  onEnter(section, subsection) {
+    let visibleCopy = this.state.visible;
+    visibleCopy[section][subsection] = true;
+
+    this.setState({visible: visibleCopy});
+  }
+
+  activatePage(section) {
+    let stateCopy = this.state;
+    stateCopy["currentPage"] = section;
+
+    this.setState(stateCopy);
+  }
+
+  countEntries(section, children) {
+    let count = children.filter(child => child.type === Entry).length;
+    let stateCopy = this.state;
+    stateCopy["visible"][section] = Array(count);
+
+    this.setState(stateCopy);
   }
 
   render() {
+    let currentPage = this.state.currentPage;
+    let education = this.state.visible.education;
+    let experience = this.state.visible.experience;
+
     return (
       <ThemeProvider theme={theme}>
         <ResumeSection className="goto-here">
           <Container>
             <Row>
               <Col md={3}>
-                <nav id="navi">
-                  <ul>
-                    <li><a href="#page-1">Education</a></li>
-                    <li><a href="#page-2">Experience</a></li>
-                    <li><a href="#page-3">Skills</a></li>
-                    <li><a href="#page-4">Awards</a></li>
-                  </ul>
-                </nav>
+                <Nav>
+                  <Link page="education" current={currentPage}>Education</Link>
+                  <Link page="experience" current={currentPage}>Experience</Link>
+                  <Link page="skills" current={currentPage}>Skills</Link>
+                  <Link page="awards" current={currentPage}>Awards</Link>
+                  <Link page="leadership" current={currentPage}>Leadership</Link>
+                </Nav>
               </Col>
-              <Col md={9}>
-                <div id="page-1" className= "page one">
-                  <h2 className="heading">Education</h2>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Bachelor of Science in Computer Science</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Computer Processing Systems/Computer Software</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Diploma in Computer</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Art &amp; Creative Director</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                </div>
 
-                <div id="page-2" className= "page two">
-                  <h2 className="heading">Experience</h2>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Software Developer</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Web Designer</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Web Marketing</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Art &amp; Creative Director</h2>
-                      <span className="position">Side Tech</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2014-2015</span>
-                      <h2>Wordpress Developer</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                  <div className="resume-wrap d-flex ftco-animate">
-                    <div className="icon d-flex align-items-center justify-content-center">
-                      <span className="flaticon-ideas"></span>
-                    </div>
-                    <div className="text pl-3">
-                      <span className="date">2017-2018</span>
-                      <h2>UI/UX Designer</h2>
-                      <span className="position">Cambridge University</span>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                    </div>
-                  </div>
-                </div>
-                <div id="page-3" className= "page three">
+              <Col md={9}>
+                <Waypoint onEnter={() => this.activatePage("education")}
+                          onLeave={() => this.activatePage("experience")}>
+                  <Page id="education" count={this.countEntries}>
+                    <h2 className="heading">Education</h2>
+
+                    <Waypoint onEnter={() => this.onEnter("education", 0)}></Waypoint>
+                    <Entry visible={education[0]} 
+                          icon={GiGraduateCap} 
+                          date={"Expected: May 2021"}
+                          title={"Computer Science"}
+                          subtitle={"Colorado State University"}
+                          gpa={"3.53"}>
+                      Bachelor's of Science degree in Computer Science with a concentration in Computer Science.
+                    </Entry>
+
+                    <Waypoint onEnter={() => this.activatePage("education", 1)}></Waypoint>
+                    <Entry visible={education[1]}
+                          icon={GiDiploma}
+                          date={"Expected: May 2021"}
+                          title={"Entrepreneurship and Innovation"}
+                          subtitle={"Colorado State University"}
+                          gpa={"4.0"}>
+                      A certificate to help develop an entrepreneurial mindset.
+                    </Entry>
+                  </Page>
+                </Waypoint>
+
+                <Waypoint onLeave={() => this.activatePage("skills")}>
+                  <Page id="experience" count={this.countEntries}>
+                    <h2 className="heading">Experience</h2>
+                    <Waypoint onEnter={() => this.onEnter("experience", 0)}></Waypoint>
+                    <Entry visible={experience[0]}
+                            icon={MdWork}
+                            date={"August 2019 – Present"}
+                            title={"DevOps Intern"}
+                            subtitle={"Bongo"}>
+                      <ul>
+                        <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
+                        <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                      </ul>
+                    </Entry>
+                    
+                    <Waypoint onEnter={() => this.activatePage("experience", 1)}></Waypoint>
+                    <Entry visible={experience[0]}
+                            icon={MdWork}
+                            date={"August 2019 – Present"}
+                            title={"DevOps Intern"}
+                            subtitle={"Bongo"}>
+                      <ul>
+                        <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
+                        <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                      </ul>
+                    </Entry>
+                  </Page>
+                </Waypoint>
+                
+                <Page id="skills" count={this.countEntries}>
                   <h2 className="heading">Skills</h2>
                   <div className="row progress-circle mb-5">
                     <div className="col-lg-4 mb-4">
@@ -168,7 +141,7 @@ import { ResumeSection } from './style.js'
                             <span className="progress-bar border-primary"></span>
                           </span>
                           <div className="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                            <div className="h2 font-weight-bold">90<sup class="small">%</sup></div>
+                            <div className="h2 font-weight-bold">90<sup className="small">%</sup></div>
                           </div>
                         </div>
                         {/* END */}
@@ -176,10 +149,10 @@ import { ResumeSection } from './style.js'
                         {/* Demo info */}
                         <div className="row text-center mt-4">
                           <div className="col-6 border-right">
-                            <div className="h4 font-weight-bold mb-0">28%</div><span class="small text-gray">Last week</span>
+                            <div className="h4 font-weight-bold mb-0">28%</div><span className="small text-gray">Last week</span>
                           </div>
                           <div className="col-6">
-                            <div className="h4 font-weight-bold mb-0">60%</div><span class="small text-gray">Last month</span>
+                            <div className="h4 font-weight-bold mb-0">60%</div><span className="small text-gray">Last month</span>
                           </div>
                         </div>
                         {/* END */}
@@ -199,7 +172,7 @@ import { ResumeSection } from './style.js'
                             <span className="progress-bar border-primary"></span>
                           </span>
                           <div className="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                            <div className="h2 font-weight-bold">80<sup class="small">%</sup></div>
+                            <div className="h2 font-weight-bold">80<sup className="small">%</sup></div>
                           </div>
                         </div>
                         {/* END */}
@@ -207,10 +180,10 @@ import { ResumeSection } from './style.js'
                         {/* Demo info */}
                         <div className="row text-center mt-4">
                           <div className="col-6 border-right">
-                            <div className="h4 font-weight-bold mb-0">28%</div><span class="small text-gray">Last week</span>
+                            <div className="h4 font-weight-bold mb-0">28%</div><span className="small text-gray">Last week</span>
                           </div>
                           <div className="col-6">
-                            <div className="h4 font-weight-bold mb-0">60%</div><span class="small text-gray">Last month</span>
+                            <div className="h4 font-weight-bold mb-0">60%</div><span className="small text-gray">Last month</span>
                           </div>
                         </div>
                         {/* END */}
@@ -230,7 +203,7 @@ import { ResumeSection } from './style.js'
                             <span className="progress-bar border-primary"></span>
                           </span>
                           <div className="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                            <div className="h2 font-weight-bold">75<sup class="small">%</sup></div>
+                            <div className="h2 font-weight-bold">75<sup className="small">%</sup></div>
                           </div>
                         </div>
                         {/* END */}
@@ -238,10 +211,10 @@ import { ResumeSection } from './style.js'
                         {/* Demo info */}
                         <div className="row text-center mt-4">
                           <div className="col-6 border-right">
-                            <div className="h4 font-weight-bold mb-0">28%</div><span class="small text-gray">Last week</span>
+                            <div className="h4 font-weight-bold mb-0">28%</div><span className="small text-gray">Last week</span>
                           </div>
                           <div className="col-6">
-                            <div className="h4 font-weight-bold mb-0">60%</div><span class="small text-gray">Last month</span>
+                            <div className="h4 font-weight-bold mb-0">60%</div><span className="small text-gray">Last month</span>
                           </div>
                         </div>
                         {/* END */}
@@ -316,8 +289,9 @@ import { ResumeSection } from './style.js'
                       </div>
                     </Col>
                   </Row>
-                </div>
-                <div id="page-4" className="page four">
+                </Page>
+
+                <Page id="awards" count={this.countEntries}>
                   <h2 className="heading">Awards</h2>
                   <div className="resume-wrap d-flex ftco-animate">
                     <div className="icon d-flex align-items-center justify-content-center">
@@ -363,7 +337,7 @@ import { ResumeSection } from './style.js'
                       <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
                     </div>
                   </div>
-                </div>
+                </Page>
               </Col>
             </Row>
           </Container>

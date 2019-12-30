@@ -19,13 +19,11 @@ export default class About extends Component {
   }
 
 
-  onEnter(section){
+  onEnter(section) {
     let visibleCopy = this.state.visible;
     visibleCopy[section] = true;
 
-    this.setState({
-        visible: visibleCopy
-    });
+    this.setState({visible: visibleCopy});
   };
 
   render() { 

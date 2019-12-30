@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import { theme } from '../style.js'
 import { Animated } from 'react-animated-css'
 
@@ -10,9 +10,11 @@ export default class Entry extends Component {
 
   render() {
     let visible = this.props.visible;
+    let Icon = this.props.icon;
     let date = this.props.date;
     let title = this.props.title;
-    let subtitle = this.props.title;
+    let subtitle = this.props.subtitle;
+    let gpa = this.props.gpa;
     let text = this.props.children;
 
     return (
@@ -20,18 +22,19 @@ export default class Entry extends Component {
         <Animated animationIn="fadeInUp" isVisible={visible}>
           <ResumeWrap className="d-flex">
             <div className="icon d-flex align-items-center justify-content-center">
-              <span className="flaticon-ideas"></span>
+              <span><Icon /></span>
             </div>
             <div className="text pl-3">
               <span className="date">{date}</span>
               <h2>{title}</h2>
-              <span className="position">{subtitle}</span>
-              <p>{text}</p>
+              <span className="subtitle">{subtitle}</span>
+              {gpa && <span className="gpa">{gpa} GPA</span>}
+              <Description>{text}</Description>
             </div>
           </ResumeWrap>
         </Animated>
       </ThemeProvider>
-    )
+    );
   };
 }
 
@@ -43,31 +46,58 @@ const ResumeWrap = styled.div`
 	.icon{
 		width: 50px;
 		height: 50px;
-		background: $primary;
-		@include border-radius(50%);	
+		background: ${(props) => props.theme.primaryColor};
+		border-radius: 50%;	
 		span{
-			color: $white;
+			color: ${(props) => props.theme.white};
 			font-size: 28px;
 		}
 	}
 	.text{
-		width: calc(100% - 50px);
+    width: calc(100% - 50px);
+    p {
+      margin-top: 0.5rem;
+      @media (max-width: 767.98px) {
+        float: left;
+      }
+    }
 	}
 	.date{
 		font-weight: 700;
 		font-size: 16px;
-		color: rgba(0,0,0,.6);
-		color: $primary;
-	}
+    color: rgba(0,0,0,.6);
+    float: right;
+    color: ${(props) => props.theme.primaryColor};
+    @media (max-width: 767.98px) {
+      float: left;
+    }
+  }
+  .gpa {
+    font-weight: 700;
+    font-size: 18px;
+		color: ${(props) => props.theme.black};
+    float: right;
+    @media (max-width: 767.98px) {
+        font-size: 16px;
+        float: left;
+    }
+  }
 	h2{
 		font-size: 24px;
-		font-weight: 700;
+    font-weight: 700;
+    margin-bottom: 0px;
 	}
-	.position{
+	.subtitle{
 		font-size: 18px;
-		font-weight: 700;
+    font-weight: 700;
 		// letter-spacing: 3px;
-		// text-transform: uppercase;
-		color: $black;
+    // text-transform: uppercase;
+		color: ${(props) => props.theme.black};
 	}
+`;
+
+const Description = styled.div`
+  ul {
+    padding-left: 0px;
+  }
 `;
