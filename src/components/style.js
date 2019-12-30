@@ -1,7 +1,5 @@
 // This file contains common components and the global theme
 
-import styled, { css } from 'styled-components'
-
 export const theme = {
   primaryFont: "'Poppins', Arial, sans-serif",
 

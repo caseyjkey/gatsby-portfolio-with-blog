@@ -8,10 +8,8 @@ export default class Page extends Component {
   }
 
   render() {
-    console.log(this.props.id);
-    console.log(this.props.children);
     return (
-    <div className={this.props.className}>{this.props.children}</div>
+    <div id={this.props.name} className={this.props.className}>{this.props.children}</div>
     );
   }
 }

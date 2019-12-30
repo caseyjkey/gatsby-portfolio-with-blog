@@ -4,10 +4,6 @@ import { theme } from '../style.js'
 import { Animated } from 'react-animated-css'
 
 export default class Entry extends Component {
-  constructor(props) {
-    super(props);
-  }; 
-
   render() {
     let visible = this.props.visible;
     let Icon = this.props.icon;

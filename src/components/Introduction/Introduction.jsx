@@ -2,15 +2,11 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../style.js'
-import { HeroWrap, Overlay, Text, Subheader, Header, Slider, Mouse } from './style.js'
+import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './style.js'
 import FallingArrow from './Mouse'
 import { Animated } from 'react-animated-css'
 
 export default class Introduction extends Component  {
-  constructor(props) {
-    super(props);
-  }
-
 	render() {
 		return (  
       <ThemeProvider theme={theme}>

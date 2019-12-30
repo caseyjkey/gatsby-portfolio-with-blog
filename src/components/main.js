@@ -89,7 +89,7 @@ var scrollWindow = function() {
 	});
 };
 
-
+/*
 var counter = function() {		
 	$('#section-counter, .hero-wrap, .ftco-counter, .ftco-about').waypoint( function( direction ) {
 
@@ -111,7 +111,7 @@ var counter = function() {
 }
 
 
-/* function contentWayPoint(effect) {
+ function contentWayPoint(effect) {
 
 
 			setTimeout(function(){

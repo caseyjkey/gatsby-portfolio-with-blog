@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { theme } from '../style.js'
+import { Link as ScrollLink } from 'react-scroll'
 
 export class Nav extends Component {
-  constructor(props) {
-    super(props);
-  };
-
   render() {
     return (
       <ThemeProvider theme={theme}>
@@ -21,22 +18,19 @@ export class Nav extends Component {
 }
 
 export class Link extends Component {
-  constructor(props) {
-    super(props);
-  };
-
   render() {
-    let page = this.props.page;
-    let currentPage = this.props.current;
-    let isCurrent = (currentPage == page) ? "current" : "";
+    let to = this.props.to;
+    let activeClass = this.props.activeClass;
+    let spy = this.props.spy;
+    let smooth = this.props.smooth;
 
     return (
       <ThemeProvider theme={theme}>
-        <li><a href={'#' + page} className={isCurrent}>{this.props.children}</a></li>
+        <li><ScrollLink to={to} activeClass={activeClass} spy={spy} smooth={smooth} offset={-185}>{this.props.children}</ScrollLink></li>
       </ThemeProvider>
     );
   };
-}
+};
 
 const Navi = styled.nav`
   top: 180px;

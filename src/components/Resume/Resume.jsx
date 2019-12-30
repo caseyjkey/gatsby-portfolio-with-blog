@@ -13,7 +13,6 @@ import { Waypoint } from 'react-waypoint'
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: null,
       visible: {
         education: [false, false],
         experience: [false, false],
@@ -49,7 +48,6 @@ import { Waypoint } from 'react-waypoint'
   }
 
   render() {
-    let currentPage = this.state.currentPage;
     let education = this.state.visible.education;
     let experience = this.state.visible.experience;
 
@@ -60,72 +58,69 @@ import { Waypoint } from 'react-waypoint'
             <Row>
               <Col md={3}>
                 <Nav>
-                  <Link page="education" current={currentPage}>Education</Link>
-                  <Link page="experience" current={currentPage}>Experience</Link>
-                  <Link page="skills" current={currentPage}>Skills</Link>
-                  <Link page="awards" current={currentPage}>Awards</Link>
-                  <Link page="leadership" current={currentPage}>Leadership</Link>
+                  <Link to="education" activeClass="current" spy={true} smooth={true}>Education</Link>
+                  <Link to="experience" activeClass="current" spy={true} smooth={true}>Experience</Link>
+                  <Link to="skills" activeClass="current" spy={true} smooth={true}>Skills</Link>
+                  <Link to="awards" activeClass="current" spy={true} smooth={true}>Awards</Link>
+                  <Link to="leadership" activeClass="current" spy={true} smooth={true}>Leadership</Link>
                 </Nav>
               </Col>
 
               <Col md={9}>
-                <Waypoint onEnter={() => this.activatePage("education")}
-                          onLeave={() => this.activatePage("experience")}>
-                  <Page id="education" count={this.countEntries}>
-                    <h2 className="heading">Education</h2>
 
-                    <Waypoint onEnter={() => this.onEnter("education", 0)}></Waypoint>
-                    <Entry visible={education[0]} 
-                          icon={GiGraduateCap} 
-                          date={"Expected: May 2021"}
-                          title={"Computer Science"}
-                          subtitle={"Colorado State University"}
-                          gpa={"3.53"}>
-                      Bachelor's of Science degree in Computer Science with a concentration in Computer Science.
-                    </Entry>
+                <Waypoint onEnter={() => this.activatePage("education")}></Waypoint>
+                <Page name="education" count={this.countEntries}>
+                  <h2 className="heading">Education</h2>
 
-                    <Waypoint onEnter={() => this.activatePage("education", 1)}></Waypoint>
-                    <Entry visible={education[1]}
-                          icon={GiDiploma}
-                          date={"Expected: May 2021"}
-                          title={"Entrepreneurship and Innovation"}
-                          subtitle={"Colorado State University"}
-                          gpa={"4.0"}>
-                      A certificate to help develop an entrepreneurial mindset.
-                    </Entry>
-                  </Page>
-                </Waypoint>
+                  <Waypoint onEnter={() => this.onEnter("education", 0)}></Waypoint>
+                  <Entry visible={education[0]} 
+                        icon={GiGraduateCap} 
+                        date={"Expected: May 2021"}
+                        title={"Computer Science"}
+                        subtitle={"Colorado State University"}
+                        gpa={"3.53"}>
+                    Bachelor's of Science degree in Computer Science with a concentration in Computer Science.
+                  </Entry>
 
-                <Waypoint onLeave={() => this.activatePage("skills")}>
-                  <Page id="experience" count={this.countEntries}>
-                    <h2 className="heading">Experience</h2>
-                    <Waypoint onEnter={() => this.onEnter("experience", 0)}></Waypoint>
-                    <Entry visible={experience[0]}
-                            icon={MdWork}
-                            date={"August 2019 – Present"}
-                            title={"DevOps Intern"}
-                            subtitle={"Bongo"}>
-                      <ul>
-                        <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
-                        <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
-                      </ul>
-                    </Entry>
-                    
-                    <Waypoint onEnter={() => this.activatePage("experience", 1)}></Waypoint>
-                    <Entry visible={experience[0]}
-                            icon={MdWork}
-                            date={"August 2019 – Present"}
-                            title={"DevOps Intern"}
-                            subtitle={"Bongo"}>
-                      <ul>
-                        <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
-                        <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
-                      </ul>
-                    </Entry>
-                  </Page>
-                </Waypoint>
+                  <Waypoint onEnter={() => { this.activatePage("education"); this.onEnter("education", 1)}}></Waypoint>
+                  <Entry visible={education[1]}
+                        icon={GiDiploma}
+                        date={"Expected: May 2021"}
+                        title={"Entrepreneurship and Innovation"}
+                        subtitle={"Colorado State University"}
+                        gpa={"4.0"}>
+                    A certificate to help develop an entrepreneurial mindset.
+                  </Entry>
+                </Page>
+
+                <Page name="experience" count={this.countEntries}>
+                  <h2 className="heading">Experience</h2>
+                  <Waypoint onEnter={() => this.onEnter("experience", 0)}></Waypoint>
+                  <Entry visible={experience[0]}
+                          icon={MdWork}
+                          date={"August 2019 – Present"}
+                          title={"DevOps Intern"}
+                          subtitle={"Bongo"}>
+                    <ul>
+                      <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
+                      <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                    </ul>
+                  </Entry>
+                  
+                  <Waypoint onEnter={() => this.activatePage("experience", 1)}></Waypoint>
+                  <Entry visible={experience[0]}
+                          icon={MdWork}
+                          date={"August 2019 – Present"}
+                          title={"DevOps Intern"}
+                          subtitle={"Bongo"}>
+                    <ul>
+                      <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
+                      <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                    </ul>
+                  </Entry>
+                </Page>
                 
-                <Page id="skills" count={this.countEntries}>
+                <Page name="skills" count={this.countEntries}>
                   <h2 className="heading">Skills</h2>
                   <div className="row progress-circle mb-5">
                     <div className="col-lg-4 mb-4">
@@ -291,7 +286,7 @@ import { Waypoint } from 'react-waypoint'
                   </Row>
                 </Page>
 
-                <Page id="awards" count={this.countEntries}>
+                <Page name="awards" count={this.countEntries}>
                   <h2 className="heading">Awards</h2>
                   <div className="resume-wrap d-flex ftco-animate">
                     <div className="icon d-flex align-items-center justify-content-center">
