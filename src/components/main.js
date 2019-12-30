@@ -164,6 +164,7 @@ $('.ftco-animate').waypoint( function( direction ) {
 	} , { offset: '95%' } );
 	*/
 
+// Scrolls to the resume section
 var goHere = function() {
 
 	$('.mouse-icon').on('click', function(event){

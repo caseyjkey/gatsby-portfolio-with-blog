@@ -4,6 +4,7 @@ import Navigation from './components/Navigation'
 import Introduction from './components/Introduction/Introduction'
 import About from './components/About/About'
 import Partners from './components/Partners/Partners'
+import Resume from './components/Resume/Resume'
 import { initPage } from './components/main'
 import AOS from 'aos'
 
@@ -23,6 +24,7 @@ class App extends Component {
 				<Introduction></Introduction>
 				<About></About>
 				<Partners></Partners>
+				<Resume></Resume>
 			</Fragment>
     );
   }

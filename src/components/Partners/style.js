@@ -7,7 +7,7 @@ export const PartnersSection = styled.section`
   .partner{
     display: block;
     padding: 0 20px;
-    @include media-breakpoint-down(md){
+    @media (max-width: 767.98px) {
       padding: 0 70px;
       margin-bottom: 40px;
     }
