@@ -3,7 +3,7 @@ import styled, { ThemeProvider } from 'styled-components'
 import { lighten } from 'polished'
 import { theme } from '../style.js'
 
-import MdArrowRoundDown from 'react-ionicons/lib/MdArrowRoundDown'
+import { IoMdArrowRoundDown } from 'react-icons/io'
 
 const Container = styled.span`
   width: 70px;
@@ -99,7 +99,7 @@ export default class FallingArrow extends Component  {
         <Mouse>
           <Container>
             <FallDown>
-              <MdArrowRoundDown color={theme.primaryColor}
+              <IoMdArrowRoundDown color={theme.primaryColor}
                                 fontSize="25px" 
                                 onClick={console.log(theme.primaryColor)}/>
             </FallDown>
