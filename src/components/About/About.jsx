@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../style.js'
-import { AboutSection, AboutImage, Counter } from './style.js'
+import { AboutSection, AboutImage, Counter, Description } from './style.js'
 import Headshot from "./images/about.jpg"
 import { Waypoint } from  'react-waypoint'
 import { Animated } from 'react-animated-css'
@@ -48,14 +48,14 @@ export default class About extends Component {
                     <Col className="col-md-12 heading-section">
                       <h1 className="big">About</h1>
                       <h2 className="mb-4">About Me</h2>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                      <Description>I enjoy skateboarding, sports, and building stuff. My interests are coding, business, and robotics. I'm happy to help anyone learn.</Description>
                       <ul className="about-info mt-4 px-md-0 px-2">
-                        <li className="d-flex"><span>Name:</span> <span>Ronaldo Fredrickson</span></li>
-                        <li className="d-flex"><span>Date of birth:</span> <span>November 28, 1989</span></li>
-                        <li className="d-flex"><span>Address:</span> <span>San Francisco CA 97987 USA</span></li>
-                        <li className="d-flex"><span>Zip code:</span> <span>1000</span></li>
-                        <li className="d-flex"><span>Email:</span> <span>ronaldo@gmail.com</span></li>
-                        <li className="d-flex"><span>Phone: </span> <span>+1-2234-5678-9-0</span></li>
+                        <li className="d-flex"><span>Name:</span> <span>Casey Key</span></li>
+                        <li className="d-flex"><span>Date of birth:</span> <span>August 2, 1998</span></li>
+                        <li className="d-flex"><span>Address:</span> <span>Fort Collins, CO, USA</span></li>
+                        <li className="d-flex"><span>Zip code:</span> <span>80521</span></li>
+                        <li className="d-flex"><span>Email:</span> <span>caseykey@rams.colostate.edu</span></li>
+                        <li className="d-flex"><span>Phone: </span> <span>+‪1 (331) 222-7919‬</span></li>
                       </ul>
                     </Col>
                   </Animated>

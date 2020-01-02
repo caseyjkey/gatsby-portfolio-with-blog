@@ -49,7 +49,7 @@ const Navi = styled.nav`
   		color: $black;
   		&.current {
 			  // border-bottom: 4px solid $primary;
-			  color: $primary;
+			  color: ${(props) => props.theme.primaryColor};
 			  margin-left: 20px;
 			  position: relative;
 			  &:after{
@@ -60,9 +60,14 @@ const Navi = styled.nav`
 			  	height: 2px;
 			  	content: '';
 			  	transform: translateY(-50%);
-			  	background: $primary;
+			  	background: ${(props) => props.theme.primaryColor};
 			  }
 			}
-  	}
+    }
+    
+    @media (max-width: 767.98px) {
+      display: none;
+      padding: 0 0 0 0;
+    }
   }
   `;

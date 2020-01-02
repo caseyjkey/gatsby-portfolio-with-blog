@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../style.js'
-import { ResumeSection, Page } from './style.js'
+import { ResumeSection, Page, Subtitle } from './style.js'
 import { Nav, Link } from './Nav'
 import Entry from './Entry'
+import { SkillCircle, Skillbar } from './Skill'
 import { GiGraduateCap, GiDiploma } from 'react-icons/gi'
 import { MdWork } from 'react-icons/md'
 import { Waypoint } from 'react-waypoint'
@@ -16,13 +17,13 @@ import { Waypoint } from 'react-waypoint'
       visible: {
         education: [false, false],
         experience: [false, false],
-
+        skills : []
       }
     }
 
     this.onEnter = this.onEnter.bind(this);
-    this.activatePage = this.activatePage.bind(this);
     this.countEntries = this.countEntries.bind(this); 
+    this.countSkills = this.countSkills.bind(this);
   }
 
   onEnter(section, subsection) {
@@ -32,15 +33,17 @@ import { Waypoint } from 'react-waypoint'
     this.setState({visible: visibleCopy});
   }
 
-  activatePage(section) {
+  countEntries(section, children) {
+    let count = children.filter(child => child.type === Entry).length;
     let stateCopy = this.state;
-    stateCopy["currentPage"] = section;
+    stateCopy["visible"][section] = Array(count);
 
     this.setState(stateCopy);
   }
 
-  countEntries(section, children) {
-    let count = children.filter(child => child.type === Entry).length;
+  countSkills(section, children) {
+    let count = children.filter(child => child.type === SkillCircle || child.type == Skillbar).length;
+
     let stateCopy = this.state;
     stateCopy["visible"][section] = Array(count);
 
@@ -68,7 +71,6 @@ import { Waypoint } from 'react-waypoint'
 
               <Col md={9}>
 
-                <Waypoint onEnter={() => this.activatePage("education")}></Waypoint>
                 <Page name="education" count={this.countEntries}>
                   <h2 className="heading">Education</h2>
 
@@ -79,10 +81,10 @@ import { Waypoint } from 'react-waypoint'
                         title={"Computer Science"}
                         subtitle={"Colorado State University"}
                         gpa={"3.53"}>
-                    Bachelor's of Science degree in Computer Science with a concentration in Computer Science.
+                    Bachelor's of Science in Computer Science with a concentration in Computer Science.
                   </Entry>
 
-                  <Waypoint onEnter={() => { this.activatePage("education"); this.onEnter("education", 1)}}></Waypoint>
+                  <Waypoint onEnter={() => this.onEnter("education", 1)}></Waypoint>
                   <Entry visible={education[1]}
                         icon={GiDiploma}
                         date={"Expected: May 2021"}
@@ -107,129 +109,47 @@ import { Waypoint } from 'react-waypoint'
                     </ul>
                   </Entry>
                   
-                  <Waypoint onEnter={() => this.activatePage("experience", 1)}></Waypoint>
+                  <Waypoint onEnter={() => this.onEnter("experience", 1)}></Waypoint>
                   <Entry visible={experience[0]}
                           icon={MdWork}
-                          date={"August 2019 – Present"}
-                          title={"DevOps Intern"}
-                          subtitle={"Bongo"}>
+                          date={"May 2019 – August 2019"}
+                          title={"Cloud Solutions Engineer Intern"}
+                          subtitle={"Oracle"}>
                     <ul>
-                      <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
-                      <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                      <li>Demonstrated Oracle Cloud data analytics by building dashboard for improving business KPIs</li>
+                      <li>Analyzed Tweets via API and scraped news articles for real-time sentiment analysis using Python</li>
+                      <li>Automated application deployment to Oracle Cloud’s Infrastructure-as-a-Service</li>
                     </ul>
                   </Entry>
                 </Page>
                 
-                <Page name="skills" count={this.countEntries}>
+                <Page name="skills" count={this.countSkills}>
                   <h2 className="heading">Skills</h2>
-                  <div className="row progress-circle mb-5">
-                    <div className="col-lg-4 mb-4">
-                      <div className="bg-white rounded-lg shadow p-4">
-                        <h2 className="h5 font-weight-bold text-center mb-4">CSS</h2>
+                  <Subtitle>Github Metrics</Subtitle>
+                  <Row className="progress-circle mb-5">
+                    <Col lg={4} mb={4}>
+                      <SkillCircle skill="JavaScript"
+                                   percentTotal="33.51"
+                      />
+                    </Col>
+                    <Col lg={4} mb={4}>
+                      <SkillCircle skill="Java"
+                             percentTotal="29.10"
+                      />
+                    </Col>
+                    <Col lg={4} mb={4}>
+                      <SkillCircle skill="Python"
+                             percentTotal="15.32"
+                      />
+                    </Col>
+                  </Row>
 
-                        {/* Progress bar 1 8*/}
-                        <div className="progress mx-auto" data-value='90'>
-                          <span className="progress-left">
-                            <span className="progress-bar border-primary"></span>
-                          </span>
-                          <span className="progress-right">
-                            <span className="progress-bar border-primary"></span>
-                          </span>
-                          <div className="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                            <div className="h2 font-weight-bold">90<sup className="small">%</sup></div>
-                          </div>
-                        </div>
-                        {/* END */}
-
-                        {/* Demo info */}
-                        <div className="row text-center mt-4">
-                          <div className="col-6 border-right">
-                            <div className="h4 font-weight-bold mb-0">28%</div><span className="small text-gray">Last week</span>
-                          </div>
-                          <div className="col-6">
-                            <div className="h4 font-weight-bold mb-0">60%</div><span className="small text-gray">Last month</span>
-                          </div>
-                        </div>
-                        {/* END */}
-                      </div>
-                    </div>
-
-                    <div className="col-lg-4 mb-4">
-                      <div className="bg-white rounded-lg shadow p-4">
-                        <h2 className="h5 font-weight-bold text-center mb-4">HTML</h2>
-
-                        {/* Progress bar 1 */}
-                        <div className="progress mx-auto" data-value='80'>
-                          <span className="progress-left">
-                            <span className="progress-bar border-primary"></span>
-                          </span>
-                          <span className="progress-right">
-                            <span className="progress-bar border-primary"></span>
-                          </span>
-                          <div className="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                            <div className="h2 font-weight-bold">80<sup className="small">%</sup></div>
-                          </div>
-                        </div>
-                        {/* END */}
-
-                        {/* Demo info */}
-                        <div className="row text-center mt-4">
-                          <div className="col-6 border-right">
-                            <div className="h4 font-weight-bold mb-0">28%</div><span className="small text-gray">Last week</span>
-                          </div>
-                          <div className="col-6">
-                            <div className="h4 font-weight-bold mb-0">60%</div><span className="small text-gray">Last month</span>
-                          </div>
-                        </div>
-                        {/* END */}
-                      </div>
-                    </div>
-
-                    <div className="col-lg-4 mb-4">
-                      <div className="bg-white rounded-lg shadow p-4">
-                        <h2 className="h5 font-weight-bold text-center mb-4">jQuery</h2>
-
-                        {/* Progress bar 1 */}
-                        <div className="progress mx-auto" data-value='75'>
-                          <span className="progress-left">
-                            <span className="progress-bar border-primary"></span>
-                          </span>
-                          <span className="progress-right">
-                            <span className="progress-bar border-primary"></span>
-                          </span>
-                          <div className="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                            <div className="h2 font-weight-bold">75<sup className="small">%</sup></div>
-                          </div>
-                        </div>
-                        {/* END */}
-
-                        {/* Demo info */}
-                        <div className="row text-center mt-4">
-                          <div className="col-6 border-right">
-                            <div className="h4 font-weight-bold mb-0">28%</div><span className="small text-gray">Last week</span>
-                          </div>
-                          <div className="col-6">
-                            <div className="h4 font-weight-bold mb-0">60%</div><span className="small text-gray">Last month</span>
-                          </div>
-                        </div>
-                        {/* END */}
-                      </div>
-                    </div>
-                  </div>
                   <Row>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ftco-animate">
-                        <h3>Photoshop</h3>
-                        <div className="progress">
-                          <div className="progress-bar color-1" role="progressbar" aria-valuenow="90"
-                            aria-valuemin="0" aria-valuemax="100" style={{width: "90%"}}>
-                            <span>90%</span>
-                            </div>
-                        </div>
-                      </div>
+                      <Skillbar skill="Python" skillLevel={3} />
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ftco-animate">
+                      <div className="progress-wrap ">
                         <h3>jQuery</h3>
                         <div className="progress">
                           <div className="progress-bar color-2" role="progressbar" aria-valuenow="85"
@@ -240,7 +160,7 @@ import { Waypoint } from 'react-waypoint'
                       </div>
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ftco-animate">
+                      <div className="progress-wrap ">
                         <h3>HTML5</h3>
                         <div className="progress">
                           <div className="progress-bar color-3" role="progressbar" aria-valuenow="95"
@@ -251,7 +171,7 @@ import { Waypoint } from 'react-waypoint'
                       </div>
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ftco-animate">
+                      <div className="progress-wrap ">
                         <h3>CSS3</h3>
                         <div className="progress">
                           <div className="progress-bar color-4" role="progressbar" aria-valuenow="90"
@@ -262,7 +182,7 @@ import { Waypoint } from 'react-waypoint'
                       </div>
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ftco-animate">
+                      <div className="progress-wrap ">
                         <h3>WordPress</h3>
                         <div className="progress">
                           <div className="progress-bar color-5" role="progressbar" aria-valuenow="70"
@@ -273,7 +193,7 @@ import { Waypoint } from 'react-waypoint'
                       </div>
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ftco-animate">
+                      <div className="progress-wrap ">
                         <h3>SEO</h3>
                         <div className="progress">
                           <div className="progress-bar color-6" role="progressbar" aria-valuenow="80"
@@ -288,7 +208,7 @@ import { Waypoint } from 'react-waypoint'
 
                 <Page name="awards" count={this.countEntries}>
                   <h2 className="heading">Awards</h2>
-                  <div className="resume-wrap d-flex ftco-animate">
+                  <div className="resume-wrap d-flex ">
                     <div className="icon d-flex align-items-center justify-content-center">
                       <span className="flaticon-ideas"></span>
                     </div>
@@ -299,7 +219,7 @@ import { Waypoint } from 'react-waypoint'
                       <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
                     </div>
                   </div>
-                  <div className="resume-wrap d-flex ftco-animate">
+                  <div className="resume-wrap d-flex ">
                     <div className="icon d-flex align-items-center justify-content-center">
                       <span className="flaticon-ideas"></span>
                     </div>
@@ -310,7 +230,7 @@ import { Waypoint } from 'react-waypoint'
                       <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
                     </div>
                   </div>
-                  <div className="resume-wrap d-flex ftco-animate">
+                  <div className="resume-wrap d-flex ">
                     <div className="icon d-flex align-items-center justify-content-center">
                       <span className="flaticon-ideas"></span>
                     </div>
@@ -321,7 +241,7 @@ import { Waypoint } from 'react-waypoint'
                       <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
                     </div>
                   </div>
-                  <div className="resume-wrap d-flex ftco-animate">
+                  <div className="resume-wrap d-flex ">
                     <div className="icon d-flex align-items-center justify-content-center">
                       <span className="flaticon-ideas"></span>
                     </div>

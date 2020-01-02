@@ -54,9 +54,13 @@ const ResumeWrap = styled.div`
     p {
       margin-top: 0.5rem;
       @media (max-width: 767.98px) {
-        float: left;
+        clear: both;
       }
     }
+    @media (max-width: 767.98px) {
+      position: relative;
+    }
+    
 	}
 	.date{
 		font-weight: 700;
@@ -75,13 +79,19 @@ const ResumeWrap = styled.div`
     float: right;
     @media (max-width: 767.98px) {
         font-size: 16px;
-        float: left;
+        clear: both;
+        position: absolute;
+        top: 0px;
+        right: 0px;
     }
   }
 	h2{
 		font-size: 24px;
     font-weight: 700;
     margin-bottom: 0px;
+    @media (max-width: 767.98px) {
+      clear: both;
+    }
 	}
 	.subtitle{
 		font-size: 18px;
@@ -95,5 +105,8 @@ const ResumeWrap = styled.div`
 const Description = styled.div`
   ul {
     padding-left: 0px;
+  }
+  @media (max-width: 375px) {
+    word-wrap: break-word;
   }
 `;

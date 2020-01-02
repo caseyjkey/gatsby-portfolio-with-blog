@@ -23,7 +23,14 @@ export const AboutSection = styled.section`
 					width: 130px;
 				}
 			}
-		}
+		}	
+`;
+
+export const Description = styled.p`
+	@media (max-width: 375px) {
+		width: 350px;
+		padding-left: 0.5rem !important;
+	}
 `;
 
 export const AboutImage = styled.div`
@@ -49,5 +56,8 @@ export const Counter = styled.div`
 		color: ${(props) => props.theme.primaryColor};
 		font-weight: 600;
 	}
-	
+
+	@media (max-width: 375px) {
+		padding-left: 0.5rem !important;
+	}
 `;

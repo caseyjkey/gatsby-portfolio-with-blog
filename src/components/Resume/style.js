@@ -20,3 +20,12 @@ export const Page = styled(PlainPage)`
     color: ${(props) => props.theme.primaryColor};
   }
 `;
+
+export const Subtitle = styled.h2`
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 0px;
+  @media (max-width: 767.98px) {
+    clear: both;
+  }
+`;

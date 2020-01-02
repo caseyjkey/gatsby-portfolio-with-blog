@@ -1,4 +1,7 @@
 // This file contains common components and the global theme
+import styled from 'styled-components'
+import { lighten } from 'polished'
+
 
 export const theme = {
   primaryFont: "'Poppins', Arial, sans-serif",
@@ -10,6 +13,22 @@ export const theme = {
   primaryColor: "#3e64ff",
   secondaryColor: "#a0f669",
 };
+
+export const Body = styled.body`
+	font-family: ${theme.primaryFont};
+	background: ${theme.white};
+	font-size: 16px;
+	line-height: 1.8;
+	font-weight: 400;
+  color: ${lighten(0.60, theme.black)};
+  
+	&.menu-show {
+		overflow: hidden;
+		position: fixed;
+		height: 100%;
+		width: 100%;
+	}
+`;
 
 export const Section = `
   padding: 7em 0;

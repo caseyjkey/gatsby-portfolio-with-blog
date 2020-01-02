@@ -5,6 +5,7 @@ import Introduction from './components/Introduction/Introduction'
 import About from './components/About/About'
 import Partners from './components/Partners/Partners'
 import Resume from './components/Resume/Resume'
+import { Body } from './components/style.js'
 import { initPage } from './components/main'
 import AOS from 'aos'
 
@@ -19,13 +20,13 @@ class App extends Component {
 
   render() {
     return (
-			<Fragment>
+			<Body>
 				<Navigation></Navigation>
 				<Introduction></Introduction>
 				<About></About>
 				<Partners></Partners>
 				<Resume></Resume>
-			</Fragment>
+			</Body>
     );
   }
 }
