@@ -127,6 +127,10 @@ const SkillCircleContainer = styled.div`
   // p 4
   padding: 1.5rem;
   
+  .h5 {
+    color: ${(props) => props.theme.black};
+  }
+
 `;
 
 const ProgressCircle = styled.div`

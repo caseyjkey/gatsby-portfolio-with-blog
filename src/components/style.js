@@ -6,8 +6,8 @@ import { lighten } from 'polished'
 export const theme = {
   primaryFont: "'Poppins', Arial, sans-serif",
 
-  white: "#fff",
-  black: "#000000",
+  white: "white",
+  black: "black",
   darken: "#232931",
 
   primaryColor: "#3e64ff",
