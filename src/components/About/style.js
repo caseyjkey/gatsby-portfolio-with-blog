@@ -6,12 +6,13 @@ export const AboutSection = styled.section`
 	${Section}
 	${NoPaddingTop}
 	${NoPaddingBottom}
-	
+	width: 90%;
+
 	ul.about-info {
 		display: inline-block;
 		padding: 0;
 		margin: 0;
-		width: 100%;
+		word-break: break-word;
 		li {
 			list-style: none;
 			margin-bottom: 10px;

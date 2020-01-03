@@ -56,9 +56,11 @@ import { Waypoint } from 'react-waypoint'
 
     return (
       <ThemeProvider theme={theme}>
+        <h1 className="big">Resume</h1>
+
         <ResumeSection className="goto-here">
           <Container>
-            <Row>
+                        <Row>
               <Col md={3}>
                 <Nav>
                   <Link to="education" activeClass="current" spy={true} smooth={true}>Education</Link>
@@ -110,7 +112,7 @@ import { Waypoint } from 'react-waypoint'
                   </Entry>
                   
                   <Waypoint onEnter={() => this.onEnter("experience", 1)}></Waypoint>
-                  <Entry visible={experience[0]}
+                  <Entry visible={experience[1]}
                           icon={MdWork}
                           date={"May 2019 – August 2019"}
                           title={"Cloud Solutions Engineer Intern"}
@@ -144,64 +146,25 @@ import { Waypoint } from 'react-waypoint'
                     </Col>
                   </Row>
 
+                  <Subtitle>Languages</Subtitle>
                   <Row>
                     <Col md={6} className="animate-box">
-                      <Skillbar skill="Python" skillLevel={3} />
+                      <Skillbar skill="Python" skillLevel={4}/>
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ">
-                        <h3>jQuery</h3>
-                        <div className="progress">
-                          <div className="progress-bar color-2" role="progressbar" aria-valuenow="85"
-                            aria-valuemin="0" aria-valuemax="100" style={{width: "85%"}}>
-                            <span>85%</span>
-                            </div>
-                        </div>
-                      </div>
+                      <Skillbar skill="C++" skillLevel={4}/>
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ">
-                        <h3>HTML5</h3>
-                        <div className="progress">
-                          <div className="progress-bar color-3" role="progressbar" aria-valuenow="95"
-                            aria-valuemin="0" aria-valuemax="100" style={{width: "95%"}}>
-                            <span>95%</span>
-                            </div>
-                        </div>
-                      </div>
+                      <Skillbar skill="Javascript" skillLevel={4}/>
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ">
-                        <h3>CSS3</h3>
-                        <div className="progress">
-                          <div className="progress-bar color-4" role="progressbar" aria-valuenow="90"
-                            aria-valuemin="0" aria-valuemax="100" style={{width: "90%"}}>
-                            <span>90%</span>
-                            </div>
-                        </div>
-                      </div>
+                      <Skillbar skill="Java" skillLevel={3} />
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ">
-                        <h3>WordPress</h3>
-                        <div className="progress">
-                          <div className="progress-bar color-5" role="progressbar" aria-valuenow="70"
-                            aria-valuemin="0" aria-valuemax="100" style={{width: "70%"}}>
-                            <span>70%</span>
-                            </div>
-                        </div>
-                      </div>
+                      <Skillbar skill="Ruby" skillLevel={2} />
                     </Col>
                     <Col md={6} className="animate-box">
-                      <div className="progress-wrap ">
-                        <h3>SEO</h3>
-                        <div className="progress">
-                          <div className="progress-bar color-6" role="progressbar" aria-valuenow="80"
-                            aria-valuemin="0" aria-valuemax="100" style={{width: "80%"}}>
-                            <span>80%</span>
-                            </div>
-                        </div>
-                      </div>
+                      <Skillbar skill="Solidity" skillLevel={1} />
                     </Col>
                   </Row>
                 </Page>

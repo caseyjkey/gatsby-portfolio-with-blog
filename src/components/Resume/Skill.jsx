@@ -79,22 +79,40 @@ export class SkillCircle extends Component {
 };
 
 export class Skillbar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: false
+    };
+    this.makeVisible = this.makeVisible.bind(this);
+  }
+
+  makeVisible() {
+    this.setState({visible: true});
+  }
+
   render() {
+    let visible = this.state.visible;
+
     let skill = this.props.skill;
     let skillLevel = this.props.skillLevel; // Value between 1 and 4
 
-    let skillLevels = ["None", "Some", "Practiced", "Advanced"];
+    let skillLevels = ["Some", "Practiced", "Proficient", "Advanced"];
     let progressbarVariants = ["danger", "warning", "success", null];
     return (
-      <ProgressbarContainer>
-        <h3>{skill}</h3>
-        <Progress multi>
-          {console.log(skillLevels.slice(0, skillLevel))}
-          {skillLevels.slice(0, skillLevel).map((value, index) => {
-            return <Progress bar color={progressbarVariants[index]} value={index + 1 * 25}>{value}</Progress>
-          })}
-        </Progress>
-      </ProgressbarContainer>
+      <Animated animationIn="fadeInUp" isVisible={visible}>
+        <ProgressbarContainer>
+          <h3>{skill}</h3>
+          <Progress multi>
+            {console.log(skillLevels.slice(0, skillLevel))}
+            {skillLevels.slice(0, skillLevel).map((value, index, arr) => {
+              return <Progress bar color={progressbarVariants[index]} value={25}>{index === arr.length - 1 && value}</Progress>
+            })}
+          </Progress>
+        </ProgressbarContainer>
+        <Waypoint onEnter={() => this.makeVisible()} />
+      </Animated>
     );
   }
 }
@@ -127,5 +145,43 @@ const ProgressbarContainer = styled.div`
 		font-size: 16px;
 		margin-bottom: 10px;
 		font-weight: 500;
-	}
+  }
+  
+  .progress {
+    height: 15px;
+    box-shadow: none;
+    background: ${lighten(0.9, theme.black)};
+    overflow: visible
+  }
+
+  .progress-bar {
+    background: ${theme.primaryColor};
+    box-shadow: none;
+    font-size: 14px;
+    line-height: 1.0;
+    color: ${theme.white};
+    font-weight: 600;
+    position: relative;
+    overflow: visible;
+    @include border-radius(2px);
+    &:after{
+      position: absolute;
+      top: -2px;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      content: '';
+      background: ${theme.primaryColor};
+      @include border-radius(2px);
+      opacity: 0;
+    }
+    span{
+      position: absolute;
+      top: -38px;
+      right: 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: ${theme.black};
+    }
+  }
 `;
