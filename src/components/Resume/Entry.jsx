@@ -1,11 +1,25 @@
 import React, { Component } from 'react'
-import styled, { ThemeProvider } from 'styled-components'
-import { theme } from '../style.js'
+import styled from 'styled-components'
 import { Animated } from 'react-animated-css'
+import { Waypoint } from 'react-waypoint'
 
 export default class Entry extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: false
+    };
+    this.makeVisible = this.makeVisible.bind(this);
+  }
+
+  makeVisible() {
+    console.log("setting visible true for Entry");
+    this.setState({visible: true});
+  }
+
   render() {
-    let visible = this.props.visible;
+    let visible = this.state.visible;
     let Icon = this.props.icon;
     let date = this.props.date;
     let title = this.props.title;
@@ -14,7 +28,6 @@ export default class Entry extends Component {
     let text = this.props.children;
 
     return (
-      <ThemeProvider theme={theme}>
         <Animated animationIn="fadeInUp" isVisible={visible}>
           <ResumeWrap className="d-flex">
             <div className="icon d-flex align-items-center justify-content-center">
@@ -23,13 +36,13 @@ export default class Entry extends Component {
             <div className="text pl-3">
               <span className="date">{date}</span>
               <h2>{title}</h2>
+              <Waypoint onEnter={this.makeVisible}></Waypoint>
               <span className="subtitle">{subtitle}</span>
               {gpa && <span className="gpa">{gpa} GPA</span>}
               <Description>{text}</Description>
             </div>
           </ResumeWrap>
         </Animated>
-      </ThemeProvider>
     );
   };
 }
@@ -86,6 +99,7 @@ const ResumeWrap = styled.div`
     }
   }
 	h2{
+    color: ${(props) => props.theme.black};
 		font-size: 24px;
     font-weight: 700;
     margin-bottom: 0px;
@@ -105,6 +119,9 @@ const ResumeWrap = styled.div`
 const Description = styled.div`
   ul {
     padding-left: 0px;
+    li {
+      color: ${(props) => props.theme.black};
+    }
   }
   @media (max-width: 375px) {
     word-wrap: break-word;

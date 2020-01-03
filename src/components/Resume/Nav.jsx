@@ -44,9 +44,9 @@ const Navi = styled.nav`
   li{
   	font-weight: 700;
   	list-style: none;
-  	margin-bottom: 10px;
+    margin-bottom: 10px;
   	a{
-  		color: $black;
+      color: ${(props) => props.theme.black};
   		&.current {
 			  // border-bottom: 4px solid $primary;
 			  color: ${(props) => props.theme.primaryColor};

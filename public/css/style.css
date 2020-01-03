@@ -8155,12 +8155,12 @@ a {
     color: #3e64ff;
     outline: none !important; }
 
-h1, h2, h3, h4, h5,
+/*h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
   line-height: 1.5;
   color: black;
   font-weight: 400; }
-
+*/
 .text-primary {
   color: #3e64ff !important; }
 
@@ -8661,36 +8661,6 @@ h1, h2, h3, h4, h5,
   .ftco-about .counter-wrap .text p span.number {
     font-weight: 600;
     color: #3e64ff; }
-
-#navi {
-  top: 180px;
-  position: -webkit-sticky;
-  position: sticky;
-  margin: 0; }
-  #navi ul {
-    margin: 0;
-    padding: 0; }
-  #navi li {
-    font-weight: 700;
-    list-style: none;
-    margin-bottom: 10px; }
-    #navi li a {
-      color: #000000; }
-      #navi li a.current {
-        color: #3e64ff;
-        margin-left: 20px;
-        position: relative; }
-        #navi li a.current:after {
-          position: absolute;
-          top: 50%;
-          left: -24px;
-          width: 20px;
-          height: 2px;
-          content: '';
-          -webkit-transform: translateY(-50%);
-          -ms-transform: translateY(-50%);
-          transform: translateY(-50%);
-          background: #3e64ff; }
 
 .page {
   width: 100%;

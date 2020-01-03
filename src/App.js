@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Navigation from './components/Navigation'
 import Introduction from './components/Introduction/Introduction'
 import About from './components/About/About'
-import Partners from './components/Partners/Partners'
 import Resume from './components/Resume/Resume'
 import { Body } from './components/style.js'
 import { initPage } from './components/main'
@@ -24,7 +23,6 @@ class App extends Component {
 				<Navigation></Navigation>
 				<Introduction></Introduction>
 				<About></About>
-				<Partners></Partners>
 				<Resume></Resume>
 			</Body>
     );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { ThemeProvider } from 'styled-components'
-import { theme } from '../style.js'
+import { theme, Heading } from '../style.js'
 import { AboutSection, AboutImage, Counter, Description } from './style.js'
 import Headshot from "./images/about.png"
 import { Waypoint } from  'react-waypoint'
@@ -37,16 +37,16 @@ export default class About extends Component {
           <Container>
             <Row noGutters>
               <Col lg="6" md="6" className="d-flex">
-                <AboutImage style={{backgroundImage: this.imageURL(Headshot)}}
-                            className="" />
+                <AboutImage style={{backgroundImage: this.imageURL(Headshot)}} />
               </Col> 
 
               <Col md="6" lg="6" className="pl-md-5 py-5">
                 <Row className="justify-content-start pb-3">
-                  <Waypoint onEnter={() => this.onEnter("info")}></Waypoint>
                   <Animated animationIn="fadeInUp" isVisible={infoVisible} style={{width: "100%"}}>
                     <Col className="col-md-12 heading-section">
-                      <h2 className="mb-4">About Me</h2>
+                      <Heading className="mb-4">About Me</Heading>
+                      <Waypoint onEnter={() => this.onEnter("info")}></Waypoint>
+
                       <Description>I enjoy skateboarding, sports, and building stuff. My interests are coding, business, and robotics. I'm happy to help anyone learn.</Description>
                       <ul className="about-info mt-4 px-md-0 px-2">
                         <li className="d-flex"><span>Name:</span> <span>Casey Key</span></li>
@@ -58,7 +58,6 @@ export default class About extends Component {
                   </Animated>
                 </Row>
 
-                <Waypoint onEnter={() => this.onEnter("counter") }>
                 <Animated animation="fadeInUp" isVisible={counterVisible}>
                   <Counter className="mt-md-3">
                     <p className="mb-4">
@@ -70,7 +69,8 @@ export default class About extends Component {
                     <p><Button color="primary" className="py-3 px-3">Download CV</Button></p>
                   </Counter>
                 </Animated>
-                </Waypoint>
+                
+                <Waypoint onEnter={() => this.onEnter("counter") } />
               </Col>
             </Row>
           </Container>

@@ -7,21 +7,15 @@ export const ResumeSection = styled.section`
   ${NoPaddingBottom}
 `;
 
-export const Page = styled(PlainPage)`
-  width: 100%;
-  margin-bottom: 7em;
-  &.four {
-    margin-bottom: 0;
-  }
-  .heading {
-    font-weight: 800;
-    font-size: 30px;
-    margin-bottom: 30px;
-    color: ${(props) => props.theme.primaryColor};
-  }
+export const SectionTitle = styled.h2`
+  font-weight: 800;
+  font-size: 30px;
+  margin-bottom: 30px;
+  color: ${(props) => props.theme.primaryColor};
 `;
 
-export const Subtitle = styled.h2`
+
+export const SubsectionTitle = styled.h2`
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 0px;
@@ -29,3 +23,12 @@ export const Subtitle = styled.h2`
     clear: both;
   }
 `;
+
+export const Page = styled(PlainPage)`
+  width: 100%;
+  margin-bottom: 7em;
+  &.four {
+    margin-bottom: 0;
+  }
+`;
+

@@ -32,6 +32,7 @@ export const Subheader = styled.h3`
   letter-spacing: 4px;
 `;
 export const Header = styled.h1`
+  color: ${(props) => props.theme.black}
   font-size: 60px;
   font-weight: 800;
   @media (max-width: 767.98px) {
@@ -39,6 +40,7 @@ export const Header = styled.h1`
   }
 `;
 export const Slider = styled.h2`
+  color: ${(props) => props.theme.black}
   font-weight: 800;
   .txt-rotate {
     color: ${(props) => props.theme.primaryColor};

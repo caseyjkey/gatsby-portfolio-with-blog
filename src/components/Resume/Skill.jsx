@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 import { theme } from '../style.js'
 import { lighten } from 'polished'
 import { Container, Row, Col, Progress } from 'reactstrap'
@@ -105,9 +105,8 @@ export class Skillbar extends Component {
         <ProgressbarContainer>
           <h3>{skill}</h3>
           <Progress multi>
-            {console.log(skillLevels.slice(0, skillLevel))}
             {skillLevels.slice(0, skillLevel).map((value, index, arr) => {
-              return <Progress bar color={progressbarVariants[index]} value={25}>{index === arr.length - 1 && value}</Progress>
+              return <Progress bar key={index} color={progressbarVariants[index]} value={25}>{index === arr.length - 1 && value}</Progress>
             })}
           </Progress>
         </ProgressbarContainer>
@@ -127,7 +126,7 @@ const SkillCircleContainer = styled.div`
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   // p 4
   padding: 1.5rem;
-
+  
 `;
 
 const ProgressCircle = styled.div`
@@ -141,6 +140,7 @@ const ProgressbarContainer = styled.div`
   width: 100%;
   margin-bottom: 30px;
 	h3 {
+    color: ${(props) => props.theme.black};
     clear: none;
 		font-size: 16px;
 		margin-bottom: 10px;
