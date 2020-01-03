@@ -8767,40 +8767,6 @@ a {
   background: #e6e6e6;
   overflow: visible; }
 
-.progress-bar {
-  background: #3e64ff;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  font-size: 12px;
-  line-height: 1.2;
-  color: #000000;
-  font-weight: 600;
-  position: relative;
-  overflow: visible;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  border-radius: 2px; }
-  .progress-bar:after {
-    position: absolute;
-    top: -2px;
-    right: 0;
-    width: 34px;
-    height: 34px;
-    content: '';
-    background: #3e64ff;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    -ms-border-radius: 2px;
-    border-radius: 2px;
-    opacity: 0; }
-  .progress-bar span {
-    position: absolute;
-    top: -38px;
-    right: 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: #000000; }
 
 .progress-circle .progress {
   width: 150px;
