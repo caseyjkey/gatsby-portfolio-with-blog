@@ -47,11 +47,10 @@ export default class About extends Component {
                       <Heading className="mb-4">About Me</Heading>
                       <Waypoint onEnter={() => this.onEnter("info")}></Waypoint>
 
-                      <Description>The the potential effect of technology thrills me!
-                        For example, programming is lucrative and challenging career which anyone can learn with a computer and some books or an internet connection.
-                        I hope my hard work studying computer science can allow me to enhave people's lives through teaching or apps for education, finance, or entertainment. 
+                      <Description>The potential effect of technology on society thrills me!
+                        I hope my hard work studying computer science can allow me to enhance people's lives through teaching or apps for education, finance, or entertainment. 
                         
-                        When I'm not programming, I enjoy skateboarding, sports, metalsmithing, and building sound systems or other electronics. My interests are coding, business, and robotics. I'm happy to help anyone learn.</Description>
+                        When I'm not coding, I enjoy skateboarding, sports, metalsmithing, and building sound systems or other electronics. I'm happy to help anyone learn.</Description>
                       <ul className="about-info mt-4 px-md-0 px-2">
                         <li className="d-flex"><span>Name:</span> <span>Casey Key</span></li>
                         <li className="d-flex"><span>Location:</span> <span>Fort Collins, CO, USA</span></li>
