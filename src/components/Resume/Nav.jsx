@@ -45,8 +45,10 @@ const Navi = styled.nav`
   	font-weight: 700;
   	list-style: none;
     margin-bottom: 10px;
-  	a{
+    a:not([href]):not([tabindex]) {
       color: ${(props) => props.theme.black};
+    }
+  	a {
   		&.current {
 			  // border-bottom: 4px solid $primary;
 			  color: ${(props) => props.theme.primaryColor};

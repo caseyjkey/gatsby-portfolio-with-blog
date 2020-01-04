@@ -10,7 +10,6 @@ import { GiGraduateCap, GiDiploma } from 'react-icons/gi'
 import { AiOutlineTeam } from 'react-icons/ai'
 import { GoStar } from 'react-icons/go'
 import { MdWork } from 'react-icons/md'
-import { Waypoint } from 'react-waypoint'
 
  export default class Resume extends Component {
   render() {
