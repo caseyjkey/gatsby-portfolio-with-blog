@@ -14,7 +14,6 @@ export default class Entry extends Component {
   }
 
   makeVisible() {
-    console.log("setting visible true for Entry");
     this.setState({visible: true});
   }
 

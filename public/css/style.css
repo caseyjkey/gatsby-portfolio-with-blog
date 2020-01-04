@@ -10408,11 +10408,6 @@ textarea.form-control {
   }
 }
 
-.ftco-animate {
-  opacity: 0;
-  visibility: hidden;
-}
-
 .bg-primary {
   background: #3e64ff !important;
 }

@@ -63,7 +63,7 @@ export const Heading = styled.h2`
   @media (max-width: 767.98px) {
     font-size: 38px;
   }
-`
+`;
 
 export const HeadingRaw = `
 	position: relative;

@@ -4,7 +4,9 @@ import Navigation from './components/Navigation'
 import Introduction from './components/Introduction/Introduction'
 import About from './components/About/About'
 import Resume from './components/Resume/Resume'
-import { Body } from './components/style.js'
+import Services from './components/Services'
+import { ThemeProvider } from 'styled-components'
+import { theme, Body } from './components/style.js'
 import { initPage } from './components/main'
 import AOS from 'aos'
 
@@ -19,12 +21,15 @@ class App extends Component {
 
   render() {
     return (
-			<Body>
-				<Navigation></Navigation>
-				<Introduction></Introduction>
-				<About></About>
-				<Resume></Resume>
-			</Body>
+			<ThemeProvider theme={theme}>
+				<Body>
+					<Navigation></Navigation>
+					<Introduction></Introduction>
+					<About></About>
+					<Resume></Resume>
+					<Services></Services>
+				</Body>
+			</ThemeProvider>
     );
   }
 }

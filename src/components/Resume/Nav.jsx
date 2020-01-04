@@ -37,18 +37,17 @@ const Navi = styled.nav`
   position: -webkit-sticky;
   position: sticky;
   margin: 0;
-  ul{
+  padding-bottom: 50px;
+  ul {
   	margin: 0;
   	padding: 0;
   }
-  li{
+  li {
   	font-weight: 700;
   	list-style: none;
     margin-bottom: 10px;
     a:not([href]):not([tabindex]) {
       color: ${(props) => props.theme.black};
-    }
-  	a {
   		&.current {
 			  // border-bottom: 4px solid $primary;
 			  color: ${(props) => props.theme.primaryColor};

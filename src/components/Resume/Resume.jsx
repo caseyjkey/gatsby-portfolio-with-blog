@@ -173,7 +173,7 @@ import { MdWork } from 'react-icons/md'
                     Organized a team and developed a virtual reality classroom environment of the solarsystem for up to 20 students and a teacher in 48 hours.
                   </Entry>
                 </Page>
-                <Page name="leadership">
+                <Page name="leadership" className="mb-0">
                   <SectionTitle>Leadership</SectionTitle>
                   <Entry icon={AiOutlineTeam}
                          date={"August 2019 - Present"}
