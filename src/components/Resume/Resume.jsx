@@ -163,7 +163,7 @@ import { MdWork } from 'react-icons/md'
                          title={"SingularDTV Challenge"}
                          subtitle={"WyoHackathon"}
                   >
-                    Spearheaded a challenge to develop a community blockchain-curated top music billboard.
+                    Spearheaded a trip to San Francisco by developing a community blockchain-curated top music billboard.
                   </Entry>
                   <Entry icon={GoStar}
                          date={"October 2017"}

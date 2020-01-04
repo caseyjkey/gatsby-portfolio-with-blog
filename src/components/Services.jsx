@@ -42,7 +42,7 @@ export default class Services extends Component {
                        link="#contact"
                        button="Contact me"
               >
-                Happy turn your idea into a well-crafted mobile Android application. 
+                Excited to turn your idea into a well-crafted Android app. 
               </Service>
             </Col>
           </Row>
