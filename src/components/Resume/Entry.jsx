@@ -116,11 +116,9 @@ const ResumeWrap = styled.div`
 `;
 
 const Description = styled.div`
+  color: ${(props) => props.theme.black};
   ul {
     padding-left: 0px;
-    li {
-      color: ${(props) => props.theme.black};
-    }
   }
   @media (max-width: 375px) {
     word-wrap: break-word;
