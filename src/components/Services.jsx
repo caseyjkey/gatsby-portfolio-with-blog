@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import style from 'styled-components'
 import { Heading } from './style.js' // Global styled components
 import { Container, Row, Col, Button } from 'reactstrap'

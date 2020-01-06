@@ -5,6 +5,7 @@ import Introduction from './components/Introduction/Introduction'
 import About from './components/About/About'
 import Resume from './components/Resume/Resume'
 import Services from './components/Services'
+import Projects from './components/Projects'
 import { ThemeProvider } from 'styled-components'
 import { theme, Body } from './components/style.js'
 import { initPage } from './components/main'
@@ -28,6 +29,7 @@ class App extends Component {
 					<About></About>
 					<Resume></Resume>
 					<Services></Services>
+					<Projects></Projects>
 				</Body>
 			</ThemeProvider>
     );
