@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { theme, Section, Image } from '../style.js'
-import { Card, CardBody, CardHeader, CardTitle, CardSubtitle, CardText } from 'reactstrap'
+import { Section, Image } from '../style.js'
 
 export const ProjectSection = styled.section`
   ${Section}
