@@ -3,7 +3,11 @@ import { Heading } from './style.js' // Global styled-components
 import { Container, Row, Col, Button, Card, CardHeader, CardBody, CardText, CardTitle, CardSubtitle, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import { ProjectSection, Body, Title, Header } from './Projects/style.js'
 import Project from './Projects/Project'
-import { FaReact, FaNpm, FaGit, FaSass,FaGithub, FaRaspberryPi, FaPython, FaMicrochip, FaSlack, FaJava, FaDatabase, FaServer, FaTwitter, FaNewspaper, FaApple } from 'react-icons/fa'
+
+import { FaReact, FaNpm, FaGit, FaSass,FaGithub, FaRaspberryPi, FaPython, 
+				 FaMicrochip, FaSlack, FaJava, FaDatabase, FaServer, FaTwitter, 
+				 FaNewspaper, FaApple, FaBootstrap, FaEthereum, FaWordpress, FaPhp, FaGamepad } from 'react-icons/fa'
+import { DiFirebase, DiHeroku } from 'react-icons/di'
 import { IoMdAnalytics } from 'react-icons/io'
 
 export const Projects = (props) => {
@@ -58,39 +62,40 @@ export const Projects = (props) => {
 						</Project>
 					</Col>	
 					<Col md={4} className="pb-4">
-						<div className="shadow project img  d-flex justify-content-center align-items-center" style={{backgroundImage: 'url(images/demo-01.png)'}}>
-							<div className="overlay" />
-							<div className="text text-center p-4">
-								<h3><a href="#">Python Curriculum &amp; Blog</a></h3>
-								<span className="mb-4">Web Development</span>
-								<p className="text-white">I developed a curriculum and hosted it as a blog for my position as a student instructor at the 2017 Northrop Grumman STEM camp.</p>
-							</div>
-						</div>
+						<Project image={'images/demo-01.png'}
+										 link={''}
+										 icons={[FaWordpress, FaPhp, FaPython, FaGamepad]}
+										 title={"Python Curriculum & Blog"}
+										 subtitle={"Curriculum Development"}
+						>
+							In May of 2017 I was hired to be a student instructor for the Northrop Grumman STEM Camp.
+							To teach high school students with no programming experience, I developed a curriculum and hosted it as a blog.<br /><br />
+							The blog was hosted on Namecheap with a custom domain. Content was created and managed using Wordpress. 
+							Features were extended using PHP and plugins to provide social functions such as profiles and commenting. <br /><br />
+							On this blog, I posted lessons as blog posts including videos for:
+							<ul>
+								<li>setting up the environment</li>
+								<li>using variables</li>
+								<li>control flow</li>
+								<li>methods</li>
+								<li>classes and using objects</li>
+								<li>creating games using modules</li>
+							</ul>
+						</Project>
 					</Col>
 					<Col md={4} className="pb-4">
-						<div className="shadow project img  d-flex justify-content-center align-items-center" style={{backgroundImage: 'url(images/demo-02.png)'}}>
-							<div className="overlay" onClick={toggleModal}/>
-							<div className="text text-center p-4">
-								<h3><a href="#">Blockchain &amp; Music Billboard</a></h3>
-								<span>Web App Development</span>
-							</div>
-						</div>
-						<Modal isOpen={modal} toggle={toggleModal}>
-							<ModalHeader toggle={toggleModal}>
-								Top 100 Musician Billboard
-							</ModalHeader>
-							<ModalBody>
+						<Project image={'images/demo-02.png'}
+										 link={"https://etherradio.herokuapp.com/#!/landing"}
+										 icons={[FaReact, FaEthereum, DiFirebase, DiHeroku, FaBootstrap, FaGithub]}
+										 title={"Blockchain & Music Billboard"}
+										 subtitle={"WyoHackathon 2018"}
+						>
 								This online music billboard is a curated list of high-quality musicians.
 								It works like a game where token holders control which musicians are listed.
 								Applying to be on the top musician list requires a deposit to prevent trolls and spam submissions.
 								The token holders are incentivized to maintain the quality of the list by challenging applications.
 								If a challenge is successful, the voters are rewarded with the applicant's deposit.
-								Challenging applications creates a high quality list and a successful challenge rewards the voters with the applicant's deposit.
-							</ModalBody>
-							<ModalFooter>
-								<Button color="primary" href={"https://etherradio.herokuapp.com/#!/landing"} target={"_blank"}>View project</Button>
-							</ModalFooter>
-						</Modal>
+						</Project>
 					</Col>
 				</Row>
 			</Container>
