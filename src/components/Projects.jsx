@@ -31,8 +31,14 @@ export const Projects = (props) => {
 										 subtitle={"Web Development"}
 										 icons={[FaReact, FaNpm, FaGit, FaGithub, FaSass]}
 						>
-							For this year's portfolio, I focused on creating a website focusing on acquiring freelance work.
-							In addition, I implemented the Gatsby framework to make updating and adding new content simple.
+							For this year's portfolio, I focused on creating a website for acquiring freelance work and project exposure.
+							Compared to previous portfolios, this application is a single page with a focus on easily updating and adding content.
+							<br /><br />
+							To accomplish this task, I converted a static page into a React project.
+							The most difficult parts of this project were styling and evaluating my skills numerically.
+							<br /><br />
+							To make this website easier to update, I decided to use Gatsby to allow content creation via a dashboard.
+							Finally, I am most proud of the administrator dashboard where I can modify the look and content without diving into code. 
 						</Project>
 					</Col>
 					<Col md={4} className="pb-4">
@@ -43,6 +49,13 @@ export const Projects = (props) => {
 						>
 							The programming hat is a motorized propeller hat triggered by Github contributions. 
 							As team of three students built the hat to study the effect of positive reinforcement on Github contributions.
+							<br /><br />
+							The hat's propeller was powered by a four volt DC brushless DC motor. This motor was controlled by a
+							LT239D integrated circuit which received signals from a Raspberry PI Zero W. The entire unit was powered
+							by a 20700 li-ion battery and managed by a boost converter and charging module. The Raspberry Pi issued
+							signals according to a Python script triggered by Github webhooks. The Python script created a web server
+							for listening to post requests sent after a Git commit or push.
+							<br /><br />
 							From our experiments, we found that commits increased by 500% while wearing the programming hat.
 							This project was voted best project by our classmates.   
 						</Project>
@@ -53,7 +66,21 @@ export const Projects = (props) => {
 										 subtitle={"Software Engineering"}
 										 icons={[FaReact, FaNpm, FaGit, FaGithub, FaJava, FaSlack]}
 						>
-							As a team of four students, we developed of a full-stack web application like Google Maps using agile development practices. 
+							As a team of four students, we developed of a full-stack web application like Google Maps using agile development practices.
+							<br /><br />
+							Starting from just a map and non-functional components, we implemented features for creating a full-fledged trip planner.
+							Our trip planner is used for planning plane trips, so routes are calculated "as-the-crow-flys". Important features
+							are trip optimization using variations of 2-opt to remove loops in the trip route. Calculations are done server-side, and
+							can be done automatically for the user based on how long the optimization will take. Additionally, the server is used to
+							query a database which contains locations.
+							<br />
+							The trip display can be customized by changing route markers size, color, and icon. The itinerary allows items to be added
+							manually, by search, and by file upload. File formats were standardized to allow interoperability between other trip planners.
+							In regards to interoperability, our server and client where independent of one another. Throughout the semester, we tested
+							our client and server using our classmates'. 
+							<br /><br />
+							By the end of the semester, I learned how to lead a scrum sprint, and how to prevent and resolve conflicts in regards to 
+							the software development process. By the end, my team knocked it out of the park and received our highest score for the final demo.
 						</Project>
 					</Col>
 					<Col md={4} className="pb-4">
