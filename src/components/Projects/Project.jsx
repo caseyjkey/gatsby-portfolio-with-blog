@@ -37,7 +37,7 @@ export default function Project({children, title, subtitle, image, icons, link})
           {children} 
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" href={link} target={"_blank"}>View project</Button>
+          {link && <Button color="primary" href={link} target={"_blank"}>View project</Button>}
         </ModalFooter>
       </Modal>
     </Fragment>
