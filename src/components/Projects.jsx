@@ -42,7 +42,7 @@ export const Projects = (props) => {
 						</Project>
 					</Col>
 					<Col md={4} className="pb-4">
-						<Project image={'images/hat/hat.jpg'}
+						<Project image={'images/hat/hat.png'}
 										 title={"Programming Hat"}
 										 subtitle={"IoT Development"}
 										 icons={[FaRaspberryPi, FaGit, FaGithub, FaPython, FaMicrochip]}
@@ -90,7 +90,19 @@ export const Projects = (props) => {
 										 subtitle={"Oracle Cloud Internship"}
 										 icons={[FaPython, FaDatabase, FaServer, IoMdAnalytics, FaTwitter, FaNewspaper, FaApple]}
 						>
-							My team developed real-time business inteligence dashboards during our summer 2019 internship at Oracle in Reston, VA. 
+							My team developed real-time business inteligence dashboards during our summer 2019 internship at Oracle in Reston, VA.
+							<br /><br />
+							Our goal for this project was to create a proof-of-concept of Oracle Cloud's services for a bank.
+							This lead to an executive view of actionable insights for increasing revenue by cross-selling bank services.
+							We created dashboards, generated insight reports, and made a targeted recommendation. 
+							<br />
+							Our product demonstrated the capabilities of Oracle Autonomous Database by consolidating data across many systems.
+							With this data, we used tools such as Oracle Analytics Cloud for intuitive data visualiztions.
+							Overall, we created four dashboards analyzing revenue sourcers, the customer, and profitability.
+							<br /><br />
+							At the end of the internship, we presented our work to the office, including our manager and mentor.
+							My favorite memory from this internship was a tubing trip down the Potomac river.
+							I am thankful for the opportunity to work at a top software company where I met many talented people.
 						</Project>
 					</Col>	
 					<Col md={4} className="pb-4">
