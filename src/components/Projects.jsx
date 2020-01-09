@@ -50,10 +50,10 @@ export const Projects = (props) => {
 							The programming hat is a motorized propeller hat triggered by Github contributions. 
 							As a team of three students, we built the hat to study the effect of positive reinforcement on Github contributions.
 							<br /><br />
-							The hat's propeller was powered by a four volt DC brushless DC motor. This motor was controlled by a
+							The hat's propeller was powered by a small DC motor. This motor was controlled by a
 							LT239D integrated circuit which received signals from a Raspberry PI Zero W. The entire unit was powered
 							by a 20700 li-ion battery and managed by a boost converter and charging module. The Raspberry Pi issued
-							signals according to a Python script triggered by Github webhooks. The Python script created a web server
+							signals according to a Python script. The script created a web server
 							for listening to post requests sent after a Git commit or push.
 							<br /><br />
 							From our experiments, we found that commits increased by 500% while wearing the programming hat.

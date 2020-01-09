@@ -22,7 +22,7 @@ export default class Introduction extends Component  {
                       <Slider>I'm a&nbsp;
                         <span className="txt-rotate" 
                               data-period={2000} 
-                              data-rotate='[ "Hacker.", "Coder.", "Maker.", "Leader." ]' />
+                              data-rotate='[ "Developer.", "Hacker.", "Maker.", "Captain." ]' />
                       </Slider>
                     </Text>
                 </Col>
