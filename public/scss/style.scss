@@ -382,81 +382,7 @@ h1, h2, h3, h4, h5,
 
 
 //BUTTON
-.btn {
-	cursor: pointer;
-	@include border-radius(40px);
-	// box-shadow: none!important;
-	-webkit-box-shadow: 0px 24px 36px -11px rgba(0,0,0,0.09);
-	-moz-box-shadow: 0px 24px 36px -11px rgba(0,0,0,0.09);
-	box-shadow: 0px 24px 36px -11px rgba(0,0,0,0.09);
-	font-size: 12px;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-	font-weight: 600;
-	&:hover, &:active, &:focus {
-		outline: none;
-	}
-	&.btn-primary {
-		background: $primary;
-		border: 1px solid $primary !important;
-		color: $white !important;
-		&:hover {
-			border: 1px solid $primary !important;
-			background: $primary !important;
-			color :$black !important;
-		}
-		&.btn-outline-primary {
-			border: 2px solid $primary !important;
-			background: transparent !important;
-			color :$primary !important;
-			&:hover {
-				border: 2px solid transparent !important;
-				background: $primary !important;
-				color :$white !important;
-			}
-		}
-	}
-	&.btn-secondary {
-		background: $secondary !important;
-		border: 1px solid $secondary !important;
-		color: $white !important;
-		&:hover {
-			border: 1px solid $secondary !important;
-			background: transparent !important;
-			color :$secondary !important;
-		}
-		&.btn-outline-primary {
-			border: 1px solid $secondary;
-			background: transparent;
-			color :$secondary;
-			&:hover {
-				border: 1px solid transparent;
-				background: $secondary;
-				color :$white;
-			}
-		}
-	}
-	&.btn-white {
-		background: $white !important;
-		border: 1px solid $white !important;
-		color: $black !important;
-		&:hover {
-			border: 1px solid $black;
-			background: $white !important;
-			color :$white;
-		}
-		&.btn-outline-white {
-			border: 1px solid rgba(255,255,255,.5) !important;
-			background: transparent !important;
-			color :$white !important;
-			&:hover {
-				border: 1px solid transparent;
-				background: $primary;
-				color :$white;
-			}
-		}
-	}
-}
+
 
 
 //FTCO ABOUT
@@ -657,32 +583,7 @@ h1, h2, h3, h4, h5,
 }
 
 // HIRE ME
-.ftco-hireme{
-	background: $primary;
-	z-index: 0;
-	position: relative;
-	.overlay{
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		content: '';
-		background: $primary;
-		opacity: .7;
-	}
-	h2{
-		color: $white;
-		font-size: 40px;
-		font-weight: 900;
-		span{
-			color: $secondary;
-		}
-	}
-	p{
-		color: rgba(255,255,255,.9);
-	}
-}
+
 
 
 //PROJECT

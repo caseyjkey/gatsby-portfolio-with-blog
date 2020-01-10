@@ -6,6 +6,7 @@ import About from './components/About/About'
 import Resume from './components/Resume/Resume'
 import Services from './components/Services'
 import { Projects } from './components/Projects'
+import HireMe from './components/Hire'
 import { ThemeProvider } from 'styled-components'
 import { theme, Body } from './components/style.js'
 import { initPage } from './components/main'
@@ -30,6 +31,7 @@ class App extends Component {
 					<Resume></Resume>
 					<Services></Services>
 					<Projects></Projects>
+					<HireMe status="available"></HireMe>
 				</Body>
 			</ThemeProvider>
     );

@@ -5,7 +5,7 @@ import { theme } from '../style.js'
 import { ProjectWrapper } from './style.js'
 
 // Using a functional component because we don't use state, constructor, or lifecycle hooks
-export default function Project({children, title, subtitle, image, icons, link}) {
+export default function Project({children, title, subtitle, image, icons, link, date}) {
 	const [modal, setModal] = useState(false);
 
 	const toggleModal = () => setModal(!modal);
@@ -37,6 +37,7 @@ export default function Project({children, title, subtitle, image, icons, link})
           {children} 
         </ModalBody>
         <ModalFooter>
+          <div className="date mr-auto small">{date}</div>
           {link && <Button color="primary" href={link} target={"_blank"}>View project</Button>}
         </ModalFooter>
       </Modal>

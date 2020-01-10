@@ -30,6 +30,7 @@ export const Projects = (props) => {
 										 title={"Portfolio Website"}
 										 subtitle={"Web Development"}
 										 icons={[FaReact, FaNpm, FaGit, FaGithub, FaSass]}
+										 date="January 2020 - Present"
 						>
 							For this year's portfolio, I focused on creating a website for acquiring freelance work and project exposure.
 							Compared to previous portfolios, this application is a single page with a focus on easily updating and adding content.
@@ -46,6 +47,7 @@ export const Projects = (props) => {
 										 title={"Programming Hat"}
 										 subtitle={"IoT Development"}
 										 icons={[FaRaspberryPi, FaGit, FaGithub, FaPython, FaMicrochip]}
+										 date={"August 2019 - December 2019"}
 						>
 							The programming hat is a motorized propeller hat triggered by Github contributions. 
 							As a team of three students, we built the hat to study the effect of positive reinforcement on Github contributions.
@@ -66,6 +68,7 @@ export const Projects = (props) => {
 										 title={"Trip Planner"}
 										 subtitle={"Software Engineering"}
 										 icons={[FaReact, FaNpm, FaGit, FaGithub, FaJava, FaSlack]}
+										 date={"August 2019 - December 2019"}
 						>
 							As a team of four students, we developed of a full-stack web application like Google Maps using agile development practices.
 							<br /><br />
@@ -89,6 +92,7 @@ export const Projects = (props) => {
 										 title={"Live Sentiment Analysis"}
 										 subtitle={"Oracle Cloud Internship"}
 										 icons={[FaPython, FaDatabase, FaServer, IoMdAnalytics, FaTwitter, FaNewspaper, FaApple]}
+										 date={"June 2019 - August 2019"}
 						>
 							My team developed real-time business inteligence dashboards during our summer 2019 internship at Oracle in Reston, VA.
 							<br /><br />
@@ -111,6 +115,7 @@ export const Projects = (props) => {
 										 icons={[FaWordpress, FaPhp, FaPython, FaGamepad]}
 										 title={"Python Curriculum & Blog"}
 										 subtitle={"Curriculum Development"}
+										 date={"May 2018 - July 2018"}
 						>
 							In May of 2017 I was hired to be a student instructor for the Northrop Grumman STEM Camp.
 							To teach high school students with no programming experience, I developed a curriculum and hosted it as a blog.<br /><br />
@@ -137,6 +142,7 @@ export const Projects = (props) => {
 										 icons={[FaReact, FaEthereum, DiFirebase, DiHeroku, FaBootstrap, FaGithub]}
 										 title={"Blockchain & Music Billboard"}
 										 subtitle={"WyoHackathon 2018"}
+										 date={"September 2018"}
 						>
 								For the 2018 WyoHackathon, I wanted to extend EtherRadio.
 								Motivated to recognize musicians for their work and spearhead SingularDTV's (now Breaker) challenge,
