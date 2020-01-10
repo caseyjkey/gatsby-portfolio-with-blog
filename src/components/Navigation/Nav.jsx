@@ -1,23 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import breakpoint from 'styled-components-breakpoint'
-import { Container } from 'reactstrap'
+import { Container, NavbarToggler, Collapse } from 'reactstrap'
 import { theme } from '../style.js'
 import { Link as ScrollLink } from 'react-scroll'
 
 export function Nav({children}) {
+  const [collapsed, setCollapsed] = useState(true);
+  const toggleNavbar = () => setCollapsed(!collapsed);
+
   return (
     <Navi  className="ftco-navbar-light navbar navbar-expand-lg navbar-dark ftco_navbar site-navbar-target" id="ftco-navbar">
       <Container>
         <a className="navbar-brand" href="index.html"><span>C</span>asey Key</a>
-        <button className="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <NavbarToggler onClick={toggleNavbar} className="js-fh5co-nav-toggle fh5co-nav-toggle" aria-label="Toggle navigation">
           <span className="oi oi-menu" /> Menu
-        </button>
-        <div className="collapse navbar-collapse" id="ftco-nav">
+        </NavbarToggler>
+        <Collapse isOpen={!collapsed} className="navbar-collapse" id="ftco-nav">
           <ul className="navbar-nav nav ml-auto">
             {children}
           </ul>
-        </div>
+        </Collapse>
       </Container>
     </Navi>
   );
@@ -26,7 +29,7 @@ export function Nav({children}) {
 export function Link({ to, children, offset}) {
   return (
       <li className="nav-item">
-        <ScrollLink to={to} activeClass="active" spy="true" smooth="true" offset={offset} className="nav-link">
+        <ScrollLink to={to} activeClass="active" spy={true} smooth="true" offset={offset} className="nav-link">
           <span>{children}</span>
         </ScrollLink>
       </li>
@@ -288,28 +291,6 @@ const Navi = styled.nav`
         padding-bottom: 1rem;
         font-size: 24px;
       }
-    }
-  }
-
-  .navbar-brand {
-    font-weight: 900;
-    font-size: 26px;
-    position: relative;
-    z-index: 0;
-    &:after{
-      position: absolute;
-      top: 50%;
-      left: -12px;
-      width: 40px;
-      height: 40px;
-      content: '';
-      background: ${(props) => props.theme.primaryColor};
-      z-index: -1;
-      transform: translateY(-50%);
-      @include border-radius(50%);
-    }
-    span{
-      color: ${(props) => props.theme.white};
     }
   }
 `;
