@@ -16,7 +16,7 @@ export const Projects = (props) => {
 	const toggleModal = () => setModal(!modal);
 
 	return (
-		<ProjectSection>
+		<ProjectSection name="Projects">
 			<Container fluid={true} className="">
 				<Row noGutters className="justify-content-center pb-5">
 					<Col md={12} className="heading-section text-center ">

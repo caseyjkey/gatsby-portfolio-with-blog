@@ -11,7 +11,15 @@ export const theme = {
   darken: "#232931",
 
   primaryColor: "#3e64ff",
-  secondaryColor: "#a0f669",
+	secondaryColor: "#a0f669",
+	
+	breakpoints: { 
+			xs: 0,
+			sm: 576,
+			md: 768,
+			lg: 992,
+			xl: 1200
+	}
 };
 
 export const Body = styled.body`

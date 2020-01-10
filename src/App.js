@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Navigation from './components/Navigation'
-import Introduction from './components/Introduction/Introduction'
-import About from './components/About/About'
+import Introduction from './components/Introduction'
+import About from './components/About'
 import Resume from './components/Resume/Resume'
 import Services from './components/Services'
 import { Projects } from './components/Projects'

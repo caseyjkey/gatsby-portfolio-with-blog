@@ -25,7 +25,8 @@
     "react-visibility-sensor": "^5.1.1",
     "react-waypoint": "^9.0.2",
     "reactstrap": "^8.2.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "styled-components-breakpoint": "^3.0.0-preview.20"
   },
   "scripts": {
     "start": "react-scripts start",
