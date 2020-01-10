@@ -13,21 +13,22 @@ export default function HireMe({status}) {
 	const makeVisible = () => setVisible(true);
 
   return (
+
+    <Animated animationIn={"fadeInUp"} isVisible={visible}>
     <HireMeWrapper className="ftco-hireme" style={{backgroundImage: "url(images/bg_1.jpg)"}}>
     	<div className="overlay"></div>
 			<Container>
 				<Row className="row justify-content-center">
-          <Animated animationIn={"fadeInUp"} isVisible={visible}>
             <Col md={7} className="text-center">
               <h2>I'm <span>{status}</span> for freelancing</h2>
               {status && <p>I accept payment via Paypal, Venmo, wire transfer, and cryptocurrency.</p>}
               <Waypoint onEnter={makeVisible}></Waypoint>
-              {status && <p class="mb-0"><Button color="primary" className="py-3 px-5">Hire me</Button></p>}
+              {status && <p className="mb-0"><Button color="primary" className="py-3 px-5">Hire me</Button></p>}
             </Col>
-          </Animated>
 				</Row>
 			</Container>
 		</HireMeWrapper>
+    </Animated>
   );
 }
 

@@ -3,19 +3,24 @@ import { Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
 import { IconContext } from 'react-icons'
 import { theme } from '../style.js'
 import { ProjectWrapper } from './style.js'
+import { Animated } from 'react-animated-css'
+import { Waypoint } from 'react-waypoint'
 
 // Using a functional component because we don't use state, constructor, or lifecycle hooks
 export default function Project({children, title, subtitle, image, icons, link, date}) {
 	const [modal, setModal] = useState(false);
-
-	const toggleModal = () => setModal(!modal);
+  const toggleModal = () => setModal(!modal);
+  
+  const [visible, setVisible] = useState(false);
+	const makeVisible = () => setVisible(true);
 
   return (
-    <Fragment>
+    <Animated animationIn={"fadeInUp"} isVisible={false}>
       <ProjectWrapper image={image} onClick={toggleModal} className="shadow d-flex justify-content-center align-items-center">
         <div className="overlay" />
         <div className="text text-center p-4">
           <h3>{title}</h3>
+          <Waypoint onEnter={makeVisible}></Waypoint>
           <span>{subtitle}</span>
         </div>
       </ProjectWrapper>
@@ -41,6 +46,6 @@ export default function Project({children, title, subtitle, image, icons, link, 
           {link && <Button color="primary" href={link} target={"_blank"}>View project</Button>}
         </ModalFooter>
       </Modal>
-    </Fragment>
+    </Animated>
   );
 }
