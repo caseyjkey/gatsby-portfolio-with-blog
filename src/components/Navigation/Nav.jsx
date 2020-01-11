@@ -19,11 +19,9 @@ export function Nav({children}) {
           <Button scrolled={false}/>
         </NavbarToggler>
         <Collapse isOpen={!collapsed} className="navbar-collapse" id="ftco-nav">
-          <Animated animationIn="slideInDown" animationInDuration={45} animationOut={"slideOutUp"} animationOutDuration={45} isVisible={!collapsed}>
             <ul className="navbar-nav nav ml-auto">
               {children}
             </ul>
-          </Animated>
         </Collapse>
       </Container>
     </Navi>

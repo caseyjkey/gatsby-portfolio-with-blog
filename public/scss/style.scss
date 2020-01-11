@@ -1113,6 +1113,9 @@ textarea.form-control {
 	.img{
 		width: 100%;
 		background-position: top center;
+		@include media-breakpoint-down(md){
+			height: 500px;
+		}
 	}
 	.contact-info{
 		p{

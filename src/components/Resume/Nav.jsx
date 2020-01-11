@@ -38,6 +38,10 @@ const Navi = styled.nav`
   position: sticky;
   margin: 0;
   padding-bottom: 50px;
+  @media (max-width: 767.98px) {
+    display: none;
+    padding: 0;
+  }
   ul {
   	margin: 0;
   	padding: 0;
@@ -66,9 +70,6 @@ const Navi = styled.nav`
 			}
     }
     
-    @media (max-width: 767.98px) {
-      display: none;
-      padding: 0 0 0 0;
-    }
+    
   }
   `;

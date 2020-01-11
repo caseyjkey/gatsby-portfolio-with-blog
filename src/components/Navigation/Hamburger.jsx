@@ -4,16 +4,26 @@ import styled from 'styled-components'
 export default function Button(props) {
   const [open, setOpen] = useState(false);
   const toggleButton = () => setOpen(!open);
+
   const [scrolled, setScrolled] = useState( props.scrolled );
   useEffect(() => {
-    setScrolled(props.scrolled);
-  }, [scrolled]);
-  
+    setScrolled(props.scrolled); // update state
+  }, [props.scrolled]); // with the value that changes here
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      (window.pageYOffset > 150)
+        ? setScrolled(true)
+        : setScrolled(false);
+    })
+  }, []);
+
+    
   return (
     <HamburgerButton onClick={toggleButton} className={open && "open"} id="hamburger" scrolled={scrolled}>
-      <p>{props.scrolled}</p>
+      {scrolled}
       <div className={open && "open"}>
-       <span></span>
+       <span className={scrolled && "scrolled"}></span>
        <span></span>
        <span></span>
       </div>
@@ -46,7 +56,7 @@ const HamburgerButton = styled.div`
     position: absolute;
     height: 4px;
     width: 100%;
-    background: ${props => !props.scrolled || props.scrolled === false ? props.theme.white : props.theme.black};
+    background: ${(props) => props.theme[props.scrolled ? 'black' : 'white']};
     border-radius: 3px;
     opacity: 1;
     left: 0;
