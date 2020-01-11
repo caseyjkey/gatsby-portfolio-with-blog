@@ -10627,11 +10627,6 @@ textarea.form-control {
   width: 100%;
   background-position: top center;
 }
-@media (max-width: 991.98px) {
-  .contact-section .img {
-    height: 500px;
-  }
-}
 .contact-section .contact-info p a {
   color: #3e64ff;
 }
