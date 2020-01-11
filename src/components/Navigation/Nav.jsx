@@ -4,6 +4,8 @@ import breakpoint from 'styled-components-breakpoint'
 import { Container, NavbarToggler, Collapse } from 'reactstrap'
 import { theme } from '../style.js'
 import { Link as ScrollLink } from 'react-scroll'
+import Button from './Hamburger'
+import { Animated } from 'react-animated-css'
 
 export function Nav({children}) {
   const [collapsed, setCollapsed] = useState(true);
@@ -14,12 +16,14 @@ export function Nav({children}) {
       <Container>
         <a className="navbar-brand" href="index.html"><span>C</span>asey Key</a>
         <NavbarToggler onClick={toggleNavbar} className="js-fh5co-nav-toggle fh5co-nav-toggle" aria-label="Toggle navigation">
-          <span className="oi oi-menu" /> Menu
+          <Button scrolled={false}/>
         </NavbarToggler>
         <Collapse isOpen={!collapsed} className="navbar-collapse" id="ftco-nav">
-          <ul className="navbar-nav nav ml-auto">
-            {children}
-          </ul>
+          <Animated animationIn="slideInDown" animationInDuration={45} animationOut={"slideOutUp"} animationOutDuration={45} isVisible={!collapsed}>
+            <ul className="navbar-nav nav ml-auto">
+              {children}
+            </ul>
+          </Animated>
         </Collapse>
       </Container>
     </Navi>

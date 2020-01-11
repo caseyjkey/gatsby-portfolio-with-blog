@@ -56,16 +56,19 @@ var scrollWindow = function() {
 		var $w = $(this),
 				st = $w.scrollTop(),
 				navbar = $('.ftco_navbar'),
+				hamburger = $('#hamburger'),
 				sd = $('.js-scroll-wrap');
 
 		if (st > 150) {
 			if ( !navbar.hasClass('scrolled') ) {
-				navbar.addClass('scrolled');	
+				navbar.addClass('scrolled');
+				hamburger.attr('scrolled', true);	
 			}
 		} 
 		if (st < 150) {
 			if ( navbar.hasClass('scrolled') ) {
 				navbar.removeClass('scrolled sleep');
+				hamburger.attr('scrolled', false);
 			}
 		} 
 		if ( st > 350 ) {

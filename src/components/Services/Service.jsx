@@ -3,6 +3,7 @@ import { Button } from 'reactstrap'
 import { ServiceContainer } from './style'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
+import { scroller } from 'react-scroll'
 
 export default class Service extends Component {
   constructor(props) {
@@ -17,7 +18,12 @@ export default class Service extends Component {
   makeVisible() {
     this.setState({visible: true});
   }
+
+  
   render() {
+    let Scroll = require('react-scroll');
+    let scroller = Scroll.scroller;
+    
     let visible = this.state.visible;
     let Icon = this.props.icon;
     let service = this.props.service;
@@ -34,7 +40,8 @@ export default class Service extends Component {
             <h3 className="mb-5">{service}</h3>
             <p>{description}</p>
           </div>
-          <Button color="primary" href={link}>{button || "More info"}</Button>
+          {link && <Button color="primary" href={link} target="_blank">{button || "More info"}</Button>}
+          {!link && <Button color="primary" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>{button || "Contact me"}</Button>}
         </ServiceContainer>
       </Animated>
     );

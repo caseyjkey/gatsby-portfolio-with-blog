@@ -78,8 +78,6 @@ const FallDown = styled.div`
   }
 `;
 
-
-
 const Mouse = styled.div`
   position: absolute;
   left: 0;
@@ -89,23 +87,22 @@ const Mouse = styled.div`
 `;
 
 
+export default function FallingArrow(props) {
+  let Scroll = require('react-scroll');
+  let scroller = Scroll.scroller;
 
-
-
-export default class FallingArrow extends Component  {
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <Mouse>
-          <Container>
-            <FallDown>
-              <IoMdArrowRoundDown color={theme.primaryColor}
+  return (
+    <ThemeProvider theme={theme}>
+      <Mouse>
+        <Container>
+          <FallDown>
+            <IoMdArrowRoundDown color={theme.primaryColor}
                                 fontSize="25px" 
-                                onClick={console.log(theme.primaryColor)}/>
-            </FallDown>
-          </Container>
-        </Mouse>
-      </ThemeProvider>
-    );
-  }
+                                onClick={() => scroller.scrollTo('Resume', {smooth: true})}
+            />
+          </FallDown>
+        </Container>
+      </Mouse>
+    </ThemeProvider>
+  );
 }

@@ -7,6 +7,7 @@ import Resume from './components/Resume/Resume'
 import Services from './components/Services'
 import { Projects } from './components/Projects'
 import HireMe from './components/Hire'
+import Contact from './components/Contact'
 import { ThemeProvider } from 'styled-components'
 import { theme, Body } from './components/style.js'
 import { initPage } from './components/main'
@@ -32,6 +33,7 @@ class App extends Component {
 					<Services></Services>
 					<Projects></Projects>
 					<HireMe status="available"></HireMe>
+					<Contact></Contact>
 				</Body>
 			</ThemeProvider>
     );

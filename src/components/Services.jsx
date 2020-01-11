@@ -29,7 +29,6 @@ export default function Services(props) {
           <Col md={4} className="text-center d-flex">
             <Service icon={MdWeb}
                       service="Web Development"
-                      link="#contact"
                       button="Contact me"
             >
               Full-stack web development from design to implementation.
@@ -38,7 +37,6 @@ export default function Services(props) {
           <Col md={4} className="text-center d-flex">
             <Service icon={MdAndroid}
                       service="App Development"
-                      link="#contact"
                       button="Contact me"
             >
               Excited to turn your idea into a well-crafted Android app. 

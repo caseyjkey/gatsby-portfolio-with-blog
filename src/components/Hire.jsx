@@ -9,11 +9,12 @@ import { Waypoint } from 'react-waypoint'
 
 export default function HireMe({status}) {
   const [visible, setVisible] = useState(false);
-
-	const makeVisible = () => setVisible(true);
+  const makeVisible = () => setVisible(true);
+  
+  var Scroll = require('react-scroll');
+  var scroller = Scroll.scroller;
 
   return (
-
     <Animated animationIn={"fadeInUp"} isVisible={visible}>
     <HireMeWrapper className="ftco-hireme" style={{backgroundImage: "url(images/bg_1.jpg)"}}>
     	<div className="overlay"></div>
@@ -23,7 +24,7 @@ export default function HireMe({status}) {
               <h2>I'm <span>{status}</span> for freelancing</h2>
               {status && <p>I accept payment via Paypal, Venmo, wire transfer, and cryptocurrency.</p>}
               <Waypoint onEnter={makeVisible}></Waypoint>
-              {status && <p className="mb-0"><Button color="primary" className="py-3 px-5">Hire me</Button></p>}
+              {status && <p className="mb-0"><Button color="primary" className="py-3 px-5" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>Hire me</Button></p>}
             </Col>
 				</Row>
 			</Container>

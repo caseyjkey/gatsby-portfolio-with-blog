@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
-import { theme, Heading } from './style.js'
+import { Heading } from './style.js'
 import { AboutSection, AboutImage, Counter, Description } from './About/style.js'
 import Headshot from "./About/images/about.png"
 import { Waypoint } from  'react-waypoint'
@@ -44,10 +44,16 @@ export default class About extends Component {
                     <Heading className="mb-4">About Me</Heading>
                     <Waypoint onEnter={() => this.onEnter("info")}></Waypoint>
 
-                    <Description>The potential effect of technology on society thrills me!
-                      I hope my hard work studying computer science can allow me to enhance people's lives through teaching or apps for education, finance, or entertainment. 
-                      
-                      When I'm not coding, I enjoy skateboarding, sports, metalsmithing, and building sound systems or other electronics. I'm happy to help anyone learn.</Description>
+                    <Description>
+                      The potential effect of technology on society thrills me!
+                      My dream is to become a tech entrepreneur. 
+                      I am confident my rigorous study of Computer Science will help me enhance people's lives.
+                      My focus will be in cyberseurity, teaching, and apps for education, finance, or music. 
+                      After starting successful businesses, I want to give back by providing jobs, scholarships, and education with a focus on at-risk under-represented youth.
+                      <br /><br />
+                      When I'm not coding, I enjoy skateboarding, sports, metalsmithing, and building sound systems or other electronics. 
+                      I'm happy to help anyone learn more about technology.
+                    </Description>
                     <ul className="about-info mt-4 px-md-0 px-2">
                       <li className="d-flex"><span>Name:</span> <span>Casey Key</span></li>
                       <li className="d-flex"><span>Location:</span> <span>Fort Collins, CO, USA</span></li>

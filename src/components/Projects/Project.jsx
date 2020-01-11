@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from 'react'
 import { Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
-import { IconContext } from 'react-icons'
 import { theme } from '../style.js'
 import { ProjectWrapper } from './style.js'
 import { Animated } from 'react-animated-css'
