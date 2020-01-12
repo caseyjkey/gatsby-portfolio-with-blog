@@ -66,7 +66,7 @@ export default function Contact(props) {
           <Row noGutters className="block-9">
             <Col md={6} className="order-md-last d-flex">
               <form onSubmit={submitForm} 
-                    action="http://formspree.io/casey.key@protonmail.com" 
+                    action="https://formspree.io/casey.key@protonmail.com" 
                     method="POST" 
                     className="bg-light p-4 p-md-5 contact-form"
               >
