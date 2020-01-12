@@ -18,6 +18,9 @@ export const Overlay = styled.div`
   opacity: .1;
   width: 50%;
   background: ${(props) => props.theme.primaryColor};
+  span.icon {
+    margin-right: 0.7em;
+  }
 `;
 
 export const Text = styled.div`

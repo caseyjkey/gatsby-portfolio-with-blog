@@ -22,7 +22,7 @@ export default function HireMe({status}) {
 				<Row className="row justify-content-center">
             <Col md={7} className="text-center">
               <h2>I'm <span>{status}</span> for freelancing</h2>
-              {status && <p>I accept payment via Paypal, Venmo, wire transfer, and cryptocurrency.</p>}
+              {status && <p>Let's get in contact! I can turn your concept into reality.</p>}
               <Waypoint onEnter={makeVisible}></Waypoint>
               {status && <p className="mb-0"><Button color="primary" className="py-3 px-5" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>Hire me</Button></p>}
             </Col>

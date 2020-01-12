@@ -66,8 +66,8 @@ import { MdWork } from 'react-icons/md'
                       subtitle={"Oracle"}
               >
                 <ul>
-                  <li>Built banking business intelligence dashboards for optimizing five revenue streams</li>
-                  <li>Analyzed Tweets and News outlets for live sentiment analysis using Python</li>
+                  <li>Built business intelligence dashboards for optimizing five revenue streams</li>
+                  <li>Analyzed Tweets and News outlets for live analysis using Python</li>
                   <li>Maximized application availability by automating deployment to Oracle Cloud</li>
                 </ul>
               </Entry>
@@ -78,7 +78,7 @@ import { MdWork } from 'react-icons/md'
                       subtitle={"Colorado State University"}
               >
                 <ul>
-                  <li>Lead over 100 students through learning fundamental Python programming concepts</li>
+                  <li>Lead over 100 students through the fundamentals of Python</li>
                   <li>Reviewed and revised curriculum for teaching Python to non-technical majors</li>
                 </ul>
               </Entry>
@@ -179,7 +179,7 @@ import { MdWork } from 'react-icons/md'
               >
                 <ul>
                   <li>Manage a budget of over $40,000</li>
-                  <li>Write budget proposals for facilitating club’s education, outreach, and professional development</li>
+                  <li>Write budget proposals for education, outreach, and professional development</li>
                 </ul>
               </Entry>
             </Page>

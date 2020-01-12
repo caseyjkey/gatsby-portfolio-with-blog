@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Button } from 'reactstrap'
+import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style.js'
 import { AboutSection, AboutImage, Counter, Description } from './About/style.js'
 import Headshot from "./About/images/about.png"
 import { Waypoint } from  'react-waypoint'
 import { Animated } from 'react-animated-css'
 import CountUp from 'react-countup'
+import { FiBookOpen, FiMusic } from 'react-icons/fi'
+import { GiBackpack } from 'react-icons/gi'
+import { FaLaptopCode } from 'react-icons/fa'
 
 export default class About extends Component {
   constructor(props) {
@@ -46,19 +49,20 @@ export default class About extends Component {
 
                     <Description>
                       The potential effect of technology on society thrills me!
-                      My dream is to become a tech entrepreneur. 
-                      I am confident my rigorous study of Computer Science will help me enhance people's lives.
-                      My focus will be in cyberseurity, teaching, and apps for education, finance, or music. 
-                      After starting successful businesses, I want to give back by providing jobs, scholarships, and education with a focus on at-risk under-represented youth.
+                      My dream is to travel the world as a tech entrepreneur. 
+                      My focus will be in cyberseurity, teaching, and apps for education, finance, and music. 
+                      After starting successful businesses, I want to give back by providing jobs, scholarships, 
+                      and education with a focus on at-risk youth.
                       <br /><br />
-                      When I'm not coding, I enjoy skateboarding, sports, metalsmithing, and building sound systems or other electronics. 
+                      When I'm not coding, I enjoy skateboarding, sports, car tuning, 
+                      and building sound systems. 
                       I'm happy to help anyone learn more about technology.
                     </Description>
                     <ul className="about-info mt-4 px-md-0 px-2">
-                      <li className="d-flex"><span>Name:</span> <span>Casey Key</span></li>
-                      <li className="d-flex"><span>Location:</span> <span>Fort Collins, CO, USA</span></li>
-                      <li className="d-flex"><span>Email:</span> <span>casey.key@protonmail.com</span></li>
-                      <li className="d-flex"><span>Phone: </span> <span>+‪1 (331) 222-7919‬</span></li>
+                      <li><GiBackpack /> <span>CS and ENTR @ CSU, FoCo</span></li>
+                      <li><FiBookOpen /> <span><i>Hacking: The Art of Exploitation</i></span></li>
+                      <li><FiMusic /> <span>"Good News" by Mac Miller</span></li>
+                      <li><FaLaptopCode /> <span>Building a blog with Gatsby</span></li>
                     </ul>
                   </Col>
                 </Animated>

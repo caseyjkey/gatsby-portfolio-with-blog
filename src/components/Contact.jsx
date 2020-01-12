@@ -10,9 +10,26 @@ import Headshot from './About/images/about.png'
 export default function Contact(props) {
   const [visible, setVisible] = useState(false);
   const makeVisible = () => setVisible(true);
-  
-  var Scroll = require('react-scroll');
-  var Element = Scroll.Element;
+
+  const [status, setStatus] = useState("");
+  const submitForm = (ev) => {
+    ev.preventDefault();
+    const form = ev.target;
+    const data = new FormData(form);
+    const xhr = new XMLHttpRequest();
+    xhr.open(form.method, form.action);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState !== XMLHttpRequest.DONE) return;
+      if (xhr.status === 200) {
+        form.reset();
+        setStatus("SUCCESS");
+      } else {
+        setStatus("ERROR" );
+      }
+    };
+    xhr.send(data);
+  }
 
   return (
     <ContactSection className="ftco-section contact-section ftco-no-pb" name="Contact" id="contact-section">
@@ -48,7 +65,11 @@ export default function Contact(props) {
           </Row>
           <Row noGutters className="block-9">
             <Col md={6} className="order-md-last d-flex">
-              <form action="http://formspree.io/casey.key@protonmail.com" method="POST" className="bg-light p-4 p-md-5 contact-form">
+              <form onSubmit={submitForm} 
+                    action="http://formspree.io/casey.key@protonmail.com" 
+                    method="POST" 
+                    className="bg-light p-4 p-md-5 contact-form"
+              >
                 <div className="form-group">
                   <input type="text" className="form-control" placeholder="Your Name" name="name" />
                 </div>
@@ -59,10 +80,16 @@ export default function Contact(props) {
                   <input type="text" className="form-control" placeholder="Subject" name="_subject"/>
                 </div>
                 <div className="form-group">
-                  <textarea name id cols={30} rows={7} className="form-control" placeholder="Message" name="message" defaultValue={""} />
+                  <textarea name id cols={30} rows={7} 
+                            className="form-control" 
+                            placeholder="Let's grab a coffee together!" 
+                            name="message" 
+                            defaultValue={""} 
+                  />
                 </div>
                 <div className="form-group">
-                  <input type="submit" defaultValue="Send Message" className="btn btn-primary py-3 px-5" />
+                  {status == "SUCCESS" ? <p>Thanks!</p> : <button className="btn btn-primary py-3 px-5">Submit</button>}
+                  {status == "ERROR" && <p>Oops! There was an error.</p>}
                 </div>
               </form>
             </Col>

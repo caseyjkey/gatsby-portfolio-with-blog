@@ -10,20 +10,17 @@ export const AboutSection = styled.section`
 
 	ul.about-info {
 		display: inline-block;
-		padding: 0;
 		margin: 0;
 		word-break: break-word;
 		li {
 			list-style: none;
 			margin-bottom: 10px;
-			span {
-				width: calc(100% - 130px);
-				&:first-child {
+			color: ${props => props.theme.black};
+			svg {
 					font-weight: 600;
-					color: ${(props) => props.theme.black};
-					width: 130px;
+					font-size: 25px;
+					margin-right: 0.7rem;
 				}
-			}
 		}	
 `;
 
@@ -32,6 +29,7 @@ export const Description = styled.p`
 		width: 350px;
 		padding-left: 0.5rem !important;
 	}
+	color: ${props => props.theme.black};
 `;
 
 export const AboutImage = styled.div`
