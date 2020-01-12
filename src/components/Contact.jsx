@@ -70,11 +70,15 @@ export default function Contact(props) {
                     method="POST" 
                     className="bg-light p-4 p-md-5 contact-form"
               >
-                
                 <div className="form-group">
-                  <input type="text" className="form-control" placeholder="Your Email" name="email" />
+                  <input type="text" className="form-control" placeholder="Your Name" name="name" />
                 </div>
-                
+                <div className="form-group">
+                  <input type="text" className="form-control" placeholder="Your Email" name="_replyto" />
+                </div>
+                <div className="form-group">
+                  <input type="text" className="form-control" placeholder="Subject" name="_subject"/>
+                </div>
                 <div className="form-group">
                   <textarea name id cols={30} rows={7} 
                             className="form-control" 
