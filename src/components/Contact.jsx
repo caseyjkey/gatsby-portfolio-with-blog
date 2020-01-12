@@ -74,7 +74,7 @@ export default function Contact(props) {
                   <input type="text" className="form-control" placeholder="Your Name" name="name" />
                 </div>
                 <div className="form-group">
-                  <input type="text" className="form-control" placeholder="Your Email" name="_replyto" />
+                  <input type="text" className="form-control" placeholder="Your Email" name="email" />
                 </div>
                 <div className="form-group">
                   <input type="text" className="form-control" placeholder="Subject" name="_subject"/>
