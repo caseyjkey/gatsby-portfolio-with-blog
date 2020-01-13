@@ -2,7 +2,8 @@
 import React, { useState } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import styled from 'styled-components'
-import { theme, Section, Image } from './style.js'
+import { Section, Image } from './style.js'
+import bg from '../images/bg_1.jpg'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
 
@@ -16,7 +17,7 @@ export default function HireMe({status}) {
 
   return (
     <Animated animationIn={"fadeInUp"} isVisible={visible}>
-    <HireMeWrapper className="ftco-hireme" style={{backgroundImage: "url(images/bg_1.jpg)"}}>
+    <HireMeWrapper className="ftco-hireme" style={{backgroundImage: "url(" + bg + ")"}}>
     	<div className="overlay"></div>
 			<Container>
 				<Row className="row justify-content-center">
