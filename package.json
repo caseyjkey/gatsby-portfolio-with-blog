@@ -10,6 +10,7 @@
     "aos": "^2.3.4",
     "bootstrap": "^4.4.1",
     "gatsby": "^2.18.21",
+    "gatsby-plugin-postcss": "^2.1.19",
     "gh-pages": "^2.2.0",
     "jquery": "^3.4.1",
     "polished": "^3.4.2",
