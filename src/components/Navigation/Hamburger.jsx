@@ -16,7 +16,7 @@ export default function Button(props) {
         ? setScrolled(true)
         : setScrolled(false);
     })
-  }, []);
+  });
 
     
   return (

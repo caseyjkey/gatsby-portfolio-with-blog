@@ -2,7 +2,8 @@
 import React, { useState } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import styled from 'styled-components'
-import { theme, Section, Image } from './style.js'
+import { Section, Image } from './style.js'
+import bg from '../images/bg_1.jpg'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
 
@@ -16,19 +17,19 @@ export default function HireMe({status}) {
 
   return (
     <Animated animationIn={"fadeInUp"} isVisible={visible}>
-    <HireMeWrapper className="ftco-hireme" style={{backgroundImage: "url(images/bg_1.jpg)"}}>
-    	<div className="overlay"></div>
-			<Container>
-				<Row className="row justify-content-center">
-            <Col md={7} className="text-center">
-              <h2>I'm <span>{status}</span> for freelancing</h2>
-              {status && <p>Let's get in contact! I can turn your concept into reality.</p>}
-              <Waypoint onEnter={makeVisible}></Waypoint>
-              {status && <p className="mb-0"><Button color="primary" className="py-3 px-5" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>Hire me</Button></p>}
-            </Col>
-				</Row>
-			</Container>
-		</HireMeWrapper>
+      <HireMeWrapper className="ftco-hireme" style={{backgroundImage: "url(" + bg + ")"}}>
+        <div className="overlay"></div>
+        <Container>
+          <Row className="row justify-content-center">
+              <Col md={7} className="text-center">
+                <h2>I'm <span>{status}</span> for freelancing</h2>
+                {status && <p>Let's get in contact! I can turn your concept into reality.</p>}
+                <Waypoint onEnter={makeVisible}></Waypoint>
+                {status && <p className="mb-0"><Button color="primary" className="py-3 px-5" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>Hire me</Button></p>}
+              </Col>
+          </Row>
+        </Container>
+      </HireMeWrapper>
     </Animated>
   );
 }

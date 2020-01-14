@@ -4,6 +4,13 @@ import { Container, Row, Col } from 'reactstrap'
 import { ProjectSection } from './Projects/style.js'
 import Project from './Projects/Project'
 
+import PortfolioPic from '../images/portfolio/spa-portfolio.png'
+import Hat from '../images/hat/hat.png'
+import TripCo from '../images/tripco/demo.png'
+import Oracle from '../images/oracle/slide_11.png'
+import PythonBlog from '../images/whatspython/homepage.png'
+import Billboard from '../images/billboard/app-home.png'
+
 import { FaReact, FaNpm, FaGit, FaSass,FaGithub, FaRaspberryPi, FaPython, 
 				 FaMicrochip, FaSlack, FaJava, FaDatabase, FaServer, FaTwitter, 
 				 FaNewspaper, FaApple, FaBootstrap, FaEthereum, FaWordpress, FaPhp, FaGamepad } from 'react-icons/fa'
@@ -11,9 +18,6 @@ import { DiFirebase, DiHeroku } from 'react-icons/di'
 import { IoMdAnalytics } from 'react-icons/io'
 
 export const Projects = (props) => {
-	const [modal, setModal] = useState(false);
-
-	const toggleModal = () => setModal(!modal);
 
 	return (
 		<ProjectSection name="Projects">
@@ -26,7 +30,7 @@ export const Projects = (props) => {
 				</Row>
 				<Row>
 					<Col md={4} className="pb-4">
-						<Project image={'images/portfolio/spa-portfolio.PNG'} 
+						<Project image={PortfolioPic} 
 										 title={"Portfolio Website"}
 										 subtitle={"Web Development"}
 										 icons={[FaReact, FaNpm, FaGit, FaGithub, FaSass]}
@@ -43,7 +47,7 @@ export const Projects = (props) => {
 						</Project>
 					</Col>
 					<Col md={4} className="pb-4">
-						<Project image={'images/hat/hat.png'}
+						<Project image={Hat}
 										 title={"Programming Hat"}
 										 subtitle={"IoT Development"}
 										 icons={[FaRaspberryPi, FaGit, FaGithub, FaPython, FaMicrochip]}
@@ -64,7 +68,7 @@ export const Projects = (props) => {
 						</Project>
 					</Col>
 					<Col md={4} className="pb-4">
-						<Project image={'images/tripco/Demo.PNG'} 
+						<Project image={TripCo} 
 										 title={"Trip Planner"}
 										 subtitle={"Software Engineering"}
 										 icons={[FaReact, FaNpm, FaGit, FaGithub, FaJava, FaSlack]}
@@ -88,7 +92,7 @@ export const Projects = (props) => {
 						</Project>
 					</Col>
 					<Col md={4} className="pb-4">
-						<Project image={'images/oracle/slide_11.PNG'} 
+						<Project image={Oracle} 
 										 title={"Live Sentiment Analysis"}
 										 subtitle={"Oracle Cloud Internship"}
 										 icons={[FaPython, FaDatabase, FaServer, IoMdAnalytics, FaTwitter, FaNewspaper, FaApple]}
@@ -110,7 +114,7 @@ export const Projects = (props) => {
 						</Project>
 					</Col>	
 					<Col md={4} className="pb-4">
-						<Project image={'images/whatspython/homepage.png'}
+						<Project image={PythonBlog}
 										 link={''}
 										 icons={[FaWordpress, FaPhp, FaPython, FaGamepad]}
 										 title={"Python Curriculum & Blog"}
@@ -137,7 +141,7 @@ export const Projects = (props) => {
 						</Project>
 					</Col>
 					<Col md={4} className="pb-4">
-						<Project image={'images/billboard/app-home.png'}
+						<Project image={Billboard}
 										 link={"https://etherradio.herokuapp.com/#!/landing"}
 										 icons={[FaReact, FaEthereum, DiFirebase, DiHeroku, FaBootstrap, FaGithub]}
 										 title={"Blockchain & Music Billboard"}
