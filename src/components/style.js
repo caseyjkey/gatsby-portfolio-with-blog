@@ -1,10 +1,10 @@
 // This file contains common components and the global theme
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import { lighten } from 'polished'
 
 
 export const theme = {
-  primaryFont: "'Poppins', Arial, sans-serif",
+  primaryFont: "'Poppins'",
 
   white: "white",
   black: "black",
@@ -22,8 +22,14 @@ export const theme = {
 	}
 };
 
-export const Body = styled.body`
-	font-family: ${theme.primaryFont};
+export const GlobalStyles = createGlobalStyle`
+	@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+	body {
+		font-family: ${theme.primaryFont}, sans-serif;
+	}
+`;
+
+export const Body = styled.div`
 	background: ${theme.white};
 	font-size: 16px;
 	line-height: 1.8;

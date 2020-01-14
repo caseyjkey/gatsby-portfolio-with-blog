@@ -9702,7 +9702,7 @@ h1, h2, h3, h4, h5,
 }
 .ftco-navbar-light .navbar-brand {
   color: #000000;
-  padding-top: 0.7rem;
+  padding-top: 0.65rem;
   padding-bottom: 0.7rem;
 }
 .ftco-navbar-light .navbar-brand:hover, .ftco-navbar-light .navbar-brand:focus {
@@ -9908,9 +9908,8 @@ h1, h2, h3, h4, h5,
 }
 .ftco-navbar-light.scrolled .navbar-brand {
   color: #000000;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  font-size: 24px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.7rem;
 }
 
 .navbar-brand {
@@ -10220,80 +10219,6 @@ textarea.form-control {
 }
 .ftco-bg-dark {
   background: #3c312e;
-}
-
-.ftco-footer {
-  font-size: 16px;
-  background: #000000;
-  padding: 7em 0;
-  z-index: 0;
-}
-.ftco-footer .ftco-footer-logo {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-.ftco-footer .ftco-footer-widget h2 {
-  font-weight: normal;
-  color: #fff;
-  margin-bottom: 40px;
-  font-size: 22px;
-  font-weight: 600;
-}
-.ftco-footer .ftco-footer-widget ul li {
-  margin-bottom: 10px;
-}
-.ftco-footer .ftco-footer-widget ul li a {
-  color: rgba(255, 255, 255, 0.6);
-}
-.ftco-footer .ftco-footer-widget ul li a span {
-  color: rgba(255, 255, 255, 0.6);
-}
-.ftco-footer .ftco-footer-widget .btn-primary {
-  background: #fff !important;
-  border: 2px solid #fff !important;
-}
-.ftco-footer .ftco-footer-widget .btn-primary:hover {
-  background: #fff;
-  border: 2px solid #fff !important;
-}
-.ftco-footer p {
-  color: rgba(255, 255, 255, 0.7);
-}
-.ftco-footer a {
-  color: rgba(255, 255, 255, 0.7);
-}
-.ftco-footer a:hover {
-  color: #fff;
-}
-.ftco-footer .ftco-heading-2 {
-  font-size: 17px;
-  font-weight: 400;
-  color: #000000;
-}
-
-.ftco-footer-social li {
-  list-style: none;
-  margin: 0 10px 0 0;
-  display: inline-block;
-}
-.ftco-footer-social li a {
-  height: 50px;
-  width: 50px;
-  display: block;
-  float: left;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  position: relative;
-}
-.ftco-footer-social li a span {
-  position: absolute;
-  font-size: 26px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.ftco-footer-social li a:hover {
-  color: #fff;
 }
 
 .footer-small-nav > li {

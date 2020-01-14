@@ -1,8 +1,7 @@
 @import 'bootstrap/bootstrap';
 @import 'bootstrap/variables';
-@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 
-$font-primary: 'Poppins', Arial, sans-serif;
+$font-primary: 'Poppins';
 
 $white: #fff;
 $black: #000000;
@@ -78,7 +77,7 @@ h1, h2, h3, h4, h5,
 
 	.navbar-brand {
 		color: $black;
-		padding-top: .7rem;
+		padding-top: .65rem;
 		padding-bottom: .7rem;
 		&:hover, &:focus{
 			color: $black !important;
@@ -303,9 +302,8 @@ h1, h2, h3, h4, h5,
 
 		.navbar-brand {
 			color: $black;
-			padding-top: 1rem;
-			padding-bottom: 1rem;
-			font-size: 24px;
+			padding-top: 0.5rem;
+			padding-bottom: 0.7rem;
 		}
 	}
 }
@@ -667,88 +665,7 @@ textarea.form-control {
 
 
 
-.ftco-footer {
-	font-size: 16px;
-	background: $black;
-	padding: 7em 0;
-	z-index: 0;
 
-	.ftco-footer-logo {
-		text-transform: uppercase;
-		letter-spacing: .1em;
-	}
-	.ftco-footer-widget {
-		h2 {
-			font-weight: normal;
-			color: $white;
-			margin-bottom: 40px;
-			font-size: 22px;
-			font-weight: 600;
-		}
-		ul{
-			li{
-				margin-bottom: 10px;
-				a{
-					color: rgba(255,255,255,.6);
-					span{
-						// color: $white;
-						color: rgba(255,255,255,.6);
-					}
-				}
-			}
-		}
-		.btn-primary{
-			background: $white !important;
-			border: 2px solid $white !important;
-			&:hover{
-				background: $white;
-				border: 2px solid $white !important;
-			}
-		}
-	}
-	p {
-		color: rgba($white, .7);
-	}
-	a {
-		color: rgba($white, .7);
-		&:hover {
-			color: $white;
-		}
-	}
-	.ftco-heading-2 {
-		font-size: 17px;
-		font-weight: 400;
-		color: $black;
-	}
-}
-
-
-.ftco-footer-social {
-	li {
-		list-style: none;
-		margin: 0 10px 0 0;
-		display: inline-block;
-		a {
-			height: 50px;
-			width: 50px;
-			display: block;
-			float: left;
-			background: rgba($white, .1);
-			border-radius: 50%;
-			position: relative;
-			span {
-				position: absolute;
-				font-size: 26px;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-			}
-			&:hover {
-				color: $white;
-			}
-		}
-	}
-}
 .footer-small-nav {
 	> li {
 		display: inline-block;

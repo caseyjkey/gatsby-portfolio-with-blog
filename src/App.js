@@ -8,8 +8,9 @@ import Services from './components/Services'
 import { Projects } from './components/Projects'
 import HireMe from './components/Hire'
 import Contact from './components/Contact'
+import Footer from './components/Footer'
 import { ThemeProvider } from 'styled-components'
-import { theme, Body } from './components/style.js'
+import { theme, GlobalStyles, Body } from './components/style.js'
 import { initPage } from './components/main'
 import AOS from 'aos'
 
@@ -25,6 +26,7 @@ class App extends Component {
   render() {
     return (
 			<ThemeProvider theme={theme}>
+				<GlobalStyles />
 				<Body>
 					<Navigation></Navigation>
 					<Introduction></Introduction>
@@ -34,6 +36,7 @@ class App extends Component {
 					<Projects></Projects>
 					<HireMe status="available"></HireMe>
 					<Contact></Contact>
+					<Footer></Footer>
 				</Body>
 			</ThemeProvider>
     );
