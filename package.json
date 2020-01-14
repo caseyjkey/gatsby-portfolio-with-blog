@@ -33,7 +33,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "gatsby build --prefix-paths && gh-pages -d public",
+    "build": "gatsby build --prefix-paths && source -d public",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
