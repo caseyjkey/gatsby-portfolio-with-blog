@@ -7,7 +7,10 @@ module.exports = {
   },
   plugins: [
     //plugins go here
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     `gatsby-plugin-postcss`,
+    `gatsby-transformer-json`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
