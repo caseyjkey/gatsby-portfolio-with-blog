@@ -29,9 +29,9 @@ export default function Project({children, title, subtitle, image, icons, link, 
         </ModalHeader>
         <ModalBody>
           <ul className="list-unstyled d-flex flex-row flex-wrap my-1">
-            {icons.map((Icon) => { 
+            {icons.map((Icon, index) => { 
               return (
-                <li className="mr-3 mb-2" styled={{color: theme.black}}>
+                <li key={index} className="mr-3 mb-2" styled={{color: theme.black}}>
                   <Icon size={21} />
                 </li> 
               );

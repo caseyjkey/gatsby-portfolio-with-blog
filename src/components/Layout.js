@@ -1,4 +1,12 @@
-import React from "react"
-import "./Layout/style.css"
+import React from 'react'
+import './Layout/style.css'
+import { GlobalStyles } from './style.js'
 
-export default ({ children }) => <div>{children}</div>
+const Layout = ({ children }) => (
+  <div>
+    <GlobalStyles />
+    {children}
+  </div>
+);
+
+export default Layout;

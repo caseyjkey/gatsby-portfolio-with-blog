@@ -80,7 +80,7 @@ export default function Contact(props) {
                   <input type="text" className="form-control" placeholder="Subject" name="_subject"/>
                 </div>
                 <div className="form-group">
-                  <textarea name id cols={30} rows={7} 
+                  <textarea cols={30} rows={7} 
                             className="form-control" 
                             placeholder="Let's grab a coffee together!" 
                             name="message" 
