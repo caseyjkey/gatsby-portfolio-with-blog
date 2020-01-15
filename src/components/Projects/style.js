@@ -13,8 +13,10 @@ export const ProjectWrapper = styled.div`
   position: relative;
   z-index: 0;
   ${Image}
-  background-image: url(${props => props.image});
 
+	.gatsby-image-wrapper {
+		position: static;
+	}
 	.overlay{
 
 		background-color: ${props => props.theme.primaryColor};
@@ -25,7 +27,7 @@ export const ProjectWrapper = styled.div`
 		bottom: 0;
 		content: '';
 		opacity: 0;
-    z-index: -1;
+    z-index: 0;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     -webkit-transition: all 0.3s ease;

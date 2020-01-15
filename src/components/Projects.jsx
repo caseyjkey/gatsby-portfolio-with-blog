@@ -74,7 +74,7 @@ export const Projects = (props) => {
 				<Row>
 					{data.allProjectsJson.edges.map(project =>  (
 						<Col md={4} className="pb-4">
-							<Project image={<Img fluid={project.node.image.childImageSharp.fluid} />}
+							<Project image={project.node.image.childImageSharp.fluid}
 											 title={project.node.title}
 											 subtitle={project.node.subtitle}
 											 icons={loadIcons(project.node.icons)}

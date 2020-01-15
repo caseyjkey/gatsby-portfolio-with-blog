@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import Img from 'gatsby-image'
 import { Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
 import { theme } from '../style.js'
 import { ProjectWrapper } from './style.js'
@@ -16,7 +17,7 @@ export default function Project({children, title, subtitle, image, icons, link, 
   return (
     <Animated animationIn={"fadeInUp"} isVisible={visible}>
       <ProjectWrapper onClick={toggleModal} className="shadow d-flex justify-content-center align-items-center">
-        {image}
+        <Img fluid={image} style={{position: "static"}}/>
         <div className="overlay" />
         <div className="text text-center p-4">
           <h3>{title}</h3>
