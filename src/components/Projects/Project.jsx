@@ -15,7 +15,8 @@ export default function Project({children, title, subtitle, image, icons, link, 
 
   return (
     <Animated animationIn={"fadeInUp"} isVisible={visible}>
-      <ProjectWrapper image={image} onClick={toggleModal} className="shadow d-flex justify-content-center align-items-center">
+      <ProjectWrapper onClick={toggleModal} className="shadow d-flex justify-content-center align-items-center">
+        {image}
         <div className="overlay" />
         <div className="text text-center p-4">
           <h3>{title}</h3>

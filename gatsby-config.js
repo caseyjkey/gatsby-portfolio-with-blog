@@ -9,13 +9,13 @@ module.exports = {
     //plugins go here
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-postcss`,
-    `gatsby-transformer-json`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/src/data`,
       },
-    }
+    },
+    `gatsby-transformer-json`,
+    `gatsby-plugin-postcss`
   ],
 }

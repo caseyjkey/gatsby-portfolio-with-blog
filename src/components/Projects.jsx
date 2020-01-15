@@ -25,10 +25,12 @@ export const Projects = (props) => {
 							title
 							subtitle
 							description
-							icons
+							icons {
+								di
+								fa
+								io
+							}
 							date
-							imageFolder
-							videos
 							link
 						}
 					}
@@ -38,10 +40,11 @@ export const Projects = (props) => {
 	);
 
 	// Get components for icons specified in projects.json
-	function loadIcons(iconArray) {
-		Icons = [];
-		iconArray.map(type => (
-			iconArray[type].map( icon => {
+	function loadIcons(iconMap) {
+		let Icons = [];
+		for(var type of Object.keys(iconMap)) {
+			if(iconMap[type]) {
+			iconMap[type].map( icon => {
 				let iconPack = 'react-icons/';
 				if (type === "fa")
 					iconPack += "fa";
@@ -54,7 +57,8 @@ export const Projects = (props) => {
 				);
 				Icons.push(Icon);
 			})
-		));
+		}
+		}
 		return Icons;
 	}
 
