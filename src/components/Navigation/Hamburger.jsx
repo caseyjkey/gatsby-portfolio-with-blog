@@ -20,10 +20,10 @@ export default function Button(props) {
 
     
   return (
-    <HamburgerButton onClick={toggleButton} className={open && "open"} id="hamburger" scrolled={scrolled}>
+    <HamburgerButton onClick={toggleButton} className={open ? "open" : undefined} id="hamburger" scrolled={scrolled}>
       {scrolled}
-      <div className={open && "open"}>
-       <span className={scrolled && "scrolled"}></span>
+      <div>
+       <span className={scrolled ? "scrolled" : undefined}></span>
        <span></span>
        <span></span>
       </div>

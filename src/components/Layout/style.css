@@ -9702,7 +9702,7 @@ h1, h2, h3, h4, h5,
 }
 .ftco-navbar-light .navbar-brand {
   color: #000000;
-  padding-top: 0.65rem;
+  padding-top: 0.7rem;
   padding-bottom: 0.7rem;
 }
 .ftco-navbar-light .navbar-brand:hover, .ftco-navbar-light .navbar-brand:focus {
@@ -9908,7 +9908,7 @@ h1, h2, h3, h4, h5,
 }
 .ftco-navbar-light.scrolled .navbar-brand {
   color: #000000;
-  padding-top: 0.5rem;
+  padding-top: 0.7rem;
   padding-bottom: 0.7rem;
 }
 
@@ -9921,7 +9921,7 @@ h1, h2, h3, h4, h5,
 .navbar-brand:after {
   position: absolute;
   top: 50%;
-  left: -12px;
+  left: -11px;
   width: 40px;
   height: 40px;
   content: "";
@@ -10554,7 +10554,7 @@ textarea.form-control {
 }
 @media (max-width: 991.98px) {
   .contact-section .img {
-    height: 500px;
+    height: 558px;
   }
 }
 .contact-section .contact-info p a {
