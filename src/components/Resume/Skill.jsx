@@ -106,7 +106,14 @@ export class Skillbar extends Component {
           <h3>{skill}</h3>
           <Progress multi>
             {skillLevels.slice(0, skillLevel).map((value, index, arr) => {
-              return <Progress bar key={index} color={progressbarVariants[index]} value={25}>{index === arr.length - 1 && value}</Progress>
+              return (
+                <Progress bar 
+                          key={index} 
+                          color={progressbarVariants[index]} 
+                          value={25}>
+                  {index === arr.length - 1 && <div className="level">{value}</div>}
+                </Progress>
+              );
             })}
           </Progress>
         </ProgressbarContainer>
@@ -157,7 +164,9 @@ const ProgressbarContainer = styled.div`
     background: ${lighten(0.9, theme.black)};
     overflow: visible
   }
-
+  .level {
+    color: ${theme.white};
+  }
   .progress-bar {
     background: ${theme.primaryColor};
     box-shadow: none;
