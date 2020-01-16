@@ -16,7 +16,7 @@ export const Projects = (props) => {
 							id
 							image {
 								childImageSharp {
-									fluid(maxWidth: 605) {
+									fluid(maxWidth: 605, maxHeight: 350 ) {
 										...GatsbyImageSharpFluid
 									}
 								}

@@ -51,4 +51,27 @@ export default function Project({children, title, subtitle, image, icons, link, 
       </Modal>
     </Animated>
   );
+
+  const data = useStaticQuery(
+    graphql`
+      query {
+				allFile(filter: {
+					extension: {regex: "/(jpg)|(jpeg)|(png)|(gif)|(webm)|(avi)\\z/"}, 
+					sourceInstanceName: {eq: "projectImages"}}) 
+					{
+						edges {
+							node {
+								childImageSharp {
+									fluid(maxWidth: 466, quality: 100) {
+                    src
+									}
+                }
+                extension
+                relativeDirectory
+							}
+						}
+        }
+      }
+    `
+  );
 }
