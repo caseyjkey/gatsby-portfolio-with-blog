@@ -1,6 +1,5 @@
-import React, { lazy } from 'react'
+import React, { lazy, Components } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
-import Img from 'gatsby-image'
 import { Heading } from './style.js' // Global styled-components
 import { Container, Row, Col } from 'reactstrap'
 import { ProjectSection } from './Projects/style.js'
@@ -44,18 +43,22 @@ export const Projects = (props) => {
 		let Icons = [];
 		for(var type of Object.keys(iconMap)) {
 			if(iconMap[type]) {
-			iconMap[type].map( icon => {
-				let iconPack = 'react-icons/';
-				if (type === "fa")
-					iconPack += "fa";
-				else if (type === "io")
-					iconPack += "io";
-				else if (type === "di")
-					iconPack += "di";
-				const Icon = lazy(() => 
-					import(iconPack).then(module => ({ default: module.Components[icon]}))
-				);
-				Icons.push(Icon);
+			iconMap[type].map( Icon => {
+				if (type === "fa") {
+					Icons.push(lazy(() => 
+						import('react-icons/fa').then(module => ({ default: module[Icon] }))
+					));
+				}
+				else if (type === "io") {
+					Icons.push(lazy(() => 
+						import('react-icons/io').then(module => ({ default: module[Icon] }))
+					));
+				}
+				else if (type === "di") {
+					Icons.push(lazy(() => 
+						import('react-icons/di').then(module => ({ default: module[Icon] }))
+					));
+				}
 			})
 		}
 		}
@@ -80,7 +83,7 @@ export const Projects = (props) => {
 											 icons={loadIcons(project.node.icons)}
 											 date={project.node.date}
 							>
-								{project.node.description};
+								<div dangerouslySetInnerHTML={{ __html: project.node.description}} />
 							</Project>
 						</Col>
 					))}

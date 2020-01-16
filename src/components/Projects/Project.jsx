@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import Img from 'gatsby-image'
 import { Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
 import { theme } from '../style.js'
@@ -29,19 +29,21 @@ export default function Project({children, title, subtitle, image, icons, link, 
         <ModalHeader toggle={toggleModal}>
           {title}
         </ModalHeader>
-        <ModalBody>
-          <ul className="list-unstyled d-flex flex-row flex-wrap my-1">
-            {icons.map((Icon, index) => { 
-              return (
-                <li key={index} className="mr-3 mb-2" styled={{color: theme.black}}>
-                  <Icon size={21} />
-                </li> 
-              );
-            })}
-          </ul>
-          <h4 className="h6">{subtitle}</h4>
-          {children} 
-        </ModalBody>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ModalBody>
+            <ul className="list-unstyled d-flex flex-row flex-wrap my-1">
+              {icons.map((Icon, index) => { 
+                return (
+                  <li key={index} className="mr-3 mb-2" styled={{color: theme.black}}>
+                    <Icon size={21} />
+                  </li> 
+                );
+              })}
+            </ul>
+            <h4 className="h6">{subtitle}</h4>
+            {children} 
+          </ModalBody>
+        </Suspense>
         <ModalFooter>
           <div className="date mr-auto small">{date}</div>
           {link && <Button color="primary" href={link} target={"_blank"}>View project</Button>}
