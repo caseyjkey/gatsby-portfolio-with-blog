@@ -7,7 +7,8 @@
     "icons": {
       "fa": ["FaReact", "FaNpm", "FaGit", "FaGithub", "FaSass"]
     },
-    "date": "January 2020 - Present"
+    "date": "January 2020 - Present",
+    "project": "portfolio"
   },
   {
     "image": "../images/projects/hat/hat.png",
@@ -17,7 +18,8 @@
     "icons": {
       "fa": ["FaRaspberryPi", "FaGit", "FaGithub", "FaPython", "FaMicrochip"]
     },
-    "date": "August 2019 - December 2019"
+    "date": "August 2019 - December 2019",
+    "project": "hat"
   },
   {
     "image": "../images/projects/tripco/tripco.png",
@@ -27,7 +29,8 @@
     "icons": {
       "fa": ["FaReact", "FaNpm", "FaGit", "FaGithub", "FaJava", "FaSlack"]
     },
-    "date": "August 2019 - December 2019"
+    "date": "August 2019 - December 2019",
+    "project": "tripco"
   },
   {
     "image": "../images/projects/oracle/oracle.png",
@@ -38,7 +41,8 @@
       "fa": ["FaPython", "FaDatabase", "FaServer", "FaTwitter", "FaNewspaper", "FaApple"],
       "io": ["IoMdAnalytics"]
     },
-    "date": "June 2019 - August 2019"
+    "date": "June 2019 - August 2019",
+    "project": "oracle"
   },
   {
     "image": "../images/projects/billboard/billboard.png",
@@ -50,7 +54,8 @@
       "di": ["DiFirebase", "DiHeroku"]
     },
     "date": "September 2018",
-    "link": "https://etherradio.herokuapp.com/#!/landing"
+    "link": "https://etherradio.herokuapp.com/#!/landing",
+    "project": "billboard"
   },
   {
     "image": "../images/projects/whatspython/whatspython.png",
@@ -60,6 +65,7 @@
     "icons": {
       "fa": ["FaWordpress", "FaPhp", "FaPython", "FaGamepad"]
     },
-    "date": "May 2018 - July 2018"
+    "date": "May 2018 - July 2018",
+    "project": "whatspython"
   }
 ]

@@ -14,6 +14,12 @@ export const ProjectWrapper = styled.div`
   z-index: 0;
   ${Image}
 
+	ReactModal__Overlay {
+		ReactModal__Overlay--after-open {
+			z-index: 1100;
+		}
+	}
+
 	.gatsby-image-wrapper {
 		position: static;
 	}

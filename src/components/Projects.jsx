@@ -1,4 +1,4 @@
-import React, { lazy, Components } from 'react'
+import React, { lazy } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import { Heading } from './style.js' // Global styled-components
 import { Container, Row, Col } from 'reactstrap'
@@ -16,7 +16,7 @@ export const Projects = (props) => {
 							id
 							image {
 								childImageSharp {
-									fluid(maxWidth: 605) {
+									fluid(maxWidth: 605, maxHeight: 350 ) {
 										...GatsbyImageSharpFluid
 									}
 								}
@@ -31,6 +31,7 @@ export const Projects = (props) => {
 							}
 							date
 							link
+							project
 						}
 					}
 				}
@@ -82,6 +83,7 @@ export const Projects = (props) => {
 											 subtitle={project.node.subtitle}
 											 icons={loadIcons(project.node.icons)}
 											 date={project.node.date}
+											 project={project.node.project}
 							>
 								<div dangerouslySetInnerHTML={{ __html: project.node.description}} />
 							</Project>
