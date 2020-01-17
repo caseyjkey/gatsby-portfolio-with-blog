@@ -16,7 +16,7 @@ export default function Footer(props) {
           <Col md>
             <div className="ftco-footer-widget">
               <h2 className="ftco-heading-2">About</h2>
-              <p>Casey Key is a software engineer with a focus on finance, education, and entertainment.</p>
+              <p>Casey Key is a software engineer with a focus on finance, education, and security.</p>
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft">
                 <li>
                   <Social Icon={FaTwitter}
@@ -67,7 +67,7 @@ export default function Footer(props) {
           </Col>
           <Col md>
             <div className="ftco-footer-widget mb-4">
-              <h2 className="ftco-heading-2">Have a Questions?</h2>
+              <h2 className="ftco-heading-2">Questions?</h2>
               <div className="block-23 mb-3">
                 <ul>
                   <li><FaSign /><span className="text">Fort Collins, Colorado, USA</span></li>

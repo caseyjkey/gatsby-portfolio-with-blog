@@ -38,29 +38,6 @@ export default function Contact(props) {
             <Col md={7} className="heading-section text-center ftco-animate">
                 <h1 className="big big-2">Contact</h1>
                 <h2 className="mb-4">Contact Me</h2>
-                <p>Let's chat! I am open to meeting for coffee, phone calls, or a quick email.</p>
-            </Col>
-          </Row>
-          <Row className="contact-info mb-5">
-            <Col md={4} lg={4} className="text-center">
-              <Info type="Location"
-                    info="Fort Collins, CO"
-                    Icon={FaSign}
-              />              
-            </Col>
-            <Col md={4} lg={4} className="text-center">
-              <Info type="Contact Phone"
-                    info="+‪1 (331) 222-7919‬"
-                    link="tel:13312227919"
-                    Icon={FaPhone}
-              />
-            </Col>
-            <Col md={4} lg={4} className="text-center"> 
-              <Info type="Email"
-                    info="Email"
-                    link="mailto:casey.key@protonmail.com"
-                    Icon={MdEmail}
-              />
             </Col>
           </Row>
           <Row noGutters className="block-9">
