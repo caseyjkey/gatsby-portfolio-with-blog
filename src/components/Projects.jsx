@@ -72,7 +72,7 @@ export const Projects = (props) => {
 				<Row noGutters className="justify-content-center pb-5">
 					<Col md={12} className="heading-section text-center ">
 						<Heading className="mb-4">My Projects</Heading>
-						<p>I find the best way to learn is by practice. Here is the result of my work.</p>
+						<p>I find the best way to learn is by practice. Here are the results of my work.</p>
 					</Col>
 				</Row>
 				<Row>
