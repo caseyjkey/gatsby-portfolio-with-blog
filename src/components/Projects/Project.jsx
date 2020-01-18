@@ -3,13 +3,14 @@ import Img from 'gatsby-image'
 import { useStaticQuery, graphql } from 'gatsby'
 import { Modal, ModalHeader, ModalFooter, ModalBody, Button} from 'reactstrap'
 import { theme } from '../style.js'
-import { ProjectWrapper } from './style.js'
+import { ProjectWrapper, ReadMoreColor } from './style.js'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { Carousel } from 'react-responsive-carousel'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import ReactReadMoreReadLess from 'react-read-more-read-less'
 
 // Using a functional component because we don't use state, constructor, or lifecycle hooks
 export default function Project({children, title, subtitle, image, icons, link, date, project}) {
@@ -103,7 +104,17 @@ export default function Project({children, title, subtitle, image, icons, link, 
                   })}
                 </ul>
                 <h4 className="h6">{subtitle}</h4>
-                {children} 
+                <ReadMoreColor>
+                  <ReactReadMoreReadLess charLimit={200}
+                                        readMoreText={"Read More ▼"}
+                                        readLessText={"Read Less ▲"}
+                                        readMoreClassname="read-more-less--more"
+                                        readLessClassname="read-more-less--less"
+
+                  >
+                    {children.props.dangerouslySetInnerHTML.__html}
+                  </ReactReadMoreReadLess>
+                </ReadMoreColor>
                 {lightboxOpen && (
                   <Lightbox reactModalStyle={{overlay: {zIndex: 1100}}}
                     mainSrc={images[photoIndex]}

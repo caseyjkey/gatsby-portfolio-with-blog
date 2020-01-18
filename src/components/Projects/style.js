@@ -14,6 +14,10 @@ export const ProjectWrapper = styled.div`
   z-index: 0;
   ${Image}
 
+
+	
+
+	// Put lightbox on top of project modal
 	ReactModal__Overlay {
 		ReactModal__Overlay--after-open {
 			z-index: 1100;
@@ -24,7 +28,6 @@ export const ProjectWrapper = styled.div`
 		position: static;
 	}
 	.overlay{
-
 		background-color: ${props => props.theme.primaryColor};
 		position: absolute;
 		top: 0;
@@ -78,5 +81,11 @@ export const ProjectWrapper = styled.div`
 		.text{
 			opacity: 1;
 		}
+	}
+`;
+
+export const ReadMoreColor = styled.div`
+	.react-read-more-read-less {
+		color: ${props => props.theme.primaryColor};
 	}
 `;
