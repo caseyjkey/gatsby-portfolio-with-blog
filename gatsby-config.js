@@ -23,6 +23,7 @@ module.exports = {
       },
     }, 
     `gatsby-transformer-json`,
-    `gatsby-plugin-postcss`
+    `gatsby-plugin-postcss`,
+    `gatsby-plugin-netlify-cms`
   ],
 }
