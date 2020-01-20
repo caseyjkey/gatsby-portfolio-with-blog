@@ -2,7 +2,7 @@
   "start": "January 2020",
   "subtitle": "test subtitle",
   "title": "test title",
-  "project": "test",
+  "project": "test-dir",
   "icons": {
     "fa": [
       "FaPhp",
@@ -13,6 +13,6 @@
   "end": {
     "date": "January 2020"
   },
-  "image": "images/all_filtered.PNG",
+  "image": "images/projects-counter.PNG",
   "description": "This is the description."
 }
