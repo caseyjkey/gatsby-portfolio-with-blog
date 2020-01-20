@@ -13,6 +13,6 @@
   "end": {
     "date": "January 2020"
   },
-  "image": "{{slug}}/Physics Tutoring (1).JPG",
+  "image": "projects/{{name}}/Physics Tutoring (1).JPG",
   "description": "This is the description."
 }
