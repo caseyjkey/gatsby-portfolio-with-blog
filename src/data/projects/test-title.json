@@ -1,15 +1,18 @@
 {
-  "project": "test",
-  "image": "../../images/projects/hat/hat.png",
-  "date": "2020-01-19T21:47:06.739Z",
-  "title": "test title",
+  "start": "January 2020",
   "subtitle": "test subtitle",
+  "title": "test title",
+  "project": "test",
   "icons": {
     "fa": [
       "FaPhp",
       "FaPython"
     ]
   },
-  "description": "This is the description.",
-  "link": "google.com"
+  "link": "google.com",
+  "end": {
+    "date": "January 2020"
+  },
+  "image": "{{slug}}/Physics Tutoring (1).JPG",
+  "description": "This is the description."
 }
