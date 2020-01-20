@@ -22,6 +22,12 @@ module.exports = {
         name: 'projectImages'
       },
     }, 
+    {
+      resolve: `gatsby-plugin-netlify-cms-paths`,
+      options: {
+        cmsConfig: `/static/admin/config.yml`
+      }
+    },
     `gatsby-transformer-json`,
     `gatsby-plugin-postcss`,
     `gatsby-plugin-netlify-cms`
