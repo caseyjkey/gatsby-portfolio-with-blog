@@ -10,7 +10,7 @@ export const Projects = (props) => {
 	const data = useStaticQuery( 
 		graphql`
 			query {
-				allProjectsJson(sort: { order: DESC, fields: [date] }) {
+				allProjectsJson(sort: { order: ASC, fields: [start] }) {
 					edges {
 						node {
 							id
@@ -29,7 +29,11 @@ export const Projects = (props) => {
 								fa
 								io
 							}
-							date
+							start
+							end {
+								date
+								present
+							}
 							link
 							project
 						}
@@ -82,7 +86,7 @@ export const Projects = (props) => {
 											 title={project.node.title}
 											 subtitle={project.node.subtitle}
 											 icons={loadIcons(project.node.icons)}
-											 date={project.node.date}
+											 date={project.node.start + ' - ' + (project.node.end.present ? 'Present' : project.node.end.date)}
 											 project={project.node.project}
 							>
 								<div dangerouslySetInnerHTML={{ __html: project.node.description}} />

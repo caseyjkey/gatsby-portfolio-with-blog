@@ -6,6 +6,9 @@
   "icons": {
     "fa": ["FaWordpress", "FaPhp", "FaPython", "FaGamepad"]
   },
-  "date": "May 2018 - July 2018",
+  "start": "May 2018",
+  "end": {
+    "date": "July 2018"
+  },
   "project": "whatspython"
 }

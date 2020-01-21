@@ -6,6 +6,9 @@
   "icons": {
     "fa": ["FaReact", "FaNpm", "FaGit", "FaGithub", "FaSass"]
   },
-  "date": "January 2020 - Present",
+  "start": "January 2020",
+  "end": {
+    "present": true
+  },
   "project": "portfolio"
 }
