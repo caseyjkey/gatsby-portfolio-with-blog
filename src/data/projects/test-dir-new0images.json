@@ -1,0 +1,18 @@
+{
+  "start": "January 2020",
+  "subtitle": "test subtitle",
+  "title": "test title",
+  "project": "test-dir-new0images",
+  "icons": {
+    "fa": [
+      "FaPhp",
+      "FaPython"
+    ]
+  },
+  "link": "google.com",
+  "end": {
+    "date": "January 2020"
+  },
+  "image": "images/projects-counter.PNG",
+  "description": "This is the description."
+}

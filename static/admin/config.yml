@@ -11,8 +11,6 @@ collections:
     name: "projects" # Used in routes, e.g., /admin/collections/blog
     label_singular: 'Project'
     folder: "src/data/projects" # The path to the file where projects are defined
-    path: "{{slug}}/project"
-    slug: "{{project}}"
     media_folder: 'images' # Should save images in same directory as the project, to make referencing easier
     create: true
     extension: json
@@ -37,4 +35,4 @@ collections:
           - {label: "Devicons", name: "di", widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
           - {label: "Ionicons", name: "io", widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
       - {label: "Description", name: "description", widget: "markdown"}
-      - {label: "Link", name: "link", widget: "string"}
+      - {label: "Link", name: "link", widget: "string", required: false}
