@@ -4,6 +4,10 @@ backend:
   branch: source
   site_domain: quirky-bassi-7f760a.netlify.com
 
+media_library:
+  name: uploadcare
+  config:
+    publickey: 4ba0a13b1abc6d2ff0f4
 media_folder: "/src/images/"
 public_folder: "/src/images/"
 collections:
@@ -21,6 +25,11 @@ collections:
       - label: "Gallery Images"
         name: "images"
         widget: "image"
+        options:
+          media_library:
+            config:
+              multiple: true
+              previewStep: false
       - {label: "Start Date", name: "start", widget: "datetime", timeformat: false, dateFormat: "MMMM YYYY", format: "MMMM YYYY"}
       - label: "End Date"
         name: "end"
