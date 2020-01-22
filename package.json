@@ -21,6 +21,7 @@
     "gh-pages": "^2.2.0",
     "jquery": "^3.4.1",
     "netlify-cms-app": "^2.11.5",
+    "netlify-cms-media-library-uploadcare": "^0.5.5",
     "polished": "^3.4.2",
     "postcss": "^7.0.26",
     "prop-types": "^15.7.2",

@@ -2,7 +2,7 @@
 module.exports = {
   siteMetadata: {
     title: 'Casey Key',
-    description: 'Casey Key is a software engineer with a focus on education, finance, and entertainment.',
+    description: 'Casey Key is a software engineer with a focus on education, finance, and security.',
     author: 'Casey Key',
   },
   plugins: [
@@ -26,6 +26,12 @@ module.exports = {
       resolve: `gatsby-plugin-netlify-cms-paths`,
       options: {
         cmsConfig: `/static/admin/config.yml`
+      }
+    },
+    {
+      resolve: 'gatsby-plugin-netlify-cms',
+      options: {
+        modulePath: `${__dirname}/src/cms/cms.js`,
       }
     },
     `gatsby-transformer-json`,
