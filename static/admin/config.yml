@@ -22,8 +22,8 @@ collections:
       - {label: "Image", name: "image", widget: "image", allow_multiple: false}
       - label: "Gallery"
         name: "galleryImages"
+        label_singular: 'image'
         widget: "list"
-        allow_add: false
         fields:
         - {label: "Image", name: "image", widget: "image"}
       - {label: "Start Date", name: "start", widget: "datetime", timeformat: false, dateFormat: "MMMM YYYY", format: "MMMM YYYY"}
@@ -39,8 +39,8 @@ collections:
         name: "icons"
         widget: "object"
         fields:
-          - {label: "Font Awesome", name: "fa", widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
-          - {label: "Devicons", name: "di", widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
-          - {label: "Ionicons", name: "io", widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
+          - {label: "Font Awesome", name: "fa", label_singular: 'Font Awesome icon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
+          - {label: "Devicons", name: "di", label_singular: 'Devicon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
+          - {label: "Ionicons", name: "io", label_singular: 'Ionicon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
       - {label: "Description", name: "description", widget: "markdown"}
       - {label: "Link", name: "link", widget: "string", required: false}
