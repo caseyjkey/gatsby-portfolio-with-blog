@@ -49,7 +49,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "gatsby build --prefix-paths && gh-pages -b master --repo git+https://0c6a41a71c6b945b30915b294b5adda499a4efcd:x-oauth-basic@github.com/caseykey/caseykey.github.io.git -d public"
+    "deploy": "git add -A && git commit -m 'deploy to netlify' && git push origin source"
   },
   "eslintConfig": {
     "extends": "react-app"
