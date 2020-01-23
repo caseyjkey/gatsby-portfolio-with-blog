@@ -4,6 +4,9 @@ backend:
   branch: source
   site_domain: quirky-bassi-7f760a.netlify.com
 
+site_url: https://caseyjkey.com
+display_url: https://caseyjkey.com
+
 public_folder: "/src/images/"
 media_folder: "/src/images/"
 
@@ -14,7 +17,6 @@ collections:
     folder: "src/data/projects" # The path to the file where projects are defined
     media_folder: 'images' # Should save images in same directory as the project, to make referencing easier
     create: true
-    identifier_field: project
     extension: json
     format: json
     fields: # The fields for each document, usually in front matter
