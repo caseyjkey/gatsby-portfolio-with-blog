@@ -10,7 +10,7 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { Carousel } from 'react-responsive-carousel'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import ReactReadMoreReadLess from 'react-read-more-read-less'
+import ReactReadMoreReadLess from '@caseykey/react-read-more-read-less'
 
 // Using a functional component because we don't use state, constructor, or lifecycle hooks
 export default function Project({children, title, subtitle, image, galleryImages, icons, link, date}) {
