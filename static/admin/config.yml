@@ -14,6 +14,7 @@ collections:
     folder: "src/data/projects" # The path to the file where projects are defined
     media_folder: 'images' # Should save images in same directory as the project, to make referencing easier
     create: true
+    identifier_field: project
     extension: json
     format: json
     fields: # The fields for each document, usually in front matter

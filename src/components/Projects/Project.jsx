@@ -13,7 +13,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ReactReadMoreReadLess from 'react-read-more-read-less'
 
 // Using a functional component because we don't use state, constructor, or lifecycle hooks
-export default function Project({children, title, subtitle, image, galleryImages, icons, link, date, project}) {
+export default function Project({children, title, subtitle, image, galleryImages, icons, link, date}) {
     const [modal, setModal] = useState(false);
     const toggleModal = () => setModal(!modal);
 

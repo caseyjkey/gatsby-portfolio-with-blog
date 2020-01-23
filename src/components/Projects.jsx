@@ -106,7 +106,7 @@ export const Projects = (props) => {
 											 subtitle={project.node.subtitle}
 											 icons={loadIcons(project.node.icons)}
 											 date={project.node.start + ' - ' + (project.node.end.present ? 'Present' : project.node.end.date)}
-											 project={project.node.project}
+											 link={project.node.link}
 							>
 								<div dangerouslySetInnerHTML={{ __html: project.node.description}} />
 							</Project>
