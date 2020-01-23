@@ -22,6 +22,7 @@ collections:
       - label: "Gallery"
         name: "galleryImages"
         widget: "list"
+        allow_add: false
         fields:
         - {label: "Image", name: "image", widget: "image"}
       - {label: "Start Date", name: "start", widget: "datetime", timeformat: false, dateFormat: "MMMM YYYY", format: "MMMM YYYY"}
