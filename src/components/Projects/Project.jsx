@@ -13,49 +13,18 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ReactReadMoreReadLess from 'react-read-more-read-less'
 
 // Using a functional component because we don't use state, constructor, or lifecycle hooks
-export default function Project({children, title, subtitle, image, icons, link, date, project}) {
+export default function Project({children, title, subtitle, image, galleryImages, icons, link, date, project}) {
     const [modal, setModal] = useState(false);
     const toggleModal = () => setModal(!modal);
 
     const [visible, setVisible] = useState(false);
     const makeVisible = () => setVisible(true);
-    
-    const data = useStaticQuery(
-      graphql`
-        query {
-          allFile(filter: {
-            extension: {regex: "/(jpg)|(jpeg)|(png)|(gif)|(webm)|(avi)\\z/"}, 
-            sourceInstanceName: {eq: "projectImages"}}) 
-            {
-              edges {
-                node {
-                  childImageSharp {
-                    fluid(maxWidth: 466, quality: 100) {
-                      ...GatsbyImageSharpFluid
-                    }
-                  }
-                  extension
-                  relativeDirectory
-                  relativePath
-                  publicURL
-                }
-              }
-          }
-        }
-      `
-    );
-        
-    const images = Object.values(data.allFile.edges).reduce((result, image) => {
-      if(project === image.node.relativeDirectory)
-        result.push(image.node.publicURL);
-      return result;
-    }, []);
 
-    const carouselImages = Object.values(data.allFile.edges).reduce((result, image) => {
-      if(project == image.node.relativeDirectory) 
-        result.push((image.node.childImageSharp) ? <Img fluid={image.node.childImageSharp.fluid} /> : <img src={image.node.publicURL} />);
-      return result;
-    }, []);
+    let images = galleryImages.map(dict => dict.image.publicURL);
+    let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
+        result.push((image.childImageSharp) ? <Img fluid={image.childImageSharp.fluid} /> : <img src={image.publicURL} />);
+        return result;
+      }, []);
 
     const [photoIndex, setPhotoIndex] = useState(0);
     const [lightboxOpen, setLightbox] = useState(false);
@@ -82,6 +51,7 @@ export default function Project({children, title, subtitle, image, icons, link, 
               <ModalBody>
                 <Carousel dynamicHeight
                           infiniteLoop
+                          useKeyboardArrows
                           showThumbs={false}
                           onChange={(index, something) => {
                             setPhotoIndex(index);
@@ -90,8 +60,8 @@ export default function Project({children, title, subtitle, image, icons, link, 
                           selectedItem={photoIndex}
                           style={{paddingBottom: "16px"}}
                 >
-                  {carouselImages.map(image => {
-                    return <div>{image}}</div>
+                  {carouselImages.map((image, index) => {
+                    return <div key={index}>{image}</div>
                   })}
                 </Carousel>
                 <ul className="list-unstyled d-flex flex-row flex-wrap my-1 pt-4">
@@ -106,11 +76,10 @@ export default function Project({children, title, subtitle, image, icons, link, 
                 <h4 className="h6">{subtitle}</h4>
                 <ReadMoreColor>
                   <ReactReadMoreReadLess charLimit={200}
-                                        readMoreText={"Read More ▼"}
-                                        readLessText={"Read Less ▲"}
-                                        readMoreClassname="read-more-less--more"
-                                        readLessClassname="read-more-less--less"
-
+                                         readMoreText={"Read More ▼"}
+                                         readLessText={"Read Less ▲"}
+                                         readMoreClassname="read-more-less--more"
+                                         readLessClassname="read-more-less--less"
                   >
                     {children.props.dangerouslySetInnerHTML.__html}
                   </ReactReadMoreReadLess>

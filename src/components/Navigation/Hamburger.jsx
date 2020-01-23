@@ -6,9 +6,7 @@ export default function Button(props) {
   const toggleButton = () => setOpen(!open);
 
   const [scrolled, setScrolled] = useState( props.scrolled );
-  useEffect(() => {
-    setScrolled(props.scrolled); // update state
-  }, [props.scrolled]); // with the value that changes here
+ 
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -20,10 +18,9 @@ export default function Button(props) {
 
     
   return (
-    <HamburgerButton onClick={toggleButton} className={open ? "open" : undefined} id="hamburger" scrolled={scrolled}>
-      {scrolled}
-      <div>
-       <span className={scrolled ? "scrolled" : undefined}></span>
+    <HamburgerButton onClick={toggleButton} id="hamburger" scrolled={scrolled}>
+      <div className={open ? "open" : undefined}>
+       <span></span>
        <span></span>
        <span></span>
       </div>
@@ -51,6 +48,28 @@ const HamburgerButton = styled.div`
     transition: .5s ease-in-out;
     cursor: pointer;
 
+.open {
+    span:nth-child(1) {
+      top: 9px;
+      -webkit-transform: rotate(135deg);
+      -moz-transform: rotate(135deg);
+      -o-transform: rotate(135deg);
+      transform: rotate(135deg);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+      left: -30px;
+    }
+
+    span:nth-child(3) {
+      top: 9px;
+      -webkit-transform: rotate(-135deg);
+      -moz-transform: rotate(-135deg);
+      -o-transform: rotate(-135deg);
+      transform: rotate(-135deg);
+    }
+  }
  span {
     display: block;
     position: absolute;
@@ -82,26 +101,5 @@ const HamburgerButton = styled.div`
     top: 18px;
   }
 
-  .open {
-    span:nth-child(1) {
-      top: 9px;
-      -webkit-transform: rotate(135deg);
-      -moz-transform: rotate(135deg);
-      -o-transform: rotate(135deg);
-      transform: rotate(135deg);
-    }
-
-    span:nth-child(2) {
-      opacity: 0;
-      left: -30px;
-    }
-
-    span:nth-child(3) {
-      top: 9px;
-      -webkit-transform: rotate(-135deg);
-      -moz-transform: rotate(-135deg);
-      -o-transform: rotate(-135deg);
-      transform: rotate(-135deg);
-    }
-  }
+  
 `;

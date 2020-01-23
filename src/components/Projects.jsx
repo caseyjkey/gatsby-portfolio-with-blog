@@ -20,6 +20,23 @@ export const Projects = (props) => {
 										...GatsbyImageSharpFluid
 									}
 								}
+								extension
+								relativeDirectory
+								relativePath
+								publicURL
+							}
+							galleryImages {
+								image {
+									childImageSharp {
+										fluid {
+											...GatsbyImageSharpFluid
+										}
+									}
+									extension
+                  relativeDirectory
+                  relativePath
+                  publicURL
+								}
 							}
 							title
 							subtitle
@@ -80,9 +97,11 @@ export const Projects = (props) => {
 					</Col>
 				</Row>
 				<Row>
-					{data.allProjectsJson.edges.map(project =>  (
-						<Col md={4} className="pb-4">
+					{data.allProjectsJson.edges.map((project, index) =>  (
+
+						<Col key={index} md={4} className="pb-4">
 							<Project image={project.node.image.childImageSharp.fluid}
+											 galleryImages={project.node.galleryImages || [{"image": project.node.image}]}
 											 title={project.node.title}
 											 subtitle={project.node.subtitle}
 											 icons={loadIcons(project.node.icons)}
