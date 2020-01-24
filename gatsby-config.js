@@ -12,16 +12,9 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/src/data`,
+        path: `${__dirname}/src/data/projects`,
       },
     },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/src/data/projects/images`,
-        name: 'projectImages'
-      },
-    }, 
     {
       resolve: `gatsby-plugin-netlify-cms-paths`,
       options: {
@@ -34,7 +27,13 @@ module.exports = {
         modulePath: `${__dirname}/src/cms/cms.js`,
       }
     },
-    `gatsby-transformer-json`,
+    {
+      resolve:`gatsby-transformer-json`,
+      options: {
+        typeName: ({ node, object, isArray }) =>
+          object.project ? `Project` : `Json`,
+      }
+    },
     `gatsby-plugin-postcss`,
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-react-helmet`

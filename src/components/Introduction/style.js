@@ -47,7 +47,7 @@ export const Slider = styled.h2`
   font-weight: 800;
   .txt-rotate {
     color: ${(props) => props.theme.primaryColor};
-    text-decoration: underline;
+   //text-decoration: underline;
   }
 `;
 

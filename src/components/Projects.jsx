@@ -10,10 +10,10 @@ export const Projects = (props) => {
 	const data = useStaticQuery( 
 		graphql`
 			query {
-				allProjectsJson(sort: { order: ASC, fields: [start] }) {
+				allProject(sort: { order: ASC, fields: [start] }) {
 					edges {
 						node {
-							id
+							project
 							image {
 								childImageSharp {
 									fluid(maxWidth: 605, maxHeight: 350 ) {
@@ -52,7 +52,6 @@ export const Projects = (props) => {
 								present
 							}
 							link
-							project
 						}
 					}
 				}
@@ -97,11 +96,12 @@ export const Projects = (props) => {
 					</Col>
 				</Row>
 				<Row>
-					{data.allProjectsJson.edges.map((project, index) =>  (
-
-						<Col key={index} md={4} className="pb-4">
+					{data.allProject.edges.map((project, index) =>  {
+						let projectGallery = (project.node.galleryImages || [{"image": project.node.image}]);
+						console.log(projectGallery.map(dict => dict.image));
+						return ( <Col key={index} md={4} className="pb-4">
 							<Project image={project.node.image.childImageSharp.fluid}
-											 galleryImages={project.node.galleryImages || [{"image": project.node.image}]}
+											 galleryImages={(project.node.galleryImages || [{"image": project.node.image}])}
 											 title={project.node.title}
 											 subtitle={project.node.subtitle}
 											 icons={loadIcons(project.node.icons)}
@@ -110,8 +110,8 @@ export const Projects = (props) => {
 							>
 								<div dangerouslySetInnerHTML={{ __html: project.node.description}} />
 							</Project>
-						</Col>
-					))}
+						</Col>);
+					})}
 				</Row>
 			</Container>
 		</ProjectSection>

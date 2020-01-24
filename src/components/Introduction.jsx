@@ -20,7 +20,7 @@ export default function Introduction(props) {
                   <Slider>I'm a&nbsp;
                     <span className="txt-rotate" 
                           data-period={700} 
-                          data-rotate='[ "Developer.", "Maker.", "Leader." ]' />
+                          data-rotate='[ "a developer.", "a producer.", "an artist.", "a maker.", "a leader." ]' />
                   </Slider>
                 </Text>
             </Col>
