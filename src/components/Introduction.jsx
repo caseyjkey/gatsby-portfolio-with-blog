@@ -17,7 +17,7 @@ export default function Introduction(props) {
                 <Text className="text-center">
                   <Subheader>Hey! I am</Subheader>
                   <Header>Casey Key</Header>
-                  <Slider>I'm a&nbsp;
+                  <Slider>I'm&nbsp;
                     <span className="txt-rotate" 
                           data-period={700} 
                           data-rotate='[ "a developer.", "a producer.", "an artist.", "a maker.", "a leader." ]' />

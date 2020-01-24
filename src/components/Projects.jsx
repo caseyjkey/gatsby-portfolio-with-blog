@@ -98,7 +98,7 @@ export const Projects = (props) => {
 				<Row>
 					{data.allProject.edges.map((project, index) =>  {
 						let projectGallery = (project.node.galleryImages || [{"image": project.node.image}]);
-						console.log(projectGallery.map(dict => dict.image));
+						console.log(projectGallery);
 						return ( <Col key={index} md={4} className="pb-4">
 							<Project image={project.node.image.childImageSharp.fluid}
 											 galleryImages={(project.node.galleryImages || [{"image": project.node.image}])}

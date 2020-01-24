@@ -20,7 +20,8 @@ export default function Project({children, title, subtitle, image, galleryImages
     const [visible, setVisible] = useState(false);
     const makeVisible = () => setVisible(true);
 
-    let images = galleryImages.map(dict => dict.image.publicURL);
+    console.log(title, galleryImages);
+    //let images = galleryImages.map(dict => dict.image.publicURL);
     let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
         result.push((image.childImageSharp) ? <Img fluid={image.childImageSharp.fluid} /> : <img src={image.publicURL} />);
         return result;
