@@ -96,10 +96,8 @@ export const Projects = (props) => {
 					</Col>
 				</Row>
 				<Row>
-					{data.allProject.edges.map((project, index) =>  {
-						let projectGallery = (project.node.galleryImages || [{"image": project.node.image}]);
-						console.log(projectGallery);
-						return ( <Col key={index} md={4} className="pb-4">
+					{data.allProject.edges.map((project, index) =>  ( 
+						<Col key={index} md={4} className="pb-4">
 							<Project image={project.node.image.childImageSharp.fluid}
 											 galleryImages={(project.node.galleryImages || [{"image": project.node.image}])}
 											 title={project.node.title}
@@ -110,8 +108,8 @@ export const Projects = (props) => {
 							>
 								<div dangerouslySetInnerHTML={{ __html: project.node.description}} />
 							</Project>
-						</Col>);
-					})}
+						</Col>
+					))}
 				</Row>
 			</Container>
 		</ProjectSection>
