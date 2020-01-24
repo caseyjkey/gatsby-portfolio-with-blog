@@ -36,6 +36,7 @@ module.exports = {
     },
     `gatsby-transformer-json`,
     `gatsby-plugin-postcss`,
-    `gatsby-plugin-netlify-cms`
+    `gatsby-plugin-netlify-cms`,
+    `gatsby-plugin-react-helmet`
   ],
 }

@@ -23,3 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 *Zone.Identifier
+
+# Gatsby build
+.cache
+public
