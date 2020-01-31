@@ -25,16 +25,19 @@ export default class About extends Component {
   }
 
   componentDidMount() {
-    fetch("https://8370nk0aoa.execute-api.us-east-2.amazonaws.com/api/streak/caseykey.github.io,git-analytics-api,react-read-more-read-less")
+    fetch("https://8370nk0aoa.execute-api.us-east-2.amazonaws.com/api/streak/caseykey.github.io,git-analytics-api,react-read-more-read-less", {
+      method: "GET",
+      headers: {
+      "access-control-allow-origin" : "*",
+      "Content-type": "application/json; charset=UTF-8"
+    }})
       .then( res => res.json() )
       .then(
         (result) => {
           let github = {isLoaded: true, days: result.streak.days};
-          console.log(github);
           this.setState({ github: github });
         },
         (error) => {
-          console.log(error);
           let github = {isLoaded: true, error};
           this.setState({ github: github });
         }
