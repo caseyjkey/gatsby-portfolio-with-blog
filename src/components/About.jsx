@@ -14,10 +14,31 @@ export default class About extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: {info: false, counter: false}
+      visible: {info: false, counter: false},
+      github: {
+        isLoaded: false,
+        days: 0,
+      }
     };
 
     this.onEnter = this.onEnter.bind(this);
+  }
+
+  componentDidMount() {
+    fetch("https://8370nk0aoa.execute-api.us-east-2.amazonaws.com/api/streak/caseykey.github.io,git-analytics-api,react-read-more-read-less")
+      .then( res => res.json() )
+      .then(
+        (result) => {
+          let github = {isLoaded: true, days: result.streak.days};
+          console.log(github);
+          this.setState({ github: github });
+        },
+        (error) => {
+          console.log(error);
+          let github = {isLoaded: true, error};
+          this.setState({ github: github });
+        }
+      )
   }
 
 
@@ -70,12 +91,13 @@ export default class About extends Component {
 
               <Animated animation="fadeInUp" isVisible={counterVisible}>
                 <Counter className="mt-md-3">
-                  <p className="mb-4">
                     {counterVisible && 
-                      <CountUp className="number" delay={0.3} duration={3} end={10}>0</CountUp>
+                      ((this.state.github.isLoaded && 
+                        <p className="mb-4">
+                          <CountUp className="number" delay={0.3} duration={3} end={this.state.github.days}>0</CountUp><span>&nbsp;consecutive days of coding</span> 
+                        </p>
+                      ) || <p className="mb-4">Loading Github data...</p>)
                     }
-                    <span>&nbsp;Projects complete</span>
-                  </p>
                   {/* <p><Button color="primary" className="py-3 px-3">Download CV</Button></p> */}
                 </Counter>
               </Animated>
