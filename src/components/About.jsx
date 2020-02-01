@@ -26,11 +26,8 @@ export default class About extends Component {
 
   componentDidMount() {
     fetch("https://8370nk0aoa.execute-api.us-east-2.amazonaws.com/api/streak/caseykey.github.io,git-analytics-api,react-read-more-read-less", {
-      method: "GET",
-      headers: {
-      "access-control-allow-origin" : "*",
-      "Content-type": "application/json; charset=UTF-8"
-    }})
+      method: "GET"
+    })
       .then( res => res.json() )
       .then(
         (result) => {
