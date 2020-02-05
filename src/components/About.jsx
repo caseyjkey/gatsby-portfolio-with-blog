@@ -93,10 +93,11 @@ export default class About extends Component {
                 <Counter className="mt-md-3">
                     {counterVisible && 
                       ((this.state.github.isLoaded && 
+                        (this.state.github.days > 19 && 
                         <p className="mb-4">
                           <CountUp className="number" delay={0.3} duration={3} end={this.state.github.days}>0</CountUp><span>&nbsp;consecutive days of coding</span> 
                         </p>
-                      ) || <p className="mb-4">Loading Github data...</p>)
+                      ) || <div></div>) || <p className="mb-4">Loading Github data...</p>)
                     }
                   {/* <p><Button color="primary" className="py-3 px-3">Download CV</Button></p> */}
                 </Counter>

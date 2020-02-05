@@ -26,22 +26,24 @@ collections:
           fields:
           - {label: Description, name: description, widget: string, default: "a leader."} 
           # Add a field for selecting which section the mouse goes to based on which sections are visible
-      
     - label: "About Me"
       name: "about"
       file: "src/data/about.json"
       fields:
         - {label: Bio, name: bio, widget: text, default: "I was born and raised in West Philadelphia. On the basketball court is where I spent most of my days; maxin', relaxin', actin' all cool, when some guys who were up to no good, started trouble in my neighborhood."}
         - label: Activities
+          label_singular: Activity  
           name: activities
           widget: list
           fields:
-            - label: "Activity"
-              name: "activity"
+            - label: "Icon"
+              name: "icon"
               widget: "object"
               fields:
-                - {label: "Icon", name: icon, widget: string, default: "GiBackpack"}
-                - {label: "Description", name: description, widget: string, default: 'CS and ENTR @ CSU, FoCo'}
+                - {label: "Font Awesome", name: "fa", label_singular: 'Font Awesome icon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
+                - {label: "Devicons", name: "di", label_singular: 'Devicon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
+                - {label: "Ionicons", name: "io", label_singular: 'Ionicon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
+            - {label: "Description", name: description, widget: string, default: 'CS and ENTR @ CSU, FoCo'}
 
   - label: "Projects" # Used in the UI
     name: "projects" # Used in routes, e.g., /admin/collections/blog
