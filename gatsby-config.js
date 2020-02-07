@@ -12,7 +12,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/src/data`,
+        path: `${__dirname}/src/data/`,
       },
     },
     {
@@ -31,7 +31,7 @@ module.exports = {
       resolve:`gatsby-transformer-json`,
       options: {
         typeName: ({ node, object, isArray }) =>
-          object.project ? `Project` : `Json`,
+          object.project ? `Project` : object.section,
       }
     },
     `gatsby-plugin-postcss`,

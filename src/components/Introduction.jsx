@@ -5,8 +5,27 @@ import { theme } from './style.js'
 import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.js'
 import FallingArrow from './Introduction/Mouse'
 import { Animated } from 'react-animated-css'
+import { useStaticQuery } from 'gatsby'
 
 export default function Introduction(props) {
+  const data = useStaticQuery(
+    graphql`
+      query {
+        introduction {
+          greeting
+          name
+          descriptions
+        }
+      }
+    `
+  )
+  var rotateString = '[';
+  data.introduction.descriptions.map((item, index) => {
+    rotateString = rotateString + '"' + item + '"';
+    if(index < data.introduction.descriptions.length - 1)
+      rotateString = rotateString + ',';
+  });
+  rotateString = rotateString + ']';
   return (  
     <HeroWrap className="js-fullheight" name="Home">
       <Overlay></Overlay>
@@ -15,12 +34,12 @@ export default function Introduction(props) {
           <Row noGutters className="js-fullheight justify-content-center align-items-center">
             <Col lg="8" md="6" className="align-items-center">
                 <Text className="text-center">
-                  <Subheader>Hey! I am</Subheader>
-                  <Header>Casey Key</Header>
+                  <Subheader>{data.introduction.greeting}</Subheader>
+                  <Header>{data.introduction.name}</Header>
                   <Slider>I'm&nbsp;
                     <span className="txt-rotate" 
                           data-period={700} 
-                          data-rotate='[ "a developer.", "a producer.", "an artist.", "a maker.", "a leader." ]' />
+                          data-rotate={rotateString} />
                   </Slider>
                 </Text>
             </Col>

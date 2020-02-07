@@ -1,5 +1,6 @@
 {
+  "section": "Introduction",
   "greeting": "Hey! I am",
-  "name": "Casey J Key",
+  "name": "Casey J. Key",
   "descriptions": ["a developer.", "an artist.", "a producer.", "a leader.", "a teacher."]
 }
