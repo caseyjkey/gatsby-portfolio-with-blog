@@ -229,6 +229,7 @@ TxtRotate.prototype.tick = function() {
 function cycleWords() {
 	var elements = document.getElementsByClassName('txt-rotate');
 	for (var i=0; i<elements.length; i++) {
+		console.log("i: ", i, "attrs: ", elements[i].attributes);
 		var toRotate = elements[i].getAttribute('data-rotate');
 		var period = elements[i].getAttribute('data-period');
 		if (toRotate) {

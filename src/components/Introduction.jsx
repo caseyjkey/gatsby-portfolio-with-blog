@@ -14,18 +14,28 @@ export default function Introduction(props) {
         introduction {
           greeting
           name
-          descriptions
+          descriptions {
+            description
+            example
+          }
         }
       }
     `
   )
-  var rotateString = '[';
-  data.introduction.descriptions.map((item, index) => {
-    rotateString = rotateString + '"' + item + '"';
-    if(index < data.introduction.descriptions.length - 1)
-      rotateString = rotateString + ',';
-  });
-  rotateString = rotateString + ']';
+  function createArrayString(arr) {
+    let rotateString = '[';
+    arr.map((item, index) => {
+      rotateString = rotateString + '"' + item + '"';
+      if(index < arr.length - 1)
+        rotateString = rotateString + ',';
+    });
+    rotateString = rotateString + ']';
+    return rotateString;
+  }
+  
+  let descriptions = createArrayString(data.introduction.descriptions.map(({ description }) => description));
+  let examples = createArrayString(data.introduction.descriptions.map(item => item.example));
+  console.log(examples);
   return (  
     <HeroWrap className="js-fullheight" name="Home">
       <Overlay></Overlay>
@@ -39,8 +49,13 @@ export default function Introduction(props) {
                   <Slider>I'm&nbsp;
                     <span className="txt-rotate" 
                           data-period={700} 
-                          data-rotate={rotateString} />
+                          data-rotate={descriptions}
+                    />
                   </Slider>
+                    <span className="txt-rotate"
+                        data-period={1500}
+                        data-rotate={examples}
+                    />
                 </Text>
             </Col>
           </Row>
