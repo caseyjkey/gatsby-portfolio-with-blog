@@ -18,24 +18,29 @@ collections:
       name: "introduction"
       file: "src/data/introduction.json"
       fields:
-        - {label: Greeting, name: greeting, widget: string, default: "Hey! I am"}
-        - {label: Name, name: name, widget: string, default: "Casey Key"}
-        - label: Descriptions
-          name: descriptions
-          widget: list 
-          fields:
-          - {label: Description, name: description, widget: string, default: "a leader."} 
-          # Add a field for selecting which section the mouse goes to based on which sections are visible
+        - {label: "Greeting", name: "greeting", widget: "string", default: "Hey! I am"}
+        - {label: "Name", name: "name", widget: "string", default: "Casey Key"}
+        - label: "Descriptions"
+          label_singular: "description"
+          name: "descriptions"
+          widget: "list" 
+          field:
+          - label: "Description"
+            name: "description"
+            widget: "object"
+            fields:
+              - {label: "Description", name: "description", widget: "string"}
+              - {label: "Example", name: "example", widget: "string"} 
     - label: "About Me"
       name: "about"
       file: "src/data/about.json"
       fields:
         - {label: Bio, name: bio, widget: text, default: "I was born and raised in West Philadelphia. On the basketball court is where I spent most of my days; maxin', relaxin', actin' all cool, when some guys who were up to no good, started trouble in my neighborhood."}
-        - label: Activities
-          label_singular: Activity  
-          name: activities
-          widget: list
-          fields:
+        - label: "Activities"
+          label_singular: "Activity"  
+          name: "activities"
+          widget: "list"
+          field:
             - label: "Icon"
               name: "icon"
               widget: "object"

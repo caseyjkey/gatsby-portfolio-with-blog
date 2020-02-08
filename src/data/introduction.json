@@ -2,5 +2,5 @@
   "section": "Introduction",
   "greeting": "Hey! I am",
   "name": "Casey J. Key",
-  "descriptions": ["a developer.", "an artist.", "a producer.", "a leader.", "a teacher."]
+  "descriptions": [{"description:": "a developer.", "example": "Fullstack web, Android, and desktop apps."}, "an artist.", "a producer.", "a leader.", "a teacher."]
 }
