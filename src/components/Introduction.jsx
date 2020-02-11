@@ -48,12 +48,12 @@ export default function Introduction(props) {
                   <Header>{data.introduction.name}</Header>
                   <Slider>I'm&nbsp;
                     <span className="txt-rotate" 
-                          data-period={700} 
+                          data-period={250} 
                           data-rotate={descriptions}
                     />
                   </Slider>
                     <span className="txt-rotate"
-                        data-period={1500}
+                        data-period={150}
                         data-rotate={examples}
                     />
                 </Text>
