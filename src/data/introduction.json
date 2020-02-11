@@ -2,5 +2,5 @@
   "section": "Introduction",
   "greeting": "Hey! I am",
   "name": "Casey J. Key",
-  "descriptions": [{"description": "a developer.", "example": "Web, mobile, and desktop apps."}, {"description": "Hashdump infosec club and CSU's AISES chapter"}]
+  "descriptions": [{"description": "a developer.", "example": "Web, mobile, and desktop apps."}, {"description": "the treasurer.", "example": "Hashdump infosec club and CSU's AISES chapter"}]
 }
