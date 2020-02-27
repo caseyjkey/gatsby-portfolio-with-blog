@@ -14,7 +14,7 @@ export function Nav({children}) {
   return (
     <Navi  className="ftco-navbar-light navbar navbar-expand-lg navbar-dark ftco_navbar site-navbar-target" id="ftco-navbar">
       <Container>
-        <a className="navbar-brand" href="index.html"><span>C</span>asey Key</a>
+        <a className="navbar-brand" href="index.html"><span>C</span>asey J. Key</a>
         <NavbarToggler onClick={toggleNavbar} className="js-fh5co-nav-toggle fh5co-nav-toggle" aria-label="Toggle navigation">
           <Button scrolled={false}/>
         </NavbarToggler>

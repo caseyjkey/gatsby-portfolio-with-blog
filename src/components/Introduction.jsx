@@ -34,45 +34,51 @@ export default function Introduction(props) {
   let deleteSpeed = 1;
   let pauseDelay = 3000;
 
-  function subtyping(string) {
-    typewriter2
-        .typeString(string)
-        .start();
-  }
+  
 
-  function subdelete() {
-    typewriter2
-        .deleteAll(1)
-        .start();
-  }
+  
+  useEffect(() => {
+    let header = document.getElementById('typewriter1');
+    let subheader = document.getElementById('typewriter2');
+    let typewriter1 = new Typewriter(header, {
+        loop: false,
+        delay: typingSpeed,
+        deleteSpeed: deleteSpeed,   
+        autoStart: true,
+      }
+    );
+    
+    let typewriter2 = new Typewriter(subheader, {
+        loop: false,
+        delay: typingSpeed
+      }
+    );
 
-  function typing(headers, subheaders) {
+    function subtyping(string) {
+      typewriter2
+          .typeString(string)
+          .start();
+    }
+
+    function subdelete() {
+      typewriter2
+          .deleteAll(1)
+          .start();
+    }
+
     headers.forEach((header, i) => {
+      console.log(header);
+      console.log(typewriter1);
       typewriter1
           .typeString(header)
+          .start()
           .callFunction(() => subtyping(subheaders[i]))
           .pauseFor(pauseDelay)
           .callFunction(subdelete)
           .pauseFor(subheaders[i].length * deleteSpeed)
           .deleteChars(header.length)
     });
-  };
-  useEffect(() => {
-    let typewriter1 = new Typewriter('#typewriter1', {
-        strings: headers,
-        loop: false,
-        delay: typingSpeed,
-        deleteSpeed: deleteSpeed   
-      }
-    );
-    
-    let typewriter2 = new Typewriter('#typewriter2', {
-        strings: subheaders,
-        loop: false,
-        delay: typingSpeed
-      }
-    );
-    typing(headers, subheaders)
+
   }, []);
 
   /* End of Typewriter component */
@@ -87,8 +93,8 @@ export default function Introduction(props) {
                   <Subheader>{data.introduction.greeting}</Subheader>
                   <Header>{data.introduction.name}</Header>
                   <Slider>I'm&nbsp;
-                    <span id="typewriter1"></span>
-                    <span id="typewriter2"></span>
+                    <span id="typewriter1" className="header"></span><br/>
+                    <span id="typewriter2" className="subheader"></span>
                   </Slider>
                 </Text>
             </Col>

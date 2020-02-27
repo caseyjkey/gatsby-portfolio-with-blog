@@ -2,5 +2,5 @@
   "section": "Introduction",
   "greeting": "Hey! I am",
   "name": "Casey J. Key",
-  "descriptions": [{"description": "a developer.", "example": "Cloud, web, mobile apps"}, {"description": "the treasurer.", "example": "Hashdump Cybersecurity club, American Indian Science and Engineering Society chapter"}]
+  "descriptions": [{"description": "a developer.", "example": "Cloud, web, IoT, satellites, mobile apps"}, {"description": "excellent at managing resources.", "example": "Treasurer for Hashdump Cybersecurity club and AISES"}]
 }

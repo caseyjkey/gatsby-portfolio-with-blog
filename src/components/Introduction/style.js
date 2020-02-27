@@ -45,9 +45,12 @@ export const Header = styled.h1`
 export const Slider = styled.h2`
   color: ${(props) => props.theme.black}
   font-weight: 800;
-  .txt-rotate {
+  .header {
     color: ${(props) => props.theme.primaryColor};
    //text-decoration: underline;
+  }
+  .subheader {
+    font-weight: 600;
   }
 `;
 
