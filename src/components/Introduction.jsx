@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
-import { ThemeProvider } from 'styled-components'
-import { theme } from './style.js'
+import styled from 'styled-components'
 import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.js'
 import FallingArrow from './Introduction/Mouse'
+import Socials from './Social'
 import { Animated } from 'react-animated-css'
-import { useStaticQuery } from 'gatsby'
+import { graphql, useStaticQuery } from 'gatsby'
+import Typewriter from 'typewriter-effect/dist/core'
 
 export default function Introduction(props) {
   const data = useStaticQuery(
@@ -21,21 +22,68 @@ export default function Introduction(props) {
         }
       }
     `
-  )
-  function createArrayString(arr) {
-    let rotateString = '[';
-    arr.map((item, index) => {
-      rotateString = rotateString + '"' + item + '"';
-      if(index < arr.length - 1)
-        rotateString = rotateString + ',';
+  );
+ 
+  /* Refactor this into a seperate typewriter component */
+  let headers = data.introduction.descriptions.map(({ description }) => description);
+  let subheaders = data.introduction.descriptions.map(item => item.example);
+
+  let typingSpeed = 50;
+  let deleteSpeed = 10;
+  let pauseDelay = 4000;
+
+  const [headerEnd, setHeaderEnd] = useState(false);
+  const endHeader = () => setHeaderEnd(true);
+
+  useEffect(() => {
+    let header = document.getElementById('typewriter1');
+    let subheader = document.getElementById('typewriter2');
+    let typewriter1 = new Typewriter(header, {
+        loop: false,
+        delay: typingSpeed,
+        deleteSpeed: deleteSpeed,   
+        autoStart: true,
+      }
+    );
+    
+    let typewriter2 = new Typewriter(subheader, {
+        loop: false,
+        delay: typingSpeed
+      }
+    );
+
+    function subtyping(string) {
+      typewriter2
+          .typeString(string)
+          .start();
+    }
+
+    function subdelete() {
+      typewriter2
+          .deleteAll(1)
+          .start();
+    }
+
+    headers.forEach((header, i) => {
+      typewriter1
+          .typeString(header)
+          .start()
+          .callFunction(() => subtyping(subheaders[i]))
+          .pauseFor(pauseDelay)
+          .callFunction(subdelete)
+          .pauseFor(subheaders[i].length * deleteSpeed)
+          .deleteChars(header.length);
+        
     });
-    rotateString = rotateString + ']';
-    return rotateString;
-  }
-  
-  let descriptions = createArrayString(data.introduction.descriptions.map(({ description }) => description));
-  let examples = createArrayString(data.introduction.descriptions.map(item => item.example));
-  console.log(examples);
+
+    typewriter1
+        .typeString("on social media.")
+        .start()
+        .callFunction(endHeader);
+  }, []);
+
+
+  /* End of Typewriter component */
   return (  
     <HeroWrap className="js-fullheight" name="Home">
       <Overlay></Overlay>
@@ -46,16 +94,20 @@ export default function Introduction(props) {
                 <Text className="text-center">
                   <Subheader>{data.introduction.greeting}</Subheader>
                   <Header>{data.introduction.name}</Header>
-                  <Slider>I'm&nbsp;
-                    <span className="txt-rotate" 
-                          data-period={250} 
-                          data-rotate={descriptions}
-                    />
+                  <Slider>
+                    I'm&nbsp;
+                    <span id="typewriter1" className="header"></span><br/>
+                    {!headerEnd &&
+                      <span id="typewriter2" className="subheader"></span>
+                    }
+                    {headerEnd &&
+                      <Animated animationIn={"fadeInUp"} isVisible={headerEnd}>
+                        <SocialStyle>
+                          <Socials/>
+                        </SocialStyle>
+                      </Animated>
+                    }
                   </Slider>
-                    <span className="txt-rotate"
-                        data-period={150}
-                        data-rotate={examples}
-                    />
                 </Text>
             </Col>
           </Row>
@@ -65,3 +117,31 @@ export default function Introduction(props) {
     </HeroWrap>
   );
 }
+
+const SocialStyle = styled.div`
+  .ftco-footer-social {
+    li {
+      list-style: none;
+      margin: 0 10px 0 0;
+      display: inline-block;
+      a {
+        height: 40px;
+        width: 40px;
+        display: block;
+        float: left;
+        background: rgba(${props => props.theme.white}, .1);
+        border-radius: 50%;
+        position: relative;
+        svg {
+          position: absolute;
+          font-size: 26px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+        &:hover {
+          color: ${props => props.theme.black};
+        }
+      }
+    }
+`;

@@ -44,7 +44,8 @@
     "reactstrap": "^8.2.0",
     "styled-components": "^4.4.1",
     "styled-components-breakpoint": "^3.0.0-preview.20",
-    "typeface-poppins": "0.0.72"
+    "typeface-poppins": "0.0.72",
+    "typewriter-effect": "^2.12.2"
   },
   "scripts": {
     "start": "react-scripts start",
