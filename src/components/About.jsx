@@ -81,9 +81,9 @@ export default class About extends Component {
                     </Description>
                     <ul className="about-info mt-4 px-md-0 px-2">
                       <li><GiBackpack /> <span>CS and ENTR @ CSU, FoCo</span></li>
-                      <li><FiBookOpen /> <span><i>Candide, or The Optimist</i></span></li>
+                      <li><FiBookOpen /> <span><i>Man's Search for Meaning</i></span></li>
                       <li><FiMusic /> <span>"Good News" by Mac Miller</span></li>
-                      <li><FaLaptopCode /> <span>Building at HackCU</span></li>
+                      <li><FaLaptopCode /> <span>Working on this site</span></li>
                     </ul>
                   </Col>
                 </Animated>
