@@ -29,6 +29,7 @@ const IndexPage = ({ data }) => {
   return (
     <Layout>
       <Helmet>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z"></script>
         <script>
           {`
