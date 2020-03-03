@@ -25,6 +25,7 @@ export default class About extends Component {
   }
 
   componentDidMount() {
+    /* Commenting this out to see if it is holding up the page
     fetch("https://8370nk0aoa.execute-api.us-east-2.amazonaws.com/api/streak/caseykey.github.io,git-analytics-api,react-read-more-read-less", {
       method: "GET"
     })
@@ -38,7 +39,7 @@ export default class About extends Component {
           let github = {isLoaded: true, error};
           this.setState({ github: github });
         }
-      )
+      ) */
   }
 
 
@@ -58,7 +59,9 @@ export default class About extends Component {
         <Container>
           <Row noGutters>
             <Col lg="6" md="6" className="d-flex">
-              <AboutImage style={{backgroundImage: this.imageURL(Headshot)}} />
+              <AboutImage style={{backgroundImage: this.imageURL(Headshot)}}>
+
+              </AboutImage>
             </Col> 
 
             <Col md="6" lg="6" className="pl-md-5 py-5">

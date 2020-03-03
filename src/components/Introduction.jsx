@@ -85,7 +85,7 @@ export default function Introduction(props) {
 
   /* End of Typewriter component */
   return (  
-    <HeroWrap className="js-fullheight" name="Home">
+    <HeroWrap name="Home">
       <Overlay></Overlay>
       <Animated animationIn="fadeInUp" animationInDuration={500} animationInDelay={200} >
         <Container>
