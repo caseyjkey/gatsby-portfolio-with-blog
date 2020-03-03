@@ -1,6 +1,5 @@
 import React, { Suspense, useState } from 'react'
 import Img from 'gatsby-image'
-import { useStaticQuery, graphql } from 'gatsby'
 import { Modal, ModalHeader, ModalFooter, ModalBody, Button} from 'reactstrap'
 import { theme } from '../style.js'
 import { ProjectWrapper, ReadMoreColor } from './style.js'
