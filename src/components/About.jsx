@@ -4,7 +4,6 @@ import { Heading } from './style.js'
 import { AboutSection, AboutImage, Counter, Description } from './About/style.js'
 import Img from 'gatsby-image'
 import { graphql, useStaticQuery } from 'gatsby'
-import Headshot from "./About/images/about.png"
 import { Waypoint } from  'react-waypoint'
 import { Animated } from 'react-animated-css'
 import CountUp from 'react-countup'
