@@ -26,7 +26,6 @@ export const AboutSection = styled.section`
 
 export const Description = styled.p`
 	@media (max-width: 375px) {
-		width: 350px;
 		padding-left: 0.5rem !important;
 	}
 	color: ${props => props.theme.black};
