@@ -5,13 +5,20 @@ import Favicon from '../data/favicon.png'
 import Layout from '../components/Layout'
 import Navigation from '../components/Navigation'
 import Introduction from '../components/Introduction'
-import About from '../components/About'
-import Resume from '../components/Resume/Resume'
-import Services from '../components/Services'
-import { Projects } from '../components/Projects'
-import HireMe from '../components/Hire'
-import Contact from '../components/Contact'
-import Footer from '../components/Footer'
+const aboutPromise = import(/* webpackChunkName: 'About' */ "../components/About");
+const resumePromise = import(/* webpackChunkName: 'Resume' */ "../components/Resume/Resume");
+const servicesPromise = import(/* webpackChunkName: 'Services' */ "../components/Services");
+const projectsPromise = import(/* webpackChunkName: 'Projects' */ "../components/Projects");
+const hireMePromise = import(/* webpackChunkName: 'HireMe' */ "../components/HireMe");
+const contactPromise = import(/* webpackChunkName: 'Contact' */ "../components/Contact");
+const footerPromise = import(/* webpackChunkName: 'Footer' */ "../components/Footer");
+const About = React.lazy(() => aboutPromise);
+const Resume = React.lazy(() => resumePromise);
+const Services = React.lazy(() => servicesPromise);
+const Projects = React.lazy(() => projectsPromise);
+const HireMe = React.lazy(() => hireMePromise);
+const Contact = React.lazy(() => contactPromise);
+const Footer = React.lazy(() => footerPromise);
 import { ThemeProvider } from 'styled-components'
 import { theme, Body } from '../components/style.js'
 import { initPage } from '../components/main'
