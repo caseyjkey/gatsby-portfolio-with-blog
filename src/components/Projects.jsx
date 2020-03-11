@@ -6,7 +6,7 @@ import { ProjectSection } from './Projects/style.js'
 import Project from './Projects/Project'
 
 
-export default Projects = (props) => {
+export default function Projects(props) {
 	const data = useStaticQuery( 
 		graphql`
 			query {

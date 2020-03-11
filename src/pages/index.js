@@ -9,7 +9,7 @@ const aboutPromise = import(/* webpackChunkName: 'About' */ "../components/About
 const resumePromise = import(/* webpackChunkName: 'Resume' */ "../components/Resume/Resume");
 const servicesPromise = import(/* webpackChunkName: 'Services' */ "../components/Services");
 const projectsPromise = import(/* webpackChunkName: 'Projects' */ "../components/Projects");
-const hireMePromise = import(/* webpackChunkName: 'HireMe' */ "../components/HireMe");
+const hireMePromise = import(/* webpackChunkName: 'HireMe' */ "../components/Hire");
 const contactPromise = import(/* webpackChunkName: 'Contact' */ "../components/Contact");
 const footerPromise = import(/* webpackChunkName: 'Footer' */ "../components/Footer");
 const About = React.lazy(() => aboutPromise);
@@ -55,15 +55,17 @@ const IndexPage = ({ data }) => {
       </Helmet>
       <ThemeProvider theme={theme}>
         <Body>
-          <Navigation></Navigation>
-          <Introduction></Introduction>
-          <About></About>
-          <Resume></Resume>
-          <Services></Services>
-          <Projects></Projects>
-          <HireMe status="available"></HireMe>
-          <Contact></Contact>
-          <Footer></Footer>
+            <Navigation></Navigation>
+            <Introduction></Introduction>
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <About></About>
+              <Resume></Resume>
+              <Services></Services>
+              <Projects></Projects>
+              <HireMe status="available"></HireMe>
+              <Contact></Contact>
+              <Footer></Footer>
+            </React.Suspense>
         </Body>
       </ThemeProvider>
     </Layout>
