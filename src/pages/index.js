@@ -1,17 +1,32 @@
 import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { graphql } from 'gatsby'
+import loadable from '@loadable/component'
 import Favicon from '../data/favicon.png' 
 import Layout from '../components/Layout'
 import Navigation from '../components/Navigation'
 import Introduction from '../components/Introduction'
-import About from '../components/About'
-import Resume from '../components/Resume/Resume'
-import Services from '../components/Services'
-import { Projects } from '../components/Projects'
-import HireMe from '../components/Hire'
-import Contact from '../components/Contact'
-import Footer from '../components/Footer'
+const About = loadable(() => 
+  import(/* webpackPrefetch: true*/ '../components/About')
+)
+const Resume = loadable(() => 
+  import(/* webpackPrefetch: true*/ '../components/Resume/Resume')
+)
+const Services = loadable(() =>
+  import(/* webpackPrefetch: true */ '../components/Services')
+)
+const Projects = loadable(() => 
+  import(/* webpackPrefetch: true */ '../components/Projects')
+)
+const HireMe = loadable(() =>
+  import(/* webpackPrefetch: true */ '../components/Hire')
+)
+const Contact = loadable(() => 
+  import(/* webpackPrefetch: true */ '../components/Contact')
+)
+const Footer = loadable(() => 
+  import(/* webpackPrefetch: true */ '../components/Footer')
+)
 import { ThemeProvider } from 'styled-components'
 import { theme, Body } from '../components/style.js'
 import { initPage } from '../components/main'

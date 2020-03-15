@@ -40,6 +40,7 @@ module.exports = {
           object.project ? `Project` : object.section,
       }
     },
+    `gatsby-plugin-loadable-components-ssr`,
     `gatsby-plugin-postcss`,
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-react-helmet`
