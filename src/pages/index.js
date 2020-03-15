@@ -63,15 +63,17 @@ const IndexPage = ({ data }) => {
       </Helmet>
       <ThemeProvider theme={theme}>
         <Body>
-          <Navigation></Navigation>
-          <Introduction></Introduction>
-          <About></About>
-          <Resume></Resume>
-          <Services></Services>
-          <Projects></Projects>
-          <HireMe status="available"></HireMe>
-          <Contact></Contact>
-          <Footer></Footer>
+            <Navigation></Navigation>
+            <Introduction></Introduction>
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <About></About>
+              <Resume></Resume>
+              <Services></Services>
+              <Projects></Projects>
+              <HireMe status="available"></HireMe>
+              <Contact></Contact>
+              <Footer></Footer>
+            </React.Suspense>
         </Body>
       </ThemeProvider>
     </Layout>
