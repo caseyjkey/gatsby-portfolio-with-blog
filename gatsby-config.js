@@ -7,6 +7,14 @@ module.exports = {
   },
   plugins: [
     //plugins go here
+    {
+      resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
+      options: {
+        analyzerMode: `server`,
+        analyzerPort: `8888`,
+        disable: `false`,
+      },
+    },
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     {
