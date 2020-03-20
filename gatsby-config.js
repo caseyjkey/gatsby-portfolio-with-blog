@@ -4,15 +4,15 @@ module.exports = {
     title: 'Casey Key',
     description: 'Casey Key is a software engineer with a focus on education, finance, and security.',
     author: 'Casey Key',
+    canonical: 'http://caseyjkey.com',
   },
   plugins: [
-    //plugins go here
     {
       resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
       options: {
         analyzerMode: `server`,
         analyzerPort: `8888`,
-        disable: `false`,
+        devMode: `true`,
       },
     },
     `gatsby-plugin-sharp`,

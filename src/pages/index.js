@@ -30,11 +30,20 @@ const IndexPage = ({ data }) => {
     <Layout>
       <Helmet>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
-        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z"></script>
+        <script>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-1QQK6QY29Z');
+          `}
+        </script>
         <meta charSet="utf-8" />
         <title>{data.site.siteMetadata.title}</title>
         <meta name="description" content={data.site.siteMetadata.description} />
-        <link rel="canonical" href="http://caseyjkey.com" />
+        <link rel="canonical" href={data.site.siteMetadata.canonical} />
         <link rel="icon" type="image/png" href={Favicon} sizes="16x16" />
       </Helmet>
       <ThemeProvider theme={theme}>
@@ -50,16 +59,6 @@ const IndexPage = ({ data }) => {
           <Footer></Footer>
         </Body>
       </ThemeProvider>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z"></script>
-          <script>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-1QQK6QY29Z');
-          `}
-        </script>
     </Layout>
   );
 }
@@ -70,6 +69,7 @@ export const query = graphql`
       siteMetadata {
         title
         description
+        canonical
       }
     }
   }
