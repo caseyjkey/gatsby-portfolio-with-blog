@@ -25,12 +25,12 @@ collections:
           name: "descriptions"
           widget: "list" 
           field:
-          - label: "Description"
-            name: "description"
-            widget: "object"
-            fields:
-              - {label: "Description", name: "description", widget: "string"}
-              - {label: "Example", name: "example", widget: "string"} 
+            - label: "Description"
+              name: "description"
+              widget: "object"
+              fields:
+                - {label: "Description", name: "header", widget: "string"}
+                - {label: "Example", name: "subheader", widget: "string"} 
     - label: "About Me"
       name: "about"
       file: "src/data/about.json"

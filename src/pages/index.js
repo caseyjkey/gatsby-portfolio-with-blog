@@ -43,7 +43,7 @@ const IndexPage = ({ data }) => {
         <meta charSet="utf-8" />
         <title>{data.site.siteMetadata.title}</title>
         <meta name="description" content={data.site.siteMetadata.description} />
-        <link rel="canonical" href="http://caseyjkey.com" />
+        <link rel="canonical" href={data.site.siteMetadata.canonical} />
         <link rel="icon" type="image/png" href={Favicon} sizes="16x16" />
       </Helmet>
       <ThemeProvider theme={theme}>
@@ -69,6 +69,7 @@ export const query = graphql`
       siteMetadata {
         title
         description
+        canonical
       }
     }
   }

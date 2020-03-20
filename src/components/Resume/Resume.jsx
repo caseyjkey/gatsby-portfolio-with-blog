@@ -98,25 +98,6 @@ import { MdWork } from 'react-icons/md'
             
             <Page name="skills">
               <SectionTitle>Skills</SectionTitle>
-              <SubsectionTitle>Github Metrics</SubsectionTitle>
-              <Row className="progress-circle mb-5">
-                <Col lg={4} mb={4}>
-                  <SkillCircle skill="JavaScript"
-                                percentTotal="33.51"
-                  />
-                </Col>
-                <Col lg={4} mb={4}>
-                  <SkillCircle skill="Java"
-                          percentTotal="29.10"
-                  />
-                </Col>
-                <Col lg={4} mb={4}>
-                  <SkillCircle skill="Python"
-                          percentTotal="15.32"
-                  />
-                </Col>
-              </Row>
-
               <SubsectionTitle>Languages</SubsectionTitle>
               <Row>
                 <Col md={6} className="animate-box">
