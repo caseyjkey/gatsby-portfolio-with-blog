@@ -12,7 +12,7 @@ module.exports = {
       options: {
         analyzerMode: `server`,
         analyzerPort: `8888`,
-        devMode: `true`,
+        devMode: `false`,
       },
     },
     `gatsby-plugin-sharp`,
