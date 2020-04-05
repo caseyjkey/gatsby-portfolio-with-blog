@@ -24,15 +24,13 @@ collections:
           label_singular: "description"
           name: "descriptions"
           widget: "list" 
-          field: {
-              label: "Description",
-              name: "description",
-              widget: "object",
-              field: {
-                  {label: "Description", name: "header", widget: "string"},
-                  {label: "Example", name: "subheader", widget: "string"} 
-              }
-          }
+          field: 
+            label: "Description"
+            name: "description"
+            widget: "object"
+            fields:
+              - {label: "Description", name: "header", widget: "string"}
+              - {label: "Example", name: "subheader", widget: "string"} 
     - label: "About Me"
       name: "about"
       file: "src/data/about.json"
