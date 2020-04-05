@@ -25,8 +25,8 @@ export default function Introduction(props) {
   );
  
   /* Refactor this into a seperate typewriter component */
-  let headers = data.introduction.descriptions.map(({ description }) => description);
-  let subheaders = data.introduction.descriptions.map(item => item.example);
+  let headers = data.introduction.descriptions.map(({ description }) => description.header);
+  let subheaders = data.introduction.descriptions.map(({ description }) => description.subheader);
 
   let typingSpeed = 50;
   let deleteSpeed = 10;
