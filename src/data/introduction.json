@@ -1,14 +1,19 @@
 {
+  "section": "introduction",
   "greeting": "Hey! I am",
   "name": "Casey J. Key",
   "descriptions": [
     {
-      "description": "a developer.",
-      "example": "Cloud, web, IoT, mobile, and blockchain"
+      "description": {
+        "header": "a developer.",
+        "subheader": "Cloud, web, IoT, mobile, and blockchain"
+      }
     },
     {
-      "description": "a leader.",
-      "example": "Hackathons, clubs, and sports"
+      "description": {
+        "header": "a leader.",
+        "subheader": "Hackathons, clubs, and sports"
+      }
     },
     {
       "description": {

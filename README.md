@@ -27,4 +27,3 @@ For your `bio`, make sure to remove all line-breaks, I recommend [this](http://r
 ### Previewing your Website
 From this directory run `npm install`, then run `gatsby develop`.
 
-
