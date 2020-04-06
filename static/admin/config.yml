@@ -24,7 +24,7 @@ collections:
           label_singular: "description"
           name: "descriptions"
           widget: "list" 
-          field: 
+          fields: 
             label: "Description"
             name: "description"
             widget: "object"

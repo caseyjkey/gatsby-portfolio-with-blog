@@ -16,8 +16,10 @@ export default function Introduction(props) {
           greeting
           name
           descriptions {
-            description
-            example
+            description {
+              header
+              subheader
+            }
           }
         }
       }
