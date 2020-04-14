@@ -4,7 +4,7 @@ module.exports = {
     title: 'Casey Key',
     description: 'Casey Key is a software engineer with a focus on education, finance, and security.',
     author: 'Casey Key',
-    canonical: 'http://caseyjkey.com',
+    canonical: 'https://caseyjkey.com',
   },
   plugins: [
     `gatsby-plugin-sharp`,
