@@ -29,8 +29,8 @@ collections:
             name: "description"
             widget: "object"
             fields:
-              - {label: "Description", name: "header", widget: "string"}
-              - {label: "Example", name: "subheader", widget: "string"} 
+              - { label: "Description", name: "header", widget: "string" }
+              - { label: "Example", name: "subheader", widget: "string" } 
     - label: "About Me"
       name: "about"
       file: "src/data/about.json"
@@ -41,14 +41,23 @@ collections:
           name: "activities"
           widget: "list"
           field:
-            - label: "Icon"
-              name: "icon"
-              widget: "object"
-              fields:
-                - {label: "Font Awesome", name: "fa", label_singular: 'Font Awesome icon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
-                - {label: "Devicons", name: "di", label_singular: 'Devicon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
-                - {label: "Ionicons", name: "io", label_singular: 'Ionicon', widget: "list", field: {label: Icon, name: icon, widget: string}, required: false}
-            - {label: "Description", name: description, widget: string, default: 'CS and ENTR @ CSU, FoCo'}
+            label: "Activity"
+            name: "activity"
+            widget: "object"
+            fields:
+              - label: "Icon"
+                name: "icon"
+                widget: "object"
+                fields:
+                  - label: "Icon Pack" 
+                    name: "type" 
+                    widget: "select"
+                    options:
+                      - { label: "Font Awesome Icons", value: "fa" }
+                      - { label: "Game Icons", value: "gi" }
+                      - { label: "Feather Icons", value: "fi" }
+                  - { label: "Icon Name", name: name, widget: string, default: 'FaLaptopCode' }
+              - { label: "Description", name: description, widget: string, default: 'CS and ENTR @ CSU, FoCo' }
 
   - label: "Projects" # Used in the UI
     name: "projects" # Used in routes, e.g., /admin/collections/blog
