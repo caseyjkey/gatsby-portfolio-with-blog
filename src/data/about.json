@@ -3,10 +3,6 @@
   "bio": "The potential effect of technology on society thrills me! My dream is to travel the world as a tech entrepreneur. My focus will be in cyberseurity, teaching, and apps for education, finance, and music. After starting successful businesses, I want to give back by providing jobs, scholarships, and education with a focus on at-risk youth. <br /><br /> When I'm not coding, I enjoy skateboarding, sports, car tuning, and building sound systems. I'm happy to help anyone learn more about technology.",
   "activities": [
     {
-      "icon": {
-        "gi": "GiBackpack"
-      },
-      "description": "CS and ENTR @ CSU, FoCo",
       "activity": {
         "icon": {
           "type": "gi",
@@ -16,10 +12,6 @@
       }
     },
     {
-      "icon": {
-        "fi": "FiBookOpen"
-      },
-      "description": "<i>Hacking: The Art of Exploitation</i>",
       "activity": {
         "icon": {
           "type": "fi",
@@ -29,10 +21,6 @@
       }
     },
     {
-      "icon": {
-        "fi": "FiMusic"
-      },
-      "description": "\"Good News\" by Mac Miller",
       "activity": {
         "icon": {
           "type": "fi",
@@ -42,10 +30,6 @@
       }
     },
     {
-      "icon": {
-        "fa": "FaLaptopCode"
-      },
-      "description": "Integrating NetlifyCMS into this site",
       "activity": {
         "icon": {
           "type": "fa",
