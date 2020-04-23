@@ -16,6 +16,7 @@ import { ThemeProvider } from 'styled-components'
 import { theme, Body } from '../components/style.js'
 import { initPage } from '../components/main'
 import AOS from 'aos'
+import WebsiteImage from '../data/projects/portfolio/images/portfolio.png'
 
 const IndexPage = ({ data }) => {
   useEffect(() => {
@@ -42,6 +43,10 @@ const IndexPage = ({ data }) => {
         </script>
         <meta charSet="utf-8" />
         <title>{data.site.siteMetadata.title}</title>
+        <meta property='og:title' content="Casey Key's Website" />
+        <meta property='og:image' content={WebsiteImage} />
+        <meta property='og:description' content={data.site.siteMetadata.description} />
+        <meta property='og:url' content={data.site.siteMetadata.canonical} />
         <meta name="description" content={data.site.siteMetadata.description} />
         <link rel="canonical" href={data.site.siteMetadata.canonical} />
         <link rel="icon" type="image/png" href={Favicon} sizes="16x16" />
