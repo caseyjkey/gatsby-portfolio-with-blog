@@ -10,6 +10,7 @@ import CountUp from 'react-countup'
 import { FiBookOpen, FiMusic } from 'react-icons/fi'
 import { GiBackpack } from 'react-icons/gi'
 import { FaLaptopCode } from 'react-icons/fa'
+import { loadPartialConfig } from '@babel/core'
 
 export default function About(props) {
 
@@ -60,6 +61,18 @@ export default function About(props) {
       }
   `);
 
+  // Lazyload the an icon component
+  // [param] icon {name: String, type: String}
+  // [return] Component
+  function loadIcon(icon) {
+    let moduleName = 'react-icons/' + icon.type;
+    return lazy(() => 
+      import(moduleName).then(module => 
+        ({default: module[icon.name]})
+      )
+    );
+  }
+
   console.log("yeet", data);
 
   return (
@@ -83,6 +96,9 @@ export default function About(props) {
                     {data.allAbout.nodes[0].bio}
                   </Description>
                   <ul className="about-info mt-4 px-md-0 px-2">
+                    {data.allAbout.nodes[0].activities.map((activity, index) => {
+                      <li>{/* loadIcon(activity.icon) */} <span>{activity.description}</span></li>
+                    })}
                     <li><GiBackpack /> <span>CS and ENTR @ CSU, FoCo</span></li>
                     <li><FiBookOpen /> <span><i>Man's Search for Meaning</i></span></li>
                     <li><FiMusic /> <span>"Good News" by Mac Miller</span></li>
