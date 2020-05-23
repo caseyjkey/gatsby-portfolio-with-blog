@@ -42,6 +42,20 @@ export default function About(props) {
             }
           }
         }
+        allAbout {
+          nodes {
+            bio
+            activities {
+              activity {
+                description
+                icon {
+                  name
+                  type
+                }
+              }
+            }
+          }
+        }
       }
   `);
 
