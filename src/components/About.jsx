@@ -42,6 +42,7 @@ export default function About(props) {
             }
           }
         }
+
         allAbout {
           nodes {
             bio
@@ -58,6 +59,8 @@ export default function About(props) {
         }
       }
   `);
+
+  console.log("yeet", data);
 
   return (
     <AboutSection name="About">
@@ -77,15 +80,7 @@ export default function About(props) {
                   <Waypoint onEnter={() => makeVisible("info")}></Waypoint>
 
                   <Description>
-                    The potential effect of technology on society thrills me!
-                    My dream is to travel the world as a tech entrepreneur. 
-                    My focus will be in cyberseurity, teaching, and apps for education, finance, and music. 
-                    After starting successful businesses, I want to give back by providing jobs, scholarships, 
-                    and education with a focus on at-risk youth.
-                    <br /><br />
-                    When I'm not coding, I enjoy skateboarding, sports, car tuning, 
-                    and building sound systems. 
-                    I'm happy to help anyone learn more about technology.
+                    {data.allAbout.nodes[0].bio}
                   </Description>
                   <ul className="about-info mt-4 px-md-0 px-2">
                     <li><GiBackpack /> <span>CS and ENTR @ CSU, FoCo</span></li>
