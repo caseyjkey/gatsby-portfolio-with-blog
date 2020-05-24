@@ -65,11 +65,27 @@ export default function About(props) {
   // [return] Component
   function loadIcon(icon) {
     let moduleName = 'react-icons/' + icon.type;
-    return lazy(() => 
-      import(moduleName).then(module => 
-        ({default: module[icon.name]})
-      )
-    );
+    if (icon.type === 'gi') {
+      return lazy(() => 
+        import('react-icons/gi').then(module => 
+          ({default: module[icon.name]})
+        )
+      );
+    }
+    else if (icon.type === 'fi') {
+      return lazy(() => 
+        import('react-icons/fi').then(module => 
+          ({default: module[icon.name]})
+        )
+      );
+    }
+    else if (icon.type === 'fa') {
+      return lazy(() => 
+        import('react-icons/fa').then(module => 
+          ({default: module[icon.name]})
+        )
+      );
+    }
   }
 
   console.log("yeet", data);
