@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style.js'
 import { AboutSection, AboutImage, Counter, Description } from './About/style.js'
 import Img from 'gatsby-image'
+import Activity from './About/Activity.jsx'
 import { graphql, useStaticQuery } from 'gatsby'
 import { Waypoint } from  'react-waypoint'
 import { Animated } from 'react-animated-css'
-import CountUp from 'react-countup'
+// For Github streak
+// import CountUp from 'react-countup'
+/* 
 import { FiBookOpen, FiMusic } from 'react-icons/fi'
 import { GiBackpack } from 'react-icons/gi'
-import { FaLaptopCode } from 'react-icons/fa'
+import { FaLaptopCode } from 'react-icons/fa' 
+*/
 
 export default function About(props) {
 
@@ -42,8 +46,51 @@ export default function About(props) {
             }
           }
         }
+
+        allAbout {
+          nodes {
+            bio
+            activities {
+              activity {
+                description
+                icon {
+                  name
+                  type
+                }
+              }
+            }
+          }
+        }
       }
   `);
+
+  // Lazyload the an icon component
+  // [param] icon {name: String, type: String}
+  // [return] Component
+  function loadIcon(icon) {
+    let moduleName = 'react-icons/' + icon.type;
+    if (icon.type === 'gi') {
+      return lazy(() => 
+        import('react-icons/gi').then(module => 
+          ({default: module[icon.name]})
+        )
+      );
+    }
+    else if (icon.type === 'fi') {
+      return lazy(() => 
+        import('react-icons/fi').then(module => 
+          ({default: module[icon.name]})
+        )
+      );
+    }
+    else if (icon.type === 'fa') {
+      return lazy(() => 
+        import('react-icons/fa').then(module => 
+          ({default: module[icon.name]})
+        )
+      );
+    }
+  }
 
   return (
     <AboutSection name="About">
@@ -63,21 +110,22 @@ export default function About(props) {
                   <Waypoint onEnter={() => makeVisible("info")}></Waypoint>
 
                   <Description>
-                    The potential effect of technology on society thrills me!
-                    My dream is to travel the world as a tech entrepreneur. 
-                    My focus will be in cyberseurity, teaching, and apps for education, finance, and music. 
-                    After starting successful businesses, I want to give back by providing jobs, scholarships, 
-                    and education with a focus on at-risk youth.
-                    <br /><br />
-                    When I'm not coding, I enjoy skateboarding, sports, car tuning, 
-                    and building sound systems. 
-                    I'm happy to help anyone learn more about technology.
+                    {data.allAbout.nodes[0].bio}
                   </Description>
                   <ul className="about-info mt-4 px-md-0 px-2">
-                    <li><GiBackpack /> <span>CS and ENTR @ CSU, FoCo</span></li>
+                    {data.allAbout.nodes[0].activities.map((activity, index) => {
+                      return (
+                        <li>
+                          <Activity description={activity.activity.description}
+                                    Icon={loadIcon(activity.activity.icon)}
+                          />
+                        </li>
+                      );
+                    })}
+                    {/* <li><GiBackpack /> <span>CS and ENTR @ CSU, FoCo</span></li>
                     <li><FiBookOpen /> <span><i>Man's Search for Meaning</i></span></li>
                     <li><FiMusic /> <span>"Good News" by Mac Miller</span></li>
-                    <li><FaLaptopCode /> <span>Working on this site</span></li>
+                    <li><FaLaptopCode /> <span>Working on this site</span></li> */}
                   </ul>
                 </Col>
               </Animated>
