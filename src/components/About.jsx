@@ -3,13 +3,17 @@ import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style.js'
 import { AboutSection, AboutImage, Counter, Description } from './About/style.js'
 import Img from 'gatsby-image'
+import Activity from './About/Activity.jsx'
 import { graphql, useStaticQuery } from 'gatsby'
 import { Waypoint } from  'react-waypoint'
 import { Animated } from 'react-animated-css'
-import CountUp from 'react-countup'
-/* import { FiBookOpen, FiMusic } from 'react-icons/fi'
+// For Github streak
+// import CountUp from 'react-countup'
+/* 
+import { FiBookOpen, FiMusic } from 'react-icons/fi'
 import { GiBackpack } from 'react-icons/gi'
-import { FaLaptopCode } from 'react-icons/fa' */
+import { FaLaptopCode } from 'react-icons/fa' 
+*/
 
 export default function About(props) {
 
@@ -88,8 +92,6 @@ export default function About(props) {
     }
   }
 
-  console.log("yeet", data);
-
   return (
     <AboutSection name="About">
       <Container>
@@ -112,11 +114,12 @@ export default function About(props) {
                   </Description>
                   <ul className="about-info mt-4 px-md-0 px-2">
                     {data.allAbout.nodes[0].activities.map((activity, index) => {
-                      let Icon = loadIcon(activity.activity.icon);
                       return (
-                        <Suspense fallback={<li>Loading...</li>}>
-                          <li><Icon /><span dangerouslySetInnerHTML={{ __html: activity.activity.description}} /></li>
-                        </Suspense>
+                        <li>
+                          <Activity description={activity.activity.description}
+                                    Icon={loadIcon(activity.activity.icon)}
+                          />
+                        </li>
                       );
                     })}
                     {/* <li><GiBackpack /> <span>CS and ENTR @ CSU, FoCo</span></li>
