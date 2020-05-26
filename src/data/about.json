@@ -17,7 +17,7 @@
           "type": "fi",
           "name": "FiBookOpen"
         },
-        "description": "<i>Hacking, the Art of Exploitation</i>"
+        "description": "<i>The Generation X Money Book</i>"
       }
     },
     {
@@ -26,7 +26,7 @@
           "type": "fi",
           "name": "FiMusic"
         },
-        "description": "\\\"Good News\\\" by Mac Miller"
+        "description": "\"Good News\" by Mac Miller"
       }
     },
     {
@@ -38,5 +38,6 @@
         "description": "Integrating NetlifyCMS"
       }
     }
-  ]
+  ],
+  "image": "images/aboutpic.png"
 }
