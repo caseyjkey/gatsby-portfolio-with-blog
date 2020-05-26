@@ -33,8 +33,8 @@ collections:
               - { label: "Example", name: "subheader", widget: "string" } 
     - label: "About Me"
       name: "about"
-      file: "src/data/about.json"
-      media_folder: 'images'
+      file: "src/data/about/about.json"
+      media_folder: 'images/'
       fields:
         - {label: "Headshot", name: "image", widget: "image"}
         - {label: Bio, name: bio, widget: text, default: "I was born and raised in West Philadelphia. On the basketball court is where I spent most of my days; maxin', relaxin', actin' all cool, when some guys who were up to no good, started trouble in my neighborhood."}
