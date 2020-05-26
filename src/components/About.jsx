@@ -9,18 +9,13 @@ import { Waypoint } from  'react-waypoint'
 import { Animated } from 'react-animated-css'
 // For Github streak
 // import CountUp from 'react-countup'
-/* 
-import { FiBookOpen, FiMusic } from 'react-icons/fi'
-import { GiBackpack } from 'react-icons/gi'
-import { FaLaptopCode } from 'react-icons/fa' 
-*/
 
 export default function About(props) {
 
   const [visible, setVisible] = useState({info: false, counter: false});
   const makeVisible = (section) => setVisible({...visible}[section] = true);
 
-  const [github, setGithub] = useState({streak: NaN});
+  // const [github, setGithub] = useState({streak: NaN});
 
   
   useEffect(() => {
@@ -38,25 +33,21 @@ export default function About(props) {
   const data = useStaticQuery(
     graphql`
       query {
-        fileName: file(relativePath: {eq: "about/aboutPic.png"}) {
-          size
-          childImageSharp {
-            fluid(maxWidth: 555, maxHeight: 735) {
-              ...GatsbyImageSharpFluid
+        about {
+          image {
+            childImageSharp {
+              fluid(maxWidth: 555, maxHeight: 735) {
+                ...GatsbyImageSharpFluid
+              }
             }
           }
-        }
-
-        allAbout {
-          nodes {
-            bio
-            activities {
-              activity {
-                description
-                icon {
-                  name
-                  type
-                }
+          bio
+          activities {
+            activity {
+              description
+              icon {
+                name
+                type
               }
             }
           }
@@ -98,7 +89,7 @@ export default function About(props) {
         <Row noGutters>
           <Col lg="6" md="6" className="d-flex">
             <AboutImage>
-                <Img fluid={data.fileName.childImageSharp.fluid} />
+                <Img fluid={data.about.image.childImageSharp.fluid} />
             </AboutImage>
           </Col> 
 
@@ -110,10 +101,10 @@ export default function About(props) {
                   <Waypoint onEnter={() => makeVisible("info")}></Waypoint>
 
                   <Description>
-                    {data.allAbout.nodes[0].bio}
+                    <div dangerouslySetInnerHTML={{ __html: data.about.bio}} />
                   </Description>
                   <ul className="about-info mt-4 px-md-0 px-2">
-                    {data.allAbout.nodes[0].activities.map((activity, index) => {
+                    {data.about.activities.map((activity, index) => {
                       return (
                         <li>
                           <Activity description={activity.activity.description}
@@ -122,15 +113,11 @@ export default function About(props) {
                         </li>
                       );
                     })}
-                    {/* <li><GiBackpack /> <span>CS and ENTR @ CSU, FoCo</span></li>
-                    <li><FiBookOpen /> <span><i>Man's Search for Meaning</i></span></li>
-                    <li><FiMusic /> <span>"Good News" by Mac Miller</span></li>
-                    <li><FaLaptopCode /> <span>Working on this site</span></li> */}
                   </ul>
                 </Col>
               </Animated>
             </Row>
-
+            {/*
             <Animated animation="fadeInUp" isVisible={visible.counter}>
               <Counter className="mt-md-3">
                   {visible.counter && 
@@ -141,11 +128,10 @@ export default function About(props) {
                       </p>
                     ) || <div></div>) || <p className="mb-4">Loading Github data...</p>)
                   }
-                {/* <p><Button color="primary" className="py-3 px-3">Download CV</Button></p> */}
               </Counter>
             </Animated>
-            
             <Waypoint onEnter={() => makeVisible("counter") } />
+            */}
           </Col>
         </Row>
       </Container>

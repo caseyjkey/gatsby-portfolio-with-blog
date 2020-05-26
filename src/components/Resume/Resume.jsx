@@ -130,13 +130,6 @@ import { MdWork } from 'react-icons/md'
                 Recognized as a high-achieving student for earning over a 3.75 GPA while working part-time.
               </Entry>
               <Entry icon={GoStar}
-                      date={"April 2019 - Present"}
-                      title={"International Honor Society"}
-                      subtitle={"Delta Alpha Pi"}
-              >
-                Membership is awarded to high-achieving students with a recognized disability. 
-              </Entry>
-              <Entry icon={GoStar}
                       date={"September 2019"}
                       title={"SingularDTV Challenge"}
                       subtitle={"WyoHackathon"}
