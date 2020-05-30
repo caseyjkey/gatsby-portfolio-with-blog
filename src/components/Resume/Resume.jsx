@@ -4,7 +4,7 @@ import { Heading } from '../style.js'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.js'
 import { Nav, Link } from './Nav'
 import Entry from './Entry'
-import { SkillCircle, Skillbar } from './Skill'
+import { Skill } from './Skill'
 import { GiGraduateCap, GiDiploma } from 'react-icons/gi'
 import { AiOutlineTeam } from 'react-icons/ai'
 import { GoStar } from 'react-icons/go'
@@ -98,27 +98,7 @@ import { MdWork } from 'react-icons/md'
             
             <Page name="skills">
               <SectionTitle>Skills</SectionTitle>
-              <SubsectionTitle>Languages</SubsectionTitle>
-              <Row>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Python" skillLevel={4}/>
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="C++" skillLevel={4}/>
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Javascript" skillLevel={4}/>
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Java" skillLevel={3} />
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Ruby" skillLevel={2} />
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Solidity" skillLevel={1} />
-                </Col>
-              </Row>
+              
             </Page>
 
             <Page name="awards">
