@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { Col } from 'reactstrap'
 import styled from 'styled-components'
-import { theme } from '../style.js'
 import { lighten } from 'polished'
 import { Badge } from 'reactstrap'
 import { FaPython } from 'react-icons/fa'
