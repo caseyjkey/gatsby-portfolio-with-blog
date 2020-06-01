@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react'
+import React, { useEffect, useState, lazy } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style.js'
 import { AboutSection, AboutImage, Counter, Description } from './About/style.js'
