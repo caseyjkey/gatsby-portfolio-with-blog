@@ -122,7 +122,6 @@ export default function Skills() {
                             <Skill skill="Slack" Icon={loadIcon('FaSlack')} />
                         </Row>
                     </Col>
-                    */}
                 </Row>
             </Container>
         </SkillsSection>
