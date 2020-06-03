@@ -98,7 +98,7 @@ export default function FallingArrow(props) {
           <FallDown>
             <IoMdArrowRoundDown color={theme.primaryColor}
                                 fontSize="25px" 
-                                onClick={() => scroller.scrollTo('Resume', {smooth: true})}
+                                onClick={() => scroller.scrollTo('Projects', {smooth: true})}
             />
           </FallDown>
         </Container>
