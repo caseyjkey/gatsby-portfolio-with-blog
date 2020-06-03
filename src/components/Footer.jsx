@@ -20,17 +20,17 @@ export default function Footer(props) {
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft">
                 <li>
                   <Social Icon={FaTwitter}
-                          link="https://twitter.com/illbeanywhere"
+                          link="https://twitter.com/caseyjkey"
                   />
                 </li>
                 <li>
                   <Social Icon={FaLinkedinIn}
-                          link="https://linkedin.com/in/CaseyKey"
+                          link="https://linkedin.com/in/caseyjkey"
                   />
                 </li>
                 <li>
                   <Social Icon={FaFacebookF}
-                          link="https://www.facebook.com/casey.key.167"
+                          link="https://www.facebook.com/caseyjkey"
                   />
                 </li>
                 <li>
@@ -49,7 +49,7 @@ export default function Footer(props) {
                  <li><Link to="Home" offset={-80} smooth>Home</Link></li>
                  <li><Link to="About" offset={-70} smooth>About</Link></li>
                  <li><Link to="Resume" smooth>Resume</Link></li>
-                 <li><Link to="Services" smooth>Services</Link></li>
+                 {/*<li><Link to="Services" smooth>Services</Link></li>*/}
                  <li><Link to="Projects" smooth>Projects</Link></li>
                  <li><Link to="Contact" smooth>Contact</Link></li>
               </ul>
@@ -72,7 +72,6 @@ export default function Footer(props) {
                 <ul>
                   <li><FaSign /><span className="text">Fort Collins, Colorado, USA</span></li>
                   <li><a href="tel:13312227919"><FaPhone /><span className="text">+1 (331) 222-7919</span></a></li>
-                  <li><a href="mailto:casey.key@protonmail.com"><MdEmail /><span className="text">casey.key@protonmail.com</span></a></li>
                 </ul>
               </div>
             </div>

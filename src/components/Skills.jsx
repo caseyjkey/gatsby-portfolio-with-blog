@@ -62,7 +62,7 @@ export default function Skills() {
     }
 
     return (
-        <SkillsSection>
+        <SkillsSection name="Skills">
             <Container>
                 <Row noGutters className="justify-content-center pb-5">
 					<Col md={12} className="heading-section text-center ">
@@ -85,6 +85,7 @@ export default function Skills() {
                         </Row>
                         <Row xs={3} className={'justify-content-center'}>
                             <Skill skill="SQL" Icon={loadIcon('FaDatabase')} />
+                            <Skill skill="Dart" Icon={loadIcon('DiDart')} />
                         </Row>
                     </Col> 
                     <Col xs={12} lg={4} id="middleSection">
@@ -100,6 +101,7 @@ export default function Skills() {
                             <Skill skill="Node.js" Icon={loadIcon('DiNodejsSmall')} />
                         </Row>
                         <Row xs={3} className={'justify-content-center'}>
+                            <Skill skill="Flutter" Icon={loadIcon('RiFlutterLine')} />
                             <Skill skill="Ethereum" Icon={loadIcon('FaEthereum')} />
                         </Row>
                     </Col>
