@@ -6,7 +6,8 @@ import Layout from '../components/Layout'
 import Navigation from '../components/Navigation'
 import Introduction from '../components/Introduction'
 import About from '../components/About'
-import Resume from '../components/Resume/Resume'
+import Skills from '../components/Skills'
+// import Resume from '../components/Resume/Resume'
 import Services from '../components/Services'
 import { Projects } from '../components/Projects'
 import HireMe from '../components/Hire'
@@ -53,15 +54,15 @@ const IndexPage = ({ data }) => {
       </Helmet>
       <ThemeProvider theme={theme}>
         <Body>
-          <Navigation></Navigation>
-          <Introduction></Introduction>
-          <About></About>
-          <Resume></Resume>
-          <Services></Services>
+          <Navigation />
+          <Introduction />
+          <About />
+          <Skills />
+          {/*<Services />*/}
           <Projects></Projects>
-          <HireMe status="available"></HireMe>
-          <Contact></Contact>
-          <Footer></Footer>
+          {/*<HireMe status="available" />*/}
+          <Contact />
+          <Footer />
         </Body>
       </ThemeProvider>
     </Layout>

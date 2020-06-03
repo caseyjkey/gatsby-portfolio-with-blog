@@ -4,7 +4,7 @@ import { Heading } from '../style.js'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.js'
 import { Nav, Link } from './Nav'
 import Entry from './Entry'
-import { SkillCircle, Skillbar } from './Skill'
+import { Skill } from './Skill'
 import { GiGraduateCap, GiDiploma } from 'react-icons/gi'
 import { AiOutlineTeam } from 'react-icons/ai'
 import { GoStar } from 'react-icons/go'
@@ -34,7 +34,7 @@ import { MdWork } from 'react-icons/md'
                       date={"Expected: May 2021"}
                       title={"Computer Science"}
                       subtitle={"Colorado State University"}
-                      gpa={"3.53"}>
+                      gpa={"3.61"}>
                 Bachelor's of Science in Computer Science with a concentration in Computer Science.
               </Entry>
 
@@ -98,34 +98,14 @@ import { MdWork } from 'react-icons/md'
             
             <Page name="skills">
               <SectionTitle>Skills</SectionTitle>
-              <SubsectionTitle>Languages</SubsectionTitle>
-              <Row>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Python" skillLevel={4}/>
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="C++" skillLevel={4}/>
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Javascript" skillLevel={4}/>
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Java" skillLevel={3} />
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Ruby" skillLevel={2} />
-                </Col>
-                <Col md={6} className="animate-box">
-                  <Skillbar skill="Solidity" skillLevel={1} />
-                </Col>
-              </Row>
+              
             </Page>
 
             <Page name="awards">
               <SectionTitle>Awards</SectionTitle>
               <Entry icon={GoStar}
-                      date={"Fall 2018, Spring 2019, Fall 2019"}
-                      title={"Dean's List"}
+                      date={"Fall 2018 - Present"}
+                      title={"Dean's List (x4)"}
                       subtitle={"College of Natural Science"}>
                 Recognized as a high-achieving student for earning over a 3.75 GPA while working part-time.
               </Entry>
@@ -134,14 +114,14 @@ import { MdWork } from 'react-icons/md'
                       title={"SingularDTV Challenge"}
                       subtitle={"WyoHackathon"}
               >
-                Spearheaded a trip to San Francisco by developing a community blockchain-curated top music billboard.
+                Spearheaded a trip to San Francisco by developing a token-curated music billboard.
               </Entry>
               <Entry icon={GoStar}
                       date={"October 2017"}
                       title={"Best Artistry Award"}
                       subtitle={"RamHack at Colorado State University"}
               >
-                Organized a team and developed a virtual reality classroom environment of the solarsystem for up to 20 students and a teacher in 48 hours.
+                Led the development of a VR solarsystem classroom within 48 hours.
               </Entry>
             </Page>
             <Page name="leadership" className="mb-0">

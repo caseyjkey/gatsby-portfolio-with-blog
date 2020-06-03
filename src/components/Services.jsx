@@ -23,7 +23,7 @@ export default function Services(props) {
                       service="Tutoring"
                       link="http://fiver.com/s2/9916472099"
             >
-              Local and online tutoring for Computer Science, Math, Physics, and Economics.
+              Tutoring for Computer Science
             </Service>
           </Col>
           <Col md={4} className="text-center d-flex">
@@ -31,7 +31,7 @@ export default function Services(props) {
                       service="Web Development"
                       button="Contact me"
             >
-              Full-stack web development from design to implementation.
+              Full-stack modern web applications
             </Service>
           </Col>
           <Col md={4} className="text-center d-flex">
@@ -39,7 +39,7 @@ export default function Services(props) {
                       service="App Development"
                       button="Contact me"
             >
-              Excited to turn your idea into a well-crafted Android app. 
+               Beautiful mobile applications
             </Service>
           </Col>
         </Row>
