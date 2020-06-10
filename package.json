@@ -2,7 +2,7 @@
   "name": "portfolio-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://caseykey.github.io/",
+  "homepage": "https://caseyjkey.github.io/",
   "dependencies": {
     "@caseykey/react-read-more-read-less": "^1.0.7",
     "@testing-library/jest-dom": "^4.2.4",
