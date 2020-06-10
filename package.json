@@ -21,7 +21,7 @@
     "gatsby-source-filesystem": "^2.1.46",
     "gatsby-transformer-json": "^2.2.25",
     "gatsby-transformer-sharp": "^2.3.12",
-    "gh-pages": "^2.2.0",
+    "gh-pages": "^3.0.0",
     "jquery": "^3.4.1",
     "netlify-cms-app": "^2.11.5",
     "polished": "^3.4.2",
@@ -51,7 +51,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "git add -A && git commit -m 'deploy to netlify' && git push origin source"
+    "predeploy": "gatsby build",
+    "deploy": "gh-pages -d public -b master"
   },
   "eslintConfig": {
     "extends": "react-app"
