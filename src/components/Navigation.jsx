@@ -9,7 +9,7 @@ export default function Navigation(props) {
       <Link to="Skills">Skills</Link>
       {/*<Link to="Services">Services</Link>*/}
       <Link to="Projects">Projects</Link>
-      <Link to="Contact">Contact</Link>
+      <Link to="Contact" offset={0}>Contact</Link>
     </Nav>
   );
 }

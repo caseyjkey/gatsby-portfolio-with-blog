@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { Container, Row, Col } from 'reactstrap'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
-import { FaHeartBroken, FaLinkedinIn, FaTwitter, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight } from 'react-icons/fa'
-import { MdEmail } from 'react-icons/md'
+import { FaLinkedinIn, FaTwitter, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight } from 'react-icons/fa'
+import { DiCode } from 'react-icons/di'
 import { Section } from './style'
 import { Link } from 'react-scroll'
 
@@ -16,7 +16,7 @@ export default function Footer(props) {
           <Col md>
             <div className="ftco-footer-widget">
               <h2 className="ftco-heading-2">About</h2>
-              <p>Casey Key is a software engineer with a focus on finance, education, and security.</p>
+              <p>Casey J. Key is a software engineer with a focus on finance, education, and security.</p>
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft">
                 <li>
                   <Social Icon={FaTwitter}
@@ -48,8 +48,8 @@ export default function Footer(props) {
               <ul className="list-unstyled">
                  <li><Link to="Home" offset={-80} smooth>Home</Link></li>
                  <li><Link to="About" offset={-70} smooth>About</Link></li>
-                 <li><Link to="Resume" smooth>Resume</Link></li>
-                 {/*<li><Link to="Services" smooth>Services</Link></li>*/}
+                 {/*<li><Link to="Resume" smooth>Resume</Link></li>
+                 <li><Link to="Services" smooth>Services</Link></li>*/}
                  <li><Link to="Projects" smooth>Projects</Link></li>
                  <li><Link to="Contact" smooth>Contact</Link></li>
               </ul>
@@ -59,8 +59,6 @@ export default function Footer(props) {
             <div className="ftco-footer-widget mb-4">
               <h2 className="ftco-heading-2">Services</h2>
               <ul className="list-unstyled">
-                <li><Link to="Contact" smooth><FaLongArrowAltRight />App Development</Link></li>
-                <li><Link to="Contact" smooth><FaLongArrowAltRight />Web Development</Link></li>
                 <li><a href="http://fiver.com/s2/9916472099" target="_blank"><FaLongArrowAltRight />Tutoring</a></li>
               </ul>
             </div>
@@ -79,7 +77,7 @@ export default function Footer(props) {
         </Row>
         <Row>
           <Col md={12} className="text-center">
-            <p>Made with <FaHeartBroken /> by Casey Key</p>
+            <p><DiCode /> by Casey J. Key</p>
           </Col>
         </Row>
       </Container>

@@ -35,7 +35,7 @@ export const ProjectWrapper = styled.div`
 		right: 0;
 		bottom: 0;
 		content: '';
-		opacity: 0;
+		opacity: 0.8;
     z-index: 0;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -43,13 +43,13 @@ export const ProjectWrapper = styled.div`
     -ms-transition: all 0.3s ease;
     transition: all 0.3s ease;
 		@media (max-width: 576px) {
-			opacity: .8;
+			opacity: 1;
 		}
 	}
 	.text{
 		max-width: 80%;
 		z-index: 1;
-		opacity: 0;
+		opacity: 0.8;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     -webkit-transition: all 0.3s ease;
