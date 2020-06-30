@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { lighten, darken } from 'polished'
 import { Container, Row, Col } from 'reactstrap'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
-import { FaLinkedinIn, FaTwitter, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight } from 'react-icons/fa'
-import { DiCode } from 'react-icons/di'
+import { FaHeartBroken, FaLinkedinIn, FaTwitter, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight } from 'react-icons/fa'
 import { Section } from './style'
 import { Link } from 'react-scroll'
 
@@ -69,7 +69,7 @@ export default function Footer(props) {
               <div className="block-23 mb-3">
                 <ul>
                   <li><FaSign /><span className="text">Fort Collins, Colorado, USA</span></li>
-                  <li><a href="tel:13312227919"><FaPhone /><span className="text">+1 (331) 222-7919</span></a></li>
+                  <li><a href="tel:13312227919"><FaPhone />+1 (331) 222-7919</a></li>
                 </ul>
               </div>
             </div>
@@ -77,7 +77,7 @@ export default function Footer(props) {
         </Row>
         <Row>
           <Col md={12} className="text-center">
-            <p><DiCode /> by Casey J. Key</p>
+            <p>Made with <FaHeartBroken /> by Casey J. Key</p>
           </Col>
         </Row>
       </Container>
@@ -117,33 +117,23 @@ const FooterSection = styled.footer`
 		}
 		ul{
 			li{
+        a {
+          &:hover {
+            color: ${props => props.theme.white};
+          }
+        }
+        
         svg {
           margin-right: 1em;
         }
-				a{
-          margin-bottom: 0;
-					color: rgba(255,255,255,.6);
-					svg{
-						// color: ${props => props.theme.white};
-            color: rgba(255,255,255,.6);
-					}
-				}
-			}
-		}
-		.btn-primary{
-			background: ${props => props.theme.white} !important;
-			border: 2px solid ${props => props.theme.white} !important;
-			&:hover{
-				background: ${props => props.theme.white};
-				border: 2px solid ${props => props.theme.white} !important;
 			}
 		}
 	}
 	p {
-		color: rgba(${props => props.theme.white}, .7);
+		color: ${props => darken(0.3, props.theme.white)};
 	}
 	a {
-		color: rgba(${props => props.theme.white}, .7);
+		color: ${props => darken(0.3, props.theme.white)};
 		&:hover {
 			color: ${props => props.theme.white};
 		}
@@ -166,7 +156,8 @@ const FooterSection = styled.footer`
 			width: 40px;
 			display: block;
 			float: left;
-			background: rgba(${props => props.theme.white}, .1);
+      color: ${props => lighten(0.1, props.theme.black)};
+      background: ${props => darken(0.7, props.theme.white)};
 			border-radius: 50%;
 			position: relative;
 			svg {
@@ -177,7 +168,8 @@ const FooterSection = styled.footer`
 				transform: translate(-50%, -50%);
 			}
 			&:hover {
-				color: ${props => props.theme.white};
+        color: ${props => props.theme.white};
+        background: ${props => props.theme.black};
 			}
 		}
 	}
