@@ -1,0 +1,30 @@
+{
+  "start": "May 2020",
+  "galleryImages": [
+    {
+      "image": "images/swod.gif"
+    },
+    {
+      "image": "images/individualcontribution.png"
+    }
+  ],
+  "subtitle": "Amazon Web Services Internship",
+  "title": "WorkSpace Self-Service Portal",
+  "project": "workspaces",
+  "icons": {
+    "fa": [
+      "FaAws",
+      "FaReact",
+      "FaPython",
+      "FaGit",
+      "FaWindows",
+      "FaApple"
+    ]
+  },
+  "end": {
+    "present": false,
+    "date": "August 2020"
+  },
+  "image": "images/workspace_created.png",
+  "description": "* Architected a React web application to enable remote work by reduce end-user’s procurement time by 85\n* Satisfied customer requests for highly available RESTful services after project demos\n* Integrated with existing smart card authentication by creating an identity provider\n* Reduced administrator overhead by integrating with customer's existing Active Directory"
+}
