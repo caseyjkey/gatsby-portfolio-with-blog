@@ -10,7 +10,7 @@ export default function Socials(props) {
     <ul className="ftco-footer-social list-unstyled ">
       <li>
         <Social Icon={FaTwitter}
-                link="https://twitter.com/caseyjkey"
+                link="https://twitter.com/caseyjkeycodes"
         />
       </li>
       <li>
