@@ -1,0 +1,62 @@
+---
+title: Moon Pie 
+date: 2021-08-17
+published: true
+cover: ./moonpie.jpg
+---
+
+## More code!
+
+Mind `Dump`!
+Using `prism-react-renderer`:
+
+```jsx
+let intro = []
+
+let stanza1 = [
+    "Home is where the wind fills our sails.",
+    "Although many don't sail away from here.",
+    "With a lake much like the sea",
+    "Sailing what we've already seen.",
+    "While we wait for our ship to come and take us away",
+    "Well we've got many days before we go!"
+]
+
+let chorus = [ 
+    "Moon pies filled with singly sweet creams",
+    "Dreams already made for you and me",
+    "So I'll see you when I wake up",
+    "But fever dreams have taken over me"
+]
+
+let stanza2 = [
+    "So decorate our time like it's makeup",
+    "Music and Patron for the bros",
+    "We're getting collared up",
+    "Walk into the pub like it's a stickup",
+    "Play a couple games of pool, hold up",
+    "Hit the store to get our stomachs filled up"
+]
+
+const Dump = props => (
+  <div
+    style={{
+      fontSize: 20,
+      border: '1px solid #efefef',
+      padding: 10,
+      background: 'white',
+    }}
+  >
+    {Object.entries(props).map(([key, val]) => (
+      <pre key={key}>
+        <strong style={{ color: 'white', background: 'red' }}>
+          {key} 💩
+        </strong>
+        {JSON.stringify(val, '', ' ')}
+      </pre>
+    ))}
+  </div>
+)
+
+render(<Dump props={[stanza1, chorus, stanza2, chorus]} />)
+```
