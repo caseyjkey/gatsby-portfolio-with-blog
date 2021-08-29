@@ -44,6 +44,7 @@ exports.createPages = ({ actions, graphql }) => {
                     slug: post.fields.slug,
                     previous,
                     next,
+                    post,
                 },
             })
         })
