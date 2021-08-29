@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { Section } from '../style.js'
+import { Section, Image } from '../style.js'
 
 export const BlogSection = styled.section`
   ${Section}
-
 `;
