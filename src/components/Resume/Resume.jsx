@@ -2,7 +2,6 @@ import React from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from '../style.js'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.js'
-import { Nav, Link } from './Nav'
 import Entry from './Entry'
 import { Skill } from './Skill'
 import { GiGraduateCap, GiDiploma } from 'react-icons/gi'
@@ -12,20 +11,10 @@ import { MdWork } from 'react-icons/md'
 
  export default function Resume(props) {
   return (
-    <ResumeSection name="Resume" className="goto-here">
+    <ResumeSection name="Resume">
       <Container>
         <Heading className="mb-4">Resume</Heading>
         <Row>
-          <Col md={3}>
-            <Nav>
-              <Link to="education" activeClass="current" spy={true} smooth={true}>Education</Link>
-              <Link to="experience" activeClass="current" spy={true} smooth={true}>Experience</Link>
-              <Link to="skills" activeClass="current" spy={true} smooth={true}>Skills</Link>
-              <Link to="awards" activeClass="current" spy={true} smooth={true}>Awards</Link>
-              <Link to="leadership" activeClass="current" spy={true} smooth={true}>Leadership</Link>
-            </Nav>
-          </Col>
-
           <Col md={9}>
 
             <Page name="education">
