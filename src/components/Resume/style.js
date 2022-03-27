@@ -27,7 +27,6 @@ export const SubsectionTitle = styled.h2`
 
 export const Page = styled(PlainPage)`
   width: 100%;
-  margin-bottom: 7em;
   &.four {
     margin-bottom: 0;
   }

@@ -31,27 +31,18 @@ import { MdWork } from 'react-icons/md'
             <Page name="education">
               <SectionTitle>Education</SectionTitle>
               <Entry icon={GiGraduateCap} 
-                      date={"Expected: May 2021"}
                       title={"Computer Science"}
                       subtitle={"Colorado State University"}
-                      gpa={"3.61"}>
-                Bachelor's of Science in Computer Science with a concentration in Computer Science.
-              </Entry>
-
-              <Entry icon={GiDiploma}
-                      date={"Expected: May 2021"}
-                      title={"Entrepreneurship and Innovation"}
-                      subtitle={"Colorado State University"}
-                      gpa={"4.0"}>
-                A certificate to help develop an entrepreneurial mindset.
+                      gpa={"3.53"}>
+                Bachelor's of Science in Computer Science
               </Entry>
             </Page>
 
             <Page name="experience">
               <SectionTitle>Experience</SectionTitle>
               <Entry icon={MdWork}
-                      date={"August 2019 – Present"}
-                      title={"DevOps Intern"}
+                      date={"August 2019 – May 2022"}
+                      title={"DevOps Engineer Intern"}
                       subtitle={"Bongo"}
               >
                 <ul>

@@ -33,7 +33,7 @@ export default class Entry extends Component {
               <span><Icon /></span>
             </div>
             <div className="text pl-3">
-              <span className="date">{date}</span>
+              {date && <span className="date">{date}</span>}
               <h2>{title}</h2>
               <Waypoint onEnter={this.makeVisible}></Waypoint>
               <span className="subtitle">{subtitle}</span>
