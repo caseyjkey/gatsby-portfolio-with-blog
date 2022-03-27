@@ -26,7 +26,7 @@ export const SkillContainer = styled.div`
   }
   svg {
     display: block;
-    color: ${(props) => props.theme.primaryColor}
+    color: ${(props) => props.theme.primaryColor};
     margin: auto;
     margin-bottom: 1.2rem;
   }

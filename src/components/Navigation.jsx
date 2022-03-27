@@ -1,15 +1,17 @@
 import React from 'react'
-import { Nav, Link } from './Navigation/Nav'
+import { Nav, Scroll, TradLink } from './Navigation/Nav'
 
 export default function Navigation(props) {
   return (
     <Nav>
-      <Link to="Home" offset={-80}>Home</Link>
-      <Link to="About" offset={-70}>About</Link>
-      <Link to="Skills">Skills</Link>
-      {/*<Link to="Services">Services</Link>*/}
-      <Link to="Projects">Projects</Link>
-      <Link to="Contact" offset={0}>Contact</Link>
+      <Scroll to="Home" offset={-80}>Home</Scroll>
+      <TradLink to="/resume">Resume</TradLink>
+      <Scroll to="About" offset={-70}>About</Scroll>
+      <Scroll to="Skills">Skills</Scroll>
+      {/*<Scroll to="Services">Services</Scroll>*/}
+      <Scroll to="Projects">Projects</Scroll>
+      <Scroll to="Contact" offset={0}>Contact</Scroll>
     </Nav>
   );
 }
+

@@ -6,6 +6,7 @@ import { theme } from '../style.js'
 import { Link as ScrollLink } from 'react-scroll'
 import Button from './Hamburger'
 import { Animated } from 'react-animated-css'
+import { Link } from 'gatsby'
 
 export function Nav({children}) {
   const [collapsed, setCollapsed] = useState(true);
@@ -28,7 +29,7 @@ export function Nav({children}) {
   );
 }
 
-export function Link({ to, children, offset}) {
+export function Scroll({ to, children, offset}) {
   return (
       <li className="nav-item">
         <ScrollLink to={to} activeClass="active" spy={true} smooth="true" offset={offset} className="nav-link">
@@ -37,6 +38,16 @@ export function Link({ to, children, offset}) {
       </li>
   );
 };
+
+export function TradLink({ to, children}) {
+  return (
+      <li className="nav-item">
+        <Link to={to} className="nav-link">
+          <span>{children}</span>
+        </Link>
+      </li>
+  );
+}
 
 const Navi = styled.nav`
   .ftco-navbar-light {
