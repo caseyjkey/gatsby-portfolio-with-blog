@@ -16,7 +16,7 @@ import { MdWork } from 'react-icons/md'
         <Heading className="mb-4">Resume</Heading>
         <Row>
           <Col md={9}>
-
+            {/* TODO: https://reactstrap.github.io/?path=/docs/components-accordion--accordion */}
             <Page name="education">
               <SectionTitle>Education</SectionTitle>
               <Entry icon={GiGraduateCap} 
