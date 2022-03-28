@@ -4,7 +4,7 @@ import { Heading } from '../style.js'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.js'
 import Entry from './Entry'
 import { Skill } from './Skill'
-import { GiGraduateCap, GiDiploma } from 'react-icons/gi'
+import { GiGraduateCap} from 'react-icons/gi'
 import { AiOutlineTeam } from 'react-icons/ai'
 import { GoStar } from 'react-icons/go'
 import { MdWork } from 'react-icons/md'
@@ -29,14 +29,37 @@ import { MdWork } from 'react-icons/md'
 
             <Page name="experience">
               <SectionTitle>Experience</SectionTitle>
+               
+              <Entry icon={MdWork}
+                      date={"August 2021 – Present"}
+                      title={"Assocaite Software Engineer"}
+                      subtitle={"Capital One"}
+              >
+                <ul>
+                  <li>Evaluated real-time data pipeline perfomance using Python with parallelism</li>
+                  <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                </ul>
+              </Entry>
+              
               <Entry icon={MdWork}
                       date={"August 2019 – May 2022"}
                       title={"DevOps Engineer Intern"}
                       subtitle={"Bongo"}
               >
                 <ul>
-                  <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
-                  <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                  <li>Built custom monitors to fortify web application's live audio infrastructure</li>
+                  <li>Automated 73 end to end tests with Ruby, Capybara, and Jenkins for continous integration</li>
+                </ul>
+              </Entry>
+              
+              <Entry icon={MdWork}
+                      date={"May 2020 – August 2020"}
+                      title={"Associate Cloud Consultant Intern"}
+                      subtitle={"Amazon Web Services"}
+              >
+                <ul>
+                  <li>Architected self-service WorkSpace solution to reduce end-user’s procurement time by 85%</li>
+                  <li>Satisfied customer requests for highly available RESTful services after project demos</li>
                 </ul>
               </Entry>
               
