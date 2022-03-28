@@ -36,8 +36,8 @@ import { MdWork } from 'react-icons/md'
                       subtitle={"Capital One"}
               >
                 <ul>
-                  <li>Evaluated real-time data pipeline perfomance using Python with parallelism</li>
-                  <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                  <li>Evaluated real-time data pipeline perfomance using Python and parallelism</li>
+                  <li>Developed a Chrome extension to improve data onboarding experience</li>
                 </ul>
               </Entry>
               
