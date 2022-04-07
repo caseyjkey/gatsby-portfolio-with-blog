@@ -2,7 +2,7 @@ import React, { useEffect, useState, lazy } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style.js'
 import { AboutSection, AboutImage, Counter, Description } from './About/style.js'
-import Img from 'gatsby-image'
+import { StaticImage } from 'gatsby-plugin-image'
 import Activity from './About/Activity.jsx'
 import { graphql, useStaticQuery } from 'gatsby'
 import { Waypoint } from  'react-waypoint'
@@ -31,29 +31,26 @@ export default function About(props) {
   }, []);
 
   const data = useStaticQuery(
-    graphql`
-      query {
-        about {
-          image {
-            childImageSharp {
-              fluid(maxWidth: 555, maxHeight: 735) {
-                ...GatsbyImageSharpFluid
-              }
-            }
-          }
-          bio
-          activities {
-            activity {
-              description
-              icon {
-                name
-                type
-              }
-            }
-          }
+    graphql`{
+  about {
+    image {
+      childImageSharp {
+        gatsbyImageData(width: 555, height: 735, layout: CONSTRAINED)
+      }
+    }
+    bio
+    activities {
+      activity {
+        description
+        icon {
+          name
+          type
         }
       }
-  `);
+    }
+  }
+}
+`);
 
   // Lazyload the an icon component
   // [param] icon {name: String, type: String}
@@ -89,7 +86,7 @@ export default function About(props) {
         <Row noGutters>
           <Col lg="6" md="6" className="d-flex">
             <AboutImage>
-                <Img fluid={data.about.image.childImageSharp.fluid} />
+                <StaticImage src="./About/images/about.png" alt="Picture of Casey in a Suit" />
             </AboutImage>
           </Col> 
 

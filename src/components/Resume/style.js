@@ -3,6 +3,7 @@ import { Section, NoPaddingBottom } from '../style.js' // Global styles
 import { default as PlainPage } from './Page'
 
 export const ResumeSection = styled.section`
+  margin-top: 6em;
   ${Section}
   ${NoPaddingBottom}
 `;

@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components'
 import { theme, Body } from '../components/style.js'
 import Navigation from '../components/Navigation'
 import Resume from '../components/Resume/Resume'
+import Footer from '../components/Footer'
 
 export const query = graphql`
   query {
@@ -50,6 +51,7 @@ export default function ResumePage({ data }) {
                 <Body>
                     <Navigation />
                     <Resume />
+                    <Footer />
                 </Body>
             </ThemeProvider>
         </Layout>

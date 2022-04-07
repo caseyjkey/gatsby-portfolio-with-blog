@@ -3,7 +3,7 @@ import { GatsbyImage } from 'gatsby-plugin-image'
 import React from 'react'
 import { Heading } from './style.js' // Global styled-components
 import { Container, Row, Col } from 'reactstrap'
-import { BlogSection } from './Blog/style.js'
+import { BlogSection, BlogEntry } from './Blog/style.js'
 
 export const Blog = (props) => {
     const data = useStaticQuery( 
@@ -22,7 +22,7 @@ export const Blog = (props) => {
                             cover {
                                 publicURL
                                 childImageSharp {
-                                    gatsbyImageData(width: 2000)
+                                    gatsbyImageData
                                 }
                             }
                         }
@@ -48,19 +48,18 @@ export const Blog = (props) => {
                 <Row>
                     {data.allMdx.nodes.map(
                         ({ id, excerpt, frontmatter, fields}) => (
-                            <div key={id}>
+                            <BlogEntry key={id}>
                                 <Link to={fields.slug}>
                                     {frontmatter.cover ? (
                                         <GatsbyImage
                                             image={frontmatter.cover.childImageSharp.gatsbyImageData}
-                                            layout="fullWidth"
                                         />    
                                     ) : null }
                                     <h1>{frontmatter.title}</h1>
                                     <p>{frontmatter.date}</p>
                                     <p>{excerpt}</p>
                                 </Link>
-                            </div>
+                            </BlogEntry>
                         )
                     )}
                 </Row>

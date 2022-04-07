@@ -32,7 +32,6 @@ export const Description = styled.p`
 `;
 
 export const AboutImage = styled.div`
-  height: 735px;
 	width: 100%;
 	z-index: 0;
 	position: relative;

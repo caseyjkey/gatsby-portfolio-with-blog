@@ -9,7 +9,7 @@ export default function Navigation(props) {
       <Scroll to="About" offset={-70}>About</Scroll>
       <Scroll to="Skills">Skills</Scroll>
       {/*<Scroll to="Services">Services</Scroll>*/}
-      <Scroll to="Projects">Projects</Scroll>
+      <TradLink to="/projects">Projects</TradLink>
       <Scroll to="Contact" offset={0}>Contact</Scroll>
     </Nav>
   );

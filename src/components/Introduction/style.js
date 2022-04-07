@@ -36,21 +36,26 @@ export const Subheader = styled.h3`
 `;
 export const Header = styled.h1`
   color: ${(props) => props.theme.black}
-  font-size: 60px;
-  font-weight: 800;
+  font-size: 69px;
+  font-weight: 900;
   @media (max-width: 767.98px) {
     font-size: 40px;
   }
 `;
 export const Slider = styled.h2`
   color: ${(props) => props.theme.black}
-  font-weight: 800;
+  font-weight: 600;
   .header {
-    color: ${(props) => props.theme.primaryColor};
+    font-size: 2em;
    //text-decoration: underline;
   }
   .subheader {
     font-weight: 600;
+    font-size: 0.8em;
+    color: ${(props) => props.theme.darken};
+  }
+  span#name {
+    color: ${(props) => props.theme.primaryColor};
   }
 `;
 

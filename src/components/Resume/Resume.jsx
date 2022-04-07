@@ -15,7 +15,7 @@ import { MdWork } from 'react-icons/md'
       <Container>
         <Heading className="mb-4">Resume</Heading>
         <Row>
-          <Col md={9}>
+          <Col>
             {/* TODO: https://reactstrap.github.io/?path=/docs/components-accordion--accordion */}
             <Page name="education">
               <SectionTitle>Education</SectionTitle>

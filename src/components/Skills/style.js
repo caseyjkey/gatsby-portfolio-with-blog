@@ -7,8 +7,8 @@ export const SkillsSection = styled.div`
   #middleSection {
     background-color: ${(props) => lighten(0.31, props.theme.primaryColor)};
     span {
-      color: black;
-      background-color: white;
+      color: ${(props) => props.theme.black};
+      background-color: ${(props) => props.theme.white};
     }
   }
 `;
@@ -31,7 +31,7 @@ export const SkillContainer = styled.div`
     margin-bottom: 1.2rem;
   }
   span {
-    background-color: ${(props) => props.theme.black}
+    background-color: ${(props) => props.theme.black};
     width: 5m;
   }
 `;
