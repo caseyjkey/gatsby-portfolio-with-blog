@@ -4,9 +4,10 @@ import { Nav, Scroll, TradLink } from './Navigation/Nav'
 export default function Navigation(props) {
   return (
     <Nav>
-      <Scroll to="Home" offset={-80}>Home</Scroll>
+      <TradLink to="/">Home</TradLink>
       <TradLink to="/resume">Resume</TradLink>
-      <Scroll to="About" offset={-70}>About</Scroll>
+      <TradLink to="/blog">Blog</TradLink>
+      <TradLink to="/about">About</TradLink>
       <Scroll to="Skills">Skills</Scroll>
       {/*<Scroll to="Services">Services</Scroll>*/}
       <TradLink to="/projects">Projects</TradLink>

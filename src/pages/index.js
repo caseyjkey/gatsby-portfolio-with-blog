@@ -8,7 +8,6 @@ import Introduction from '../components/Introduction'
 import About from '../components/About'
 import Skills from '../components/Skills'
 import Services from '../components/Services'
-import { Blog } from '../components/Blog'
 import HireMe from '../components/Hire'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
@@ -55,12 +54,9 @@ const IndexPage = ({ data }) => {
         <Body>
           <Navigation />
           <Introduction />
-          <About />
           <Skills />
-          <Services />
-          <Blog></Blog>
-          <HireMe status="available" />
-          <Contact />
+          {/* <Services />
+          <HireMe status="available" /> */}
           <Footer />
         </Body>
       </ThemeProvider>
