@@ -15,7 +15,6 @@ export const SkillsSection = styled.div`
 
 export const SkillContainer = styled.div`
   width: 25%;
-  margin: 0 0.5rem 1.5rem 0.5rem;
   display: block;
   h3 {
     color: ${(props) => props.theme.black};
