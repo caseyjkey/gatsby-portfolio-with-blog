@@ -304,6 +304,38 @@ const SittingSvg = styled.svg`
       transform: translateY(0px);
     }
   }
+  
+  @keyframes read {
+    0% {
+      transform: translatex(1px);
+    }
+    50% {
+      transform: translateX(-3px);
+    }
+    100% {
+      transform: translateX(1px);
+    }
+  }
+
+  @keyframes eyebrows {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  #eyeb {
+    animation: eyebrows 9s 6.5s ease infinite;
+  }
+
+  #eyey2 {
+    animation: read 9s 6.5s ease infinite;
+  }
 
   #body {
     animation: slide 9s 6.5s ease infinite;
