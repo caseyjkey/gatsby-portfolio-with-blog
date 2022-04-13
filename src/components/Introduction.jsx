@@ -36,7 +36,7 @@ export default function Introduction(props) {
       <Overlay></Overlay>
       <Animated animationIn="fadeInUp" animationInDuration={500} animationInDelay={200} >
         <Container>
-          <Row noGutters className="js-fullheight justify-content-center align-items-center">
+          <Row noGutters xs="1" md="2" className="js-fullheight justify-content-center align-items-center">
             <Col>
                 <Text>
                   <Slider>
@@ -277,16 +277,18 @@ export default function Introduction(props) {
           </Row>
           <Row>
             <Col>
+              <FallingArrow />
             </Col>
           </Row>
         </Container>
       </Animated>
-      <FallingArrow />
     </HeroWrap>
   );
 }
 
 const SittingSvg = styled.svg`
+  max-width: 100%;
+  height: auto;
   margin: 3rem 0rem 0 0rem;
 
   .primaryColor {

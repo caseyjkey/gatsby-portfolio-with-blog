@@ -6,6 +6,7 @@ export const ResumeSection = styled.section`
   margin-top: 6em;
   ${Section}
   ${NoPaddingBottom}
+  padding-top: 0;
 `;
 
 export const SectionTitle = styled.h2`

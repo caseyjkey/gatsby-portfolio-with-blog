@@ -24,6 +24,7 @@ export const Overlay = styled.div`
 `;
 
 export const Text = styled.div`
+  margin-top: 6em;
   width: 100%;
 `;
 
