@@ -2,8 +2,11 @@ import styled from 'styled-components'
 import { theme, Section } from '../style.js'
 import { lighten } from 'polished'
 
-export const SkillsSection = styled.div`
+export const SkillsSection = styled.ul`
   ${Section}
+  ul {
+    list-style: none;
+  }
   #middleSection {
     background-color: ${(props) => lighten(0.31, props.theme.primaryColor)};
     span {
@@ -13,9 +16,9 @@ export const SkillsSection = styled.div`
   }
 `;
 
-export const SkillContainer = styled.div`
+export const SkillContainer = styled.li`
   width: 25%;
-  display: block;
+  display: inline-block;
   h3 {
     color: ${(props) => props.theme.black};
     clear: none;

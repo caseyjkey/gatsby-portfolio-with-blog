@@ -72,55 +72,30 @@ export default function Skills() {
 				</Row>
                 <Row> 
                     <Col xs={12} lg={4} className="animate-box">
-                        <SubsectionTitle className={"text-center mb-2"}>Languages</SubsectionTitle>
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="Python" Icon={loadIcon('FaPython')} />
-                            <Skill skill="C/C++" Icon={loadIcon('FaCuttlefish')} />
-                            <Skill skill="Javascript" Icon={loadIcon('DiJavascript1')} />
-                        </Row>
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="Java" Icon={loadIcon('DiJava')} />
-                            <Skill skill="Ruby" Icon={loadIcon('DiRuby')} />
-                            <Skill skill="Bash" Icon={loadIcon('DiTerminal')} /> 
-                        </Row>
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="SQL" Icon={loadIcon('FaDatabase')} />
-                            <Skill skill="Dart" Icon={loadIcon('DiDart')} />
-                        </Row>
-                    </Col> 
-                    <Col xs={12} lg={4} id="middleSection">
-                        <SubsectionTitle className={"text-center mb-2"}>Technology</SubsectionTitle>
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="MacOS" Icon={loadIcon('DiApple')} />
-                            <Skill skill="GNU/Linux" Icon={loadIcon('DiGnu')} />
-                            <Skill skill=".NET" Icon={loadIcon('FaWindows')} />
-                        </Row> 
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="React" Icon={loadIcon('FaReact')} />
-                            <Skill skill="AWS" Icon={loadIcon('FaAws')} />
-                            <Skill skill="Node.js" Icon={loadIcon('DiNodejsSmall')} />
-                        </Row>
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="Flutter" Icon={loadIcon('RiFlutterLine')} />
-                            <Skill skill="Ethereum" Icon={loadIcon('FaEthereum')} />
-                        </Row>
-                    </Col>
-                    <Col xs={12} lg={4}>
-                        <SubsectionTitle className={'text-center'}>Tools</SubsectionTitle>
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="Git" Icon={loadIcon('DiGit')} />
-                            <Skill skill="GitHub" Icon={loadIcon('DiGithubBadge')} />
-                            <Skill skill="Jenkins" Icon={loadIcon('DiJenkins')} />
-                        </Row>
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="Gatsby" Icon={loadIcon('GrGatsbyjs')} />
-                            <Skill skill="npm" Icon={loadIcon('DiNpm')} />
-                            <Skill skill="Vim" Icon={loadIcon('DiVim')} />
-                        </Row>
-                        <Row xs={3} className={'justify-content-center'}>
-                            <Skill skill="Jira" Icon={loadIcon('FaJira')} />
-                            <Skill skill="Slack" Icon={loadIcon('FaSlack')} />
-                        </Row>
+                        <Skill skill="Python" Icon={loadIcon('FaPython')} />
+                        <Skill skill="C/C++" Icon={loadIcon('FaCuttlefish')} />
+                        <Skill skill="Javascript" Icon={loadIcon('DiJavascript1')} />
+                        <Skill skill="Java" Icon={loadIcon('DiJava')} />
+                        <Skill skill="Ruby" Icon={loadIcon('DiRuby')} />
+                        <Skill skill="Bash" Icon={loadIcon('DiTerminal')} /> 
+                        <Skill skill="SQL" Icon={loadIcon('FaDatabase')} />
+                        <Skill skill="Dart" Icon={loadIcon('DiDart')} />
+                        <Skill skill="MacOS" Icon={loadIcon('DiApple')} />
+                        <Skill skill="GNU/Linux" Icon={loadIcon('DiGnu')} />
+                        <Skill skill=".NET" Icon={loadIcon('FaWindows')} />
+                        <Skill skill="React" Icon={loadIcon('FaReact')} />
+                        <Skill skill="AWS" Icon={loadIcon('FaAws')} />
+                        <Skill skill="Node.js" Icon={loadIcon('DiNodejsSmall')} />
+                        <Skill skill="Flutter" Icon={loadIcon('RiFlutterLine')} />
+                        <Skill skill="Ethereum" Icon={loadIcon('FaEthereum')} />
+                        <Skill skill="Git" Icon={loadIcon('DiGit')} />
+                        <Skill skill="GitHub" Icon={loadIcon('DiGithubBadge')} />
+                        <Skill skill="Jenkins" Icon={loadIcon('DiJenkins')} />
+                        <Skill skill="Gatsby" Icon={loadIcon('GrGatsbyjs')} />
+                        <Skill skill="npm" Icon={loadIcon('DiNpm')} />
+                        <Skill skill="Vim" Icon={loadIcon('DiVim')} />
+                        <Skill skill="Jira" Icon={loadIcon('FaJira')} />
+                        <Skill skill="Slack" Icon={loadIcon('FaSlack')} />
                     </Col>
                 </Row>
             </Container>
