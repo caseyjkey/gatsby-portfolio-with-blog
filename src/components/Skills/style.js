@@ -17,7 +17,7 @@ export const SkillsSection = styled.ul`
 `;
 
 export const SkillContainer = styled.li`
-  width: 25%;
+  padding: 0 0.5rem 0 0.5rem;
   display: inline-block;
   h3 {
     color: ${(props) => props.theme.black};
