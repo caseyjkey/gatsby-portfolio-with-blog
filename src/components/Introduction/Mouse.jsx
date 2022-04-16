@@ -85,7 +85,7 @@ const Mouse = styled.div`
   bottom: 120px;
   z-index: 0;
   @media (max-width: 767.98px) {
-    bottom: 300px;
+    bottom: 330px;
   }
 `;
 

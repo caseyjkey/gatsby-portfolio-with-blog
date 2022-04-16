@@ -272,7 +272,7 @@ export default function Introduction(props) {
                       <g opacity="0.20" id="shadow">
                         <path id="path12" d="M1.5,406.1c0-1.2,1.9-1.8,5.4-2.8c6.2-1.8,17.3-4,32-5.3c22.5-2,53.4-2,87.4-3.3c19.6-0.7,41.2,1,58.8,1.9        c39.1,1.9,65.9,5.2,65.9,9.6c0,4.4-26.9,8.2-66.4,10.1c-7.3,0.4-16.1-0.5-24.2-0.3c-11.1,0.3-21.9,1.6-34.1,1.6        c-4.2,0-8.4,0-12.6-0.1c-9.2-0.1-18.1-0.3-26.6-0.5C37.3,415.4,1.5,411.1,1.5,406.1z" fill="#0A0A0A"></path>
                       </g>
-                    </SittingSvg>
+              </SittingSvg>
             </Col>
           </Row>
           <Row>
@@ -287,6 +287,11 @@ export default function Introduction(props) {
 }
 
 const SittingSvg = styled.svg`
+  @media (max-width: 767.98px) {
+    bottom: 35px;
+    position:relative;
+  }
+
   max-width: 100%;
   height: auto;
   margin: 3rem 0rem 0 0rem;
