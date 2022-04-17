@@ -163,7 +163,7 @@ export default function Skills() {
                         <Skill skill="Git" Icon={loadIcon('DiGit')} />
                         </div>
                         <p> ⚡ Build mobile and web user interfaces using ReactJS </p>
-                        <p> ⚡ Create backend APIs in Node, Express, Laravel, SQL & MongoDB </p>
+                        <p> ⚡ Create optimized backend APIs in Node, Express, Laravel, SQL & MongoDB </p>
                         <p> ⚡ Integrate third party services such as Firebase/ Digital Ocean/ Pusher </p>
                     </Col>
                     <Col>
