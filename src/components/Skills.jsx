@@ -147,7 +147,7 @@ export default function Skills() {
                 <Row xs={1} md={2} className="pt-4"> 
                     <Col lg={6} className="animate-box">
                         <div align="center">
-                        <Heading className="mb-4">Project Management</Heading>
+                        <Heading className="mb-4">Deep Learning Practitioner</Heading>
                         <Skill skill="Python" Icon={loadIcon('FaPython')} />
                         <Skill skill="C/C++" Icon={loadIcon('FaCuttlefish')} />
                         <Skill skill="Javascript" Icon={loadIcon('DiJavascript1')} />
@@ -162,9 +162,9 @@ export default function Skills() {
                         <Skill skill="Ethereum" Icon={loadIcon('FaEthereum')} />
                         <Skill skill="Git" Icon={loadIcon('DiGit')} />
                         </div>
-                        <p> ⚡ Build mobile and web user interfaces using ReactJS </p>
-                        <p> ⚡ Create optimized backend APIs in Node, Express, Laravel, SQL & MongoDB </p>
-                        <p> ⚡ Integrate third party services such as Firebase/ Digital Ocean/ Pusher </p>
+                        <p> ⚡ Train, tune, and save models for supervised and unsupervised regression, classification tasks on multiple datasets. </p>
+                        <p> ⚡ Avoid overfitting via hyperparametertuning and cross-validation. </p>
+                        <p> ⚡ Implement open-source technologies such as YOLO for real-time object detection. </p>
                     </Col>
                     <Col>
                         <svg id="1dff4cb4-53bd-4ffc-acc1-5e8a2ceb72de" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 864.81 658.45">
