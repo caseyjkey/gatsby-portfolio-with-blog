@@ -56,6 +56,13 @@ export default function Skills() {
                 )
             );
         }
+        else if (iconGroup === 'Si') {
+            return lazy(() => 
+                import('react-icons/si').then(module =>
+                    ({default: module[Icon]})   
+                )
+            );
+        }
         else {
             return ( <p>Not found.</p> );
         }
@@ -149,17 +156,11 @@ export default function Skills() {
                         <div align="center">
                         <Heading className="mb-4">Deep Learning Practitioner</Heading>
                         <Skill skill="Python" Icon={loadIcon('FaPython')} />
-                        <Skill skill="C/C++" Icon={loadIcon('FaCuttlefish')} />
-                        <Skill skill="Javascript" Icon={loadIcon('DiJavascript1')} />
-                        <Skill skill="Java" Icon={loadIcon('DiJava')} />
-                        <Skill skill="Ruby" Icon={loadIcon('DiRuby')} />
-                        <Skill skill="Bash" Icon={loadIcon('DiTerminal')} /> 
+                        <Skill skill="PyTorch" Icon={loadIcon('SiPytorch')} />
+                        <Skill skill="Jupyter Notebook" Icon={loadIcon('SiJupyter')} />
                         <Skill skill="SQL" Icon={loadIcon('FaDatabase')} />
-                        <Skill skill="Dart" Icon={loadIcon('DiDart')} />
                         <Skill skill="React" Icon={loadIcon('FaReact')} />
                         <Skill skill="AWS" Icon={loadIcon('FaAws')} />
-                        <Skill skill="Flutter" Icon={loadIcon('RiFlutterLine')} />
-                        <Skill skill="Ethereum" Icon={loadIcon('FaEthereum')} />
                         <Skill skill="Git" Icon={loadIcon('DiGit')} />
                         </div>
                         <p> ⚡ Train, tune, and save models for supervised and unsupervised regression, classification tasks on multiple datasets. </p>
