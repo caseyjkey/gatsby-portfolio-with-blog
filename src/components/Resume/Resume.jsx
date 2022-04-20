@@ -32,7 +32,7 @@ import { MdWork } from 'react-icons/md'
                
               <Entry icon={MdWork}
                       date={"August 2021 – Present"}
-                      title={"Assocaite Software Engineer"}
+                      title={"Associate Software Engineer"}
                       subtitle={"Capital One"}
               >
                 <ul>
