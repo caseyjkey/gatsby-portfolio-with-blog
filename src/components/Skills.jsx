@@ -163,7 +163,7 @@ export default function Skills() {
                         <Skill skill="Git" Icon={loadIcon('DiGit')} />
                         </div>
                         <p> ⚡ Train, tune, and save models for supervised and unsupervised regression, classification tasks on multiple datasets. </p>
-                        <p> ⚡ Avoid overfitting via hyperparametertuning and cross-validation. </p>
+                        <p> ⚡ Avoid overfitting via hyperparameter tuning and cross-validation. </p>
                         <p> ⚡ Implement open-source technologies such as YOLO for real-time object detection. </p>
                     </Col>
                     <Col>
