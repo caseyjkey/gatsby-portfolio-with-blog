@@ -7,7 +7,6 @@ import WebsiteImage from '../data/projects/portfolio/images/portfolio.png'
 import { ThemeProvider } from 'styled-components'
 import { theme, Body } from '../components/style.js'
 import Navigation from '../components/Navigation'
-import About from '../components/About'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
 
@@ -23,7 +22,7 @@ export const query = graphql`
   }
 `;
 
-export default function AboutPage({ data }) {
+export default function ContactPage({ data }) {
     return (
         <Layout>
             {/* Replace with: https://www.gatsbyjs.com/docs/add-seo-component/ */}
@@ -51,7 +50,7 @@ export default function AboutPage({ data }) {
             <ThemeProvider theme={theme}>
                 <Body>
                     <Navigation />
-                    <About />
+                    <Contact />
                     <Footer />
                 </Body>
             </ThemeProvider>

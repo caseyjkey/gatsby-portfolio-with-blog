@@ -86,12 +86,12 @@ export default function About(props) {
         <Row noGutters>
           <Col lg="6" md="6" className="d-flex">
             <AboutImage>
-                <StaticImage src="./About/images/about.png" alt="Picture of Casey in a Suit" />
+                <StaticImage src="./About/images/about.png" alt="Casey Key in a suit" />
             </AboutImage>
           </Col> 
 
-          <Col md="6" lg="6" className="pl-md-5 py-5">
-            <Row className="justify-content-start pb-3">
+          <Col md="6" lg="6" className="pl-md-5">
+            <Row className="justify-content-start">
               <Animated animationIn="fadeInUp" isVisible={visible.info} style={{width: "100%"}}>
                 <Col className="col-md-12 heading-section">
                   <Heading className="mb-4">About Me</Heading>

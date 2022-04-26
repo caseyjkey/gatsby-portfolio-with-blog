@@ -164,7 +164,7 @@ export default function Skills() {
                         </div>
                         <p> ⚡ Train, tune, and save models for supervised and unsupervised regression, classification tasks on multiple datasets. </p>
                         <p> ⚡ Avoid overfitting via hyperparameter tuning and cross-validation. </p>
-                        <p> ⚡ Implement open-source technologies such as YOLO for real-time object detection. </p>
+                        <p> ⚡ Implement undersampling to utilize highly unbalanced datasets for credit fraud detection. </p>
                     </Col>
                     <Col>
                         <Svg id="1dff4cb4-53bd-4ffc-acc1-5e8a2ceb72de" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 864.81 658.45">
