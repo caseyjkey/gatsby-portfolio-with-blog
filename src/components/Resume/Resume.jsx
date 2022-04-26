@@ -2,61 +2,64 @@ import React from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from '../style.js'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.js'
-import { Nav, Link } from './Nav'
 import Entry from './Entry'
 import { Skill } from './Skill'
-import { GiGraduateCap, GiDiploma } from 'react-icons/gi'
+import { GiGraduateCap} from 'react-icons/gi'
 import { AiOutlineTeam } from 'react-icons/ai'
 import { GoStar } from 'react-icons/go'
 import { MdWork } from 'react-icons/md'
 
  export default function Resume(props) {
   return (
-    <ResumeSection name="Resume" className="goto-here">
+    <ResumeSection name="Resume">
       <Container>
         <Heading className="mb-4">Resume</Heading>
         <Row>
-          <Col md={3}>
-            <Nav>
-              <Link to="education" activeClass="current" spy={true} smooth={true}>Education</Link>
-              <Link to="experience" activeClass="current" spy={true} smooth={true}>Experience</Link>
-              <Link to="skills" activeClass="current" spy={true} smooth={true}>Skills</Link>
-              <Link to="awards" activeClass="current" spy={true} smooth={true}>Awards</Link>
-              <Link to="leadership" activeClass="current" spy={true} smooth={true}>Leadership</Link>
-            </Nav>
-          </Col>
-
-          <Col md={9}>
-
+          <Col>
+            {/* TODO: https://reactstrap.github.io/?path=/docs/components-accordion--accordion */}
             <Page name="education">
               <SectionTitle>Education</SectionTitle>
               <Entry icon={GiGraduateCap} 
-                      date={"Expected: May 2021"}
                       title={"Computer Science"}
                       subtitle={"Colorado State University"}
-                      gpa={"3.61"}>
-                Bachelor's of Science in Computer Science with a concentration in Computer Science.
-              </Entry>
-
-              <Entry icon={GiDiploma}
-                      date={"Expected: May 2021"}
-                      title={"Entrepreneurship and Innovation"}
-                      subtitle={"Colorado State University"}
-                      gpa={"4.0"}>
-                A certificate to help develop an entrepreneurial mindset.
+                      gpa={"3.53"}>
+                Bachelor's of Science in Computer Science
               </Entry>
             </Page>
 
             <Page name="experience">
               <SectionTitle>Experience</SectionTitle>
+               
               <Entry icon={MdWork}
-                      date={"August 2019 – Present"}
-                      title={"DevOps Intern"}
+                      date={"August 2021 – Present"}
+                      title={"Associate Software Engineer"}
+                      subtitle={"Capital One"}
+              >
+                <ul>
+                  <li>Evaluated real-time data pipeline perfomance using Python and parallelism</li>
+                  <li>Developed a Chrome extension to improve data onboarding experience</li>
+                </ul>
+              </Entry>
+              
+              <Entry icon={MdWork}
+                      date={"August 2019 – May 2022"}
+                      title={"DevOps Engineer Intern"}
                       subtitle={"Bongo"}
               >
                 <ul>
-                  <li>Automating quality assurance with Ruby and Jenkins for the Bongo web app</li>
-                  <li>Analyzing web application vulnerabilities using Burp Suite Pro </li>
+                  <li>Built custom monitors to fortify web application's live audio infrastructure</li>
+                  <li>Automated 73 end to end tests with Ruby, Capybara, and Jenkins for continous integration</li>
+                </ul>
+              </Entry>
+              
+              <Entry icon={MdWork}
+                      date={"May 2020 – August 2020"}
+                      title={"Associate Cloud Consultant Intern"}
+                      subtitle={"Amazon Web Services"}
+              >
+                <ul>
+                  <li>Architected self-service WorkSpace solution to reduce end-user’s procurement time by 85%</li>
+                  <li>Satisfied customer requests for highly available RESTful services after project demos</li>
                 </ul>
               </Entry>
               

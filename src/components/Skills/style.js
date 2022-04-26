@@ -2,21 +2,23 @@ import styled from 'styled-components'
 import { theme, Section } from '../style.js'
 import { lighten } from 'polished'
 
-export const SkillsSection = styled.div`
+export const SkillsSection = styled.ul`
   ${Section}
+  ul {
+    list-style: none;
+  }
   #middleSection {
     background-color: ${(props) => lighten(0.31, props.theme.primaryColor)};
     span {
-      color: black;
-      background-color: white;
+      color: ${(props) => props.theme.black};
+      background-color: ${(props) => props.theme.white};
     }
   }
 `;
 
-export const SkillContainer = styled.div`
-  width: 25%;
-  margin: 0 0.5rem 1.5rem 0.5rem;
-  display: block;
+export const SkillContainer = styled.li`
+  padding: 0 0.5rem 0 0.5rem;
+  display: inline-block;
   h3 {
     color: ${(props) => props.theme.black};
     clear: none;
@@ -26,12 +28,12 @@ export const SkillContainer = styled.div`
   }
   svg {
     display: block;
-    color: ${(props) => props.theme.primaryColor}
+    color: ${(props) => props.theme.primaryColor};
     margin: auto;
     margin-bottom: 1.2rem;
   }
   span {
-    background-color: ${(props) => props.theme.black}
+    background-color: ${(props) => props.theme.black};
     width: 5m;
   }
 `;

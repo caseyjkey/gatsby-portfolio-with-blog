@@ -1,5 +1,8 @@
-@import 'bootstrap/bootstrap';
-@import 'bootstrap/variables';
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+// @import '~bootstrap/scss/mixins/_breakpoints.scss';
+// @import '~bootstrap/scss/_functions.scss';
+// @import '~bootstrap/scss/_variables.scss';
 
 $font-primary: 'Poppins';
 
@@ -28,7 +31,9 @@ $secondary: #a0f669;
 }
 
 body {
+	font-family: $font-primary;
 }
+
 a {
 	transition: .3s all ease;
 	color: $primary;

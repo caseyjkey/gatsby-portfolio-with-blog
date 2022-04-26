@@ -7,9 +7,7 @@ import Navigation from '../components/Navigation'
 import Introduction from '../components/Introduction'
 import About from '../components/About'
 import Skills from '../components/Skills'
-// import Resume from '../components/Resume/Resume'
 import Services from '../components/Services'
-import { Projects } from '../components/Projects'
 import HireMe from '../components/Hire'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
@@ -56,12 +54,9 @@ const IndexPage = ({ data }) => {
         <Body>
           <Navigation />
           <Introduction />
-          <About />
           <Skills />
-          {/*<Services />*/}
-          <Projects></Projects>
-          {/*<HireMe status="available" />*/}
-          <Contact />
+          {/* <Services />
+          <HireMe status="available" /> */}
           <Footer />
         </Body>
       </ThemeProvider>

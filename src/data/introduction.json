@@ -1,18 +1,12 @@
 {
   "section": "introduction",
-  "greeting": "Hey! I am",
-  "name": "Casey J. Key",
+  "greeting": "Hello 👋.",
+  "name": "Casey Key",
   "descriptions": [
     {
       "description": {
-        "header": "a developer.",
-        "subheader": "Cloud, web, IoT, mobile, and blockchain"
-      }
-    },
-    {
-      "description": {
-        "header": "a leader.",
-        "subheader": "Hackathons, clubs, and sports"
+        "header": "",
+        "subheader": ""
       }
     }
   ]

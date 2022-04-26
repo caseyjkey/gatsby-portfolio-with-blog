@@ -3,6 +3,7 @@ import { Section, NoPaddingBottom } from '../style.js' // Global styles
 import { default as PlainPage } from './Page'
 
 export const ResumeSection = styled.section`
+  margin-top: 6em;
   ${Section}
   ${NoPaddingBottom}
 `;
@@ -27,7 +28,6 @@ export const SubsectionTitle = styled.h2`
 
 export const Page = styled(PlainPage)`
   width: 100%;
-  margin-bottom: 7em;
   &.four {
     margin-bottom: 0;
   }

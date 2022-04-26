@@ -25,7 +25,7 @@ export default function Socials(props) {
       </li>
       <li>
         <Social Icon={FaInstagram}
-                link="https://instagram.com/kc.key"
+                link="https://instagram.com/caseyjgkey"
         />
       </li>
     </ul>

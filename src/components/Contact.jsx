@@ -34,14 +34,14 @@ export default function Contact(props) {
   return (
     <ContactSection className="ftco-section contact-section ftco-no-pb" name="Contact" id="contact-section">
         <Container>
-          <Row className="justify-content-center mb-5 pb-3">
+          <Row className="justify-content-center pb-3">
             <Col md={7} className="heading-section text-center ftco-animate">
                 <h1 className="big big-2">Contact</h1>
                 <h2 className="mb-4">Contact Me</h2>
             </Col>
           </Row>
           <Row noGutters className="block-9">
-            <Col md={6} className="order-md-last d-flex">
+            <Col className="order-md-last d-flex justify-content-center text-center">
               <form onSubmit={submitForm} 
                     action="https://formspree.io/xvokgjed" 
                     method="POST" 
@@ -70,9 +70,6 @@ export default function Contact(props) {
                 </div>
               </form>
             </Col>
-            <Col md={6} className="d-flex">
-              <div className="img" style={{backgroundImage: 'url(' + Headshot + ')'}} />
-            </Col>
           </Row>
         </Container>
       </ContactSection>
@@ -80,6 +77,7 @@ export default function Contact(props) {
 }
 
 const ContactSection = styled.section`
+  margin-top: 6em;
   ${Section}
   ${NoPaddingBottom}
 

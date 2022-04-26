@@ -34,7 +34,7 @@ export const Body = styled.div`
 	font-size: 16px;
 	line-height: 1.8;
 	font-weight: 400;
-  color: ${lighten(0.60, theme.black)};
+	color: ${lighten(0.60, theme.black)};
   
 	&.menu-show {
 		overflow: hidden;
@@ -45,7 +45,6 @@ export const Body = styled.div`
 `;
 
 export const Section = `
-  padding: 7em 0;
   position: relative;
   @media (max-width: 767.98px) {
     padding: 6em 0;

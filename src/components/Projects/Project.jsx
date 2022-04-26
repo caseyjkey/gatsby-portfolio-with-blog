@@ -1,5 +1,5 @@
 import React, { Suspense, useState } from 'react'
-import Img from 'gatsby-image'
+import { GatsbyImage } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody, Button} from 'reactstrap'
 import { theme } from '../style.js'
 import { ProjectWrapper, ReadMoreColor } from './style.js'
@@ -21,7 +21,7 @@ export default function Project({children, title, subtitle, image, galleryImages
 
     let images = galleryImages.map(dict => dict.image.publicURL);
     let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
-        result.push((image.childImageSharp) ? <Img fluid={image.childImageSharp.fluid} /> : <img src={image.publicURL} />);
+        result.push((image.childImageSharp) ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} /> : <img src={image.publicURL} />);
         return result;
       }, []);
 
@@ -34,7 +34,7 @@ export default function Project({children, title, subtitle, image, galleryImages
     return (
       <Animated animationIn={"fadeInUp"} isVisible={visible}>
         <ProjectWrapper onClick={toggleModal} className="shadow d-flex justify-content-center align-items-center">
-          <Img fluid={image} style={{position: "static"}}/>
+          <GatsbyImage image={image} style={{position: "absolute"}} />
           <div className="overlay" />
           <div className="text text-center p-4">
             <h3>{title}</h3>
