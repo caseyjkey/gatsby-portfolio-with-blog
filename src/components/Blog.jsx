@@ -19,12 +19,7 @@ export const Blog = (props) => {
                         frontmatter {
                             title
                             date(formatString: "YYYY MMMM Do")
-                            cover {
-                                publicURL
-                                childImageSharp {
-                                    gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED)
-                                }
-                            }
+                            cover
                         }
                         fields {
                             slug
