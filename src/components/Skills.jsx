@@ -12,7 +12,6 @@ export default function Skills() {
     // [return] Component
     function loadIcon(Icon) {
         let iconGroup = Icon.slice(0, 2);
-        console.log(iconGroup, Icon);
         if (iconGroup === 'Gi') {
             return lazy(() => 
                 import('react-icons/gi').then(module => 
