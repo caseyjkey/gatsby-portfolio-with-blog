@@ -33,11 +33,6 @@ export default function About(props) {
   const data = useStaticQuery(
     graphql`{
   about {
-    image {
-      childImageSharp {
-        gatsbyImageData(width: 555, height: 735, layout: CONSTRAINED)
-      }
-    }
     bio
     activities {
       activity {
@@ -86,7 +81,6 @@ export default function About(props) {
         <Row noGutters>
           <Col lg="6" md="6" className="d-flex">
             <AboutImage>
-                <StaticImage src="./About/images/about.png" alt="Casey Key in a suit" />
             </AboutImage>
           </Col> 
 

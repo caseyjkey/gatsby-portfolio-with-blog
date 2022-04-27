@@ -1,8 +1,8 @@
 import { graphql, Link } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import React from 'react'
-// import { Layout } from '../components/Layout'
-import Dump from '../components/Dump'
+import { Layout } from '../components/Layout'
+// import Dump from '../components/Dump'
 
 export default function blogPostTemplate({ data, pageContext }) {
     
@@ -19,7 +19,7 @@ export default function blogPostTemplate({ data, pageContext }) {
     const { previous, next, post } = pageContext;
     
     return (
-        <>
+        <Layout>
             <Dump previous={previous} />
             <Dump next={next} />
             <h1>{frontmatter.title}</h1>
@@ -43,17 +43,16 @@ export default function blogPostTemplate({ data, pageContext }) {
                     )}
                 </>
             )}
-        </>
+        </Layout>
     );
 }
 
 export const query = graphql`
-        query PostsBySlug($slug: String!) {
+        query PostsBySlug($slug: String) {
             mdx(fields: { slug: { eq: $slug } }) {
                 body
                 frontmatter {
                     title
-                    date(formatString: "YYYY MMMM Do")
                 }
             }
         }
