@@ -22,7 +22,7 @@ export const Blog = (props) => {
                             cover {
                                 publicURL
                                 childImageSharp {
-                                    gatsbyImageData
+                                    gatsbyImageData(placeholder: BLURRED, layout: CONSTRAINED)
                                 }
                             }
                         }
