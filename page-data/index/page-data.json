@@ -1,1 +1,5 @@
-{"componentChunkName":"component---src-pages-index-js","path":"/","result":{"data":{"site":{"siteMetadata":{"title":"Casey Key","description":"Casey Key is a software engineer with a focus on education, finance, and security.","canonical":"https://caseyjkey.com"}}},"pageContext":{}}}
+{
+    "componentChunkName": "component---src-pages-index-jsx",
+    "path": "/",
+    "result": {"data":{"site":{"siteMetadata":{"title":"Casey Key Software Engineer Portfolio","description":"Casey Key Software Engineer Portfolio. Casey Key is a Wyoming software engineer with a focus on education, finance, and security with expertise in cloud-native architecture and full-stack development.","canonical":"https://caseyjgkey.xyz"}}},"pageContext":{}},
+    "staticQueryHashes": ["2756050595","2781289231"]}
