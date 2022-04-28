@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'gatsby'
 import styled from 'styled-components'
 import { lighten, darken } from 'polished'
 import { Container, Row, Col } from 'reactstrap'
@@ -6,7 +7,6 @@ import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
 import { FaHeartBroken, FaLinkedinIn, FaTwitter, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight } from 'react-icons/fa'
 import { Section } from './style'
-import { Link } from 'react-scroll'
 
 export default function Footer(props) {
   return (
@@ -20,12 +20,12 @@ export default function Footer(props) {
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft">
                 <li>
                   <Social Icon={FaTwitter}
-                          link="https://twitter.com/caseyjkeycodes"
+                          link="https://twitter.com/caseyjkey"
                   />
                 </li>
                 <li>
                   <Social Icon={FaLinkedinIn}
-                          link="https://linkedin.com/in/caseyjkey"
+                          link="https://linkedin.com/in/caseyjgkey"
                   />
                 </li>
                 <li>
@@ -35,7 +35,7 @@ export default function Footer(props) {
                 </li>
                 <li>
                   <Social Icon={FaInstagram}
-                          link="https://instagram.com/caseyjkey"
+                          link="https://instagram.com/caseyjgkey"
                   />
                 </li>
               </ul>
@@ -46,12 +46,12 @@ export default function Footer(props) {
             <div className="ftco-footer-widget mb-4 ml-md-4">
               <h2 className="ftco-heading-2">Links</h2>
               <ul className="list-unstyled">
-                 <li><Link to="Home" offset={-80} smooth>Home</Link></li>
-                 <li><Link to="About" offset={-70} smooth>About</Link></li>
-                 {/*<li><Link to="Resume" smooth>Resume</Link></li>
-                 <li><Link to="Services" smooth>Services</Link></li>*/}
-                 <li><Link to="Projects" smooth>Projects</Link></li>
-                 <li><Link to="Contact" smooth>Contact</Link></li>
+                 <li><Link to="/" offset={-80} smooth>Home</Link></li>
+                 <li><Link to="/about" offset={-70} smooth>About</Link></li>
+                 <li><Link to="/resume" smooth>Resume</Link></li>
+                 {/*<li><Link to="Services" smooth>Services</Link></li>*/}
+                 <li><Link to="/projects" smooth>Projects</Link></li>
+                 <li><Link to="/contact" smooth>Contact</Link></li>
               </ul>
             </div>
           </Col>
@@ -68,8 +68,8 @@ export default function Footer(props) {
               <h2 className="ftco-heading-2">Questions?</h2>
               <div className="block-23 mb-3">
                 <ul>
-                  <li><FaSign /><span className="text">Fort Collins, Colorado, USA</span></li>
-                  <li><a href="tel:13312227919"><FaPhone />+1 (331) 222-7919</a></li>
+                  <li><FaSign /><span className="text">Denver, Colorado, USA</span></li>
+                  <li><a href="tel:13072242940"><FaPhone />+1 (307) 224-2940</a></li>
                 </ul>
               </div>
             </div>
