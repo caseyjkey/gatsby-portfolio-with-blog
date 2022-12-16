@@ -27,3 +27,4 @@ yarn-error.log*
 # Gatsby build
 .cache
 public
+node_modules
