@@ -46,12 +46,16 @@ export default function Footer(props) {
             <div className="ftco-footer-widget mb-4 ml-md-4">
               <h2 className="ftco-heading-2">Links</h2>
               <ul className="list-unstyled">
-                 <li><Link to="/" offset={-80} smooth>Home</Link></li>
-                 <li><Link to="/about" offset={-70} smooth>About</Link></li>
-                 <li><Link to="/resume" smooth>Resume</Link></li>
-                 {/*<li><Link to="Services" smooth>Services</Link></li>*/}
-                 <li><Link to="/projects" smooth>Projects</Link></li>
-                 <li><Link to="/contact" smooth>Contact</Link></li>
+                <Col>
+                  <li><Link to="/" offset={-80} smooth>Home</Link></li>
+                  <li><Link to="/about" offset={-70} smooth>About</Link></li>
+                  <li><Link to="/resume" smooth>Resume</Link></li>
+                </Col> 
+                <Col>
+                  {/*<li><Link to="Services" smooth>Services</Link></li>*/}
+                  <li><Link to="/projects" smooth>Projects</Link></li>
+                  <li><Link to="/contact" smooth>Contact</Link></li>
+                </Col>
               </ul>
             </div>
           </Col>
@@ -68,7 +72,7 @@ export default function Footer(props) {
               <h2 className="ftco-heading-2">Questions?</h2>
               <div className="block-23 mb-3">
                 <ul>
-                  <li><FaSign /><span className="text">Denver, Colorado, USA</span></li>
+                  <li><FaSign /><span className="text">Los Angeles, California, USA</span></li>
                   <li><a href="tel:13072242940"><FaPhone />+1 (307) 224-2940</a></li>
                 </ul>
               </div>

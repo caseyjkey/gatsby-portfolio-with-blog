@@ -20,10 +20,16 @@ import { MdWork } from 'react-icons/md'
             <Page name="education">
               <SectionTitle>Education</SectionTitle>
               <Entry icon={GiGraduateCap} 
-                      title={"Computer Science"}
-                      subtitle={"Colorado State University"}
-                      gpa={"3.53"}>
-                Bachelor's of Science in Computer Science
+                      title={"University of Southern California"}
+                      subtitle={"Master's of Science in Computer Science"}
+                      graduationDate={"Expected May 2024"}>
+                Specialization in Artificial Intelligence
+              </Entry>
+              <Entry icon={GiGraduateCap} 
+                      title={"Colorado State University"}
+                      subtitle={"Bachelor's of Science in Computer Science"}
+                      graduationDate={"May 2021"}>
+               Minor in Entrepreneurship and Innovation 
               </Entry>
             </Page>
 
@@ -31,19 +37,32 @@ import { MdWork } from 'react-icons/md'
               <SectionTitle>Experience</SectionTitle>
                
               <Entry icon={MdWork}
-                      date={"August 2021 – Present"}
-                      title={"Associate Software Engineer"}
+                      date={"August 2022 – Present"}
+                      title={"Software Development Engineer"}
+                      subtitle={"Amazon"}
+              >
+                <ul>
+                  <li>Migrate tens-of-thousands of users to new & improved application for world-wide financial reports</li>
+                  <li>Implement new application features according to customer specifications</li>
+                  <li>Achieve 100% availability during high-stress seasons</li>
+                  <li>Resolve tickets for bug fixes, vulnerabilities, and updates from 20+ outstanding tickets to less than 10 with an SLA of less than 5 days</li>
+                </ul>
+              </Entry>
+
+              <Entry icon={MdWork}
+                      date={"August 2021 – August 2022"}
+                      title={"Senior Associate Software Engineer"}
                       subtitle={"Capital One"}
               >
                 <ul>
                   <li>Evaluated real-time data pipeline perfomance using Python and parallelism</li>
-                  <li>Developed a Chrome extension to improve data onboarding experience</li>
+                  <li>Launched a Chrome extension to improve data onboarding experience</li>
                 </ul>
               </Entry>
               
               <Entry icon={MdWork}
-                      date={"August 2019 – May 2022"}
-                      title={"DevOps Engineer Intern"}
+                      date={"August 2019 - May 2020, August 2020 - May 2021"}
+                      title={"DevOps Engineer"}
                       subtitle={"Bongo"}
               >
                 <ul>
@@ -54,7 +73,7 @@ import { MdWork } from 'react-icons/md'
               
               <Entry icon={MdWork}
                       date={"May 2020 – August 2020"}
-                      title={"Associate Cloud Consultant Intern"}
+                      title={"Associate Cloud Consultant"}
                       subtitle={"Amazon Web Services"}
               >
                 <ul>
@@ -65,7 +84,7 @@ import { MdWork } from 'react-icons/md'
               
               <Entry icon={MdWork}
                       date={"May 2019 – August 2019"}
-                      title={"Cloud Solutions Engineer Intern"}
+                      title={"Cloud Solutions Engineer"}
                       subtitle={"Oracle"}
               >
                 <ul>
@@ -107,8 +126,8 @@ import { MdWork } from 'react-icons/md'
             <Page name="awards">
               <SectionTitle>Awards</SectionTitle>
               <Entry icon={GoStar}
-                      date={"Fall 2018 - Present"}
-                      title={"Dean's List (x4)"}
+                      date={"Fall 2018 - Fall 2921"}
+                      title={"Dean's List"}
                       subtitle={"College of Natural Science"}>
                 Recognized as a high-achieving student for earning over a 3.75 GPA while working part-time.
               </Entry>
@@ -130,7 +149,7 @@ import { MdWork } from 'react-icons/md'
             <Page name="leadership" className="mb-0">
               <SectionTitle>Leadership</SectionTitle>
               <Entry icon={AiOutlineTeam}
-                      date={"August 2019 - Present"}
+                      date={"August 2019 - May 2020"}
                       title={"Treasurer"}
                       subtitle={"AISES and Hashdump"}
               >

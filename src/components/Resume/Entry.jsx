@@ -23,7 +23,7 @@ export default class Entry extends Component {
     let date = this.props.date;
     let title = this.props.title;
     let subtitle = this.props.subtitle;
-    let gpa = this.props.gpa;
+    let graduationDate = this.props.graduationDate;
     let text = this.props.children;
 
     return (
@@ -34,10 +34,10 @@ export default class Entry extends Component {
             </div>
             <div className="text pl-3">
               {date && <span className="date">{date}</span>}
+              {graduationDate && <span className="gpa">{graduationDate}</span>}
               <h2>{title}</h2>
               <Waypoint onEnter={this.makeVisible}></Waypoint>
               <span className="subtitle">{subtitle}</span>
-              {gpa && <span className="gpa">{gpa} GPA</span>}
               <Description>{text}</Description>
             </div>
           </ResumeWrap>

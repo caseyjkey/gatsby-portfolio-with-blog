@@ -128,6 +128,7 @@ export default function Skills() {
                         <div align="center">
                         <Heading className="mb-4">Full Stack Development</Heading>
                         <Skill skill="Python" Icon={loadIcon('FaPython')} />
+                        <Skill skill="Swift" Icon={loadIcon('GrSwift')} />
                         <Skill skill="C/C++" Icon={loadIcon('FaCuttlefish')} />
                         <Skill skill="Javascript" Icon={loadIcon('DiJavascript1')} />
                         <Skill skill="Java" Icon={loadIcon('DiJava')} />
@@ -137,17 +138,18 @@ export default function Skills() {
                         <Skill skill="Dart" Icon={loadIcon('DiDart')} />
                         <Skill skill="React" Icon={loadIcon('FaReact')} />
                         <Skill skill="AWS" Icon={loadIcon('FaAws')} />
+                        <Skill skill="Google Cloud" Icon={loadIcon('SiGooglecloud')} />
                         <Skill skill="Node.js" Icon={loadIcon('DiNodejsSmall')} />
-                        <Skill skill="Flutter" Icon={loadIcon('RiFlutterLine')} />
                         <Skill skill="Ethereum" Icon={loadIcon('FaEthereum')} />
                         <Skill skill="Git" Icon={loadIcon('DiGit')} />
                         <Skill skill="Jenkins" Icon={loadIcon('DiJenkins')} />
                         <Skill skill="Gatsby" Icon={loadIcon('GrGatsbyjs')} />
                         </div>
-                        <p> ⚡ Build mobile and web user interfaces using ReactJS </p>
-                        <p> ⚡ Create backend APIs in Node, Express, Laravel, SQL & MongoDB </p>
-                        <p> ⚡ Integrate third party services such as Firebase/ Digital Ocean/ Pusher </p>
-                        <p> ⚡ Deploy applications using Docker and Kubernetes </p>
+                        <p> ⚡ Build real-time analytics and event-driven architectures with Kafka  </p>
+                        <p> ⚡ Maximize availability, cost-efficiency, and maintainabiltiy via DevOps </p>
+                        <p> ⚡ Launch applications using Docker, Kubernetes, and cloud providers </p>
+                        <p> ⚡ Develop mobile, desktop, or web user interfaces </p>
+                        <p> ⚡ Create APIs in Node, Java, Python, and SQL, NoSQL, or GraphQL </p>
                     </Col>
                 </Row>
                 <Row xs={1} md={2} className="pt-4"> 
@@ -162,9 +164,10 @@ export default function Skills() {
                         <Skill skill="AWS" Icon={loadIcon('FaAws')} />
                         <Skill skill="Git" Icon={loadIcon('DiGit')} />
                         </div>
-                        <p> ⚡ Train, tune, and save models for supervised and unsupervised regression, classification tasks on multiple datasets. </p>
-                        <p> ⚡ Avoid overfitting via hyperparameter tuning and cross-validation. </p>
-                        <p> ⚡ Implement undersampling to utilize highly unbalanced datasets for credit fraud detection. </p>
+                        <p> ⚡ Train, tune, and save models for supervised and unsupervised regression, classification tasks on a multitude of datasets </p>
+                        <p> ⚡ Prevent overfitting via hyperparameter tuning and cross-validation </p>
+                        <p> ⚡ Apply the latest research to improve algorithm performance and utilize novel data sources </p>
+                        <p> ⚡ Implement undersampling to utilize highly unbalanced datasets for fraud detection </p>
                     </Col>
                     <Col>
                         <Svg id="1dff4cb4-53bd-4ffc-acc1-5e8a2ceb72de" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 864.81 658.45">
