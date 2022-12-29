@@ -59,7 +59,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "gatsby build",
-    "deploy": "gh-pages -d master -b source"
+    "deploy": "gh-pages -d public -b master"
   },
   "eslintConfig": {
     "extends": "react-app"

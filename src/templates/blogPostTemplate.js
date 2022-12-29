@@ -1,10 +1,10 @@
 import { graphql, Link } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
 import Layout from '../components/Layout'
 import Dump from '../components/Dump'
 
-export default function blogPostTemplate({ data, pageContext }) {
+export default function blogPostTemplate({ data, pageContext, children }) {
     
     
     /*
@@ -24,7 +24,7 @@ export default function blogPostTemplate({ data, pageContext }) {
             <Dump next={next} />
             <h1>{frontmatter.title}</h1>
             <p>{frontmatter.date}</p>
-            <MDXRenderer>{body}</MDXRenderer>
+            <MDXProvider>{children}</MDXProvider>
             {previous === false ? null : (
                 <>
                     {previous && (
@@ -50,7 +50,6 @@ export default function blogPostTemplate({ data, pageContext }) {
 export const query = graphql`
         query PostsBySlug($slug: String) {
             mdx(fields: { slug: { eq: $slug } }) {
-                body
                 frontmatter {
                     title
                 }

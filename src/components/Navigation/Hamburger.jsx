@@ -33,6 +33,11 @@ const HamburgerButton = styled.div`
   margin: 0;
   padding: 0; 
 
+  div:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
   /* Icon 1 */
     width: 30px;
     height: 22px;

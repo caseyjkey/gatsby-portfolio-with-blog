@@ -43,23 +43,6 @@ export default function Footer(props) {
             </div>
           </Col>
           <Col md>
-            <div className="ftco-footer-widget mb-4 ml-md-4">
-              <h2 className="ftco-heading-2">Links</h2>
-              <ul className="list-unstyled">
-                <Col>
-                  <li><Link to="/" offset={-80} smooth>Home</Link></li>
-                  <li><Link to="/about" offset={-70} smooth>About</Link></li>
-                  <li><Link to="/resume" smooth>Resume</Link></li>
-                </Col> 
-                <Col>
-                  {/*<li><Link to="Services" smooth>Services</Link></li>*/}
-                  <li><Link to="/projects" smooth>Projects</Link></li>
-                  <li><Link to="/contact" smooth>Contact</Link></li>
-                </Col>
-              </ul>
-            </div>
-          </Col>
-          <Col md>
             <div className="ftco-footer-widget mb-4">
               <h2 className="ftco-heading-2">Services</h2>
               <ul className="list-unstyled">
@@ -68,20 +51,15 @@ export default function Footer(props) {
             </div>
           </Col>
           <Col md>
-            <div className="ftco-footer-widget mb-4">
+            <div className="ftco-footer-widget">
               <h2 className="ftco-heading-2">Questions?</h2>
-              <div className="block-23 mb-3">
+              <div className="block-23">
                 <ul>
-                  <li><FaSign /><span className="text">Los Angeles, California, USA</span></li>
+                  <li><FaSign /><span className="text">Santa Monica, California, USA</span></li>
                   <li><a href="tel:13072242940"><FaPhone />+1 (307) 224-2940</a></li>
                 </ul>
               </div>
             </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12} className="text-center">
-            <p>Made with <FaHeartBroken /> by Casey J. Key</p>
           </Col>
         </Row>
       </Container>
@@ -102,8 +80,11 @@ function Social({link, Icon}) {
 }
 
 const FooterSection = styled.footer`
-  ${Section}
   padding: 3em 0;
+  @media (max-width: 767.98px) {
+    padding: 3em 0;
+  }
+  flex-shrink: 0;
 	font-size: 16px;
 	background: ${props => props.theme.black};
 	z-index: 0;

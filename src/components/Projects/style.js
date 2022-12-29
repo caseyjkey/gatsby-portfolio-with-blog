@@ -35,7 +35,7 @@ export const ProjectWrapper = styled.div`
 		right: 0;
 		bottom: 0;
 		content: '';
-		opacity: 0.8;
+		opacity: 0.7;
     z-index: 0;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;

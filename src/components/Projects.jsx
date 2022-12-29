@@ -9,49 +9,48 @@ import Project from './Projects/Project'
 export const Projects = (props) => {
 	const data = useStaticQuery( 
 		graphql`{
-  allProject(sort: {order: ASC, fields: [start]}) {
-    edges {
-      node {
-        project
-        image {
-          childImageSharp {
-            gatsbyImageData(width: 605, height: 350, layout: CONSTRAINED)
-          }
-          extension
-          relativeDirectory
-          relativePath
-          publicURL
-        }
-        galleryImages {
-          image {
-            childImageSharp {
-              gatsbyImageData(layout: FULL_WIDTH)
-            }
-            extension
-            relativeDirectory
-            relativePath
-            publicURL
-          }
-        }
-        title
-        subtitle
-        description
-        icons {
-          di
-          fa
-          io
-        }
-        start
-        end {
-          date
-          present
-        }
-        link
-      }
-    }
-  }
-}
-`
+			allProject(sort: {order: ASC, fields: [start]}) {
+				edges {
+					node {
+						project
+						image {
+							childImageSharp {
+								gatsbyImageData(width: 605, height: 350, layout: CONSTRAINED)
+							}
+							extension
+							relativeDirectory
+							relativePath
+							publicURL
+						}
+						galleryImages {
+							image {
+								childImageSharp {
+									gatsbyImageData(layout: FULL_WIDTH)
+								}
+								extension
+								relativeDirectory
+								relativePath
+								publicURL
+							}
+						}
+						title
+						subtitle
+						description
+						icons {
+							di
+							fa
+							io
+						}
+						start
+						end {
+							date
+							present
+						}
+						link
+					}
+				}
+			}
+		}`
 	);
 
 	// Get components for icons specified in projects.json
@@ -87,7 +86,7 @@ export const Projects = (props) => {
 				<Row noGutters className="justify-content-center pb-5 mt-5">
 					<Col md={12} className="heading-section text-center ">
 						<Heading className="mb-4">Projects</Heading>
-						<p>I find the best way to learn is by practice. Here are the results of my work.</p>
+						<p>Check out some of my work.</p>
 					</Col>
 				</Row>
 				<Row>

@@ -35,6 +35,8 @@ export const Body = styled.div`
 	line-height: 1.8;
 	font-weight: 400;
 	color: ${lighten(0.60, theme.black)};
+	display: flex;
+	flex-direction: column;
   
 	&.menu-show {
 		overflow: hidden;

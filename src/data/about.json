@@ -8,7 +8,7 @@
           "type": "gi",
           "name": "GiBackpack"
         },
-        "description": "CS and ENTR @ CSU, FoCo"
+        "description": "CS for AI @ USC, SoCal"
       }
     },
     {
@@ -17,7 +17,7 @@
           "type": "fi",
           "name": "FiBookOpen"
         },
-        "description": "<i>The Generation X Money Book</i>"
+        "description": "<i>The Zero Percent</i> by D'Vaul Dey"
       }
     },
     {
@@ -26,7 +26,7 @@
           "type": "fi",
           "name": "FiMusic"
         },
-        "description": "\"Good News\" by Mac Miller"
+        "description": "\"The Hills (Bass Boosted)\" - The Weeknd, Eminem"
       }
     },
     {
@@ -35,7 +35,7 @@
           "type": "fa",
           "name": "FaLaptopCode"
         },
-        "description": "Working as a TDP Associate for Capital One!"
+        "description": "Working as a Software Engineer for Amazon's World-Wide Finance Operations."
       }
     }
   ],
