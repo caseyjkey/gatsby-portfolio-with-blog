@@ -17,6 +17,7 @@ export default function Introduction(props) {
         introduction {
           greeting
           name
+	  role
           descriptions {
             description {
               header
@@ -41,7 +42,7 @@ export default function Introduction(props) {
                 <Text>
                   <Slider>
                     <Header className="header">{data.introduction.greeting}</Header>
-                    <h2 className="subheader">I'm <span id="name">Casey Key</span>, a software engineer & machine learning enthuisiast.</h2>
+                    <h2 className="subheader">My name is <span id="name">{data.introduction.name}</span>. I am the {data.introduction.role}.</h2>
                       <SocialStyle>
                         <Socials/>
                       </SocialStyle>

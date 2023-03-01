@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: 'Casey Key Software Engineer Portfolio',
-    description: 'Casey Key Software Engineer Portfolio. Casey Key is a Wyoming software engineer with a focus on education, finance, and security with expertise in cloud-native architecture and full-stack development.',
+    title: 'Casey Key',
+    description: 'Casey Key Software Engineer Portfolio. Casey Key is the California full stack programmer focusing on AI, security, and finance.',
     author: 'Casey Key',
     canonical: 'https://caseyjgkey.xyz',
   },
@@ -20,18 +20,6 @@ module.exports = {
       options: {
         path: `${__dirname}/src/images/`,
       },
-    },
-    {
-      resolve: `gatsby-plugin-netlify-cms-paths`,
-      options: {
-        cmsConfig: `/static/admin/config.yml`
-      }
-    },
-    {
-      resolve: 'gatsby-plugin-netlify-cms',
-      options: {
-        modulePath: `${__dirname}/src/cms/cms.js`,
-      }
     },
     {
       resolve:`gatsby-transformer-json`,
@@ -62,8 +50,6 @@ module.exports = {
       },
     },
     `gatsby-plugin-postcss`,
-    `gatsby-plugin-netlify-cms`,
-    `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sass`
   ],
 }
