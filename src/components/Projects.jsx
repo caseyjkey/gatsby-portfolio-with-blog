@@ -86,7 +86,7 @@ export const Projects = (props) => {
 				<Row noGutters className="justify-content-center pb-5 mt-5">
 					<Col md={12} className="heading-section text-center ">
 						<Heading className="mb-4">Projects</Heading>
-						<p>Check out some of my work.</p>
+						<p>Check out my work.</p>
 					</Col>
 				</Row>
 				<Row>

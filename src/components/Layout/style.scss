@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5,
 	top: 0;
 	left: 0;
 	right: 0;
-	z-index: 3;
+	z-index: 20;
 	// padding-top: 30px;
 	@include media-breakpoint-down(md) {
 		background: $black!important;

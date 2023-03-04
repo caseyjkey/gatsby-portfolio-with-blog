@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { 
+  Button,
   Container, 
   Row, 
   Col, 
@@ -11,6 +12,7 @@ import {
 } from 'reactstrap';
 import { Heading } from '../style.js'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.js'
+import ResumeFile from '../Introduction/resume.pdf'
 import Entry from './Entry'
 import { Skill } from './Skill'
 import { GiGraduateCap} from 'react-icons/gi'
@@ -18,6 +20,7 @@ import { AiOutlineTeam } from 'react-icons/ai'
 import { TbCertificate } from 'react-icons/tb'
 import { GoStar } from 'react-icons/go'
 import { MdWork } from 'react-icons/md'
+import { BsSave } from 'react-icons/bs'
 
  export default function Resume(props) {
   const [open, setOpen] = useState('1');
@@ -32,7 +35,7 @@ import { MdWork } from 'react-icons/md'
   return (
     <ResumeSection name="Resume">
       <Container>
-        <Heading className="mb-4">Resume</Heading>
+        <Heading className="mb-4">Resume <span id="save"><Button color="primary" href={ResumeFile}>Download <BsSave /></Button></span></Heading>
         <Accordion flush open={open} toggle={toggle}>
           <Row>
             <Col>

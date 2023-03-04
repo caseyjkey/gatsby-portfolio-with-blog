@@ -6,7 +6,6 @@ import FallingArrow from './Introduction/Mouse'
 import Socials from './Social'
 import { Animated } from 'react-animated-css'
 import { graphql, useStaticQuery } from 'gatsby'
-import Resume from './Introduction/resume.pdf';
 import { lighten } from 'polished'
 
 export default function Introduction(props) {
@@ -38,7 +37,7 @@ export default function Introduction(props) {
       <Animated animationIn="fadeInUp" animationInDuration={500} animationInDelay={200} >
         <Container>
           <Row noGutters xs="1" md="2" className="js-fullheight justify-content-center align-items-center">
-            <Col>
+            <Col className="text-center">
                 <Text>
                   <Slider>
                     <Header className="header">{data.introduction.greeting}</Header>
@@ -48,7 +47,7 @@ export default function Introduction(props) {
                       </SocialStyle>
                   </Slider>
 
-                    <Button color="primary" href={Resume}>Resume</Button>
+                    <Button color="primary" className="text-center" style={{zIndex: "100", position: "relative"}} href={"./contact"}>Hire Me</Button>
                 </Text>
             </Col>
             <Col>

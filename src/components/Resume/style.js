@@ -4,6 +4,17 @@ import { default as PlainPage } from './Page'
 
 export const ResumeSection = styled.section`
   margin-top: 6em;
+  
+  span#save {
+    float: right;
+  }
+  span#save a {
+    margin-bottom: 0.4em;
+  }
+  span#save svg {
+    margin: 0 0.1em 0.13em 0.1em;
+  }
+
   @media (max-width: 767.98px) {
     margin-top: 0;
   }

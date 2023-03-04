@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const HeroWrap = styled.section`
   width: 100%;
+  z-index: 10;
 	height: 100%;
 	position: inherit;
 	background-size: cover;
@@ -24,7 +25,9 @@ export const Overlay = styled.div`
 `;
 
 export const Text = styled.div`
-  margin-top: 6em;
+  @media (max-width: 767.98px) {
+    margin-top: 6em;
+  }
   width: 100%;
 `;
 

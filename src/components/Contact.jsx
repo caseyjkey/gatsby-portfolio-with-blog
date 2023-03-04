@@ -59,7 +59,7 @@ export default function Contact(props) {
                 <div className="form-group">
                   <textarea cols={30} rows={7} 
                             className="form-control" 
-                            placeholder="Let's grab a coffee together!" 
+                            placeholder="" 
                             name="message" 
                             defaultValue={""} 
                   />
