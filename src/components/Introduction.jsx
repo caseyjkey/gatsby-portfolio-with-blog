@@ -47,7 +47,7 @@ export default function Introduction(props) {
                       </SocialStyle>
                   </Slider>
 
-                    <Button color="primary" className="text-center" style={{zIndex: "100", position: "relative"}} href={"./contact"}>Hire Me</Button>
+                    <Button color="primary" className="text-center" style={{zIndex: "100", position: "relative"}} href="https://cos5lbzflgz.typeform.com/to/dVpncV8k">Email Me</Button>
                 </Text>
             </Col>
             <Col>
