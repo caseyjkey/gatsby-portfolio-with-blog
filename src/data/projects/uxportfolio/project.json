@@ -1,0 +1,30 @@
+{
+  "start": "December 2018",
+  "galleryImages": [
+    {
+      "image": "images/home.png"
+    },
+    {
+      "image": "images/resume.png"
+    }
+  ],
+  "subtitle": "Web Development",
+  "title": "Innovative UI/UX Portfolio",
+  "project": "uxportfolio",
+  "icons": {
+    "fa": [],
+    "di": [
+      "DiPhotoshop",
+      "DiJavascript1",
+      "DiJqueryLogo",
+      "DiBootstrap"
+    ]
+  },
+  "link": "https://www.cs.colostate.edu/~caseykey/",
+  "end": {
+    "present": false,
+    "date": "January 2019"
+  },
+  "image": "images/home.png",
+  "description": "This portfolio website serves as an interactive experience for viewing projects. My favorite challenges for this project were designing the page in Photoshop, exporting the images for responsive layouts, and adding interactivity using jQuery.\n\n<br /><br />\n\nTo extend this project, I would like to connect the project's from my current portfolio into this portfolio; this would allow me to update both websites from the same content management system! Also, I would like to add more features to enhance the experience on mobile devices."
+}

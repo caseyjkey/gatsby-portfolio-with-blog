@@ -1,0 +1,41 @@
+{
+  "start": "September 2018",
+  "galleryImages": [
+    {
+      "image": "images/billboard.png"
+    },
+    {
+      "image": "images/homepage.png"
+    },
+    {
+      "image": "images/team.png"
+    },
+    {
+      "image": "images/faq.png"
+    },
+    {
+      "image": "images/documents.png"
+    }
+  ],
+  "subtitle": "Blockchain Development",
+  "title": "Music Billboard",
+  "project": "billboard",
+  "icons": {
+    "fa": [
+      "FaReact",
+      "FaEthereum",
+      "FaBootstrap",
+      "FaGithub"
+    ],
+    "di": [
+      "DiFirebase",
+      "DiHeroku"
+    ]
+  },
+  "link": "https://etherradio.herokuapp.com/#!/landing",
+  "end": {
+    "date": "September 2020"
+  },
+  "image": "images/billboard.png",
+  "description": "For the 2018 WyoHackathon, I wanted to extend EtherRadio. Motivated to recognize musicians for their work and spearhead SingularDTV's (now Breaker) challenge, I won myself and a friend on the idea of developing a top musician billboard powered by blockchain. <br /><br /> This music billboard is a curated list of high-quality musicians. It works like a game where token holders control which musicians are listed. Applying to be on the top musician list requires a deposit to prevent trolls and spam submissions. The token holders are incentivized to maintain the quality of the list by challenging applications. If a challenge is successful, the voters are rewarded with the applicant's deposit. <br /><br /> The result of over 40 hours of hacking, my team created a billboard which impressed SingularDTV's team. We won an all expense paid trip to San Francisco, CA, to attend Our Music Festival. Our Music Festival was inspirational to attend as it was the world's first blockchain music festival."
+}

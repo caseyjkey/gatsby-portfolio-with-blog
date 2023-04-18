@@ -1,0 +1,77 @@
+{
+  "start": "June 2019",
+  "galleryImages": [
+    {
+      "image": "images/oracle_scholars.png"
+    },
+    {
+      "image": "images/slide_4.png"
+    },
+    {
+      "image": "images/slide_5.png"
+    },
+    {
+      "image": "images/slide_6.png"
+    },
+    {
+      "image": "images/slide_7.png"
+    },
+    {
+      "image": "images/slide_8.png"
+    },
+    {
+      "image": "images/slide_9.png"
+    },
+    {
+      "image": "images/slide_10.png"
+    },
+    {
+      "image": "images/notional_architecture_full.png"
+    },
+    {
+      "image": "images/sentiment_working.gif"
+    },
+    {
+      "image": "images/sentiment_oracle_3.gif"
+    },
+    {
+      "image": "images/sentiment-oracle-fast.gif"
+    },
+    {
+      "image": "images/slide_13.png"
+    },
+    {
+      "image": "images/Image from iOS (1).jpg"
+    },
+    {
+      "image": "images/Image from iOS.jpg"
+    },
+    {
+      "image": "images/IMG_4197.jpg"
+    },
+    {
+      "image": "images/IMG_1334.jpg"
+    }
+  ],
+  "subtitle": "Oracle Scholars Internship",
+  "title": "Live Sentiment Analysis",
+  "project": "oracle",
+  "icons": {
+    "fa": [
+      "FaPython",
+      "FaDatabase",
+      "FaServer",
+      "FaTwitter",
+      "FaNewspaper",
+      "FaApple"
+    ],
+    "io": [
+      "IoMdAnalytics"
+    ]
+  },
+  "end": {
+    "date": "August 2019"
+  },
+  "image": "images/oracle.png",
+  "description": "My team showcased the power of Oracle Cloud to a fintech bank's CEO for our summer 2019 internship at Oracle in Reston, VA.\n\n<br /><br />Our product presented the CEO with insights for increasing revenue by cross-selling bank services, live brand management, and recommendations for future product placement or relocation. My team calculated these insights by combining seven unique data sources using Oracle Cloud's powerful autonomous database.\n\n<br /><br />\n\nTwo of the sources were live data from Twitter and news websites and harnesses a large amount of fast-moving data to give you perspective on how people feel about any topic of your choice. Now the impact of any product announcement, earnings report, or press release can be measured and addressed by the appropriate faculty.\n\n<br /><br />\n\nOur product demonstrated the capabilities of Oracle Autonomous Database by consolidating data across many systems. With this data, we used tools such as Oracle Analytics Cloud for intuitive data visualizations. Overall, we created four dashboards analyzing revenue sources, public brand perception, the customer, and profitability.\n\n<br /><br />\n\nAt the end of the internship, we presented our work to the office, including our manager and mentor. Our colleagues were interested in my sentiment analysis algorithm and how I was able to integrate my software into the Oracle Cloud ecosystem of products. I learned to sell my work by emphasizing the value it provides to the customer. My mentor taught me to frame our pitch and demo toward a persona, which for us was the CEO of a fintech bank.\n\n<br /><br />My favorite memory from this internship was a tubing trip down the Potomac river. I am thankful for the opportunity to work at a top software company where I met many talented people."
+}

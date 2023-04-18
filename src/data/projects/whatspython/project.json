@@ -1,0 +1,30 @@
+{
+  "start": "May 2018",
+  "galleryImages": [
+    {
+      "image": "images/whatspython.png"
+    },
+    {
+      "image": "images/memory_game.gif"
+    },
+    {
+      "image": "images/snake.png"
+    }
+  ],
+  "subtitle": "Curriculum Development",
+  "title": "Python Curriculum & Blog",
+  "project": "whatspython",
+  "icons": {
+    "fa": [
+      "FaWordpress",
+      "FaPhp",
+      "FaPython",
+      "FaGamepad"
+    ]
+  },
+  "end": {
+    "date": "July 2018"
+  },
+  "image": "images/whatspython.png",
+  "description": "In May of 2017 I was hired to be a student instructor for the Northrop Grumman STEM Camp. To teach high school students with no programming experience, I developed a curriculum and hosted it as a blog.<br /><br /> The blog was hosted on Namecheap with a custom domain. Content was created and managed using Wordpress. Features were extended using PHP and plugins to provide social functions such as profiles and commenting. <br /><br /> On this blog, I posted lessons as blog posts including videos for: <ul> <li>setting up the environment</li> <li>using variables</li> <li>control flow</li> <li>methods</li> <li>classes and using objects</li> <li>creating games using modules</li> </ul> <br /> I discovered an unexpected love for teaching when I received my award. When I went up to the stage for recognition as an instructor, my students all cheered for me. This success has motivated me to keep curriculum development on my mind ever since."
+}

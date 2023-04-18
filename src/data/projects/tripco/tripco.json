@@ -1,0 +1,47 @@
+{
+  "start": "August 2019",
+  "galleryImages": [
+    {
+      "image": "images/calculating.gif"
+    },
+    {
+      "image": "images/about.png"
+    },
+    {
+      "image": "images/Itinerary.png"
+    },
+    {
+      "image": "images/search.png"
+    },
+    {
+      "image": "images/trip_options.png"
+    },
+    {
+      "image": "images/add_location.png"
+    },
+    {
+      "image": "images/calculator.png"
+    },
+    {
+      "image": "images/marker_options.png"
+    }
+  ],
+  "subtitle": "Software Engineering",
+  "title": "Trip Planner",
+  "project": "tripco",
+  "icons": {
+    "fa": [
+      "FaReact",
+      "FaNpm",
+      "FaGit",
+      "FaGithub",
+      "FaJava",
+      "FaSlack"
+    ]
+  },
+  "end": {
+    "date": "December 2019"
+  },
+  "image": "images/tripco.png",
+  "description": "As a team of four students, we developed of a full-stack web application like Google Maps using agile development practices. <br /><br /> Starting from just a map and non-functional components, we implemented features for creating a full-fledged trip planner. Our trip planner is used for planning plane trips, so routes are calculated 'as-the-crow-flys'. Important features are trip optimization using variations of 2-opt to remove loops in the trip route. Calculations are done server-side, and can be done automatically for the user based on how long the optimization will take. Additionally, the server is used to query a database which contains locations. <br /> The trip display can be customized by changing route markers size, color, and icon. The itinerary allows items to be added manually, by search, and by file upload. File formats were standardized to allow interoperability between other trip planners. In regards to interoperability, our server and client where independent of one another. Throughout the semester, we tested our client and server using our classmates'. <br /><br /> By the end of the semester, I learned how to lead a scrum sprint, and how to prevent and resolve conflicts in regards to the software development process. By the end, my team knocked it out of the park and received our highest score for the final demo."
+}

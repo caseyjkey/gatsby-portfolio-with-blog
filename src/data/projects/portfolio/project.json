@@ -1,0 +1,14 @@
+{
+  "image": "images/portfolio.png",
+  "title": "Portfolio Website",
+  "subtitle": "Web Development",
+  "description": "This portfolio's focus is freelance work and project exposure.\nCompared to previous portfolios, this application is a single page with a focus on easily updating and adding content.<br /><br />\nTo accomplish this task, I converted a static page into a React project.\nThe most difficult parts of this project were styling and evaluating my skills numerically.\n<br /><br />\nTo make this website easier to update, I decided to use Gatsby to allow content creation via a dashboard.\nFinally, I am most proud of the administrator dashboard where I can modify the look and content without diving into code.",
+  "icons": {
+    "fa": ["FaReact", "FaNpm", "FaGit", "FaGithub", "FaSass"]
+  },
+  "start": "January 2020",
+  "end": {
+    "present": true
+  },
+  "project": "portfolio"
+}

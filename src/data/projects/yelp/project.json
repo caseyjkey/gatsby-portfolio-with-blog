@@ -1,0 +1,33 @@
+{
+  "start": "September 2022",
+  "galleryImages": [
+    {
+      "image": "images/web0.png"
+    },
+    {
+      "image": "images/web1.png"
+    }
+  ],
+  "subtitle": "iOS & Web Development",
+  "title": "Yelp Shops",
+  "project": "yelp",
+  "icons": {
+    "fa": [
+      "FaReact",
+      "FaSwift",
+      "FaPython",
+      "FaNode",
+      "FaBootstrap",
+      "FaGithub"
+    ],
+    "di": [
+      "DiSwift"
+    ]
+  },
+  "link": "https://next-yelp-shops.wl.r.appspot.com/",
+  "end": {
+    "date": "December 2022"
+  },
+  "image": "images/web0.png",
+  "description": "Find the best restaurants near you! This iOS app and website fetches business data from Yelp, autodetects location using an IPInfo API, and provides address search via Google's geocoding API. Challenges during development were learning Swift, SwiftUI, and Google Cloud's App Engine and Cloud Functions. My favorite features to develop were realtime search suggestions, interface design, and developing the API with Python."
+}
