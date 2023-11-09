@@ -13,6 +13,7 @@
     "gatsby": "^4.13.0",
     "gatsby-plugin-image": "^2.13.0",
     "gatsby-plugin-mdx": "^3.13.0",
+    "gatsby-plugin-netlify-cms-paths": "^1.3.0",
     "gatsby-plugin-postcss": "^5.13.0",
     "gatsby-plugin-react-helmet": "^5.13.0",
     "gatsby-plugin-sass": "^5.13.0",
@@ -73,8 +74,8 @@
     "gatsby-plugin-webpack-bundle-analyser-v2": "^1.1.8",
     "webpack-cli": "^4.8.0"
   },
-  "peerDependencies": {},
   "resolutions": {
     "webpack": "^5.44.0"
-  }
+  },
+  "packageManager": "yarn@3.6.4"
 }
