@@ -22,7 +22,7 @@ import { GoStar } from 'react-icons/go'
 import { MdWork } from 'react-icons/md'
 import { BsSave } from 'react-icons/bs'
 
- export default function Resume(props) {
+function Resume(props) {
   const [open, setOpen] = useState('1');
   const toggle = (id) => {
     if (open === id) {
@@ -248,3 +248,5 @@ import { BsSave } from 'react-icons/bs'
     </ResumeSection>
   );
  }
+
+ export { Resume };
