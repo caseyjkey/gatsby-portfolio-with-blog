@@ -32,8 +32,7 @@ export const Text = styled.div`
 `;
 
 export const Subheader = styled.h3`
-  text-transform: uppercase;
-  font-size: 16px;
+  font-size: 36px;
   font-weight: 800;
   color: ${(props) => props.theme.primaryColor};
   letter-spacing: 4px;
@@ -50,7 +49,7 @@ export const Slider = styled.h2`
   color: ${(props) => props.theme.black}
   font-weight: 600;
   .header {
-    font-size: 2em;
+    font-size: 1.2em;
    //text-decoration: underline;
   }
   .subheader {
@@ -61,9 +60,11 @@ export const Slider = styled.h2`
   span#name {
     color: ${(props) => props.theme.primaryColor};
   }
+  @media (max-width: 767.98px) {
+      .header {
+        font-size: 26px; 
+      } 
+  }
 `;
 
-/*  @media (max-width: 767.98px) {
-    .slider-text h1 {
-      font-size: 40px; } }
-*/
+
