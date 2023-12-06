@@ -1,13 +1,19 @@
 {
   "section": "introduction",
-  "greeting": "Hello.",
+  "greeting": "Hey! 👋",
   "name": "Casey Key",
-  "role": "Full Stack Programmer",
+  "role": "Full Stack Software Engineer",
   "descriptions": [
     {
       "description": {
-        "header": "",
-        "subheader": ""
+        "header": "a developer.",
+        "subheader": "Cloud, web, IoT, mobile, and blockchain"
+      }
+    },
+    {
+      "description": {
+        "header": "a leader.",
+        "subheader": "Hackathons, clubs, and sports"
       }
     }
   ]

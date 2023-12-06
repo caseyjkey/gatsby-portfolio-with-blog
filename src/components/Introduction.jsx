@@ -7,6 +7,7 @@ import Socials from './Social'
 import { Animated } from 'react-animated-css'
 import { graphql, useStaticQuery } from 'gatsby'
 import { lighten } from 'polished'
+import Typewriter from 'typewriter-effect/dist/core'
 
 export default function Introduction(props) {
 
@@ -31,6 +32,61 @@ export default function Introduction(props) {
   let headers = data.introduction.descriptions.map(({ description }) => description.header);
   let subheaders = data.introduction.descriptions.map(({ description }) => description.subheader);
 
+  let typingSpeed = 50;
+  let deleteSpeed = 10;
+  let pauseDelay = 4000;
+
+  const [headerEnd, setHeaderEnd] = useState(false);
+  const endHeader = () => setHeaderEnd(true);
+
+  useEffect(() => {
+    let header = document.getElementById('typewriter1');
+    let subheader = document.getElementById('typewriter2');
+    let typewriter1 = new Typewriter(header, {
+        loop: false,
+        delay: typingSpeed,
+        deleteSpeed: deleteSpeed,   
+        autoStart: true,
+      }
+    );
+    
+    let typewriter2 = new Typewriter(subheader, {
+        loop: false,
+        delay: typingSpeed
+      }
+    );
+
+    function subtyping(string) {
+      typewriter2
+          .typeString(string)
+          .start();
+    }
+
+    function subdelete() {
+      typewriter2
+          .deleteAll(1)
+          .start();
+    }
+
+    headers.forEach((header, i) => {
+      typewriter1
+          .start()
+          .typeString(header)
+          .callFunction(() => subtyping(subheaders[i]))
+          .pauseFor(pauseDelay)
+          .callFunction(subdelete)
+          .pauseFor(subheaders[i].length * deleteSpeed)
+          .deleteChars(header.length);
+        
+    });
+
+    typewriter1
+        .typeString("on social media.")
+        .start()
+        .callFunction(endHeader);
+  }, []);
+
+
   return (  
     <HeroWrap name="Home">
       <Overlay></Overlay>
@@ -39,12 +95,21 @@ export default function Introduction(props) {
           <Row noGutters xs="1" md="2" className="js-fullheight justify-content-center align-items-center">
             <Col className="text-center">
                 <Text>
+                  <Subheader>{data.introduction.greeting}</Subheader>
                   <Slider>
-                    <Header className="header">{data.introduction.greeting}</Header>
-                    <h2 className="subheader">My name is <span id="name">{data.introduction.name}</span>. I am the {data.introduction.role}.</h2>
-                      <SocialStyle>
-                        <Socials/>
-                      </SocialStyle>
+                    <h2 className="subheader">My name is <span id="name">{data.introduction.name}</span>, the {data.introduction.role}.</h2>
+                    <h1>I am...</h1>
+                    <span id="typewriter1" className="header"></span><br/>
+                    {!headerEnd &&
+                      <span id="typewriter2" className="subheader"></span>
+                    }
+                    {headerEnd &&
+                      <Animated animationIn={"fadeInUp"} isVisible={headerEnd}>
+                        <SocialStyle>
+                          <Socials/>
+                        </SocialStyle>
+                      </Animated>
+                    }
                   </Slider>
 
                     <Button color="primary" className="text-center" style={{zIndex: "100", position: "relative"}} href="https://cos5lbzflgz.typeform.com/to/dVpncV8k">Email Me</Button>

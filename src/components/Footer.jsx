@@ -46,7 +46,7 @@ export default function Footer(props) {
             <div className="ftco-footer-widget mb-4">
               <h2 className="ftco-heading-2">Services</h2>
               <ul className="list-unstyled">
-                <li><a href="http://fiver.com/s2/9916472099" target="_blank"><FaLongArrowAltRight />Tutoring</a></li>
+                <li><a href="https://www.fiverr.com/caseykey/tutor-java-cpp-python-or-javascript" target="_blank"><FaLongArrowAltRight />Tutoring</a></li>
               </ul>
             </div>
           </Col>
@@ -55,7 +55,7 @@ export default function Footer(props) {
               <h2 className="ftco-heading-2">Questions?</h2>
               <div className="block-23">
                 <ul>
-                  <li><FaSign /><span className="text">Santa Monica, California, USA</span></li>
+                  <li><FaSign /><span className="text">Wyoming, USA</span></li>
                   <li><a href="tel:13072242940"><FaPhone />+1 (307) 224-2940</a></li>
                 </ul>
               </div>

@@ -34,7 +34,9 @@
     "react-animations": "^1.0.0",
     "react-countup": "^6.4.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-icons": "^4.7.1",
+    "react-image-lightbox": "^5.1.4",
     "react-responsive-carousel": "^3.2.23",
     "react-scripts": "5.0.1",
     "react-scroll": "^1.8.9",
@@ -42,8 +44,10 @@
     "react-waypoint": "^10.3.0",
     "reactstrap": "^9.1.6",
     "sass": "^1.56.2",
+    "sharp": "^0.33.0",
     "styled-components": "^5.3.6",
     "typeface-poppins": "1.1.13",
+    "typewriter-effect": "^2.21.0",
     "webpack": "^5.75.0"
   },
   "scripts": {
@@ -72,7 +76,6 @@
   "devDependencies": {
     "webpack-cli": "^5.0.1"
   },
-  "peerDependencies": {},
   "resolutions": {
     "webpack": "^5.44.0"
   }
