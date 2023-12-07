@@ -9,7 +9,7 @@ import Project from './Projects/Project'
 export const Projects = (props) => {
 	const data = useStaticQuery( 
 		graphql`{
-			allProject(sort: {order: ASC, fields: [start]}) {
+			allProject(sort: {start: DESC}) {
 				edges {
 					node {
 						project
