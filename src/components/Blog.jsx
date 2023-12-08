@@ -42,7 +42,7 @@ export const Blog = (props) => {
                 <Row noGutters className="justify-content-center pb-5">
                     <Col md={12} className="heading-section text-center">
                         <Heading className="mb-4">Blog</Heading>
-                        <p>My place to let my thoughts flow and grow.</p>
+                        <p>My place to flow and grow.</p>
                     </Col>
                 </Row>
                 <Row>
