@@ -55,7 +55,7 @@ export default function Footer(props) {
               <h2 className="ftco-heading-2">Questions?</h2>
               <div className="block-23">
                 <ul>
-                  <li><FaSign /><span className="text">Wyoming, USA</span></li>
+                  <li><FaSign /><span className="text">Greater San Francisco Area, USA</span></li>
                   <li><a href="tel:13072242940"><FaPhone />+1 (307) 224-2940</a></li>
                 </ul>
               </div>
