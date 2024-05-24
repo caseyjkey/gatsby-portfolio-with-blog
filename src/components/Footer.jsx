@@ -25,7 +25,7 @@ export default function Footer(props) {
                 </li>
                 <li>
                   <Social Icon={FaLinkedinIn}
-                          link="https://linkedin.com/in/caseyjgkey"
+                          link="https://linkedin.com/in/keycasey"
                   />
                 </li>
                 <li>
