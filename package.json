@@ -23,7 +23,7 @@
     "gatsby-source-filesystem": "^5.3.1",
     "gatsby-transformer-json": "^5.3.0",
     "gatsby-transformer-sharp": "^5.3.1",
-    "gh-pages": "^4.0.0",
+    "gh-pages": "^5.0.0",
     "jquery": "^3.6.2",
     "polished": "^4.2.2",
     "postcss": "^8.4.20",
