@@ -25,5 +25,5 @@ For your `bio`, make sure to remove all line-breaks, I recommend [this](http://r
 `<br />` will render to a line break in the browser. 
 
 ### Previewing your Website
-From this directory run `npm install`, then run `gatsby develop`.
+From this directory run `yarn install --ignore-engines`, then run `gatsby develop`.
 
