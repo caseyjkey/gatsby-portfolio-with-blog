@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.js'
 import FallingArrow from './Introduction/Mouse'
 import Socials from './Social'
+import Resume from './Introduction/resume.pdf'
 import { Animated } from 'react-animated-css'
 import { graphql, useStaticQuery } from 'gatsby'
 import { lighten } from 'polished'
@@ -97,8 +98,8 @@ export default function Introduction(props) {
                 <Text>
                   <Subheader>{data.introduction.greeting}</Subheader>
                   <Slider>
-                    <h2 className="subheader">My name is <span id="name">{data.introduction.name}</span>, the {data.introduction.role}.</h2>
-                    <h1>I am...</h1>
+                    <h2 className="subheader">I'm <span id="name">{data.introduction.name}</span>, the {data.introduction.role}.</h2>
+                    <h1>I'm also...</h1>
                     <span id="typewriter1" className="header"></span><br/>
                     {!headerEnd &&
                       <span id="typewriter2" className="subheader"></span>
@@ -112,7 +113,7 @@ export default function Introduction(props) {
                     }
                   </Slider>
 
-                    <Button color="primary" className="text-center" style={{zIndex: "100", position: "relative"}} href="https://cos5lbzflgz.typeform.com/to/dVpncV8k">Email Me</Button>
+                    <Button color="primary" className="text-center" style={{zIndex: "100", position: "relative"}} href={Resume}>Resume</Button>
                 </Text>
             </Col>
             <Col>

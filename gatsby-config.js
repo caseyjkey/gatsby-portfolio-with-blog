@@ -3,7 +3,7 @@ module.exports = {
     title: 'Casey Key',
     description: 'Casey Key is a California software engineer with a focus on education, finance, and security with expertise in cloud-native architecture and full-stack development.',
     author: 'Casey Key',
-    canonical: 'https://caseyjgkey.xyz',
+    canonical: 'https://keycasey.com',
   },
   plugins: [
     `gatsby-plugin-image`,

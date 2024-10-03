@@ -4,7 +4,7 @@ const path = require(`path`)
 exports.createPages = ({ actions, graphql }) => {
     const { createPage } = actions
     const blogPostTemplate = path.resolve(
-        'src/templates/blogPostTemplate.js'
+        'src/templates/blogPostTemplate.jsx'
     )
 
 
@@ -20,6 +20,11 @@ exports.createPages = ({ actions, graphql }) => {
                     }
                     frontmatter {
                         title
+                        date(formatString: "MMMM D, YYYY")
+                    }
+                    body
+                    internal {
+                        contentFilePath
                     }
                 }
             }
@@ -39,7 +44,7 @@ exports.createPages = ({ actions, graphql }) => {
 
             createPage({
                 path: post.fields.slug,
-                component: blogPostTemplate,
+                component: `${blogPostTemplate}?__contentFilePath=${post.internal.contentFilePath}`,
                 context: {
                     slug: post.fields.slug,
                     previous,

@@ -4,8 +4,8 @@ backend:
   branch: source
   site_domain: quirky-bassi-7f760a.netlify.com
 
-site_url: https://caseyjgkey.xyz
-display_url: https://caseyjgkey.xyz
+site_url: https://keycasey.com
+display_url: https://keycasey.com
 
 public_folder: "/src/images/"
 media_folder: "/src/images/"

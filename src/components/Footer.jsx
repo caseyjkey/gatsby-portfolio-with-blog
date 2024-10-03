@@ -5,8 +5,11 @@ import { lighten, darken } from 'polished'
 import { Container, Row, Col } from 'reactstrap'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
-import { FaHeartBroken, FaLinkedinIn, FaTwitter, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight } from 'react-icons/fa'
+import { FaHeartBroken, FaLinkedinIn, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight } from 'react-icons/fa'
+import { FaXTwitter } from 'react-icons/fa6'
+
 import { Section } from './style'
+
 
 export default function Footer(props) {
   return (
@@ -19,8 +22,8 @@ export default function Footer(props) {
               <p>Casey J. Key is a software engineer with a focus on finance, education, and security.</p>
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft">
                 <li>
-                  <Social Icon={FaTwitter}
-                          link="https://twitter.com/caseyjkey"
+                  <Social Icon={FaXTwitter}
+                          link="https://x.com/caseyjkey"
                   />
                 </li>
                 <li>
@@ -55,7 +58,7 @@ export default function Footer(props) {
               <h2 className="ftco-heading-2">Questions?</h2>
               <div className="block-23">
                 <ul>
-                  <li><FaSign /><span className="text">Greater San Francisco Area, USA</span></li>
+                  <li><FaSign /><span className="text">Silicon Valley, CA, USA</span></li>
                   <li><a href="tel:13072242940"><FaPhone />+1 (307) 224-2940</a></li>
                 </ul>
               </div>

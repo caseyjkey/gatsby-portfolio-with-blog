@@ -45,12 +45,6 @@ function Resume(props) {
                     <SectionTitle>Education</SectionTitle>
                   </AccordionHeader>
                   <AccordionBody accordionId='1'>
-                    <Entry icon={GiGraduateCap} 
-                            title={"University of Southern California"}
-                            subtitle={"Master's of Science in Computer Science"}
-                            date={"Expected May 2024"}>
-                      Specialization in Artificial Intelligence
-                    </Entry>
                     <Entry icon={TbCertificate}
                             title={"Certified Developer - Associate"}
                             subtitle={"AWS Certification"}
@@ -82,7 +76,19 @@ function Resume(props) {
                   </AccordionHeader>                
                   <AccordionBody accordionId='2'>
                     <Entry icon={MdWork}
-                            date={"August 2022 – Present"}
+                            date={"April 2024 – Present"}
+                            title={"Applications Developer"}
+                            subtitle={"Oracle"}
+                    >
+                      <ul>
+                        <li>Created reusable components to unify the UI for our org’s reporting web applications</li>
+                        <li>Decreased application attack surface by upgrading Python applications to latest version</li>
+                        <li>Launched web application built with Typescript with Python API for DevOps reports</li>
+                      </ul>
+                    </Entry>
+
+                    <Entry icon={MdWork}
+                            date={"August 2022 – April 2024"}
                             title={"Software Development Engineer"}
                             subtitle={"Amazon"}
                     >

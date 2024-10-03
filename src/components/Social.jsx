@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
-import { FaLinkedinIn, FaTwitter, FaFacebookF, FaInstagram } from 'react-icons/fa'
+import { FaLinkedinIn, FaFacebookF, FaInstagram } from 'react-icons/fa'
+import { FaXTwitter } from 'react-icons/fa6'
 
 /* This is a generic component for placing social links anywhere
    TODO: Use props for social links */
@@ -9,8 +10,8 @@ export default function Socials(props) {
   return (
     <ul className="ftco-footer-social list-unstyled ">
       <li>
-        <Social Icon={FaTwitter}
-                link="https://twitter.com/caseyjkey"
+        <Social Icon={FaXTwitter}
+                link="https://x.com/caseyjkey"
         />
       </li>
       <li>
