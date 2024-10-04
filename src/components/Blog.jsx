@@ -4,6 +4,14 @@ import React from 'react'
 import { Heading } from './style.js' // Global styled-components
 import { Container, Row, Col } from 'reactstrap'
 import { BlogSection, BlogEntry } from './Blog/style.js'
+import styled from 'styled-components'
+
+const Image = styled(GatsbyImage)`
+    border-radius: 5px;
+    width: 75%;
+    margin: 0 auto;
+`;
+
 
 export const Blog = (props) => {
     const data = useStaticQuery( 
@@ -22,7 +30,7 @@ export const Blog = (props) => {
                             cover {
                                 publicURL
                                 childImageSharp {
-                                    gatsbyImageData
+                                  gatsbyImageData(width: 2000) 
                                 }
                             }
                         }
@@ -51,8 +59,9 @@ export const Blog = (props) => {
                             <BlogEntry key={id}>
                                 <Link to={fields.slug}>
                                     {frontmatter.cover ? (
-                                        <GatsbyImage
+                                        <Image
                                             image={frontmatter.cover.childImageSharp.gatsbyImageData}
+                                            className='mx-auto'
                                         />    
                                     ) : null }
                                     <h1>{frontmatter.title}</h1>

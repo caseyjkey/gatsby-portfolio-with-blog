@@ -7,5 +7,10 @@ export const BlogSection = styled.section`
 `;
 
 export const BlogEntry = styled.div`
-    margin: 4em;
+    margin: 0 auto;
+    padding-bottom: 2em;
+    width: 75%;
+    img {
+        width: 100%;
+    }
 `;

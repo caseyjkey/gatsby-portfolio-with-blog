@@ -3,10 +3,14 @@ import React from 'react'
 import Layout from '../components/Layout'
 import { Heading } from '../components/style.js'
 import Dump from '../components/Dump'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
+import { theme, Body } from '../components/style'
+import Navigation from '../components/Navigation'
+import Footer from '../components/Footer'
 
 export const BlogPost = styled.div`
     margin: 0 auto;
+    margin-top: 6em;
     max-width: 800px;
     padding: 20px;
 `;
@@ -26,31 +30,37 @@ export default function BlogPostTemplate({ data, pageContext, children }) {
     const { previous, next, post } = pageContext;
     return (
         <Layout>
-            <BlogPost>
-                <Heading>
-                    {frontmatter.title}
-                </Heading>
-                <p>Date: {post.frontmatter.date}</p>
-                {children}
-                {previous && (
-                    <>
+            <ThemeProvider theme={theme}>
+                <Body>
+                    <Navigation />
+                    <BlogPost>
+                        <Heading className="text-center">
+                            {frontmatter.title}
+                        </Heading>
+                        <p className="text-center">{post.frontmatter.date}</p>
+                        {children}
                         {previous && (
-                            <Link to={previous.fields.slug}>
-                                <p>{previous.frontmatter.title}</p>
-                            </Link>
+                            <>
+                                {previous && (
+                                    <Link to={previous.fields.slug}>
+                                        <p>{previous.frontmatter.title}</p>
+                                    </Link>
+                                )}
+                            </>
                         )}
-                    </>
-                )}
-                {next && (
-                    <>
                         {next && (
-                            <Link to={next.fields.slug}>
-                                <p>{next.frontmatter.title}</p>
-                            </Link>
+                            <>
+                                {next && (
+                                    <Link to={next.fields.slug}>
+                                        <p>{next.frontmatter.title}</p>
+                                    </Link>
+                                )}
+                            </>
                         )}
-                    </>
-                )}
-            </BlogPost>
+                    </BlogPost>
+                    <Footer />
+                </Body>
+            </ThemeProvider>
         </Layout>
     );
 }

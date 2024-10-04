@@ -39,7 +39,7 @@ export default function BlogPage({ data }) {
             </script>
             <meta charSet="utf-8" />
             <title>{data.site.siteMetadata.title}</title>
-            <meta property='og:title' content="Casey Key's Website" />
+            <meta property='og:title' content="Casey Key - Software Engineer" />
             <meta property='og:image' content={WebsiteImage} />
             <meta property='og:description' content={data.site.siteMetadata.description} />
             <meta property='og:url' content={data.site.siteMetadata.canonical} />

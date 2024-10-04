@@ -2,6 +2,12 @@ import { Highlight, themes } from 'prism-react-renderer'
 import React from 'react'
 import styled from 'styled-components'
 import { copyToClipboard } from '../utils/copy-to-clipboard';
+import {
+  LiveEditor,
+  LiveError,
+  LivePreview,
+  LiveProvider,
+} from 'react-live'
 
 export const Pre = styled.pre`
     position: relative;
@@ -36,7 +42,18 @@ const CopyCode = styled.button`
     }
 `;
 
-const Code = ({ codeString, language }) => {
+const Code = ({ codeString, language, ...props }) => {
+    console.log(codeString, language, props);
+    if (language === 'react-live') {
+        return (
+            <LiveProvider code={codeString} noInline={true} theme={themes.nightOwl}>
+                <LiveEditor />
+                <LiveError />
+                <LivePreview />
+            </LiveProvider>
+        )
+    }
+    
     const handleClick = () => {
         copyToClipboard(codeString);
     };
