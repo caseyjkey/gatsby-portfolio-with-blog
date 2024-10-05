@@ -1,0 +1,70 @@
+---
+title: My First LeetCode Blog Post 
+date: 2024-10-03
+published: true
+---
+
+# My First LeetCode Blog Post
+I have already been working on LeetCode's top interview problems. I started a couple months ago
+in preparation for my interviews with Google. Although that has passed, more opportunities are becoming available.
+So, we are back on the grind.
+## The Problem
+Today we are working on **35. Search Insert Position**. The problem is as follows:
+Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Example 1:
+* Input: nums = [1,3,5,6], target = 5
+* Output: 2
+
+Example 2:
+* Input: nums = [1,3,5,6], target = 2
+* Output: 1
+
+Example 3:
+* Input: nums = [1,3,5,6], target = 7
+* Output: 4
+
+## The Solution
+I like to format my answers using the UMPIRE method:
+* Understand
+    * We are given a sorted array, and we are searching for an expected value.
+* Match
+    * We can match this problem to a binary search problem, given the O(log N) complexity.
+* Plan
+    * We will want a function that takes in an array and returns an integer.
+* Implement
+``` python
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return mid
+```
+* Review
+    * The code is clean and concise. We used descriptive variable names. We have implemented a binary search.
+    * We can test our code using the examples provided.
+    * nums = [1,3,5,6], target = 5
+        * left = 0, right = 3, mid = 1
+        * nums[1] = 3 < 5, left = 2
+        * nums[2] = 5 == 5, return 2
+    * Now let's test an edge case where the element is not in the array.
+    * nums = [1,3,5,6], target = 2
+        * left = 0, right = 3, mid = 1
+        * nums[1] = 3 > 2, right = 0
+        * nums[0] = 1 < 2, left = 1
+        * return 0
+    * We see we are not getting the expected output. We need to rework to support this edge case.
+* Evaluate
+    * We are getting the expected runtime complexity. We are not getting expected result for missing elements.
+    * Refactor
+    * We need to return the `left` pointer, not the `mid` pointer.
