@@ -1,0 +1,44 @@
+---
+title: Second LeetCode Blog Post 
+date: 2024-10-04
+published: true
+---
+
+# Second LeetCode Blog Post
+Today is another easy problem, and it is focused on bit manipulation.
+Let's dive on in.
+## The Problem
+Today's problem is **190. Reverse Bits**. The problem is as follows:
+Reverse bits of a given 32 bits unsigned integer.
+
+## The Solution
+I like to format my answers using the UMPIRE method:
+* Understand
+    * We are given a 32-bit unsigned integer, and we are to reverse the bits.
+* Match
+    * We can match this problem to a bit manipulation problem.
+* Plan
+    * We can write a function which casts the number to binary, then a string, and finally reverses it before casting back to binary.
+* Implement
+``` python
+    def reverseBits(self, n: int) -> int:
+        b = bin(n)
+        s = str(b)[2:].zfill(32)
+        s = s[::-1]
+        return int(s, 2) 
+```
+* Review
+    * The code is clean and concise. We used descriptive variable names. We have implemented a bit manipulation.
+    * We can test our code using the examples provided.
+    * n = 43261596
+        * b = '0b10100101000001111010011100'
+        * s = '00000010100101000001111010011100'
+        * s = '00111001011110000010100101000000'
+``` python
+    def test_reverseBits(self):
+        assert self.reverseBits(43261596) == 964176192
+        assert self.reverseBits(4294967293) == 3221225471
+```
+* Evaluate
+    * Our code runs in O(n) time complexity due to our list slicing.
+    * Our space complexity is O(1) as we use the same amount of space regardless of input size.
