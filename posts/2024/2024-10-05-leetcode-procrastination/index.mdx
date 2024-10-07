@@ -1,0 +1,46 @@
+---
+title: LeetCode as Procrastination 
+date: 2024-10-05
+published: true
+---
+
+We're solving another LeetCode problem today instead of adding a new project to my portfolio. This one is focused on bit manipulation. Let's dive in.
+## The Problem
+Today's problem is **191. Number of 1 bits**. The problem is as follows:
+Write a function that takes the binary representation of a positive integer and returns the number of 
+set bits it has (also known as the Hamming weight).
+
+## The Solution
+Let's answer using the UMPIRE method:
+* Understand
+    * We are given a positive integer, and we are to count the number of 1 bits of the number in bina.
+* Match
+    * We can match this problem to a bit manipulation problem or an array looping problem. 
+* Plan
+    * We can write a function which casts the number to binary, then a string, and finally counts the number of 1's using a loop.
+* Implement
+``` python
+    def countBits(self, n: int) -> int:
+        b = bin(n)
+        s = str(b)[2:]
+        count = 0
+        for bit in s:
+            if bit == '1':
+                count += 1
+        return count
+```
+* Review
+    * The code is clean and concise. We used descriptive variable names.
+    * We can test our code using the examples provided.
+    * n = 4
+        * b = '0b0100'
+        * s = '0100'
+        * count = 1
+``` python
+    def test_reverseBits(self):
+        assert self.countBits(4) == 1
+        assert self.reverseBits(3) == 2
+```
+* Evaluate
+    * Our code runs in O(n) time complexity due to our loop through the string.
+    * Our space complexity is O(1) as we use the same amount of space regardless of input size.
