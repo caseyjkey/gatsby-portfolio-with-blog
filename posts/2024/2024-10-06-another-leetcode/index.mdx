@@ -1,0 +1,72 @@
+---
+title: Another LeetCode Blog Post 
+date: 2024-10-06
+published: true
+---
+
+We're solving another LeetCode problem today. Tomorrow I will add my new project. Let's dive in.
+## The Problem
+Today's problem is **9. Palindrome Number**. The problem is as follows:
+Given an integer x, return true if x is a palindrome, and false otherwise.
+
+Example 1:
+Input: x = 121
+Output: true
+Explanation: 121 reads as 121 from left to right and from right to left.
+Example 2:
+
+Example 2:
+Input: x = -121
+Output: false
+Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.Write a function that takes the binary representation of a positive integer and returns the number of 
+set bits it has (also known as the Hamming weight).
+
+## The Solution
+Let's answer using the UMPIRE method:
+* Understand
+    * We are given an integer, and we are to determine if it is a palindrome.
+    * In an interview. I would ask if we can solve this using strings or if I should solve it mathematically.
+* Match
+    * We can match this problem to a math problem or string problem. 
+* Plan
+    * We can write a function which casts the number a string, and it will check if the first and last digits are the same until there is 1 or less digits.
+* Implement
+``` python
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        def recursivePalindrome(s: str) -> bool:
+            if len(s) <= 1:
+                return True
+            elif s[0] != s[-1]:
+                return False
+            return recursivePalindrome(s[1:-1])
+        
+        return recursivePalindrome(str(x))
+```
+* Review
+    * We implemented this using a locally defined recursive function.
+    * We can test our code using the examples provided.
+    * x = 121
+        * return True
+``` python
+    def test_isPalindrome(self):
+        assert self.test_isPalindrome(1221)
+        assert not self.test_isPalindrome(31)
+```
+* Evaluate
+    * Our code runs in O(n) time complexity due the call being done n/2 times. 
+    * Our space complexity is O(n) as we are storing the string in memory each time we recursively call.
+        * We can reduce the complexity to constant space by using pointers.
+
+``` python
+    def isPalindrome(x: int) -> bool:
+        s = str(x)
+        left = 0
+        right = len(s) - 1
+        while left < right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+```
