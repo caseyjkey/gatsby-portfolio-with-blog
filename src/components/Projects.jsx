@@ -40,6 +40,8 @@ export const Projects = (props) => {
 							di
 							fa
 							io
+							gr
+							si
 						}
 						start
 						end {
@@ -56,7 +58,7 @@ export const Projects = (props) => {
 	// Get components for icons specified in projects.json
 	function loadIcons(iconMap) {
 		let Icons = [];
-		for(var type of Object.keys(iconMap)) {
+		for(let type of Object.keys(iconMap)) {
 			if(iconMap[type]) {
 			iconMap[type].map( Icon => {
 				if (type === "fa") {
@@ -72,6 +74,16 @@ export const Projects = (props) => {
 				else if (type === "di") {
 					Icons.push(lazy(() => 
 						import('react-icons/di').then(module => ({ default: module[Icon] }))
+					));
+				}
+				else if (type === "gr") {
+					Icons.push(lazy(() => 
+						import('react-icons/gr').then(module => ({ default: module[Icon] }))
+					));
+				}
+				else if (type === "si") {
+					Icons.push(lazy(() => 
+						import('react-icons/si').then(module => ({ default: module[Icon] }))
 					));
 				}
 			})

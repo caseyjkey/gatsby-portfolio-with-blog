@@ -1,0 +1,41 @@
+{
+  "start": "August 2022",
+  "galleryImages": [
+    {
+      "image": "images/1.png"
+    },
+    {
+      "image": "images/2.png"
+    },
+    {
+      "image": "images/3-1.png"
+    },
+    {
+      "image": "images/3-2.png"
+    }
+  ],
+  "subtitle": "Software Development Engineer",
+  "title": "Amazon.com Data Catalog",
+  "project": "datacatalog",
+  "icons": {
+    "fa": [
+      "FaAws",
+      "FaReact",
+      "FaJava",
+      "FaGit",
+      "FaApple"
+    ],
+    "gr": [
+      "GrGraphQl"
+    ],
+    "si": [
+      "SiRedux"
+    ]
+  },
+  "end": {
+    "present": false,
+    "date": "April 2024"
+  },
+  "image": "images/logo.png",
+  "description": "<ul><li>Built React application to onboard many datasets at once, reducing registration time by 10x,</li><li>Reduced customer support tickets by adding a service status banner during outages,</li><li>Minimized accounting response time by automating expense processing and report deliveries,</li><li>Modernized production web application to improve user experience and reduce technical debt</li>"
+}
