@@ -1,0 +1,52 @@
+---
+title: Email Processing System Design
+date: 2024-10-13
+published: true
+---
+
+I'm looking forward to an interview for a software engineer position at StubHub.
+It offers work with microservices, kubernetes, and cloud-native technologies.
+The position focuses on DevOps, such as infrastructure, build, deployment, and artifact management.
+I'm excited because my current experience aligns with the position's focus. 
+This will be an improvement for my career as it offers better compensation and location (Santa Monica!).
+
+# Interview Prep
+I checked Glassdoor, and it sounds like the technical interview question will be easier than Google was.
+It will likely be a LeetCode medium or easy question, but there was mention of a system design question.
+Several people said they were asked to design an email processing system.
+So, I want to write about how I would design such a system.
+
+# System Design
+## System Components
+### Email Receiving
+Emails will be received through an API provided by the email hosting service.
+The API will have a `/send` endpoint that the email provider can call to send an email to a user.
+The API will have a `/receive` endpoint that the email provider can call to receive an email at a specific address.
+
+### Email Parsing
+Once an email is received, it needs to be parsed.
+The content and metadata needs to be extracted.
+The content needs to be converted to a format that can be processed by the system.
+This would likely be a JSON blog format to be stored in a database.
+
+### Email Classification
+Emails need to be categorized, at the least by their sender and receiver.
+This will allow for the user and administrator to view their sent and received emails.
+
+### Email Routing
+Emails need to be routed to the correct user.
+This will allow for the user to view their emails.
+This will be done by using their email address to look up the user ID in the database..
+Then, the email's content which was stored earlier will have its ID added to the user's received emails.
+This could be stored as a one-to-many relationship.
+
+### Email Storage
+Emails need to be stored in a database.
+The database will need to be able to store the email's content, metadata, and tags.
+Since this data is structured, it is a good fit for a structured SQL database like Postgres.
+
+### Email Client
+Emails can be exposed to the user in their client.
+To do this, the data must be exposed through an API.
+This will follow an email protocol such as SMTP, POP, or IMAP.
+We follow the common protocols so the the user can use any email client to access their emails.
