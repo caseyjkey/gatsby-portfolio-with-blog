@@ -1,0 +1,59 @@
+---
+title: LeetCode 12. Integer to Roman
+date: 2024-10-28
+published: true
+---
+
+I started feeling down about my past interview performance. Rather than continue ruminating, I decided to continue my
+LeetCode grind tonight. My goal is to complete the Top 150 Interview Questions before the end of the year.
+
+# Solution
+```
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        digitCount = int((math.log10(num) + 1) // 1)
+        def getLeftmostDigit():
+            return num // (10 ** (digitCount - 1)) % 10
+        romanForm = ""
+        if digitCount == 4:
+            digit = getLeftmostDigit()
+            for i in range(digit): romanForm += "M" 
+            digitCount -= 1
+        if digitCount == 3:
+            digit = getLeftmostDigit()
+            if digit in [4, 9]:
+                romanForm += "CD" if digit == 4 else "CM"
+                digit -= digit
+            elif digit >= 5:
+                romanForm += "D"
+                digit -= 5
+            for i in range(digit): romanForm += "C" 
+            digitCount -= 1
+        if digitCount == 2:
+            digit = getLeftmostDigit()
+            if digit in [4, 9]:
+                romanForm += "XL" if digit == 4 else "XC"
+                digit -= digit
+            elif digit >= 5:
+                romanForm += "L"
+                digit -= 5
+            for i in range(digit): romanForm += "X"
+            digitCount -= 1
+        if digitCount == 1:
+            digit = getLeftmostDigit()
+            if digit in [4, 9]:
+                romanForm += "IV" if digit == 4 else "IX"
+                digit -= digit
+            elif digit >= 5:
+                romanForm += "V"
+                digit -= 5
+            for i in range(digit): romanForm += "I" 
+
+        return romanForm
+```
+O(n) = 1
+
+## Reflection
+Next time, I would like to reduce the code complexity by abstracting the strings into a dictionary.
+With the dictionary, I could loop for `digitCount` iterations and select the appropriate value from the dictionary.
+This would remove the repeated code, thereby making it easier to read and maintain.
