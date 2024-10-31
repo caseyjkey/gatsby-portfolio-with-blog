@@ -1,0 +1,58 @@
+---
+title: LeetCode 6. Zigzag Conversion
+date: 2024-10-30
+published: true
+---
+
+This one took me about 15 minutes to come up with a solution. I then worked through it with this naive solution.
+
+# Solution
+```python
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        grid = [['' for column in range(len(s))] for row in range(numRows)]
+        x, y = 0, 0
+        direction = 1
+        for char in s:
+            grid[y][x] = char
+            if y == numRows - 1:
+                direction = -1
+                x += 1
+            elif direction == -1 and y > 0:
+                x += 1
+            elif direction == -1 and y == 0:
+                direction = 1
+            y += direction if numRows > 1 else 0
+        result = ""
+        for row in grid:
+            for char in row:
+                if char:
+                    result += char
+        return result
+```
+O(n) = n*m or n^2
+
+## Reflection
+Looking back, I realized I didn't need to include the empty spaces as if it were illustrated. This allows me to simplify my code by using the append() method for lists. Here is my improved version:
+```python
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1 or numRows >= len(s):
+            return s
+
+        grid = [[] for _ in range(numRows)]
+        y = 0 
+        direction = 1
+        for char in s:
+            grid[y].append(char)
+            if y == numRows - 1:
+                direction = -1
+            elif y == 0:
+                direction = 1
+            y += direction
+        
+        for i in range(len(grid)):
+            grid[i] = ''.join(grid[i])
+        result = ''.join(grid)
+        return result
+```
