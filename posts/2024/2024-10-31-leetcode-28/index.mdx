@@ -1,0 +1,18 @@
+---
+title: LeetCode 28. Find the Index of the First Occurrence in a String
+date: 2024-10-31
+published: true
+---
+
+This was an easy problem.
+
+# Solution
+```python
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        for j in range(len(haystack)):
+            if haystack[j:j + len(needle)] == needle:
+                return j
+        return -1
+```
+O(n) = n

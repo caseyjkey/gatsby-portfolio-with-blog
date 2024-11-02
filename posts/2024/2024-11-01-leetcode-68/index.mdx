@@ -1,0 +1,46 @@
+---
+title: LeetCode 68. Text Justification
+date: 2024-11-01
+published: true
+---
+
+This took a while to solve. I completed it over two days, then I had the help of ChatGPT to analyze the complexity.
+I reviewed other answers and I didn't find simpler methods.
+
+# Solution
+```python
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        width = 0
+        rows = []
+        row = []
+        for word in words:
+            line = ' '.join(row + [word])
+            if len(line) > maxWidth:
+                charCount = len(''.join(row))
+                spaceRemaining = maxWidth - charCount
+                if len(row) > 1:
+                    spaces = [spaceRemaining // (len(row) - 1) for _ in range(len(row) - 1)]
+                    for i in range(spaceRemaining % (len(row) - 1)):
+                        spaces[i] += 1
+                else:
+                    spaces = [spaceRemaining]
+                print(spaces, row)
+                line = ''
+                for i in range(len(row)):
+                    line += row[i]
+                    if i < len(spaces):
+                        line += ' ' * spaces[i]
+                rows.append(line)
+                row = []
+            row.append(word)
+
+        charCount = len(' '.join(row))
+        spaceRemaining = maxWidth - charCount
+        line = ' '.join(row)
+        line += ' ' * spaceRemaining
+        rows.append(line)
+        return rows
+
+```
+O(n) = n * m where n is the number of words and m is the average row length
