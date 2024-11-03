@@ -1,0 +1,76 @@
+---
+title: LeetCode 30. Substring with Concatenation of All Words
+date: 2024-11-02
+published: true
+---
+
+Starting with a hard problem today.
+
+# Solution
+```python
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        lenTotal = len(''.join(words))
+        perms = set()
+        def permutations(head, tail):
+            if not len(head):
+                perms.add(tail)
+            for i in range(len(head)):
+                permutations(head[:i] + head[i+1:], tail + head[i])
+        permutations(words, '')
+
+        result = []
+        for i in range(0, len(s)):
+            if s[i:i+lenTotal] in perms:
+                result.append(i)
+        
+        return result
+```
+This solution times out. It has a time complexity of O(n) = n! due to the permutations method.
+
+I'm going to try again using python's `itertools.permutations` method. However, this lead to an out of memory error.
+Rethinking the algorithm, we can remove the step where we find all permutations. Instead, we will replace our `perms` set with a method called `validSubstring(substring)`. This method will use a copy of the list of words, and we will loop through the substring and remove any word occurrences. If we always find a word at each step in our substring, we return True. We improve the efficiency of our algorithm by caching the result of each substring as either `validSubstring` or `invalidSubstring` set members. This solution is accepted.
+
+````python
+import itertools
+
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        if len(s) < len(''.join(words)):
+            return []
+
+        wordLen = len(words[0])
+        def validSubstring(substring):
+            wordsTemp = words[:]
+            for i in range(0, len(substring), wordLen):
+                currWord = substring[i:i + wordLen]
+                if currWord in wordsTemp:
+                    wordsTemp.remove(currWord)
+                else:
+                    return False
+            return True
+        
+        invalidSubstrings = set()
+        validSubstrings = set()
+        wordsLen = wordLen * len(words)
+        window = s[:wordsLen]
+        res = []
+        if validSubstring(window):
+            validSubstrings.add(window)
+            res.append(0)
+
+        for i in range(wordsLen, len(s)):
+            letter = s[i]
+            window = window[1:]
+            window += letter
+            if window not in invalidSubstrings:
+                if window in validSubstrings or validSubstring(window):
+                    res.append(i - wordsLen + 1)
+                    validSubstrings.add(window)
+                else:
+                    invalidSubstrings.add(window)
+        
+        return res
+```
+The time complexity is O(n) = n * k^2 where k is the number of words. It is k^2 because we loop through k words and the remove operation is O(k) = k. 
+
