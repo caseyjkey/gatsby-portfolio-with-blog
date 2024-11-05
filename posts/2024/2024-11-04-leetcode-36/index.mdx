@@ -1,0 +1,54 @@
+---
+title: LeetCode 36. Valid Sudoku
+date: 2024-11-04
+published: true
+---
+
+Now, I am working on matrix problems. 
+
+# Solution
+This is my initial greedy solution.
+```python
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        for row in board:
+            rowVals = set()
+            for column in row:
+                if column != '.' and column in rowVals:
+                    return False
+                rowVals.add(column)
+
+        for col in range(len(board[0])):
+            colVals = set()
+            for row in board:
+                if row[col] != '.' and row[col] in colVals:
+                    return False
+                colVals.add(row[col])
+
+        for subX in range(3):
+            for subY in range(3):
+                gridVals = set()
+                for x in range(3):
+                    for y in range(3):
+                        cell = board[subY * 3 + y][subX * 3 + x]
+                        if cell != '.' and cell in gridVals:
+                            return False
+                        gridVals.add(board[subY * 3 + y][subX * 3 + x])
+        
+        return True
+```	
+
+## Improvements
+Now, I reviewed other solutions and liked this one which uses a list of tuples and only one nested for loop.
+```python
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        vals = []
+        for i, row in enumerate(board):
+            for j, x in enumerate(row):
+                if x != '.':
+                    vals += [(x, j), (i, x), (x, i // 3, j // 3)]
+        return len(vals) == len(set(vals))
+```
+I like how tuples are made unique by swapping their position, and the cell value is not mistaken for the row/column because it is a string rather than int.
+O(n) = 1 since board size is fixed.

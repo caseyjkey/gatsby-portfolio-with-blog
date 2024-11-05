@@ -1,0 +1,72 @@
+---
+title: LeetCode 76. Minimum Window Substring
+date: 2024-11-03
+published: true
+---
+
+Last problem for this study set's sliding window problems.
+
+# Solution
+This is my initial greedy solution. It passes initial test cases, but fails longer inputs.
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        def containsT(substring):
+            letters = list(t[:])
+            for i in substring:
+                if i in letters:
+                    letters.remove(i)
+            return len(letters) == 0
+
+        n = len(t)
+        m = len(s)
+        windowSize = n
+        while windowSize <= m:
+            for i in range(0, m):
+                substring = s[i:i+windowSize]
+                if containsT(substring):
+                    return substring
+            windowSize += 1
+        return ""
+```
+Now to optimize my solution, I plan on stepping through the `s` string, and tracking how many counts of `t` letters are found. This should be faster as we are keeping track of letter counts as we go, instead of searching for all letters in the substring for each iteration.
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        letterCounts = dict()
+        for letter in t:
+            if letter in letterCounts:
+                letterCounts[letter] += 1
+            else:
+                letterCounts[letter] = 1
+        
+        start = 0
+        end = 0
+        windowLength = len(s) + 1
+        minStart = 0
+        lettersRemaining = len(t)
+
+        while end < len(s):
+            if s[end] in letterCounts:
+                if letterCounts[s[end]] > 0:
+                    lettersRemaining -= 1
+                letterCounts[s[end]] -= 1
+            
+            while lettersRemaining == 0:
+                if end - start + 1 < windowLength:
+                    windowLength = end - start + 1
+                    minStart = start
+                if s[start] in letterCounts:
+                    letterCounts[s[start]] += 1
+                    if letterCounts[s[start]] > 0:
+                        lettersRemaining += 1
+                start += 1
+            end += 1
+
+        if windowLength == len(s) + 1:
+            return ""
+        else:
+            return s[minStart:minStart + windowLength]
+
+        return ""
+```	
