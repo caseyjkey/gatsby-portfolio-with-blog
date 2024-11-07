@@ -1,0 +1,40 @@
+---
+title: LeetCode 289. Game of Life
+date: 2024-11-06
+published: true
+---
+
+Final matrix problem, this one a bit special to me. My first repo in Github is for a Game of Life program in C++. I created it in 2011 as a science fair project.
+
+# Solution
+This method uses constant space by usind integer division and modulo operations. We use this to update state in-place, then we traverse over the grid again to convert the values back to 0 or 1.
+```python
+class Solution:
+    def gameOfLife(self, board: List[List[int]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        neighbors = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        for i, row in enumerate(board):
+            for j, cell in enumerate(row):
+                neighborCount = 0
+                for (nx, ny) in neighbors:
+                    y, x = i + ny, j + nx
+                    if (x >= 0 and y >= 0 and
+                        x < len(board[0]) and y < len(board) and
+                        board[y][x] % 2):
+                        neighborCount += 1
+                if cell % 2 and neighborCount < 2:
+                    pass
+                elif cell % 2 and neighborCount == 2 or neighborCount == 3:
+                    board[i][j] += 2
+                elif cell % 2 and neighborCount > 3:
+                    pass
+                elif not cell % 2 and neighborCount == 3:
+                    board[i][j] += 2
+        
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                board[i][j] = board[i][j] // 2
+``
+(n) = m * n

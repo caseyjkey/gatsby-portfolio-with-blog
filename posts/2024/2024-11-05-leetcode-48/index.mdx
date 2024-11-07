@@ -1,0 +1,26 @@
+---
+title: LeetCode 48. Rotate Image
+date: 2024-11-05
+published: true
+---
+
+Working through more matrix problems today.
+
+# Solution
+I used a method where we transpose the matrix, then reverse the rows. This is memory efficient in space and locality.
+```python
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        for i in range(len(matrix)):
+            for j in range(i+1, len(matrix)):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        
+        for i in range(len(matrix)):
+            matrix[i] = matrix[i][::-1]
+        
+        return matrix
+```
+(n) = n^2 since we have nested loops dependent on input size.
