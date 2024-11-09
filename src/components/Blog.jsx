@@ -66,7 +66,7 @@ export const Blog = (props) => {
                                     ) : null }
                                     <h1>{frontmatter.title}</h1>
                                     <p>{frontmatter.date}</p>
-                                    <p>{excerpt}</p>
+                                    <p class="excerpt">{excerpt}</p>
                                 </Link>
                             </BlogEntry>
                         )

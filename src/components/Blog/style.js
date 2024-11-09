@@ -13,4 +13,10 @@ export const BlogEntry = styled.div`
     img {
         width: 100%;
     }
+    p.excerpt {
+      color: ${(props) => props.theme.black};
+    }
+    a, p {
+      text-decoration: none;
+    }
 `;
