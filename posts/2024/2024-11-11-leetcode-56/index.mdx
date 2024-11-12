@@ -1,0 +1,27 @@
+---
+title: LeetCode 56. Merge Intervals
+date: 2024-11-11
+published: true
+---
+
+Now I'm onto intervals. This one merges all intersecting intervals and returns the distinct items.
+
+# Solution
+```python
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        res = []
+        intervals = sorted(intervals)
+        start, end = intervals[0]
+        for item in intervals[1:]:
+            if end >= item[0] and item[1] > end:
+                end = item[1]
+            if start >= item[0] and start <= item[1]:
+                start = item[0]
+            if end < item[0] or start > item[1]:
+                res.append([start, end])
+                start, end = item
+        res.append([start, end])
+        return res
+```
+O(n) = nlog(n) due to the sorted() method

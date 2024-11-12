@@ -1,0 +1,26 @@
+---
+title: LeetCode 49. Group Anagrams
+date: 2024-11-09
+published: true
+---
+
+Working on hashmap problems now. 
+
+# Solution
+```python
+from collections import defaultdict
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        indexToSortedWord = defaultdict(list)
+        for i, word in enumerate(strs):
+            indexToSortedWord[str(sorted(word))].append(i)
+        
+        result = []
+        for groupIdx in indexToSortedWord.values():
+            group = []
+            for idx in groupIdx:
+                group.append(strs[idx])
+            result.append(group)
+        return result 
+```
+O(n) = n * m * log(m) time complexity, and O(n) = n space complexity.
