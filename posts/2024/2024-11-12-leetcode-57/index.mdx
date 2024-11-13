@@ -1,0 +1,39 @@
+---
+title: LeetCode 57. Insert Interval
+date: 2024-11-12
+published: true
+---
+
+This took me a long time to cover all cases. 
+
+# Solution
+```python
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        start, end = newInterval
+        inserted = False
+        res = []
+        for item in intervals:
+            if end < item[0]:
+                if not inserted:
+                    res.append([start, end])
+                    inserted = True
+                res.append(item)
+            elif end >= item[0] and end <= item[1]:
+                start = item[0] if item[0] < start else start
+                end = item[1]
+            elif start >= item[0] and end <= item[1]:
+                start, end = item
+                res.append([start, end])
+                inserted = True
+            elif start >= item[0] and start <= item[1] and end > item[1]:
+                start = item[0]
+            elif start > item[1]:
+                res.append(item)
+
+        if not inserted:
+            res.append([start, end])
+        return res
+            
+```
+O(n) = n since we iterate over all elements once.
