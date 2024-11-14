@@ -1,0 +1,36 @@
+---
+title: LeetCode 150. Evaluate Reverse Polish Notation
+date: 2024-11-12
+published: true
+---
+
+Now I'm on to stacks. I had to rethink my strategy of going from right to left, to left to right. I was overcomplicating it.
+
+# Solution
+```python
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        for token in tokens:
+            if token in ['+', '/', '+', '-', '*']:
+                right = int(stack.pop())
+                left = int(stack.pop())
+                match token:
+                    case '+':
+                        res = left + right
+                    case '/':
+                        res = left / right
+                    case '+':
+                        res = left + right
+                    case '-':
+                        res = left - right
+                    case '*':
+                        res = left * right
+                stack.append(res)
+            else:
+                stack.append(token)
+        return int(stack[-1])
+
+            
+```
+O(n) = n since we iterate over all elements once. Space complexity also O(n) = n for the stack.
