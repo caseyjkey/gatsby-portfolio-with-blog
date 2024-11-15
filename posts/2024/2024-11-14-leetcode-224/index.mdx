@@ -1,0 +1,75 @@
+---
+title: LeetCode 224. Basic Calculator
+date: 2024-11-14
+published: true
+---
+
+Final stack problem for this practice set is a hard question. 
+Took me an hour and a half to come up with this convoluted method. Parsing numbers character by character was my first mistake.
+
+# Solution
+```python
+class Solution:
+    def calculate(self, s: str) -> int:
+        parsed = []
+        num = ''
+        for token in s:
+            if token in ['(', ')', '+', '-', ' ']:
+                if num:
+                    parsed.append(num)
+                    num = ''
+                parsed.append(token)
+            else:
+                num += token
+        if num:
+            parsed.append(num)
+
+        s = parsed
+        nums = []
+        ops = []
+        total = 0
+        for token in s:
+            match token:
+                case '(':
+                    ops.append('(')
+                    nums.append('(')
+                case ')':
+                    ops.pop()
+                    right = nums.pop()
+                    nums.pop()
+                    if ops and ops[-1] != '(' and right != '(':
+                        op = ops.pop()
+                        if op == '+':
+                            total = nums.pop() + right
+                        elif op == '-':
+                            if nums and nums[-1] != '(':
+                                total = nums.pop() - right
+                            else:
+                                total = right * -1
+                        nums.append(total)
+                        total = 0
+                    else:
+                        nums.append(right)
+                case '-':
+                    ops.append('-')
+                case '+':
+                    ops.append('+')
+                case ' ':
+                    pass
+                case _:
+                    if not ops or ops[-1] == '(':
+                        total += int(token)
+                    else:
+                        op = ops.pop()
+                        if op == '+':
+                            total = int(token) + nums.pop()
+                        elif op == '-':
+                            if nums and nums[-1] != '(':
+                                total = int(nums.pop()) - int(token)
+                            else:
+                                total = -1 * int(token)
+                    nums.append(total)
+                    total = 0
+        return nums[-1]
+```
+O(n) = n since we iterate over all elements once. Space complexity also O(n) = n for the stack.
