@@ -1,0 +1,47 @@
+---
+title: LeetCode 25. Reverse Nodes in k-Group
+date: 2024-11-19
+published: true
+---
+
+I had difficulties with this problem with terminating completed lists. I was surprised that ChatGPT didn't give this simple solution, 
+it suggested a large rework. I'll have to be mindful before implementing all of ChatGPT's suggestions.
+
+# Solution
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        batch = []
+        start = None
+        curr = None
+        while head:
+            batch.append(head)
+            head = head.next
+            if len(batch) == k:
+                if curr:
+                    curr.next = batch.pop()
+                    curr = curr.next
+                else:
+                    curr = batch.pop()
+                    if not start:
+                        start = curr
+                     
+                while batch:
+                    curr.next = batch.pop()
+                    curr = curr.next
+                
+        if batch and curr:
+            curr.next = batch[0]
+        elif batch:
+            start = batch[0]
+        elif not batch and curr:
+            curr.next = None
+        
+        return start
+```
+Time complexity is O(n) = n and space complexity is O(k).

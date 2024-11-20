@@ -1,0 +1,42 @@
+---
+title: LeetCode 138. Copy List with Random Pointer
+date: 2024-11-15
+published: true
+---
+
+This problem was tricky as I had to track Node references rather than the index given in the input.
+
+# Solution
+```python
+from collections import defaultdict
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        start = Node(head.val) if head else None
+        node = start
+        randoms = defaultdict(list)
+        nodes = {}
+        while head:
+            nodes[head] = node
+            node.next = Node(head.next.val) if head.next else None
+            node.val = head.val
+            if head.random:
+                randoms[head.random].append(head)
+            head = head.next
+            node = node.next
+        
+        for val in randoms.keys():
+            for neighbor in randoms[val]:
+                nodes[neighbor].random = nodes[val]
+
+        return start
+```
+O(n) = n since worst case is 2n due to the while loop, then at most visiting each node again when assigning the randoms' value.

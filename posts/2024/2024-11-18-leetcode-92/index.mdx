@@ -1,0 +1,49 @@
+---
+title: LeetCode 92. Reverse Linked List II
+date: 2024-11-18
+published: true
+---
+
+I was able to reduce this time complexity from  O(n) = 2n to O(n) = n by using a list for the elements to be reversed, and then only modifying those rather than stepping through all nodes while reversing.
+
+# Solution
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        first = head
+        start = None
+        end = None
+        last = None
+        toReverse = []
+        i = 0
+        while i < right:
+            if i == max(left - 2, 0):
+                start = head
+            if i == right - 1:
+                end = head
+            if i >= left - 1 and i < right - 1:
+                toReverse.append(head)
+            head = head.next
+            i += 1
+        
+        last = end.next
+        if left > 1:
+            start.next = end
+            start = start.next
+        else:
+            start = end
+            first = start
+        head = start
+        while toReverse:
+            head.next = toReverse.pop()
+            head = head.next
+        if head.next:
+            head.next = last
+
+        return first
+```
