@@ -1,0 +1,44 @@
+---
+title: LeetCode 100. Same Tree
+date: 2024-11-20
+published: true
+---
+
+Today I chose an easy problem since I had a late day at work and gym afterwards.
+
+# Solution
+```python
+from collections import deque
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        pQ = deque([p])
+        qQ = deque([q])
+
+        while pQ and qQ:
+            nodeP = pQ.popleft()
+            nodeQ = qQ.popleft()
+            if nodeP and nodeQ and nodeP.val != nodeQ.val:
+                return False
+            elif (nodeP is None) != (nodeQ is None):
+                return False
+
+            if nodeP:
+                pQ.append(nodeP.left)
+                pQ.append(nodeP.right)
+            if nodeQ:
+                qQ.append(nodeQ.left)
+                qQ.append(nodeQ.right)
+
+        if not pQ and not qQ:
+            return True
+        
+        return False
+```
+Time complexity is O(n) = n and space complexity is O(n).
