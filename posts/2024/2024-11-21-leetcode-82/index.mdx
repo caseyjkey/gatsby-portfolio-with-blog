@@ -1,0 +1,50 @@
+---
+title: LeetCode 82. Remove Duplicates from Sorted List II
+date: 2024-11-21
+published: true
+---
+
+The trick for this one was tracking duplicates via the unique boolean and a pending variable.
+
+# Solution
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        start = None
+        curr = None
+        pending = None
+        unique = True
+        while head:
+            if not pending:
+                pending = head
+            elif pending.val != head.val and unique:
+                if not start:
+                    start = pending
+                    curr = start
+                else:
+                    curr.next = pending
+                    curr = curr.next
+                pending = head
+            elif pending.val != head.val and not unique:
+                pending = head
+                unique = True
+            else:
+                unique = False
+                if curr:
+                    curr.next = None
+            head = head.next
+        
+        if pending and unique:
+            if start:
+                curr.next = pending
+            else:
+                start = pending
+
+        return start
+```
+Time complexity is O(n) = n and space complexity is O(1).
