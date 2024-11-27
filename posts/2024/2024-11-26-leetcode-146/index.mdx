@@ -1,0 +1,86 @@
+---
+title: LeetCode 146. LRU Cache
+date: 2024-11-23
+published: true
+---
+
+This took me a few days although it's only a medium! It is important to remember Python is pass-by-reference.
+I spent a lot of time debugging because I didn't mirror changes between previous and next nodes when moving a node between them.
+I was able to debug by creating a list of key-value pairs then printing the list after each operation.
+
+
+# Solution
+```python
+class Node:
+    def __init__(self, key=0, val=0, prev=None, next=None):
+        self.key = key
+        self.val = val
+        self.prev = prev
+        self.next = next
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.size = 0
+        self.d = {}
+        self.l = None
+        self.start = None
+
+    def get(self, key: int) -> int:
+        if key in self.d:
+            node = self.d[key]
+            if node.prev and node.next:
+                node.prev.next = node.next
+                node.next.prev = node.prev
+            elif node.next:
+                self.start = node.next
+                self.start.prev = None
+            if self.l != node:
+                node.prev = self.l
+                self.l.next = node
+                self.l = self.l.next
+                self.l.next = None
+            return node.val
+        else:
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        if not key in self.d:
+            if self.size == self.capacity:
+                node = self.start
+                del self.d[node.key]
+                self.start = node.next
+                if self.start:
+                    self.start.prev = None
+                self.size -= 1
+            if self.l:
+                self.l.next = Node(key, value, self.l)
+                self.l = self.l.next
+            if not self.start:
+                self.start = Node(key, value)
+                self.l = self.start
+            self.d[key] = self.l
+            self.size += 1
+        else:
+            node = self.d[key]
+            if node == self.start and self.start.next:
+                self.start = self.start.next
+                self.start.prev = None
+            if node.prev and node.next:
+                node.prev.next = node.next
+                node.next.prev = node.prev
+            if node != self.l:
+                node.prev = self.l
+                self.l.next = node
+            node.val = value
+            node.next = None
+            self.l = node
+
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+```
+Time complexity for get and put operations are O(n) = 1 and space complexity is O(n) due to the dictionary holding each element.
