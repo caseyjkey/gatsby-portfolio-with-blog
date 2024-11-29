@@ -1,0 +1,43 @@
+---
+title: LeetCode 105. Construct Binary Tree from Preoder and Inorder Traversal
+date: 2024-11-28
+published: true
+---
+
+Happy Thanksgiving! I am happy to have solved this without looking up a solution. However, I did have to review traversals.
+
+# Solution
+```python
+from collections import deque
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        top = deque(preorder)
+        bottom = deque(inorder)
+        nodes = []
+        seen = set()
+
+        root = parent = TreeNode()
+        while top:
+            parent.right = TreeNode(top.popleft())
+            left = parent.right
+            seen.add(left.val)
+            nodes.append(left)
+            while left.val != bottom[0]:
+                left.left = TreeNode(top.popleft())
+                left = left.left
+                seen.add(left.val)
+                nodes.append(left)
+            while bottom and bottom[0] in seen:
+                bottom.popleft()
+                parent = nodes.pop()
+            
+        return root.right
+```
+Time complexity is O(n) = n and space complexity is O(n) due to set and deques.
