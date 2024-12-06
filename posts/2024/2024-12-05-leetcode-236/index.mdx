@@ -1,0 +1,28 @@
+---
+title: LeetCode 236. Lowest Common Ancestor of a Binary Tree
+date: 2024-12-05
+published: true
+---
+
+This is the last month of my goal toward 150 problems done by 2025. I'll have to pick up more than a few problems this weekend. I have 56 problems remaining.
+
+# Solution
+```python
+from collections import deque
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if root in (None, p, q): return root
+        left, right = [self.lowestCommonAncestor(kid, p, q) for kid in (root.left, root.right)]
+        return root if left and right else left or right
+            
+
+```
+Time complexity is O(n) = n and space complexity is O(h) where the height is h. Best case the height is log(n) as a balanced tree and worst case is n as a skewed tree.
