@@ -1,0 +1,45 @@
+---
+title: LeetCode 103. Binary Tree Zigzag Level Order Traversal
+date: 2024-12-05
+published: true
+---
+
+I am glad I was able to make a solution from my own intuition.
+
+# Solution
+```python
+from collections import deque
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        nodes = deque([root] if root else [])
+        rightToLeft = False
+
+        result = []
+        while nodes:
+            level = []
+            children = deque([])
+            for i in range(len(nodes)):
+                if rightToLeft:
+                    node = nodes.pop()
+                    node.right and children.appendleft(node.right)
+                    node.left and children.appendleft(node.left)
+                else:
+                    node = nodes.popleft()
+                    node.left and children.append(node.left)
+                    node.right and children.append(node.right)
+                level.append(node.val)
+            result.append(level)
+            if rightToLeft:
+                nodes += children
+            else:
+                nodes = children + nodes
+            rightToLeft = not rightToLeft
+        return result
+```
+Time complexity is O(n) = n and space complexity is O(n).
