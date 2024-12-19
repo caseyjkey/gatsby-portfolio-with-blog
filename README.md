@@ -28,3 +28,5 @@ For your `bio`, make sure to remove all line-breaks, I recommend [this](http://r
 From this directory run `yarn install --ignore-engines`, then run `yarn gatsby develop`.
 
 ### Deploy your Website
+Run `yarn run deploy`. If you encounter `"length" is outside of buffer bounds`
+then you will have to switch from Node v. 23.x to 22.9.0.

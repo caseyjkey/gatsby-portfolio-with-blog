@@ -1,0 +1,41 @@
+---
+title: LeetCode 133. Clone Graph
+date: 2024-12-18
+published: true
+---
+
+This problem stumped me for a while because I needed to use a dictionary to make sure I didn't have duplicate copies, then I also forgot to return the copy at the end of the DFS algorithm.
+
+# Solution
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+"""
+from typing import Optional
+class Solution:
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        if not node:
+            return None
+
+        copies = {}
+
+        def dfs(node):
+            if node in copies:
+                return copies[node]
+            
+            copy = Node(node.val)
+            copies[node] = copy
+            for n in node.neighbors:
+                copy.neighbors.append(dfs(n))
+            
+            return copy
+        
+        dfs(node)
+
+        return copies[node]
+```
+The time complexity is O(V + E) since we visit every node and edge once, and then the space complexity is O(V) because our copies dictionary is always the number of verticies in the graph. The recursive call stack is also at worst case O(V) space complexity.

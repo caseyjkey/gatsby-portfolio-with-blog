@@ -1,0 +1,84 @@
+---
+title: LeetCode 173. Binary Search Tree Iterator
+date: 2024-12-14
+published: true
+---
+
+Here are two solutions. One is recursive and the other iterative.
+The iterative solution is better as it can handle larger inputs.
+
+# Solution
+Recursive
+```python
+from collections import deque
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class BSTIterator:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.nodes = deque([])
+
+        def traverse(node):
+            if not node:
+                return
+            
+            traverse(node.left)
+            self.nodes.append(node.val)
+            traverse(node.right)
+        
+        traverse(root)
+        
+
+    def next(self) -> int:
+        return self.nodes.popleft()
+
+    def hasNext(self) -> bool:
+        return len(self.nodes) > 0
+
+
+# Your BSTIterator object will be instantiated and called as such:
+# obj = BSTIterator(root)
+# param_1 = obj.next()
+# param_2 = obj.hasNext()
+```
+Time complexity is O(n) = n and space complexity is O(h).
+
+iterative
+```python
+from collections import deque
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class BSTIterator:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.nodes = []
+        self.pushAll(root)      
+
+    def next(self) -> int:
+        node = self.nodes.pop()
+        self.pushAll(node.right)
+        return node.val
+
+    def hasNext(self) -> bool:
+        return len(self.nodes) > 0
+    
+    def pushAll(self, node):
+        while node:
+            self.nodes.append(node)
+            node = node.left
+
+
+
+# Your BSTIterator object will be instantiated and called as such:
+# obj = BSTIterator(root)
+# param_1 = obj.next()
+# param_2 = obj.hasNext()
+```
