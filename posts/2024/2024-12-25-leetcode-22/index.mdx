@@ -1,0 +1,61 @@
+---
+title: LeetCode 22. Generate Parentheses
+date: 2024-12-25
+published: true
+---
+
+Here's another backtracking problem. For this post, I'd like to discuss the differences between
+my solution and another submitted solution.
+
+# My Solution
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        results = []
+        def backtrack(openP, closedP, curr):
+            if openP == n and closedP == n:
+                results.append(''.join(curr))
+                return
+            
+            if openP != n:
+                curr.append('(')
+                backtrack(openP + 1, closedP, curr)
+                curr.pop()
+
+            if closedP < openP:
+                curr.append(')')
+                backtrack(openP, closedP + 1, curr)
+                curr.pop()
+
+        backtrack(0, 0, [])
+        return results
+```
+The time complexity is O(2n * Catalan(n)) since for each solution (there are Catalan(n))  of the recursion stack, we work on N-i subproblems, where i is from 0 to k. The space complexity is O(k * n choose k) since each result requires k space. 
+# niits' Solution
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = []
+
+        def dfs(openP, closeP, s):
+            if openP == closeP and openP + closeP == n * 2:
+                res.append(s)
+                return
+            
+            if openP < n:
+                dfs(openP + 1, closeP, s + "(")
+            
+            if closeP < openP:
+                dfs(openP, closeP + 1, s + ")")
+
+        dfs(0, 0, "")
+
+        return res
+```
+The main differences I see are the base case and use of string concatanation.
+I believe there is marginal difference in time complexity for my equality checks
+and niits' addition plus multiplication equality. My solution is more readable.
+The use of string concatanation by niits' is easier to read, but it uses more memory
+as each recursive call creates a new string while mine is passed between each recursive call.
+The duplication of strings by recursive calls adds an average of 2n complexity to the 
+existing 2n complexity found in my solution.
