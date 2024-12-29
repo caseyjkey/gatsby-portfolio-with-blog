@@ -1,0 +1,109 @@
+---
+title: LeetCode 207. Course Schedule
+date: 2024-12-28
+published: true
+---
+
+Today I worked on a general graph problem. My initial solution was much more verbose and less readable than
+another coder's solution. However, I feel like during an interview I would have been able to derive
+the simpler solution through asking questions, such as whether any course number will exceed the numCourses variable.
+I also need to be more mindful of what data I need to track or else I create unnecessary classes.
+
+# My Solution
+```python
+class Node:
+    def __init__(self, val: int, toNodes: List['Node'] = None, fromNodes: List['Node'] = None):
+        self.val = val
+        self.toNodes = toNodes if toNodes is not None else []
+        self.fromNodes = fromNodes if fromNodes is not None else []
+
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        if not prerequisites:
+            return True
+
+        nodes = {}
+        for after, before in prerequisites:
+            if after not in nodes:
+                nodes[after] = Node(after)
+            afterNode = nodes[after]
+
+            if before not in nodes:
+                nodes[before] = Node(before)
+            beforeNode = nodes[before]
+            beforeNode.toNodes.append(afterNode)
+            afterNode.fromNodes.append(beforeNode)
+        
+        topological_order = []
+        stack = set()
+        visited = set()
+        has_cycle = False
+        def dfs(node):
+            nonlocal has_cycle
+            if node in stack:
+                return False
+            if node in visited:
+                return True
+            
+            stack.add(node)
+            print(node.val)
+            for child in node.toNodes:
+                if not dfs(child):
+                    has_cycle = True
+            stack.remove(node)
+            visited.add(node)
+            topological_order.append(node.val)
+            return True
+        
+        for node in nodes.values():
+            #if not node.fromNodes:
+            dfs(node)
+            if has_cycle:
+                return False
+
+        return len(topological_order) <= numCourses
+```
+The time complexity is O(M + N) where M are the number of nodes and N are the number of edges, as each are visited once. The space complexity is the same as it grows linearly with the input size.
+I used a class to build a directed graph which I could use to attempt a topological sort,
+this sort would allow me to check if there are less courses than numCourses and also detect cycles.
+However, the problem states numCourses is always less than the course numbers, we could instead
+check each course if we may satisfy it's given prerequisites up to numCourses.
+By default, we can say a course doesn't have any prerequisites. Therefor, we only
+need to check if there is ever a cycle, which we can detect using a set that tracks 
+which courses we've taken.
+
+If we can go through every course up to numCourses without visiting a taken class,
+we can return true. The topological order is unnecessary, however, it is given that 
+a topological order exists if we can complete the courses.
+# Improved Solution
+```python
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        from collections import defaultdict
+
+        pres = defaultdict(list)
+        for course, pre in prerequisites:
+            pres[course].append(pre)
+        
+        taken = set()
+        def dfs(course):
+            if not pres[course]:
+                return True
+            
+            if course in taken:
+                return False # Cycle detected
+            
+            taken.add(course)
+            for pre in pres[course]:
+                if not dfs(pre):
+                    return False
+            
+            pres[course] = []
+            return True
+        
+        for course in range(numCourses):
+            if not dfs(course):
+                return False
+        
+        return True
+```
