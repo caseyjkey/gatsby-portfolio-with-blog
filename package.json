@@ -80,6 +80,7 @@
     ]
   },
   "devDependencies": {
+    "ts-migrate": "^0.1.35",
     "webpack-cli": "^5.0.1"
   },
   "resolutions": {

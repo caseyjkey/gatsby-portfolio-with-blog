@@ -32,11 +32,6 @@ export default function Footer(props) {
                   />
                 </li>
                 <li>
-                  <Social Icon={FaFacebookF}
-                          link="https://www.facebook.com/caseyjkey"
-                  />
-                </li>
-                <li>
                   <Social Icon={FaInstagram}
                           link="https://instagram.com/caseyjgkey"
                   />

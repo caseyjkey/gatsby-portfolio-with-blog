@@ -1,0 +1,45 @@
+---
+title: LeetCode 34. Find First and Last Position of Element in Sorted Array
+date: 2025-01-07
+published: true
+---
+
+We're working through binary search problems.
+This one has an initial solution with many lines duplicated.
+We further work the solution to use a function and a boolean variable to make the code more clean via the DRY principle.
+
+# Initial Solution
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        
+        start, end = 0, len(nums) - 1
+        result = [-1, -1]
+        while start <= end:
+            mid = start + (end - start) // 2
+            left = nums[mid - 1] if mid > 0 else float('-inf')
+            if nums[mid] == target:
+                if left != target:
+                    result[0] = mid
+                    break
+                end = mid - 1
+            elif nums[mid] < target:
+                start = mid + 1
+            else:
+                end = mid - 1
+        start, end = 0, len(nums) - 1
+        while start <= end:
+            mid = start + (end - start) // 2
+            right = nums[mid + 1] if mid < len(nums) - 1 else float('inf')
+            if nums[mid] == target:
+                if right != target:
+                    result[1] = mid
+                    break
+                start = mid + 1
+            elif nums[mid] < target:
+                start = mid + 1
+            else:
+                end = mid - 1
+        return result
+```
+Time complexity is O(logn) and space complexity is O(1).
