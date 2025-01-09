@@ -43,3 +43,26 @@ class Solution:
         return result
 ```
 Time complexity is O(logn) and space complexity is O(1).
+# Improved Solution
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def search(is_start):
+            start, end = 0, len(nums) - 1
+            result = -1
+            while start <= end:
+                mid = start + (end - start) // 2
+                if nums[mid] == target:
+                    result = mid
+                    if is_start:
+                        end = mid - 1
+                    else:
+                        start = mid + 1
+                elif nums[mid] < target:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+            return result
+
+        return [search(True), search(False)]
+```
