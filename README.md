@@ -24,9 +24,12 @@ This file is found at `/src/data/about.json`.
 For your `bio`, make sure to remove all line-breaks, I recommend [this](http://removelinebreaks.net/) tool. Replace line-breaks with `<br />`.
 `<br />` will render to a line break in the browser. 
 
-### Previewing your Website
+### Previewing
 From this directory run `yarn install --ignore-engines`, then run `yarn gatsby develop`.
 
-### Deploy your Website
+### Building
+You can build via `yarn gatsby build`. If you encounter a TypeComposer error, follow [this solution](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v4-to-v5/#multiple-versions-of-graphql) in docs, making sure to use `yarn install`. 
+
+### Deploying
 Run `yarn run deploy`. If you encounter `"length" is outside of buffer bounds`
 then you will have to switch from Node v. 23.x to 22.9.0.

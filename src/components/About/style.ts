@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Section, Image, NoPaddingTop, NoPaddingBottom } from '../style.js' // Global styles
+import { Section, Image, NoPaddingTop, NoPaddingBottom } from '../style.ts' // Global styles
 
 export const AboutSection = styled.section`
 	margin-top: 6em;

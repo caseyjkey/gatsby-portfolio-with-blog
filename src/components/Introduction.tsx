@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import styled from 'styled-components'
-import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.js'
+import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.ts'
 import FallingArrow from './Introduction/Mouse'
 import Socials from './Social'
 import Resume from './Introduction/resume.pdf'

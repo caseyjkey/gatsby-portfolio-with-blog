@@ -5,9 +5,9 @@ import { graphql } from 'gatsby'
 import Favicon from '../data/favicon.png' 
 import WebsiteImage from '../data/projects/portfolio/images/portfolio.png'
 import { ThemeProvider } from 'styled-components'
-import { theme, Body } from '../components/style.js'
+import { theme, Body } from '../components/style.ts'
 import Navigation from '../components/Navigation'
-import { Resume } from '../components/Resume/Resume.jsx'
+import { Resume } from '../components/Resume/Resume.tsx'
 import Footer from '../components/Footer'
 
 export const query = graphql`

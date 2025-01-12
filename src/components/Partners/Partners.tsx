@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Media } from 'reactstrap'
 import { ThemeProvider } from 'styled-components'
-import { theme } from '../style.js'
-import { PartnersSection } from './style.js'
+import { theme } from '../style.ts'
+import { PartnersSection } from './style.ts'
 
 import Partner1 from './images/partner-1.png'
 import Partner2 from './images/partner-2.png'

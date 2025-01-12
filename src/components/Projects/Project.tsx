@@ -1,8 +1,8 @@
 import React, { Suspense, useState } from 'react'
 import { GatsbyImage } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody, Button} from 'reactstrap'
-import { theme } from '../style.js'
-import { ProjectWrapper, ReadMoreColor } from './style.js'
+import { theme } from '../style.ts'
+import { ProjectWrapper, ReadMoreColor } from './style.ts'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
 import Lightbox from 'react-image-lightbox';

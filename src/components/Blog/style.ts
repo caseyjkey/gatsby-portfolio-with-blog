@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Section, Image } from '../style.js'
+import { Section, Image } from '../style.ts'
 
 export const BlogSection = styled.section`
   margin-top: 6em;

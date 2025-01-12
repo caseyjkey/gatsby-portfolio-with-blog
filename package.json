@@ -88,6 +88,7 @@
     "webpack-cli": "^5.0.1"
   },
   "resolutions": {
-    "webpack": "^5.44.0"
+    "webpack": "^5.44.0",
+    "graphql": "16.10.0"
   }
 }

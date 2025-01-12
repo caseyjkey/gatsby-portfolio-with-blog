@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Section, NoPaddingBottom } from '../style.js' // Global styles
+import { Section, NoPaddingBottom } from '../style.ts' // Global styles
 import { default as PlainPage } from './Page'
 
 export const ResumeSection = styled.section`
