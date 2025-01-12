@@ -1,7 +1,7 @@
 import { graphql, Link } from 'gatsby'
 import React from 'react'
 import Layout from '../components/Layout'
-import { Heading } from '../components/style.js'
+import { Heading } from '../components/style.ts'
 import Dump from '../components/Dump'
 import styled, { ThemeProvider } from 'styled-components'
 import { theme, Body } from '../components/style'

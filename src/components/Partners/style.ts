@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Section } from '../style.js' // Global styles
+import { Section } from '../style.ts' // Global styles
 
 export const PartnersSection = styled.section`
   ${Section}

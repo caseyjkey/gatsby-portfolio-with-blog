@@ -1,8 +1,8 @@
 import React, { lazy } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
-import { Heading } from './style.js' // Global styled-components
+import { Heading } from './style.ts' // Global styled-components
 import { Container, Row, Col } from 'reactstrap'
-import { ProjectSection } from './Projects/style.js'
+import { ProjectSection } from './Projects/style.ts'
 import Project from './Projects/Project'
 
 

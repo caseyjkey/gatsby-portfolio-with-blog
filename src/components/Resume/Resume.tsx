@@ -10,8 +10,8 @@ import {
   AccordionHeader,
   AccordionItem,
 } from 'reactstrap';
-import { Heading } from '../style.js'
-import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.js'
+import { Heading } from '../style.ts'
+import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.ts'
 import ResumeFile from '../Introduction/resume.pdf'
 import Entry from './Entry'
 import { Skill } from './Skill'

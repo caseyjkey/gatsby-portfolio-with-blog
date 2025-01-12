@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { lighten } from 'polished'
-import { theme } from '../style.js'
+import { theme } from '../style.ts'
 
 import { IoMdArrowRoundDown } from 'react-icons/io'
 

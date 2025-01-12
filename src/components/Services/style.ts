@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { theme, Section } from '../style.js'
+import { theme, Section } from '../style.ts'
 import { lighten } from 'polished'
 
 export const ServicesSection = styled.section`

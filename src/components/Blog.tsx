@@ -1,9 +1,9 @@
 import { useStaticQuery, graphql, Link } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import React from 'react'
-import { Heading } from './style.js' // Global styled-components
+import { Heading } from './style.ts' // Global styled-components
 import { Container, Row, Col } from 'reactstrap'
-import { BlogSection, BlogEntry } from './Blog/style.js'
+import { BlogSection, BlogEntry } from './Blog/style.ts'
 import styled from 'styled-components'
 
 const Image = styled(GatsbyImage)`

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import styled from 'styled-components'
-import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.js'
+import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.ts'
 import FallingArrow from './Introduction/Mouse'
 import Socials from './Social'
 import Resume from './Introduction/resume.pdf'
@@ -57,7 +57,7 @@ export default function Introduction(props) {
       }
     );
 
-    function subtyping(string) {
+    function subtyping(string: string) {
       typewriter2
           .typeString(string)
           .start();
@@ -69,7 +69,7 @@ export default function Introduction(props) {
           .start();
     }
 
-    headers.forEach((header, i) => {
+    headers.forEach((header: string, i: number) => {
       typewriter1
           .start()
           .typeString(header)
@@ -440,7 +440,7 @@ const SocialStyle = styled.div`
         width: 40px;
         display: block;
         float: left;
-        background: rgba(${props => props.theme.white}, .1);
+        background: rgba(from ${props => props.theme.white} r g b / 10%);
         border-radius: 50%;
         position: relative;
         svg {
@@ -452,6 +452,8 @@ const SocialStyle = styled.div`
         }
         &:hover {
           color: ${props => props.theme.black};
+          background: rgba(from ${props => props.theme.black} r g b / 10%);
+
         }
       }
     }
