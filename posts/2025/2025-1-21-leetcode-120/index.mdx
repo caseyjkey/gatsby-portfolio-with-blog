@@ -1,0 +1,22 @@
+---
+title: LeetCode 120. Triangle
+published: true
+---
+
+Today I start working on multidimensional DP. I expect these problems to require a dynamicly-sized array
+to build a solution, rather than a static number of variables.
+I chose to write about this problem because it is a great example
+of how we can think of a problem from the bottom up to build an optimal solution.
+
+# Initial Solution
+```python
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        rows = len(triangle)
+        memo = triangle[-1][:]
+        for row in range(rows - 2, -1, -1):
+            for col in range(row + 1):
+                memo[col] = min(memo[col], memo[col + 1]) + triangle[row][col]
+        return memo[0]
+```
+Time complexity is O(n) and space complexity is O(n).
