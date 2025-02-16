@@ -31,19 +31,19 @@ class Solution:
         return largest
 ```
 This works for the first example:
-```
+"""
 Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
 Output: 6 (correct!)
-```
+"""
 However, for the second example, it  fails to connect the first
 two strings of ones.
-```
+"""
 Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
 Output: 9 (incorrect, expected 10.)
-```
+"""
 To fix this, we will have to alter our algorithm to 
 conditionally flip a zero. My idea is to apply our previous algorithm at each step.
-```
+```python
 class Solution:
     def longestOnes(self, nums: List[int], k: int) -> int:
         largest = float('-inf')
@@ -76,7 +76,7 @@ When we reach the end of a series of ones, we want to slide our window by moving
 second flip we made by removing our first flip along with any tail attached to it.
 To do this, we create a queue and add our tail each time we flip and set the new tail to 0.
 
-```
+```python
 from collections import deque
 class Solution:
     def longestOnes(self, nums: List[int], k: int) -> int:
