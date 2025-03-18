@@ -5,7 +5,7 @@ import { lighten, darken } from 'polished'
 import { Container, Row, Col } from 'reactstrap'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
-import { FaHeartBroken, FaLinkedinIn, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight } from 'react-icons/fa'
+import { FaHeartBroken, FaLinkedinIn, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight, FaGithub } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 
 import { Section } from './style'
@@ -36,8 +36,12 @@ export default function Footer(props) {
                           link="https://instagram.com/caseyjgkey"
                   />
                 </li>
+                <li>
+                  <Social Icon={FaGithub}
+                          link="https://github.com/caseyjkey"
+                  />
+                </li>
               </ul>
-              
             </div>
           </Col>
           <Col md>

@@ -18,7 +18,7 @@ export default function Introduction(props) {
         introduction {
           greeting
           name
-	  role
+	        role
           descriptions {
             description {
               header
@@ -99,10 +99,10 @@ export default function Introduction(props) {
                   <Subheader>{data.introduction.greeting}</Subheader>
                   <Slider>
                     <h2 className="subheader">I'm <span id="name">{data.introduction.name}</span>, the {data.introduction.role}.</h2>
-                    <h1>I'm also...</h1>
-                    <span id="typewriter1" className="header"></span><br/>
+                    <h2 className="subheader">I'm also...</h2>
+                    <h2 id="typewriter1" className="subheader"></h2>
                     {!headerEnd &&
-                      <span id="typewriter2" className="subheader"></span>
+                      <h2 id="typewriter2" className="subheader"></h2>
                     }
                     {headerEnd &&
                       <Animated animationIn={"fadeInUp"} isVisible={headerEnd}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
-import { FaLinkedinIn, FaFacebookF, FaInstagram } from 'react-icons/fa'
+import { FaLinkedinIn, FaFacebookF, FaInstagram, FaGithub } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 
 /* This is a generic component for placing social links anywhere
@@ -22,6 +22,11 @@ export default function Socials(props) {
       <li>
         <Social Icon={FaInstagram}
                 link="https://instagram.com/caseyjgkey"
+        />
+      </li>
+      <li>
+        <Social Icon={FaGithub}
+                link="https://github.com/caseyjkey"
         />
       </li>
     </ul>

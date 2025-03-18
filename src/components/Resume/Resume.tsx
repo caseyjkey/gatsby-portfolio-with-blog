@@ -23,10 +23,10 @@ import { MdWork } from 'react-icons/md'
 import { BsSave } from 'react-icons/bs'
 
 function Resume(props) {
-  const [open, setOpen] = useState('1');
-  const toggle = (id) => {
+  const [open, setOpen] = useState<string | null>('1');
+  const toggle = (id: string) => {
     if (open === id) {
-      setOpen();
+      setOpen(null);
     } else {
       setOpen(id);
     }
