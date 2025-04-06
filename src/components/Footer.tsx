@@ -23,7 +23,7 @@ export default function Footer(props) {
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft">
                 <li>
                   <Social Icon={FaXTwitter}
-                          link="https://x.com/caseyjkey"
+                          link="https://x.com/thecaseykey"
                   />
                 </li>
                 <li>
