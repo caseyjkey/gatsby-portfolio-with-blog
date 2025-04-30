@@ -14,6 +14,10 @@ export const SkillsSection = styled.ul`
       background-color: ${(props) => props.theme.white};
     }
   }
+
+  p {
+    color: ${(props) => props.theme.black};
+  }
 `;
 
 export const SkillContainer = styled.li`

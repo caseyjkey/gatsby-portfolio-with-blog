@@ -23,22 +23,22 @@ export default function Footer(props) {
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft">
                 <li>
                   <Social Icon={FaXTwitter}
-                          link="https://x.com/thecaseykey"
+                    link="https://x.com/thecaseykey"
                   />
                 </li>
                 <li>
                   <Social Icon={FaLinkedinIn}
-                          link="https://linkedin.com/in/keycasey"
+                    link="https://linkedin.com/in/keycasey"
                   />
                 </li>
                 <li>
                   <Social Icon={FaInstagram}
-                          link="https://instagram.com/caseyjgkey"
+                    link="https://instagram.com/caseyjgkey"
                   />
                 </li>
                 <li>
                   <Social Icon={FaGithub}
-                          link="https://github.com/caseyjkey"
+                    link="https://github.com/caseyjkey"
                   />
                 </li>
               </ul>
@@ -57,7 +57,7 @@ export default function Footer(props) {
               <h2 className="ftco-heading-2">Questions?</h2>
               <div className="block-23">
                 <ul>
-                  <li><FaSign /><span className="text">Silicon Valley, CA, USA</span></li>
+                  <li><FaSign /><span className="text">San Francisco, CA, USA</span></li>
                   <li><a href="tel:13072242940"><FaPhone />+1 (307) 224-2940</a></li>
                 </ul>
               </div>
@@ -69,7 +69,7 @@ export default function Footer(props) {
   );
 };
 
-function Social({link, Icon}) {
+function Social({ link, Icon }) {
   const [visible, setVisible] = useState(false);
   const makeVisible = () => setVisible(true);
 
