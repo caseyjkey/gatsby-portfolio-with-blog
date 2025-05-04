@@ -117,7 +117,7 @@ export const HeadingRaw = `
 		.subheading{
 			color: rgba(255,255,255,.9) !important;
 		}
-		h2{
+		h3{
 			color: $white;
 		}
 		p{

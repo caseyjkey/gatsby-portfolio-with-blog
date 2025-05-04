@@ -70,7 +70,7 @@ export default function Skills() {
     return (
         <SkillsSection name="Skills">
             <Container>
-                <Row noGutters className="justify-content-center pb-5 pt-5">
+                <Row noGutters className="justify-content-center pb-2 pt-5">
                     <Col md={12} className="heading-section text-center ">
                         <Heading>What I Do</Heading>
                     </Col>
@@ -145,11 +145,11 @@ export default function Skills() {
                             <Skill skill="Jenkins" Icon={loadIcon('DiJenkins')} />
                             <Skill skill="Gatsby" Icon={loadIcon('GrGatsbyjs')} />
                         </div>
-                        <p> ⚡ Architect real-time, event-driven systems using Kafka and queues</p>
-                        <p> ⚡ Optimize system availability, performance, and operational efficiency</p>
                         <p> ⚡ Deploy applications with Docker and orchestrate services using Kubernetes</p>
                         <p> ⚡ Build accessible, responsive UIs with modern JavaScript frameworks</p>
                         <p> ⚡ Design robust APIs in Python, integrating SQL and NoSQL databases</p>
+                        <p> ⚡ Architect real-time, event-driven systems using Kafka and queues</p>
+                        <p> ⚡ Optimize system availability, performance, and operational efficiency</p>
                     </Col>
                 </Row>
                 <Row xs={1} md={2} className="pt-4">

@@ -1,0 +1,45 @@
+---
+title: LeetCode 32. Longest Valid Parantheses
+date: 2025-05-03
+published: true
+---
+
+I went through a period of intense study, focusing on solving problems with C++.
+Now, I'm back to Python and happy to walk through this solution to
+longest valid parantheses.
+
+```python
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        stack = [-1]
+        max_len = 0
+
+        for i in range(len(s)):
+            if s[i] == '(':
+                stack.append(i)
+            else:
+                stack.pop()
+                if not stack:
+                    stack.append(i)
+                else:
+                    max_len = max(max_len, i - stack[-1])
+        
+        return max_len
+```
+Each time we encounter an opening paranthesis, we add its index to our stack.
+Thus, when we find a closing parenthesis, we pop the stack.
+This will leave us with the index of the last invalid index, or an empty array (we reached an invalid closing paranthesis).
+With that index of the last invalid paranthesis, we calculate the max length.
+This works for this  example:
+
+> Input: s = ")()"
+>> Output: 2 (correct!)
+
+We can check with a longer example too.
+
+> Input: s = ")()()"
+>> Output: 4
+
+The time complexity is O(n) since we step through the array once,
+and our space complexity is also O(n).
+We use a stack that can be up to N elements (all opening parantheses).

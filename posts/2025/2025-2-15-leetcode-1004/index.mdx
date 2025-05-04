@@ -31,16 +31,16 @@ class Solution:
         return largest
 ```
 This works for the first example:
-"""
-Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
-Output: 6 (correct!)
-"""
+
+> Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+>> Output: 6 (correct!)
+
 However, for the second example, it  fails to connect the first
 two strings of ones.
-"""
-Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
-Output: 9 (incorrect, expected 10.)
-"""
+
+> Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
+>> Output: 9 (incorrect, expected 10.)
+
 To fix this, we will have to alter our algorithm to 
 conditionally flip a zero. My idea is to apply our previous algorithm at each step.
 ```python
