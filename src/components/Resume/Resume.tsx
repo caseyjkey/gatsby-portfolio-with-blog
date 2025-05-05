@@ -74,7 +74,7 @@ function Resume(props) {
                       subtitle={"Oracle"}
                     >
                       <ul>
-                        <li>Built and launched a scalable release management tool supporting 689 users with high reliability.</li>
+                        <li>Built and launched a scalable release management tool supporting 13780 users with high reliability.</li>
                         <li>Mentored new developers, facilitating knowledge transfer and collaborative problem‑solving.</li>
                         <li>Implemented AI‑powered automation to optimize DevOps workflows and artifact management.</li>
                         <li>Led onboarding and support for users, resolving bugs, gathering feedback, and refining key features.</li>
@@ -179,7 +179,7 @@ function Resume(props) {
                     <Entry icon={GoStar}
                       date={"July 2022"}
                       title={"Phoenix Award"}
-                      subtitle={"HackCU 007"}>
+                      subtitle={"Capital One"}>
                       <ul>
                         <li>A monthly award given by the Capital One FS Data Team.</li>
                         <li>The award is given to selected individuals/team after nomination and careful committee consideration.</li>
