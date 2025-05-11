@@ -1,0 +1,75 @@
+{
+  "start": "April 2024",
+  "galleryImages": [
+    {
+      "image": "images/000.png"
+    },
+    {
+      "image": "images/001.png"
+    },
+    {
+      "image": "images/002.png"
+    },
+    {
+      "image": "images/003.png"
+    },
+    {
+      "image": "images/004.png"
+    },
+    {
+      "image": "images/005.png"
+    },
+    {
+      "image": "images/006.png"
+    },
+    {
+      "image": "images/007.png"
+    },
+    {
+      "image": "images/008.png"
+    },
+    {
+      "image": "images/009.png"
+    },
+    {
+      "image": "images/010.png"
+    },
+    {
+      "image": "images/011.png"
+    },
+    {
+      "image": "images/012.png"
+    },
+    {
+      "image": "images/013.png"
+    },
+    {
+      "image": "images/014.png"
+    },
+    {
+      "image": "images/015.png"
+    }
+  ],
+  "subtitle": "Applications Developer 2",
+  "title": "Oracle Release Management",
+  "project": "farmx",
+  "icons": {
+    "fa": [
+      "FaGit",
+      "FaGitlab",
+      "FaPython"
+    ],
+    "di": [
+      "DiJavascript1",
+      "DiDjango"
+    ],
+    "si": [
+      "SiOracle"
+    ]
+  },
+  "end": {
+    "present": true
+  },
+  "image": "images/000.png",
+  "description": "• Built and launched a scalable release management tool supporting 13,780 users with high reliability.<br />• Mentored new developers, facilitating knowledge transfer and collaborative problem-solving.<br />• Led onboarding and support for users, resolving bugs, gathering feedback, and refining key features.<br />• Efficiently ingested data sources with Python, DRF, and Celery for asynchronous data processing."
+}
