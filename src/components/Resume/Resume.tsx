@@ -45,6 +45,11 @@ function Resume(props) {
                     <SectionTitle>Education</SectionTitle>
                   </AccordionHeader>
                   <AccordionBody accordionId='1'>
+                    <Entry icon={GiGraduateCap}
+                      title={"University of Southern California"}
+                      subtitle={"Master's of Science in Computer Science"}>
+                      Specializing in Artificial Intelligence
+                    </Entry>
                     <Entry icon={TbCertificate}
                       title={"Certified DevOps Engineer - Professional"}
                       subtitle={"AWS Certification"}
