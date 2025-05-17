@@ -37,6 +37,7 @@ export const Body = styled.div`
 	color: ${lighten(0.60, theme.black)};
 	display: flex;
 	flex-direction: column;
+	min-height: 100vh;
   
 	&.menu-show {
 		overflow: hidden;

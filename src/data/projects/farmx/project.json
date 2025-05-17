@@ -1,6 +1,9 @@
 {
-  "start": "April 2024",
+  "start": "2024-04",
   "galleryImages": [
+    {
+      "image": "images/015.png"
+    },
     {
       "image": "images/000.png"
     },
@@ -45,9 +48,6 @@
     },
     {
       "image": "images/014.png"
-    },
-    {
-      "image": "images/015.png"
     }
   ],
   "subtitle": "Applications Developer 2",

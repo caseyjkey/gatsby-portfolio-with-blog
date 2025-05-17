@@ -1,5 +1,5 @@
 {
-  "start": "August 2022",
+  "start": "2022-08",
   "galleryImages": [
     {
       "image": "images/1.png"
@@ -34,7 +34,7 @@
   },
   "end": {
     "present": false,
-    "date": "April 2024"
+    "date": "2024-04"
   },
   "image": "images/logo.png",
   "description": "<ul><li>Built React application to onboard many datasets at once, reducing registration time by 10x,</li><li>Generated Java-based API from Smithy specification, which included data validation and authentication</li><li>Reduced customer support tickets by adding a service status banner during outages,</li><li>Minimized accounting response time by automating expense processing and report deliveries,</li><li>Modernized production web application to improve user experience and reduce technical debt</li>"

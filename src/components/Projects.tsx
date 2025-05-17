@@ -4,10 +4,11 @@ import { Heading } from './style.ts' // Global styled-components
 import { Container, Row, Col } from 'reactstrap'
 import { ProjectSection } from './Projects/style.ts'
 import Project from './Projects/Project'
+import { format, parseISO } from 'date-fns';
 
 
 export const Projects = (props) => {
-	const data = useStaticQuery( 
+	const data = useStaticQuery(
 		graphql`{
 			allProject(sort: {start: DESC}) {
 				edges {
@@ -58,66 +59,73 @@ export const Projects = (props) => {
 	// Get components for icons specified in projects.json
 	function loadIcons(iconMap) {
 		let Icons = [];
-		for(let type of Object.keys(iconMap)) {
-			if(iconMap[type]) {
-			iconMap[type].map( Icon => {
-				if (type === "fa") {
-					Icons.push(lazy(() => 
-						import('react-icons/fa').then(module => ({ default: module[Icon] }))
-					));
-				}
-				else if (type === "io") {
-					Icons.push(lazy(() => 
-						import('react-icons/io').then(module => ({ default: module[Icon] }))
-					));
-				}
-				else if (type === "di") {
-					Icons.push(lazy(() => 
-						import('react-icons/di').then(module => ({ default: module[Icon] }))
-					));
-				}
-				else if (type === "gr") {
-					Icons.push(lazy(() => 
-						import('react-icons/gr').then(module => ({ default: module[Icon] }))
-					));
-				}
-				else if (type === "si") {
-					Icons.push(lazy(() => 
-						import('react-icons/si').then(module => ({ default: module[Icon] }))
-					));
-				}
-			})
-		}
+		for (let type of Object.keys(iconMap)) {
+			if (iconMap[type]) {
+				iconMap[type].map(Icon => {
+					if (type === "fa") {
+						Icons.push(lazy(() =>
+							import('react-icons/fa').then(module => ({ default: module[Icon] }))
+						));
+					}
+					else if (type === "io") {
+						Icons.push(lazy(() =>
+							import('react-icons/io').then(module => ({ default: module[Icon] }))
+						));
+					}
+					else if (type === "di") {
+						Icons.push(lazy(() =>
+							import('react-icons/di').then(module => ({ default: module[Icon] }))
+						));
+					}
+					else if (type === "gr") {
+						Icons.push(lazy(() =>
+							import('react-icons/gr').then(module => ({ default: module[Icon] }))
+						));
+					}
+					else if (type === "si") {
+						Icons.push(lazy(() =>
+							import('react-icons/si').then(module => ({ default: module[Icon] }))
+						));
+					}
+				})
+			}
 		}
 		return Icons;
 	}
 
 	return (
-        <ProjectSection name="Projects">
+		<ProjectSection name="Projects">
 			<Container fluid={true} className="">
 				<Row noGutters className="justify-content-center pb-5 mt-5">
 					<Col md={12} className="heading-section text-center ">
 						<Heading className="mb-4">Projects</Heading>
-						<p>Check out my work.</p>
+						<p>A mix of client work, late nights, and bold ideas.</p>
 					</Col>
 				</Row>
 				<Row>
-					{data.allProject.edges.map((project, index) =>  ( 
-						<Col key={index} md={4} className="pb-4">
-							<Project image={project.node.image.childImageSharp.gatsbyImageData}
-											 galleryImages={(project.node.galleryImages || [{"image": project.node.image}])}
-											 title={project.node.title}
-											 subtitle={project.node.subtitle}
-											 icons={loadIcons(project.node.icons)}
-											 date={project.node.start + ' - ' + (project.node.end.present ? 'Present' : project.node.end.date)}
-											 link={project.node.link}
-							>
-								<div dangerouslySetInnerHTML={{ __html: project.node.description}} />
-							</Project>
-						</Col>
-					))}
+					{data.allProject.edges.map((project, index) => {
+						const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
+						const formattedEnd = project.node.end.present
+							? 'Present'
+							: format(parseISO(project.node.end.date), 'MMMM yyyy');
+
+						return (
+							<Col key={index} md={4} className="pb-4">
+								<Project image={project.node.image.childImageSharp.gatsbyImageData}
+									galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
+									title={project.node.title}
+									subtitle={project.node.subtitle}
+									icons={loadIcons(project.node.icons)}
+									date={formattedStart + ' - ' + formattedEnd}
+									link={project.node.link}
+								>
+									<div dangerouslySetInnerHTML={{ __html: project.node.description }} />
+								</Project>
+							</Col>
+						)
+					})}
 				</Row>
 			</Container>
 		</ProjectSection>
-    );
+	);
 } 

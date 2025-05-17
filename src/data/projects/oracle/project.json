@@ -1,5 +1,5 @@
 {
-  "start": "June 2019",
+  "start": "2019-06",
   "galleryImages": [
     {
       "image": "images/oracle_scholars.png"
@@ -67,7 +67,7 @@
     ]
   },
   "end": {
-    "date": "August 2019"
+    "date": "2019-08"
   },
   "link": "https://github.com/caseyjkey/twitter-sentiment-analysis",
   "image": "images/oracle.png",

@@ -12,9 +12,9 @@
       "FaSass"
     ]
   },
-  "start": "January 2020",
+  "start": "2020-01",
   "end": {
-    "present": true
+    "present"
   },
   "link": "https://github.com/caseyjkey/gatsby-portfolio-with-blog",
   "project": "portfolio"

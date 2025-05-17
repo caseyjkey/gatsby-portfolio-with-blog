@@ -14,7 +14,7 @@ const Image = styled(GatsbyImage)`
 
 
 export const Blog = (props) => {
-    const data = useStaticQuery( 
+    const data = useStaticQuery(
         graphql`
             query {
                 allMdx(
@@ -50,20 +50,20 @@ export const Blog = (props) => {
                 <Row noGutters className="justify-content-center pb-5">
                     <Col md={12} className="heading-section text-center">
                         <Heading className="mb-4">Blog</Heading>
-                        <p>My place to flow and grow.</p>
+                        <p>Coding, reflecting, evolving.</p>
                     </Col>
                 </Row>
                 <Row>
                     {data.allMdx.nodes.map(
-                        ({ id, excerpt, frontmatter, fields}) => (
+                        ({ id, excerpt, frontmatter, fields }) => (
                             <BlogEntry key={id}>
                                 <Link to={fields.slug}>
                                     {frontmatter.cover ? (
                                         <Image
                                             image={frontmatter.cover.childImageSharp.gatsbyImageData}
                                             className='mx-auto'
-                                        />    
-                                    ) : null }
+                                        />
+                                    ) : null}
                                     <h1>{frontmatter.title}</h1>
                                     <p>{frontmatter.date}</p>
                                     <p class="excerpt">{excerpt}</p>
