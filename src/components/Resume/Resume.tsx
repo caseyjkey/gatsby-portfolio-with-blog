@@ -88,11 +88,11 @@ function Resume(props) {
                       subtitle={"Amazon"}
                     >
                       <ul>
+                        <li>Designed efficient bulk registration features for large‑scale data ingestion pipelines.</li>
                         <li>Developed and optimized C++ and Python‑based APIs for large‑scale data catalog systems.</li>
                         <li>Led junior developers by sharing context, reviewing code, and guiding contributions.</li>
                         <li>Delivered flexible CI/CD pipelines with approvals, tests, rollbacks, and branch deployments.</li>
-                        <li>Designed efficient bulk registration features for large‑scale data ingestion pipelines.</li>
-                        <li>Implemented cascading data filters and interactive UI elements for React‑based applications.</li>
+                        <li>Worked closely with product and UX teams to refine UI behavior for React-based applications.</li>
                         <li>Managed infrastructure security and scalability using AWS CDK, CloudFormation, and SAM.</li>
                       </ul>
                     </Entry>
@@ -103,8 +103,7 @@ function Resume(props) {
                       subtitle={"Capital One"}
                     >
                       <ul>
-                        <li>Managed infrastructure security and scalability using AWS CDK, CloudFormation, and SAM.</li>
-                        <li>Developed AI‑powered metadata validation tools for data registration and classification.</li>
+                        <li>Accelerated dataset registration by developing a Chrome extension to enforce metadata compliance.</li>
                         <li>Improved file transfer efficiency by designing a self‑service data streaming and processing pipeline.</li>
                         <li>Enhanced real‑time analytics by implementing multithreading for Kafka stream processing.</li>
                       </ul>
