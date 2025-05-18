@@ -8,6 +8,7 @@ export const AboutSection = styled.section`
 	${NoPaddingTop}
 	${NoPaddingBottom}
 	width: 90%;
+	flex: 1 0 auto;
 
 	ul.about-info {
 		display: inline-block;

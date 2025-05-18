@@ -4,6 +4,7 @@ import { Section, Image } from '../style.ts'
 export const ProjectSection = styled.section`
   margin-top: 6em;
   ${Section}
+  flex: 1 0 auto;
 `;
 
 export const ProjectWrapper = styled.div`

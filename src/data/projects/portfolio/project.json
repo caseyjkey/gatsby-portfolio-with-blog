@@ -14,7 +14,7 @@
   },
   "start": "2020-01",
   "end": {
-    "present"
+    "present": true
   },
   "link": "https://github.com/caseyjkey/gatsby-portfolio-with-blog",
   "project": "portfolio"
