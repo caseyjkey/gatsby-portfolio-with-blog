@@ -5,19 +5,19 @@ import { AboutSection, AboutImage, Counter, Description } from './About/style.ts
 import { StaticImage } from 'gatsby-plugin-image'
 import Activity from './About/Activity.tsx'
 import { graphql, useStaticQuery } from 'gatsby'
-import { Waypoint } from  'react-waypoint'
+import { Waypoint } from 'react-waypoint'
 import { Animated } from 'react-animated-css'
 // For Github streak
 // import CountUp from 'react-countup'
 
 export default function About(props) {
 
-  const [visible, setVisible] = useState({info: false, counter: false});
-  const makeVisible = (section) => setVisible({...visible}[section] = true);
+  const [visible, setVisible] = useState({ info: false, counter: false });
+  const makeVisible = (section) => setVisible({ ...visible }[section] = true);
 
   // const [github, setGithub] = useState({streak: NaN});
 
-  
+
   useEffect(() => {
     /* Commenting this out to see if it is holding up the page
     fetch("https://8370nk0aoa.execute-api.us-east-2.amazonaws.com/api/streak/caseykey.github.io,git-analytics-api,react-read-more-read-less", {
@@ -53,23 +53,23 @@ export default function About(props) {
   function loadIcon(icon) {
     let moduleName = 'react-icons/' + icon.type;
     if (icon.type === 'gi') {
-      return lazy(() => 
-        import('react-icons/gi').then(module => 
-          ({default: module[icon.name]})
+      return lazy(() =>
+        import('react-icons/gi').then(module =>
+          ({ default: module[icon.name] })
         )
       );
     }
     else if (icon.type === 'fi') {
-      return lazy(() => 
-        import('react-icons/fi').then(module => 
-          ({default: module[icon.name]})
+      return lazy(() =>
+        import('react-icons/fi').then(module =>
+          ({ default: module[icon.name] })
         )
       );
     }
     else if (icon.type === 'fa') {
-      return lazy(() => 
-        import('react-icons/fa').then(module => 
-          ({default: module[icon.name]})
+      return lazy(() =>
+        import('react-icons/fa').then(module =>
+          ({ default: module[icon.name] })
         )
       );
     }
@@ -79,28 +79,28 @@ export default function About(props) {
     <AboutSection name="About">
       <Container>
         <Row noGutters>
-          <Col lg="6" md="6" className="d-flex">
+          <Col lg="6" md="6" className="d-flex" style={{ "paddingRight": "0.5rem" }}>
             <AboutImage>
               <StaticImage src='./About/images/about.png' alt='Casey Key in a suit' />
             </AboutImage>
-          </Col> 
+          </Col>
 
           <Col md="6" lg="6" className="pl-md-5">
             <Row className="justify-content-start">
-              <Animated animationIn="fadeInUp" isVisible={visible.info} style={{width: "100%"}}>
+              <Animated animationIn="fadeInUp" isVisible={visible.info} style={{ width: "100%" }}>
                 <Col className="col-md-12 heading-section">
                   <Heading className="mb-4">About Me</Heading>
                   <Waypoint onEnter={() => makeVisible("info")}></Waypoint>
 
                   <Description>
-                    <div dangerouslySetInnerHTML={{ __html: data.about.bio}} />
+                    <div dangerouslySetInnerHTML={{ __html: data.about.bio }} />
                   </Description>
                   <ul className="about-info mt-4 px-md-0 px-2">
                     {data.about.activities.map((activity, index) => {
                       return (
                         <li>
                           <Activity description={activity.activity.description}
-                                    Icon={loadIcon(activity.activity.icon)}
+                            Icon={loadIcon(activity.activity.icon)}
                           />
                         </li>
                       );
