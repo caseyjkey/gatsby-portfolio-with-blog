@@ -68,7 +68,7 @@
     ]
   },
   "end": {
-    "present": true
+    "date": "2025-09"
   },
   "image": "images/000.png",
   "description": "• Built and launched a scalable release management tool supporting 13,780 users with high reliability.<br />• Mentored new developers, facilitating knowledge transfer and collaborative problem-solving.<br />• Led onboarding and support for users, resolving bugs, gathering feedback, and refining key features.<br />• Efficiently ingested data sources with Python, DRF, and Celery for asynchronous data processing."
