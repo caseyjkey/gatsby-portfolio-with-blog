@@ -109,6 +109,12 @@ export const Projects = (props) => {
 							? 'Present'
 							: format(parseISO(project.node.end.date), 'MMMM yyyy');
 
+						// Generate post link based on start date and project slug
+						const startDate = parseISO(project.node.start);
+						const year = format(startDate, 'yyyy');
+						const month = format(startDate, 'MM');
+						const postLink = `/projects/${year}-${month}-${project.node.project}/`;
+
 						return (
 							<Col key={index} md={4} className="pb-4">
 								<Project image={project.node.image.childImageSharp.gatsbyImageData}
@@ -118,6 +124,7 @@ export const Projects = (props) => {
 									icons={loadIcons(project.node.icons)}
 									date={formattedStart + ' - ' + formattedEnd}
 									link={project.node.link}
+									postLink={postLink}
 								>
 									<div dangerouslySetInnerHTML={{ __html: project.node.description }} />
 								</Project>
@@ -128,4 +135,4 @@ export const Projects = (props) => {
 			</Container>
 		</ProjectSection>
 	);
-} 
+}

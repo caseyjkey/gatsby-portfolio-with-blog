@@ -12,13 +12,12 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ReactReadMoreReadLess from '@caseykey/react-read-more-read-less'
 
 // Using a functional component because we don't use state, constructor, or lifecycle hooks
-export default function Project({ children, title, subtitle, image, galleryImages, icons, link, date }) {
+export default function Project({ children, title, subtitle, image, galleryImages, icons, link, postLink, date }: any) {
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
 
   const [visible, setVisible] = useState(false);
   const makeVisible = () => setVisible(true);
-
   let images = galleryImages.map(dict => dict.image.publicURL);
   let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
     result.push((image.childImageSharp) ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} /> : <img src={image.publicURL} />);
@@ -99,9 +98,12 @@ export default function Project({ children, title, subtitle, image, galleryImage
               )}
             </ModalBody>
           </Suspense>
-          <ModalFooter>
-            <div className="date mr-auto small">{date}</div>
-            {link && <Button color="primary" href={link} target={"_blank"}>View project</Button>}
+          <ModalFooter className="d-flex justify-content-between align-items-center">
+            <div className="date small">{date}</div>
+            <div>
+              {postLink && <Button color={link ? "secondary" : "primary"} href={postLink} style={{ marginRight: '8px' }}>Read post</Button>}
+              {link && <Button color="primary" href={link} target={"_blank"}>View project</Button>}
+            </div>
           </ModalFooter>
         </Modal>
       </ProjectWrapper>
