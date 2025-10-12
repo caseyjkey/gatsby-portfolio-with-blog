@@ -17,7 +17,7 @@
           "type": "fi",
           "name": "FiBookOpen"
         },
-	"description": "<i>Effective Modern C++</i> by Scott Meyer"
+        "description": "<i>Effective Modern C++</i> by Scott Meyer"
       }
     },
     {
@@ -35,7 +35,7 @@
           "type": "fa",
           "name": "FaLaptopCode"
         },
-        "description": "https://street-dice.vercel.app/"
+        "description": "<a href='https://fake-my-git.keycasey.com/'>Fake My Git</a>"
       }
     }
   ],

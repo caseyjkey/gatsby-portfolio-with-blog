@@ -14,7 +14,7 @@ export default class Entry extends Component {
   }
 
   makeVisible() {
-    this.setState({visible: true});
+    this.setState({ visible: true });
   }
 
   render() {
@@ -25,23 +25,24 @@ export default class Entry extends Component {
     let subtitle = this.props.subtitle;
     let graduationDate = this.props.graduationDate;
     let text = this.props.children;
+    let style = this.props.style;
 
     return (
-        <Animated animationIn="fadeInUp" isVisible={visible}>
-          <ResumeWrap className="d-flex">
-            <div className="icon d-flex align-items-center justify-content-center">
-              <span><Icon /></span>
-            </div>
-            <div className="text pl-3">
-              {date && <span className="date">{date}</span>}
-              {graduationDate && <span className="gpa">{graduationDate}</span>}
-              <h2>{title}</h2>
-              <Waypoint onEnter={this.makeVisible}></Waypoint>
-              <span className="subtitle">{subtitle}</span>
-              <Description>{text}</Description>
-            </div>
-          </ResumeWrap>
-        </Animated>
+      <Animated animationIn="fadeInUp" isVisible={visible}>
+        <ResumeWrap className="d-flex" style={style}>
+          <div className="icon d-flex align-items-center justify-content-center">
+            <span><Icon /></span>
+          </div>
+          <div className="text pl-3">
+            {date && <span className="date">{date}</span>}
+            {graduationDate && <span className="gpa">{graduationDate}</span>}
+            <h2>{title}</h2>
+            <Waypoint onEnter={this.makeVisible}></Waypoint>
+            <span className="subtitle">{subtitle}</span>
+            <Description>{text}</Description>
+          </div>
+        </ResumeWrap>
+      </Animated>
     );
   };
 }

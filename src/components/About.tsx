@@ -78,18 +78,16 @@ export default function About(props) {
   return (
     <AboutSection name="About">
       <Container>
-        <Row noGutters>
-          <Col lg="6" md="6" className="d-flex" style={{ "paddingRight": "0.5rem" }}>
-            <AboutImage>
-              <StaticImage src='./About/images/about.png' alt='Casey Key in a suit' />
-            </AboutImage>
+        <Row className="justify-content-center pb-3">
+          <Col md={7} className="heading-section text-center ftco-animate">
+            <Heading className="mb-4">About Me</Heading>
           </Col>
-
-          <Col md="6" lg="6" className="pl-md-5">
-            <Row className="justify-content-start">
+        </Row>
+        <Row noGutters className="block-9 justify-centent-center">
+          <Col md="6" lg="6" className="justify-content-center pb-4" style={{ "paddingRight": "0.5rem" }}>
+            <Row className="justify-content-center">
               <Animated animationIn="fadeInUp" isVisible={visible.info} style={{ width: "100%" }}>
                 <Col className="col-md-12 heading-section">
-                  <Heading className="mb-4">About Me</Heading>
                   <Waypoint onEnter={() => makeVisible("info")}></Waypoint>
 
                   <Description>
@@ -124,6 +122,11 @@ export default function About(props) {
             </Animated>
             <Waypoint onEnter={() => makeVisible("counter") } />
             */}
+          </Col>
+          <Col lg="6" md="6" className="d-flex">
+            <AboutImage>
+              <StaticImage src='./About/images/about.png' alt='Casey Key in a suit' />
+            </AboutImage>
           </Col>
         </Row>
       </Container>

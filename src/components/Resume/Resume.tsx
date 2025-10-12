@@ -33,8 +33,8 @@ function Resume(props) {
   };
 
   return (
-    <ResumeSection name="Resume">
-      <Container>
+    <ResumeSection name="Resume" className="mb-4">
+      <Container className="mb-4">
         <Heading className="mb-4">Resume <span id="save"><Button color="primary" href={ResumeFile}>Download <BsSave /></Button></span></Heading>
         <Accordion flush open={open} toggle={toggle}>
           <Row>
@@ -58,6 +58,7 @@ function Resume(props) {
                       Validates technical expertise in developing and maintaining applications on the AWS platform
                     </Entry>
                     <Entry icon={GiGraduateCap}
+                      style={{ marginBottom: "0", paddingBottom: "0", borderBottom: "none" }}
                       title={"Colorado State University"}
                       subtitle={"Bachelor's of Science in Computer Science"}
                       date={"May 2021"}>
@@ -160,6 +161,7 @@ function Resume(props) {
                     </Entry>
 
                     <Entry icon={MdWork}
+                      style={{ marginBottom: "0", paddingBottom: "0", borderBottom: "none" }}
                       date={"May 2018 - July 2018"}
                       title={"Student Instructor"}
                       subtitle={"Northrop Grumman STEM Camp"}
@@ -219,6 +221,7 @@ function Resume(props) {
                       </ul>
                     </Entry>
                     <Entry icon={GoStar}
+                      style={{ marginBottom: "0", paddingBottom: "0", borderBottom: "none" }}
                       date={"October 2017"}
                       title={"Best Artistry Award"}
                       subtitle={"RamHack at Colorado State University"}
@@ -248,6 +251,7 @@ function Resume(props) {
                       </ul>
                     </Entry>
                     <Entry icon={AiOutlineTeam}
+                      style={{ marginBottom: "0", paddingBottom: "0", borderBottom: "none" }}
                       date={"August 2020 - May 2020"}
                       title={"Treasurer"}
                       subtitle={"AISES and Hashdump"}

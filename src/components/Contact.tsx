@@ -40,23 +40,23 @@ export default function Contact(props) {
             <h2 className="mb-4">Contact Me</h2>
           </Col>
         </Row>
-        <Row noGutters className="block-9">
-          <Col className="order-md-last d-flex justify-content-center text-center">
+        <Row noGutters className="block-9 mb-4">
+          <Col className="order-md-last d-flex justify-content-center text-center mb-4">
             <form onSubmit={submitForm}
               action="https://formspree.io/xvokgjed"
               method="POST"
               className="bg-light p-4 p-md-5 contact-form"
             >
-              <div className="form-group">
+              <div className="form-group mb-2">
                 <input type="text" className="form-control" placeholder="Your Name" name="name" />
               </div>
-              <div className="form-group">
+              <div className="form-group mb-2">
                 <input type="text" className="form-control" placeholder="Your Email" name="_replyto" />
               </div>
-              <div className="form-group">
+              <div className="form-group mb-2">
                 <input type="text" className="form-control" placeholder="Subject" name="_subject" />
               </div>
-              <div className="form-group">
+              <div className="form-group mb-4">
                 <textarea cols={30} rows={7}
                   className="form-control"
                   placeholder=""
