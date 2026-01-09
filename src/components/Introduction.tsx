@@ -544,27 +544,19 @@ const IllustrationWrapper = styled.div`
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  
-  /* 1. Anchors the content to the bottom of the section */
-  justify-content: flex-end !important; 
-  
-  /* 2. Forces the wrapper to stay at the bottom of the 100vh Hero */
-  margin-top: auto !important; 
-  
-  /* 3. Allow it to shrink if the Resume button or text needs the room */
-  flex: 0 1 auto !important; 
-  min-height: 0 !important;
-  
-  /* 4. Keeps the character from touching the screen edge */
-  padding-bottom: 5vh !important; 
+  justify-content: center !important;
 
-  svg {
-    width: auto !important;
-    height: auto !important;
-    /* 5. Limits how much vertical space the SVG can take */
-    max-height: 25vh !important; 
-    max-width: 100% !important;
-    display: block !important;
+  @media (max-width: 767.98px) {
+    /* Mobile: anchor to bottom and limit size */
+    justify-content: flex-end !important;
+    margin-top: auto !important;
+    flex: 0 1 auto !important;
+    min-height: 0 !important;
+    padding-bottom: 5vh !important;
+
+    svg {
+      max-height: 25vh !important;
+    }
   }
 `;
 
