@@ -32,7 +32,8 @@ export const HeroWrap = styled.section`
   /* Mobile Breakpoint (Matches your overlay) */
   @media (max-width: 767.98px) {
     .resume-responsive-container {
-      top: calc(50% + 5rem) !important; /* Matches your 50% height overlay */
+      top: 60% !important; /* Below the arrow (at 50%), above the SVG */
+      transform: translateX(-50%) !important;
     }
 
     .col-6-responsive {
@@ -41,10 +42,8 @@ export const HeroWrap = styled.section`
     }
 
     #resume {
-      /* Optional: Adjust the 'tuck' for mobile if 3rem feels too low/high */
-      transform: translateY(calc(-100% + 0.75rem)) !important;
+      transform: none !important;
     }
-  }
   }
 
   @media (max-width: 767.98px) {
@@ -195,12 +194,13 @@ export const Slider = styled.div<SliderProps>`
   }
 
   @media (max-width: 767.98px) {
-    min-height: 160px;
+    min-height: 120px;
     #typewriter {
-      height: 140px; /* Space for text wrapping on mobile */
+      height: 100px; /* Space for text wrapping on mobile */
+      margin-bottom: 1rem; /* Reduced from 6rem */
     }
     .subheader {
-      font-size: 1em;
+      font-size: 0.95em;
     }
   }
 `;

@@ -545,19 +545,6 @@ const IllustrationWrapper = styled.div`
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-
-  @media (max-width: 767.98px) {
-    /* Mobile: anchor to bottom and limit size */
-    justify-content: flex-end !important;
-    margin-top: auto !important;
-    flex: 0 1 auto !important;
-    min-height: 0 !important;
-    padding-bottom: 5vh !important;
-
-    svg {
-      max-height: 25vh !important;
-    }
-  }
 `;
 
 const MobileArrowWrapper = styled.div`
@@ -602,6 +589,27 @@ const AnimatedContent = styled(Animated)`
   /* Ensure the internal Reactstrap container also stays fluid */
   .container {
     height: auto !important;
+  }
+
+  @media (max-width: 767.98px) {
+    /* Full height on mobile, we'll position children */
+    flex: 1 !important;
+    justify-content: flex-start !important;
+    padding-top: 0.5rem !important;
+
+    .illustration-col {
+      position: absolute !important;
+      bottom: 2vh !important;
+      left: 0 !important;
+      right: 0 !important;
+      display: flex !important;
+      justify-content: center !important;
+    }
+
+    .illustration-col svg {
+      max-height: 20vh !important;
+      width: auto !important;
+    }
   }
 `;
 
