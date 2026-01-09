@@ -8,85 +8,68 @@ import { IoMdArrowRoundDown } from 'react-icons/io'
 const Container = styled.span`
   width: 70px;
   height: 70px;
-  border: 1px solid transparent;
-  @include border-radius(50%);
+  background: transparent;
   cursor: pointer;
   position: relative;
-  text-align: center;
   margin: 0 auto;
   display: block;
-  &:after {
+overflow: visible; /* Change to visible — no need to hide overflow anymore */
+
+&:after {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 47px;
+    left: 50%;
     content: '';
-    bottom: 0;
-    background: ${lighten(0.343, theme.primaryColor)};
+    width: 0;
+    height: 0;
+    /* Critical: explicit rgba(0,0,0,0) fixes most dithering/aliasing bugs */
+    border-left: 35px dotted rgba(0, 0, 0, 0);
+    border-right: 35px dotted rgba(0, 0, 0, 0);
+    /* Slightly oversized for extra coverage */
+    border-top: 38px solid #3e64ff;
+    opacity: 0.08;
+    /* Stronger overlap + multiple GPU/anti-aliasing hacks */
+    transform: translate(-50%, -12px) translateZ(0) rotate(0.01deg);
+    backface-visibility: hidden;
     z-index: -1;
-    transform: rotate(45deg);
   }
 `;
 
 const FallDown = styled.div`
+  width: 70px; /* Match the triangle width */
   height: 70px;
-  margin: 2px auto 0;
-  display: block;
-  width: 30px;
+  margin: 0 auto; /* Perfectly centers the container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: transparent;
-  @include border-radius(50%);
-  -webkit-animation: 1.6s ease infinite wheel-up-down;
-  -moz-animation: 1.6s ease infinite wheel-up-down;
-  animation: 1.6s ease infinite wheel-up-down;
+  position: relative;
+  
+  /* The Arrow Icon itself */
+  color: #3e64ff; 
+  font-size: 24px;
 
-  @-webkit-keyframes wheel-up-down {
-    100% {
-        margin-top: 25px;
-        opacity: 1;
+  animation: wheel-up-down 1.6s ease infinite;
+
+  @keyframes wheel-up-down {
+    0% {
+      transform: translateY(-10px);
+      opacity: 0;
     }
     30% {
-        opacity: 1;
+      opacity: 1;
     }
-    0% {
-        margin-top: -10px;
-        opacity: 0;
-    }
-  }@-moz-keyframes wheel-up-down {
     100% {
-        margin-top: 25px;
-        opacity: 1;
-    }
-    30% {
-        opacity: 1;
-    }
-    0% {
-        margin-top: -10px;
-        opacity: 0;
-    }
-  }@keyframes wheel-up-down {
-    100% {
-        margin-top: 25px;
-        opacity: 1;
-    }
-    30% {
-        opacity: 1;
-    }
-    0% {
-        margin-top: -10px;
-        opacity: 0;
+      transform: translateY(17px);
+      opacity: 0;
     }
   }
 `;
 
 const Mouse = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 120px;
-  z-index: 0;
-  @media (max-width: 767.98px) {
-    display: none;
-  }
+  display: flex;
+  justify-content: center;
+  z-index: 10;
 `;
 
 
@@ -100,8 +83,8 @@ export default function FallingArrow(props) {
         <Container>
           <FallDown>
             <IoMdArrowRoundDown color={theme.primaryColor}
-                                fontSize="25px" 
-                                onClick={() => scroller.scrollTo('Projects', {smooth: true})}
+              fontSize="25px"
+              onClick={() => scroller.scrollTo('Skills', { smooth: true, offset: 40, delay: 0 })}
             />
           </FallDown>
         </Container>

@@ -19,12 +19,16 @@ import { SEO } from '../components/SEO'
 
 const IndexPage = ({ data }) => {
   useEffect(() => {
+    // Ensure page starts at the top on load
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
 		AOS.init({
 			duration: 800,
 			easing: 'slide'
-		});	 
+		});
 		initPage();
-  });
+  }, []);
   
   return (
     <Layout>

@@ -1,0 +1,6 @@
+This is a portfolio website for Casey Key, a Full Stack Software Engineer.
+He is 27 years old and wants to be a lead software engineer..
+This website is built with Gatsby.
+You can run the site locally with `yarn gatsby develop`.
+You can build the site with `yarn gatsby build`.
+You can deploy the site with `yarn deploy`.

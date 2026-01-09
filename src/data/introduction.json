@@ -2,24 +2,24 @@
   "section": "introduction",
   "greeting": "Hello,",
   "name": "Casey Key",
-  "role": "Full Stack Software Engineer",
+  "role": "Lead Software Engineer",
   "descriptions": [
     {
       "description": {
-        "header": "a systems builder.",
+        "header": "a systems architect.",
         "subheader": "Cloud infrastructure, DevOps automation, and scalable backend systems."
       }
     },
     {
       "description": {
         "header": "an innovator.",
-        "subheader": "AI-powered tools, performance optimization, and cross-platform development."
+        "subheader": "AI-powered tools, performance optimization, and cross-platform solutions."
       }
     },
     {
       "description": {
-        "header": "a mentor.",
-        "subheader": "Team onboarding, technical guidance, and developer advocacy."
+        "header": "a technical leader.",
+        "subheader": "Team mentorship, architectural guidance, and developer advocacy."
       }
     }
   ]
