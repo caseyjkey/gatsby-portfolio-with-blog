@@ -131,6 +131,23 @@ export default function Introduction(props) {
         <FallingArrow />
       </MobileArrowWrapper>
 
+      <MobileSvgWrapper>
+        <MobileSittingSvg viewBox="80 -10 100.1879 500">
+          <path d="M 162,94.8 C 129.81195,93.8403 99.15574,84.930003 69.877152,75.179436 40.59857,65.42887 11.608446,54.624763 -19.808717,49.459437 c -20.207038,-3.3227 -43.313601,-3.791886 -59.59661,5.498023 -15.666306,8.957214 -20.729253,24.376417 -23.454693,38.69517 -2.04408,10.7785 -3.25262,22.11579 2.36238,32.20332 3.894189,7.00368 10.812228,12.88984 15.596681,19.59923 16.641093,23.33993 4.878933,52.12244 -13.159698,74.91214 -8.454833,10.68896 -18.272383,20.90016 -24.802493,32.27157 -6.53012,11.3714 -9.54899,24.41907 -3.83949,36.02932 5.66474,11.51642 19.15765,20.14948 33.769589,26.22758 29.686403,12.3439 64.65459,15.87985 98.7822629,17.88031 75.5066201,4.43168 151.4210581,2.51228 227.1265981,0.59287 28.02032,-0.71231 56.15998,-1.43315 83.72273,-5.14826 15.30822,-2.06443 31.11377,-5.3402 42.22441,-13.22255 14.10463,-10.03634 17.60095,-27.03373 8.15146,-39.61648 -15.8553,-21.10917 -59.68116,-26.35553 -70.77689,-49.00875 -6.1024,-12.46759 0.16413,-26.3598 9.02677,-37.92314 19.01841,-24.81147 50.89312,-46.57324 52.57414,-74.93347 C 359.05227,94.04077 343.72913,74.535369 320.0357,65.31797 295.1984,55.656976 260.76237,56.872597 242.4502,72.863357 223.57106,89.31051 190.41817,95.64454 162,94.8 Z" opacity="0.5" className="primaryColor" />
+          <g id="mobile-body">
+            <rect height="47" width="27" fill="#F7B799" y="147.5" x="105.5"/>
+            <path d="M163.5,108.9c0,15.3-12.4,27.6-27.6,27.6h-33.7c-15.3,0-27.6-12.4-27.6-27.6V75.1c0-15.3,12.4-27.6,27.6-27.6h33.7c15.3,0,27.6,12.4,27.6,27.6V108.9z" fill="#F7B799"/>
+            <circle r="5" cy="114" cx="98.4" fill="#000000"/>
+            <circle r="5" cy="114" cx="136.9" fill="#000000"/>
+            <path d="M137.9,174.8c0,0,35.4,13.8,38.3,40.9l-11,11.5c0,0-0.5,67.7,1.9,71.6c0,0-20.1,12.2-33.3,15.1s-40-2.2-43.1-3.6c-3.1-1.4-15.3-10.8-15.3-10.8s2.6-9.8,2.4-13.9c-0.2-4.1,0.5-27.5,0.2-31.8c-0.2-4.3-1.2-19.9-1.2-19.9l-15.3-14.4c0,0,7.6-41.2,38.7-42.3c0,0,13,15.5,15.6,15.5s3.1,6.2,3.1,6.2s3.1-6.3,11-15.2C137.9,174.8,137.9,174.8,137.9,174.8z" fill="#E3405F"/>
+            <path d="M212.5,289.7c0,3.8-3,6.8-6.8,6.8H37.3c-3.8,0-6.8-3-6.8-6.8V186.3c0-3.8,3-6.8,6.8-6.8h168.4c3.8,0,6.8,3,6.8,6.8V289.7z" fill="#292A2D"/>
+          </g>
+          <g opacity="0.20" id="mobile-shadow">
+            <path d="M1.5,406.1c0-1.2,1.9-1.8,5.4-2.8c6.2-1.8,17.3-4,32-5.3c22.5-2,53.4-2,87.4-3.3c19.6-0.7,41.2,1,58.8,1.9c39.1,1.9,65.9,5.2,65.9,9.6c0,4.4-26.9,8.2-66.4,10.1c-7.3,0.4-16.1-0.5-24.2-0.3c-11.1,0.3-21.9,1.6-34.1,1.6c-4.2,0-8.4,0-12.6-0.1c-9.2-0.1-18.1-0.3-26.6-0.5C37.3,415.4,1.5,411.1,1.5,406.1z" fill="#0A0A0A"/>
+          </g>
+        </MobileSittingSvg>
+      </MobileSvgWrapper>
+
       <ResumeButtonWrapper
         className="container position-absolute start-50 translate-middle-x resume-responsive-container"
         isVisible={isReady}
@@ -550,7 +567,7 @@ const IllustrationWrapper = styled.div`
 const MobileArrowWrapper = styled.div`
   display: none;
   @media (max-width: 767.98px) {
-        position: absolute;
+    position: absolute;
     top: 50%;
     left: 0;
     right: 0;
@@ -558,7 +575,28 @@ const MobileArrowWrapper = styled.div`
     z-index: 20;
     transform: translateY(-50%);
     display: block;
+  }
+`;
+
+const MobileSvgWrapper = styled.div`
+  display: none;
+  @media (max-width: 767.98px) {
+    display: flex;
+    position: absolute;
+    bottom: 2vh;
+    left: 0;
+    right: 0;
     justify-content: center;
+    z-index: 5;
+  }
+`;
+
+const MobileSittingSvg = styled.svg`
+  max-height: 20vh;
+  width: auto;
+
+  .primaryColor {
+    fill: ${props => props.theme.primaryColor};
   }
 `;
 
@@ -592,23 +630,17 @@ const AnimatedContent = styled(Animated)`
   }
 
   @media (max-width: 767.98px) {
-    /* Full height on mobile, we'll position children */
-    flex: 1 !important;
-    justify-content: flex-start !important;
-    padding-top: 0.5rem !important;
+    /* Position text content in the blue area (top ~42%) and center it */
+    flex: 0 0 auto !important;
+    height: 42vh !important;
+    max-height: 42vh !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    padding-top: 0 !important;
 
+    /* Hide illustration - will use MobileSvgWrapper instead */
     .illustration-col {
-      position: absolute !important;
-      bottom: 2vh !important;
-      left: 0 !important;
-      right: 0 !important;
-      display: flex !important;
-      justify-content: center !important;
-    }
-
-    .illustration-col svg {
-      max-height: 20vh !important;
-      width: auto !important;
+      display: none !important;
     }
   }
 `;
