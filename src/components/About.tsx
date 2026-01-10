@@ -1,7 +1,29 @@
+/*
+ * TODO: Update CMS Bio Content to Emphasize Consultant Identity
+ * =============================================================
+ * The bio content is sourced from the CMS (GraphQL query at line 33-48).
+ * To emphasize your consultant identity, update the CMS 'bio' field to include:
+ *
+ * 1. Problem-Solving Approach: Highlight how you approach complex technical
+ *    challenges, analyze requirements, and deliver tailored solutions.
+ *
+ * 2. Technical Leadership: Emphasize your experience leading teams, making
+ *    architectural decisions, and guiding technical strategy.
+ *
+ * 3. Consultant Mindset: Showcase your ability to understand client needs,
+ *    communicate technical concepts to non-technical stakeholders, and deliver
+ *    business value through technology.
+ *
+ * Example themes to incorporate:
+ * - "I partner with organizations to solve complex technical challenges..."
+ * - "As a technical consultant, I bring a strategic approach to..."
+ * - "My expertise lies in bridging the gap between business requirements and technical solutions..."
+ */
+
 import React, { useEffect, useState, lazy } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style.ts'
-import { AboutSection, AboutImage, Counter, Description } from './About/style.ts'
+import { AboutSection, AboutImage, Counter, Description, ConsultantIdentity } from './About/style.ts'
 import { StaticImage } from 'gatsby-plugin-image'
 import Activity from './About/Activity.tsx'
 import { graphql, useStaticQuery } from 'gatsby'
@@ -104,6 +126,24 @@ export default function About(props) {
                       );
                     })}
                   </ul>
+
+                  {/* Consultant Identity Placeholder Section
+                      NOTE: This section emphasizes the consultant identity. Once the CMS bio
+                      is updated with consultant-focused content, you can remove this section
+                      or customize it further to complement the CMS content.
+                  */}
+                  <ConsultantIdentity>
+                    <h3>Consultant Approach</h3>
+                    <p>
+                      <strong>Problem-Solving:</strong> I tackle complex technical challenges by combining deep technical expertise with a strategic, business-first mindset.
+                    </p>
+                    <p>
+                      <strong>Technical Leadership:</strong> I guide teams through architectural decisions, mentor developers, and ensure scalable, maintainable solutions.
+                    </p>
+                    <p>
+                      <strong>Client Partnership:</strong> I bridge the gap between technical requirements and business goals, communicating complex concepts to stakeholders at all levels.
+                    </p>
+                  </ConsultantIdentity>
                 </Col>
               </Animated>
             </Row>

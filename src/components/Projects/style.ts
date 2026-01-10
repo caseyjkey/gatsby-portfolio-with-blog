@@ -9,80 +9,61 @@ export const ProjectSection = styled.section`
 
 export const ProjectWrapper = styled.div`
   width: 100%;
-  height: 350px;
   margin-bottom: 0;
   position: relative;
   z-index: 0;
   ${Image}
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
+  &:hover,
+  &:focus {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  }
 
-	
+  // Put lightbox on top of project modal
+  ReactModal__Overlay {
+    ReactModal__Overlay--after-open {
+      z-index: 1100;
+    }
+  }
 
-	// Put lightbox on top of project modal
-	ReactModal__Overlay {
-		ReactModal__Overlay--after-open {
-			z-index: 1100;
-		}
-	}
+  .gatsby-image-wrapper {
+    position: static;
+  }
 
-	.gatsby-image-wrapper {
-		position: static;
-	}
-	.overlay{
-		background-color: ${props => props.theme.primaryColor};
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		content: '';
-		opacity: 0.7;
-    z-index: 0;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -webkit-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-		@media (max-width: 576px) {
-			opacity: 1;
-		}
-	}
-	.text{
-		max-width: 80%;
-		z-index: 1;
-		opacity: 0.8;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -webkit-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-		h3{
-      color: ${props => props.theme.black};
-      font-size: 24px;
+  img {
+    display: block;
+    width: 100%;
+  }
+
+  .text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+
+    h3 {
+      color: white;
+      font-size: 1.5rem;
       font-weight: 700;
-		}
-		span{
-			color: rgba(255,255,255,1);
-			text-transform: uppercase;
-			letter-spacing: 2px;
-			font-size: 12px;
-			font-weight: 600;
-		}
-		@media (max-width: 576px) {
-			opacity: 1;
-			span{
-				color: rgba(255,255,255,.8);
-			}
-		}
-	}
-	&:hover, &:focus{
-		.overlay{
-			opacity: .9;
-		}
-		.text{
-			opacity: 1;
-		}
-	}
+      margin: 0 0 0.5rem 0;
+    }
+
+    span {
+      color: rgba(255, 255, 255, 0.9);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
 `;
 
 export const ReadMoreColor = styled.div`

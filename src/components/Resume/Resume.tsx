@@ -21,6 +21,7 @@ import { TbCertificate } from 'react-icons/tb'
 import { GoStar } from 'react-icons/go'
 import { MdWork } from 'react-icons/md'
 import { BsSave } from 'react-icons/bs'
+import { experienceData } from '../../data/experience'
 
 function Resume(props) {
   const [open, setOpen] = useState<string | null>('1');
@@ -74,104 +75,22 @@ function Resume(props) {
                     <SectionTitle>Experience</SectionTitle>
                   </AccordionHeader>
                   <AccordionBody accordionId='2'>
-                    <Entry icon={MdWork}
-                      date={"April 2024 – Present"}
-                      title={"Applications Developer"}
-                      subtitle={"Oracle"}
-                    >
-                      <ul>
-                        <li>Built and launched a scalable release management tool supporting 13780 users with high reliability.</li>
-                        <li>Mentored new developers, facilitating knowledge transfer and collaborative problem‑solving.</li>
-                        <li>Implemented AI‑powered automation to optimize DevOps workflows and artifact management.</li>
-                        <li>Led onboarding and support for users, resolving bugs, gathering feedback, and refining key features.</li>
-                        <li>Efficiently ingested data sources with Python, DRF, and Celery for asynchronous data processing.</li>
-                      </ul>
-                    </Entry>
-
-                    <Entry icon={MdWork}
-                      date={"August 2022 – April 2024"}
-                      title={"Software Development Engineer"}
-                      subtitle={"Amazon"}
-                    >
-                      <ul>
-                        <li>Designed efficient bulk registration features for large‑scale data ingestion pipelines.</li>
-                        <li>Developed and optimized C++ and Python‑based APIs for large‑scale data catalog systems.</li>
-                        <li>Led junior developers by sharing context, reviewing code, and guiding contributions.</li>
-                        <li>Delivered flexible CI/CD pipelines with approvals, tests, rollbacks, and branch deployments.</li>
-                        <li>Worked closely with product and UX teams to refine UI behavior for React-based applications.</li>
-                        <li>Managed infrastructure security and scalability using AWS CDK, CloudFormation, and SAM.</li>
-                      </ul>
-                    </Entry>
-
-                    <Entry icon={MdWork}
-                      date={"August 2021 – August 2022"}
-                      title={"Senior Associate Software Engineer"}
-                      subtitle={"Capital One"}
-                    >
-                      <ul>
-                        <li>Accelerated dataset registration by developing a Chrome extension to enforce metadata compliance.</li>
-                        <li>Improved file transfer efficiency by designing a self‑service data streaming and processing pipeline.</li>
-                        <li>Enhanced real‑time analytics by implementing multithreading for Kafka stream processing.</li>
-                      </ul>
-                    </Entry>
-
-                    <Entry icon={MdWork}
-                      date={"August 2019 - May 2020, August 2020 - May 2021"}
-                      title={"DevOps Engineer"}
-                      subtitle={"Bongo"}
-                    >
-                      <ul>
-                        <li>Built custom monitors to fortify web application's live audio infrastructure.</li>
-                        <li>Automated hundreds of end-to-end React user interface tests with Ruby, Capybara, and Jenkins.</li>
-                      </ul>
-                    </Entry>
-
-                    <Entry icon={MdWork}
-                      date={"May 2020 – August 2020"}
-                      title={"Associate Cloud Consultant"}
-                      subtitle={"Amazon Web Services"}
-                    >
-                      <ul>
-                        <li>Architected self-service WorkSpace solution to reduce end-user’s procurement time by 85%.</li>
-                        <li>Satisfied customer requests for highly available RESTful services after project demos.</li>
-                      </ul>
-                    </Entry>
-
-                    <Entry icon={MdWork}
-                      date={"May 2019 – August 2019"}
-                      title={"Cloud Solutions Engineer"}
-                      subtitle={"Oracle"}
-                    >
-                      <ul>
-                        <li>Built business intelligence dashboards for optimizing five revenue streams</li>
-                        <li>Analyzed Tweets and News outlets for live analysis using Python</li>
-                        <li>Maximized application availability by automating deployment to Oracle Cloud</li>
-                      </ul>
-                    </Entry>
-
-                    <Entry icon={MdWork}
-                      date={"January 2019 - May 2019"}
-                      title={"Teaching Assistant"}
-                      subtitle={"Colorado State University"}
-                    >
-                      <ul>
-                        <li>Lead over 100 students through the fundamentals of Python</li>
-                        <li>Reviewed and revised curriculum for teaching Python to non-technical majors</li>
-                      </ul>
-                    </Entry>
-
-                    <Entry icon={MdWork}
-                      style={{ marginBottom: "0", paddingBottom: "0", borderBottom: "none" }}
-                      date={"May 2018 - July 2018"}
-                      title={"Student Instructor"}
-                      subtitle={"Northrop Grumman STEM Camp"}
-                    >
-                      <ul>
-                        <li>Built a project based Python programming curriculum focused on gaming and security</li>
-                        <li>Taught 10 high school students Python object-oriented programming</li>
-                        <li>Released a blog covering the curriculum</li>
-                      </ul>
-                    </Entry>
+                    {experienceData.map((entry, index) => (
+                      <Entry
+                        key={index}
+                        icon={MdWork}
+                        date={entry.year}
+                        title={entry.title}
+                        subtitle={entry.company}
+                        style={index === experienceData.length - 1 ? { marginBottom: "0", paddingBottom: "0", borderBottom: "none" } : undefined}
+                      >
+                        <ul>
+                          {entry.bullets.map((bullet, bulletIndex) => (
+                            <li key={bulletIndex}>{bullet}</li>
+                          ))}
+                        </ul>
+                      </Entry>
+                    ))}
                   </AccordionBody>
                 </Page>
               </AccordionItem>
