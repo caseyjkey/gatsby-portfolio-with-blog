@@ -1,0 +1,108 @@
+# Project Context for AI Assistants
+
+## Project Overview
+This is a personal portfolio website with blog functionality built using Gatsby and React.
+
+## Current State
+- **Framework**: Gatsby (React-based static site generator)
+- **Styling**: styled-components with reactstrap (Bootstrap)
+- **TypeScript**: Recently implemented - types are not fully added to all components yet
+- **Content**: Portfolio projects with image galleries, blog posts, skills, contact info
+
+## Migration Goals
+
+### Primary Goal: Migrate from Gatsby to Astro
+We are **aiming to make net-negative changes** (simplify the codebase) to eventually convert this site to use Astro instead of Gatsby.
+
+**Why Astro?**
+- Better performance with islands architecture
+- Less JavaScript shipped to the client
+- Simpler build process
+- Better TypeScript support out of the box
+- More flexible content handling
+
+**Migration Strategy**:
+- Prefer simpler, more portable solutions when fixing or adding features
+- Avoid adding complex Gatsby-specific dependencies
+- Keep components as vanilla React as possible
+- Document any Gatsby-specific features that will need replacement
+
+## Code Quality Guidelines
+
+### TypeScript
+- TypeScript was recently implemented
+- **Action Required**: Add proper types and interfaces to components when working on them
+- Convert `any` types to proper interfaces
+- Add return types to functions
+- Use proper typing for props, state, and component definitions
+
+### Simplification Principles
+1. **Net-negative changes**: When fixing bugs or adding features, try to remove more code than you add
+2. **Reduce dependencies**: Prefer standard React patterns over library-specific solutions
+3. **Avoid over-engineering**: Keep solutions simple and maintainable
+4. **Framework-agnostic**: Write code that will be easier to migrate to Astro
+
+### Component Structure
+- Functional components preferred (already in use)
+- Use React hooks for state management
+- Keep styled-components usage (works with Astro)
+- Minimize Gatsby-specific APIs (GraphQL queries, gatsby-image, etc.)
+
+## Current Technical Debt
+
+### Known Issues
+1. **Lightbox Library**: Using `react-image-lightbox` (archived since Jan 2023)
+   - Ctrl+Zoom closes the lightbox (browser zoom interferes)
+   - Need better zoom functionality
+   - Consider simpler alternatives or native solutions
+
+2. **TypeScript Coverage**: Not all components have proper types
+   - Props often use `any` type
+   - Missing interfaces for data structures
+   - No return type annotations on many functions
+
+3. **Gatsby-Specific Code**: Heavy reliance on Gatsby APIs
+   - GraphQL queries for content
+   - gatsby-plugin-image for image optimization
+   - Gatsby routing and page generation
+
+## Development Priorities
+
+1. **Maintainability**: Choose solutions that are actively maintained
+2. **Portability**: Prefer solutions that work outside Gatsby ecosystem
+3. **Simplicity**: Less code is better code
+4. **Type Safety**: Add TypeScript types when touching components
+5. **Performance**: Keep bundle size small
+
+## Working with This Codebase
+
+### When Adding Features
+- Check if a simpler solution exists before adding dependencies
+- Consider how it will migrate to Astro
+- Add TypeScript types
+- Aim for net-negative code changes
+
+### When Fixing Bugs
+- Look for opportunities to simplify while fixing
+- Remove unused code
+- Add proper types
+- Document any Gatsby-specific workarounds
+
+### When Reviewing Dependencies
+- Check if dependency is actively maintained
+- Consider if it's needed or if native browser APIs suffice
+- Prefer framework-agnostic libraries
+- Document alternatives for future migration
+
+## File Structure
+```
+src/
+├── components/     # React components
+├── data/          # JSON data for projects, content
+├── pages/         # Gatsby page components
+├── styles/        # Global styles
+└── templates/     # Gatsby templates for generated pages
+```
+
+## Contact
+This file should be updated as the codebase evolves and migration plans solidify.

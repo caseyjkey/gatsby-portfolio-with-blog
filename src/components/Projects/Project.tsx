@@ -1,5 +1,5 @@
-import React, { Suspense, useState } from 'react'
-import { GatsbyImage } from "gatsby-plugin-image";
+import React, { Suspense, useState, ReactNode } from 'react'
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
 import { theme } from '../style.ts'
 import { ProjectWrapper, ReadMoreColor } from './style.ts'
@@ -10,9 +10,40 @@ import 'react-image-lightbox/style.css';
 import { Carousel } from 'react-responsive-carousel'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ReactReadMoreReadLess from '@caseykey/react-read-more-read-less'
+import { IconType } from 'react-icons'
 
-// Using a functional component because we don't use state, constructor, or lifecycle hooks
-export default function Project({ children, title, subtitle, image, galleryImages, icons, link, postLink, date }: any) {
+interface GalleryImage {
+  image: {
+    publicURL: string;
+    childImageSharp?: {
+      gatsbyImageData: IGatsbyImageData;
+    };
+  };
+}
+
+interface ProjectProps {
+  children: ReactNode;
+  title: string;
+  subtitle: string;
+  image: IGatsbyImageData;
+  galleryImages: GalleryImage[];
+  icons: IconType[];
+  link?: string;
+  postLink?: string;
+  date: string;
+}
+
+export default function Project({
+  children,
+  title,
+  subtitle,
+  image,
+  galleryImages,
+  icons,
+  link,
+  postLink,
+  date
+}: ProjectProps): JSX.Element {
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
 
@@ -51,7 +82,7 @@ export default function Project({ children, title, subtitle, image, galleryImage
                 infiniteLoop
                 useKeyboardArrows
                 showThumbs={false}
-                onChange={(index, something) => {
+                onChange={(index: number) => {
                   setPhotoIndex(index);
                 }}
                 onClickItem={() => toggleLightbox()}
@@ -83,7 +114,8 @@ export default function Project({ children, title, subtitle, image, galleryImage
                 </ReactReadMoreReadLess>
               </ReadMoreColor>
               {lightboxOpen && (
-                <Lightbox reactModalStyle={{ overlay: { zIndex: 1100 } }}
+                <Lightbox
+                  reactModalStyle={{ overlay: { zIndex: 1100 } }}
                   mainSrc={images[photoIndex]}
                   nextSrc={images[(photoIndex + 1) % images.length]}
                   prevSrc={images[(photoIndex + images.length - 1) % images.length]}
@@ -94,6 +126,8 @@ export default function Project({ children, title, subtitle, image, galleryImage
                   onMoveNextRequest={() =>
                     setPhotoIndex((photoIndex + 1) % images.length)
                   }
+                  enableZoom={true}
+                  clickOutsideToClose={false}
                 />
               )}
             </ModalBody>
