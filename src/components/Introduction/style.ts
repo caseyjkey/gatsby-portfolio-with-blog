@@ -86,6 +86,8 @@ export const Text = styled.div`
     }
   }
   width: 100%;
+  transition: transform 0.3s ease-out;
+  will-change: transform;
 `;
 
 export const Subheader = styled.h3`
@@ -93,13 +95,28 @@ export const Subheader = styled.h3`
   font-weight: 900;
   color: ${(props) => props.theme.primaryColor};
   letter-spacing: 4px;
+  
+  @media (max-width: 767.98px) {
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
+  
+  @media (max-height: 600px) {
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
 `;
+
 export const Header = styled.h1`
   color: ${(props) => props.theme.black}
   font-size: 69px;
   font-weight: 900;
   @media (max-width: 767.98px) {
     font-size: 40px;
+  }
+  
+  @media (max-height: 600px) {
+    font-size: 32px;
   }
 `;
 
