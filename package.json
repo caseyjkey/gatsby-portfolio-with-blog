@@ -41,7 +41,6 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.7.1",
-    "react-image-lightbox": "^5.1.4",
     "react-live": "^4.1.7",
     "react-responsive-carousel": "^3.2.7",
     "react-scripts": "5.0.1",
@@ -54,13 +53,15 @@
     "styled-components": "^6.1.13",
     "typeface-poppins": "1.1.13",
     "typewriter-effect": "^2.21.0",
-    "webpack": "^5.75.0"
+    "webpack": "^5.75.0",
+    "yet-another-react-lightbox": "^3.28.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
     "predeploy": "gatsby build",
     "deploy": "gh-pages -d public -b master"
   },

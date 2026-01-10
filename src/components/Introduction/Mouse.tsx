@@ -17,21 +17,16 @@ overflow: visible; /* Change to visible — no need to hide overflow anymore */
 
 &:after {
     position: absolute;
-    top: 47px;
+    top: 35px;
     left: 50%;
     content: '';
-    width: 0;
-    height: 0;
-    /* Critical: explicit rgba(0,0,0,0) fixes most dithering/aliasing bugs */
-    border-left: 35px dotted rgba(0, 0, 0, 0);
-    border-right: 35px dotted rgba(0, 0, 0, 0);
-    /* Slightly oversized for extra coverage */
-    border-top: 38px solid #3e64ff;
+    width: 70px;
+    height: 38px;
+    background: #3e64ff;
     opacity: 0.08;
-    /* Stronger overlap + multiple GPU/anti-aliasing hacks */
-    transform: translate(-50%, -12px) translateZ(0) rotate(0.01deg);
-    backface-visibility: hidden;
+    transform: translate(-50%, 0);
     z-index: -1;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
   }
 `;
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import styled from 'styled-components'
 import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.ts'
@@ -39,6 +39,8 @@ export default function Introduction(props) {
 
   const [headerEnd, setHeaderEnd] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [textScale, setTextScale] = useState(1);
+  const textRef = useRef<HTMLDivElement>(null);
   const endHeader = () => {
     setHeaderEnd(true);
   };
@@ -52,6 +54,38 @@ export default function Introduction(props) {
     const timer = setTimeout(() => setIsReady(true), 50);
     return () => clearTimeout(timer);
   }, []);
+
+  // Responsive text scaling based on viewport height
+  useEffect(() => {
+    const calculateTextScale = () => {
+      if (!textRef.current) return;
+
+      const viewportHeight = window.innerHeight;
+      const textElement = textRef.current;
+      const textRect = textElement.getBoundingClientRect();
+      const textTop = textRect.top;
+
+      // Calculate available height from top of text to bottom of viewport
+      const availableHeight = viewportHeight - textTop;
+      const currentTextHeight = textRect.height;
+
+      // If text takes up more than 65% of available height, scale it down
+      const maxHeightPercent = 0.65;
+      const maxHeight = availableHeight * maxHeightPercent;
+
+      if (currentTextHeight > maxHeight) {
+        const scale = maxHeight / currentTextHeight;
+        setTextScale(Math.max(scale, 0.6)); // Minimum scale of 0.6
+      } else {
+        setTextScale(1);
+      }
+    };
+
+    calculateTextScale();
+    window.addEventListener('resize', calculateTextScale);
+
+    return () => window.removeEventListener('resize', calculateTextScale);
+  }, [headerEnd]); // Recalculate when headerEnd changes
 
   useEffect(() => {
     let header = document.getElementById('typewriter1');
@@ -228,11 +262,17 @@ export default function Introduction(props) {
           </div>
         </div>
       </ResumeButtonWrapper>
-      <AnimatedContent animationIn="fadeInUp" animationInDuration={500} animationInDelay={100} isVisible={isReady} >
+      <AnimatedContent
+        animationIn="fadeInUp"
+        animationInDuration={500}
+        animationInDelay={100}
+        animateOnMount={false}
+        isVisible={isReady}
+      >
         <Container>
           <Row noGutters xs="1" md="2" className="justify-content-center align-items-center">
             <Col className="text-center">
-              <Text>
+              <Text ref={textRef} style={{ transform: `scale(${textScale})`, transformOrigin: 'top center' }}>
                 <Subheader>{data.introduction.greeting}</Subheader>
                 <Slider isFinished={headerEnd}>
                   <h2 className="subheader">
@@ -616,6 +656,41 @@ const SocialStyle = styled.div<SocialStyleProps>`
       }
     }
   }
+  
+  /* Responsive social icons */
+  @media (max-width: 767.98px) {
+    .ftco-footer-social {
+      li {
+        margin: 0 6px;
+        
+        a {
+          height: 32px;
+          width: 32px;
+          
+          svg {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-height: 600px) {
+    .ftco-footer-social {
+      li {
+        margin: 0 4px;
+        
+        a {
+          height: 28px;
+          width: 28px;
+          
+          svg {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
 `;
 
 const IllustrationWrapper = styled.div`
@@ -689,6 +764,11 @@ const AnimatedContent = styled(Animated)`
   /* Ensure the internal Reactstrap container also stays fluid */
   .container {
     height: auto !important;
+  }
+
+  /* Fix flash: When animated class exists but no animation class yet, hide the element */
+  &.animated:not([class*="fadeIn"]):not([class*="fadeOut"]) {
+    opacity: 0 !important;
   }
 
   @media (max-width: 767.98px) {

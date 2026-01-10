@@ -5,12 +5,14 @@ import { theme } from '../style.ts'
 import { ProjectWrapper, ReadMoreColor } from './style.ts'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import "yet-another-react-lightbox/styles.css";
 import { Carousel } from 'react-responsive-carousel'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ReactReadMoreReadLess from '@caseykey/react-read-more-read-less'
 import { IconType } from 'react-icons'
+import styled from 'styled-components'
 
 interface GalleryImage {
   image: {
@@ -32,6 +34,14 @@ interface ProjectProps {
   postLink?: string;
   date: string;
 }
+
+// Styled wrapper to prevent flash before animation
+const AnimatedWrapper = styled(Animated)`
+  /* Fix flash: When animated class exists but no animation class yet, hide the element */
+  &.animated:not([class*="fadeIn"]):not([class*="fadeOut"]) {
+    opacity: 0 !important;
+  }
+`;
 
 export default function Project({
   children,
@@ -62,7 +72,11 @@ export default function Project({
   };
 
   return (
-    <Animated animationIn={"fadeInUp"} isVisible={visible}>
+    <AnimatedWrapper
+      animationIn={"fadeInUp"}
+      animateOnMount={false}
+      isVisible={visible}
+    >
       <ProjectWrapper onClick={toggleModal} className="shadow d-flex justify-content-center align-items-center">
         <GatsbyImage image={image} style={{ position: "absolute" }} />
         <div className="overlay" />
@@ -113,23 +127,22 @@ export default function Project({
                   {children.props.dangerouslySetInnerHTML.__html}
                 </ReactReadMoreReadLess>
               </ReadMoreColor>
-              {lightboxOpen && (
-                <Lightbox
-                  reactModalStyle={{ overlay: { zIndex: 1100 } }}
-                  mainSrc={images[photoIndex]}
-                  nextSrc={images[(photoIndex + 1) % images.length]}
-                  prevSrc={images[(photoIndex + images.length - 1) % images.length]}
-                  onCloseRequest={() => toggleLightbox()}
-                  onMovePrevRequest={() =>
-                    setPhotoIndex((photoIndex + images.length - 1) % images.length)
-                  }
-                  onMoveNextRequest={() =>
-                    setPhotoIndex((photoIndex + 1) % images.length)
-                  }
-                  enableZoom={true}
-                  clickOutsideToClose={false}
-                />
-              )}
+              <Lightbox
+                open={lightboxOpen}
+                close={() => setLightbox(false)}
+                slides={images.map(src => ({ src }))}
+                index={photoIndex}
+                plugins={[Zoom]}
+                zoom={{
+                  maxZoomPixelRatio: 3,
+                  zoomInMultiplier: 2,
+                  scrollToZoom: true
+                }}
+                on={{
+                  view: ({ index }) => setPhotoIndex(index)
+                }}
+                styles={{ container: { zIndex: 1100 } }}
+              />
             </ModalBody>
           </Suspense>
           <ModalFooter className="d-flex justify-content-between align-items-center">
@@ -141,6 +154,6 @@ export default function Project({
           </ModalFooter>
         </Modal>
       </ProjectWrapper>
-    </Animated>
+    </AnimatedWrapper>
   );
 }
