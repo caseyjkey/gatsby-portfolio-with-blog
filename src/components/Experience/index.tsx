@@ -115,6 +115,17 @@ const Company = styled.h3`
   }
 `
 
+const CompanyHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 767.98px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+
 const Location = styled.span`
   font-weight: 400;
   font-size: 1.1rem;
@@ -122,14 +133,9 @@ const Location = styled.span`
   display: inline;
 
   @media (max-width: 767.98px) {
+    display: block;
     font-size: 1rem;
   }
-`
-
-const CompanyHeader = styled.div`
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 0.5rem;
 `
 
 const Title = styled.div`
