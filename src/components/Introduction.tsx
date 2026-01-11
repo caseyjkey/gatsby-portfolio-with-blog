@@ -10,6 +10,27 @@ import { Animated } from 'react-animated-css'
 import { graphql, useStaticQuery } from 'gatsby'
 import Typewriter from 'typewriter-effect/dist/core'
 
+// Blob SVG components with preserveAspectRatio="none" for controlled stretching
+const MobileBlob = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="-150 20 600 350"
+    preserveAspectRatio="none"
+  >
+    <path d="M 162,94.8 C 129.81195,93.8403 99.15574,84.930003 69.877152,75.179436 40.59857,65.42887 11.608446,54.624763 -19.808717,49.459437 c -20.207038,-3.3227 -43.313601,-3.791886 -59.59661,5.498023 -15.666306,8.957214 -20.729253,24.376417 -23.454693,38.69517 -2.04408,10.7785 -3.25262,22.11579 2.36238,32.20332 3.894189,7.00368 10.812228,12.88984 15.596681,19.59923 16.641093,23.33993 4.878933,52.12244 -13.159698,74.91214 -8.454833,10.68896 -18.272383,20.90016 -24.802493,32.27157 -6.53012,11.3714 -9.54899,24.41907 -3.83949,36.02932 5.66474,11.51642 19.15765,20.14948 33.769589,26.22758 29.686403,12.3439 64.65459,15.87985 98.7822629,17.88031 75.5066201,4.43168 151.4210581,2.51228 227.1265981,0.59287 28.02032,-0.71231 56.15998,-1.43315 83.72273,-5.14826 15.30822,-2.06443 31.11377,-5.3402 42.22441,-13.22255 14.10463,-10.03634 17.60095,-27.03373 8.15146,-39.61648 -15.8553,-21.10917 -59.68116,-26.35553 -70.77689,-49.00875 -6.1024,-12.46759 0.16413,-26.3598 9.02677,-37.92314 19.01841,-24.81147 50.89312,-46.57324 52.57414,-74.93347 C 359.05227,94.04077 343.72913,74.535369 320.0357,65.31797 295.1984,55.656976 260.76237,56.872597 242.4502,72.863357 223.57106,89.31051 190.41817,95.64454 162,94.8 Z" opacity="0.5" fill="#3e64ff" />
+  </svg>
+);
+
+const DesktopBlob = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="-150 20 600 350"
+    preserveAspectRatio="none"
+  >
+    <path d="M 162,94.8 C 129.81195,93.8403 99.15574,84.930003 69.877152,75.179436 40.59857,65.42887 11.608446,54.624763 -19.808717,49.459437 c -20.207038,-3.3227 -43.313601,-3.791886 -59.59661,5.498023 -15.666306,8.957214 -20.729253,24.376417 -23.454693,38.69517 -2.04408,10.7785 -3.25262,22.11579 2.36238,32.20332 3.894189,7.00368 10.812228,12.88984 15.596681,19.59923 16.641093,23.33993 4.878933,52.12244 -13.159698,74.91214 -8.454833,10.68896 -18.272383,20.90016 -24.802493,32.27157 -6.53012,11.3714 -9.54899,24.41907 -3.83949,36.02932 5.66474,11.51642 19.15765,20.14948 33.769589,26.22758 29.686403,12.3439 64.65459,15.87985 98.7822629,17.88031 75.5066201,4.43168 151.4210581,2.51228 227.1265981,0.59287 28.02032,-0.71231 56.15998,-1.43315 83.72273,-5.14826 15.30822,-2.06443 31.11377,-5.3402 42.22441,-13.22255 14.10463,-10.03634 17.60095,-27.03373 8.15146,-39.61648 -15.8553,-21.10917 -59.68116,-26.35553 -70.77689,-49.00875 -6.1024,-12.46759 0.16413,-26.3598 9.02677,-37.92314 19.01841,-24.81147 50.89312,-46.57324 52.57414,-74.93347 C 359.05227,94.04077 343.72913,74.535369 320.0357,65.31797 295.1984,55.656976 260.76237,56.872597 242.4502,72.863357 223.57106,89.31051 190.41817,95.64454 162,94.8 Z" opacity="0.5" fill="#3e64ff" />
+  </svg>
+);
+
 export default function Introduction(props) {
 
   const data = useStaticQuery(
@@ -167,11 +188,7 @@ export default function Introduction(props) {
 
       <MobileSvgWrapper>
         <MobileHeadshotContainer>
-          <MobileBlobWrapper>
-            <svg viewBox="0 0 280 420" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 162,94.8 C 129.81195,93.8403 99.15574,84.930003 69.877152,75.179436 40.59857,65.42887 11.608446,54.624763 -19.808717,49.459437 c -20.207038,-3.3227 -43.313601,-3.791886 -59.59661,5.498023 -15.666306,8.957214 -20.729253,24.376417 -23.454693,38.69517 -2.04408,10.7785 -3.25262,22.11579 2.36238,32.20332 3.894189,7.00368 10.812228,12.88984 15.596681,19.59923 16.641093,23.33993 4.878933,52.12244 -13.159698,74.91214 -8.454833,10.68896 -18.272383,20.90016 -24.802493,32.27157 -6.53012,11.3714 -9.54899,24.41907 -3.83949,36.02932 5.66474,11.51642 19.15765,20.14948 33.769589,26.22758 29.686403,12.3439 64.65459,15.87985 98.7822629,17.88031 75.5066201,4.43168 151.4210581,2.51228 227.1265981,0.59287 28.02032,-0.71231 56.15998,-1.43315 83.72273,-5.14826 15.30822,-2.06443 31.11377,-5.3402 42.22441,-13.22255 14.10463,-10.03634 17.60095,-27.03373 8.15146,-39.61648 -15.8553,-21.10917 -59.68116,-26.35553 -70.77689,-49.00875 -6.1024,-12.46759 0.16413,-26.3598 9.02677,-37.92314 19.01841,-24.81147 50.89312,-46.57324 52.57414,-74.93347 C 359.05227,94.04077 343.72913,74.535369 320.0357,65.31797 295.1984,55.656976 260.76237,56.872597 242.4502,72.863357 223.57106,89.31051 190.41817,95.64454 162,94.8 Z" opacity="0.5" fill="#3e64ff"></path>
-            </svg>
-          </MobileBlobWrapper>
+          <StyledMobileBlob />
           <MobileHeadshotImage src="/mobile-headshot.webp" alt="Casey Key" />
         </MobileHeadshotContainer>
       </MobileSvgWrapper>
@@ -203,11 +220,7 @@ export default function Introduction(props) {
       {/* Desktop illustration - positioned outside container, centered at 75% viewport width */}
       <DesktopIllustrationPositioner>
         <DesktopHeadshotContainer>
-          <DesktopBlobWrapper>
-            <svg viewBox="0 0 350 500" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 162,94.8 C 129.81195,93.8403 99.15574,84.930003 69.877152,75.179436 40.59857,65.42887 11.608446,54.624763 -19.808717,49.459437 c -20.207038,-3.3227 -43.313601,-3.791886 -59.59661,5.498023 -15.666306,8.957214 -20.729253,24.376417 -23.454693,38.69517 -2.04408,10.7785 -3.25262,22.11579 2.36238,32.20332 3.894189,7.00368 10.812228,12.88984 15.596681,19.59923 16.641093,23.33993 4.878933,52.12244 -13.159698,74.91214 -8.454833,10.68896 -18.272383,20.90016 -24.802493,32.27157 -6.53012,11.3714 -9.54899,24.41907 -3.83949,36.02932 5.66474,11.51642 19.15765,20.14948 33.769589,26.22758 29.686403,12.3439 64.65459,15.87985 98.7822629,17.88031 75.5066201,4.43168 151.4210581,2.51228 227.1265981,0.59287 28.02032,-0.71231 56.15998,-1.43315 83.72273,-5.14826 15.30822,-2.06443 31.11377,-5.3402 42.22441,-13.22255 14.10463,-10.03634 17.60095,-27.03373 8.15146,-39.61648 -15.8553,-21.10917 -59.68116,-26.35553 -70.77689,-49.00875 -6.1024,-12.46759 0.16413,-26.3598 9.02677,-37.92314 19.01841,-24.81147 50.89312,-46.57324 52.57414,-74.93347 C 359.05227,94.04077 343.72913,74.535369 320.0357,65.31797 295.1984,55.656976 260.76237,56.872597 242.4502,72.863357 223.57106,89.31051 190.41817,95.64454 162,94.8 Z" opacity="0.5" fill="#3e64ff"></path>
-            </svg>
-          </DesktopBlobWrapper>
+          <StyledDesktopBlob />
           <DesktopHeadshotImage src="/headshot.webp" alt="Casey Key" />
         </DesktopHeadshotContainer>
       </DesktopIllustrationPositioner>
@@ -340,12 +353,12 @@ const MobileArrowWrapper = styled.div`
   display: none;
   @media (max-width: 767.98px) {
     position: absolute;
-    top: calc(70px + 25vh);
+    /* Position so triangle top edge (at +35px from container top) aligns with Overlay bottom (50vh) */
+    top: calc(50vh - 35px);
     left: 0;
     right: 0;
     justify-content: center;
     z-index: 20;
-    transform: translateY(-50%);
     display: flex;
   }
 `;
@@ -361,6 +374,7 @@ const MobileSvgWrapper = styled.div`
     right: 0;
     justify-content: center;
     z-index: 5;
+    overflow: visible !important;
   }
 `;
 
@@ -454,24 +468,22 @@ const MobileHeadshotContainer = styled.div`
   width: 100%;
   max-width: 280px;
   margin: 0 auto;
+  overflow: visible !important;
+  right: 17px;
 `;
 
-const MobileBlobWrapper = styled.div`
+const StyledMobileBlob = styled(MobileBlob)`
   position: absolute;
-  /* Extend blob below the bottom of the image */
-  bottom: -20px;
-  left: 50%;
+  bottom: 28px;
+  left: 58%;
   transform: translateX(-50%);
-  /* Same width as the image */
-  width: 78%;
-  height: auto;
+  /* Width: same as headshot (78%) + 3rem */
+  width: calc(68% + 3rem);
+  /* Height: will be determined by the aspect ratio, approximately headshot height + 2rem */
+  height: 71%;
   z-index: 0;
-
-  svg {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
+  overflow: visible !important;
+  display: block;
 `;
 
 const MobileHeadshotImage = styled.img`
@@ -494,24 +506,22 @@ const DesktopHeadshotContainer = styled.div`
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
+  overflow: visible !important;
+  bottom: 35px;
 `;
 
-const DesktopBlobWrapper = styled.div`
+const StyledDesktopBlob = styled(DesktopBlob)`
   position: absolute;
-  /* Extend blob below the bottom of the image */
-  bottom: -30px;
-  left: 50%;
+  bottom: 44px;
+  left: 56%;
   transform: translateX(-50%);
-  /* Same width as the image */
-  width: 85%;
-  height: auto;
+  /* Width: same as headshot (100%) + 4rem */
+  width: calc(100% + 4rem);
+  /* Height: will be determined by the aspect ratio, approximately headshot height + 2rem */
+  height: 89%;
   z-index: 0;
-
-  svg {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
+  overflow: visible !important;
+  display: block;
 `;
 
 const DesktopHeadshotImage = styled.img`

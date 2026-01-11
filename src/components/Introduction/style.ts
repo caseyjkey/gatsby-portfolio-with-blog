@@ -14,7 +14,7 @@ export const HeroWrap = styled.section`
   background-size: cover;
   background-repeat: no-repeat;
   overflow-x: hidden;
-  overflow-y: clip;
+  overflow-y: visible;
   display: flex;
   flex-direction: column;
   padding-top: 80px;
@@ -50,7 +50,8 @@ export const HeroWrap = styled.section`
     height: 100vh;
     min-height: 100vh;
     max-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
     padding-top: 70px;
   }
 `;
