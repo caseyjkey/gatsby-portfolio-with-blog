@@ -1,8 +1,8 @@
 import React, { Suspense, useState, ReactNode } from 'react'
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import { Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
-import { theme } from '../style.ts'
-import { ProjectWrapper, ReadMoreColor } from './style.ts'
+import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
+import { theme, Button as EnhancedButton } from '../style.ts'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo } from './style.ts'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'
 import Lightbox from "yet-another-react-lightbox";
@@ -35,11 +35,10 @@ interface ProjectProps {
   date: string;
 }
 
-// Styled wrapper to prevent flash before animation
+// Styled wrapper - simplified without hiding before animation
 const AnimatedWrapper = styled(Animated)`
-  /* Fix flash: When animated class exists but no animation class yet, hide the element */
-  &.animated:not([class*="fadeIn"]):not([class*="fadeOut"]) {
-    opacity: 0 !important;
+  &.animated {
+    opacity: 1 !important;
   }
 `;
 
@@ -57,8 +56,7 @@ export default function Project({
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
 
-  const [visible, setVisible] = useState(false);
-  const makeVisible = () => setVisible(true);
+  const [visible, setVisible] = useState(true);
   let images = galleryImages.map(dict => dict.image.publicURL);
   let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
     result.push((image.childImageSharp) ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} /> : <img src={image.publicURL} />);
@@ -77,14 +75,14 @@ export default function Project({
       animateOnMount={false}
       isVisible={visible}
     >
-      <ProjectWrapper onClick={toggleModal} className="shadow d-flex justify-content-center align-items-center">
-        <GatsbyImage image={image} style={{ position: "absolute" }} />
-        <div className="overlay" />
-        <div className="text text-center p-4">
+      <ProjectWrapper onClick={toggleModal} className="shadow">
+        <GalleryFrame>
+          <GatsbyImage image={image} alt={title} />
+        </GalleryFrame>
+        <ProjectInfo>
           <h3>{title}</h3>
-          <Waypoint onEnter={makeVisible}></Waypoint>
           <span>{subtitle}</span>
-        </div>
+        </ProjectInfo>
 
         <Modal isOpen={modal} toggle={toggleModal} >
           <ModalHeader toggle={toggleModal}>
@@ -148,8 +146,8 @@ export default function Project({
           <ModalFooter className="d-flex justify-content-between align-items-center">
             <div className="date small">{date}</div>
             <div>
-              {postLink && <Button color={link ? "secondary" : "primary"} href={postLink} style={{ marginRight: '8px' }}>Read post</Button>}
-              {link && <Button color="primary" href={link} target={"_blank"}>View project</Button>}
+              {postLink && <EnhancedButton color={link ? "secondary" : "primary"} href={postLink} style={{ marginRight: '8px' }}>Read post</EnhancedButton>}
+              {link && <EnhancedButton color="primary" href={link} target={"_blank"}>View project</EnhancedButton>}
             </div>
           </ModalFooter>
         </Modal>

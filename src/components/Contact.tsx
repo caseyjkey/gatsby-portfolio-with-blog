@@ -37,7 +37,8 @@ export default function Contact(props) {
         <Row className="justify-content-center pb-3">
           <Col md={7} className="heading-section text-center ftco-animate">
             <h1 className="big big-2">Contact</h1>
-            <h2 className="mb-4">Contact Me</h2>
+            <h2 className="mb-4">Start a Conversation</h2>
+            <AvailabilityNote>Available for architectural consulting and senior engineering lead roles.</AvailabilityNote>
           </Col>
         </Row>
         <Row noGutters className="block-9 mb-4">
@@ -82,4 +83,10 @@ const ContactSection = styled.section`
   ${NoPaddingBottom}
   flex: 1 0 auto;
 
+`;
+
+const AvailabilityNote = styled.p`
+  color: ${props => props.theme.primaryColor};
+  font-weight: 500;
+  margin-top: 0.5rem;
 `;
