@@ -27,6 +27,105 @@ We are **aiming to make net-negative changes** (simplify the codebase) to eventu
 - Keep components as vanilla React as possible
 - Document any Gatsby-specific features that will need replacement
 
+### CSS Variables Migration Path (Hybrid Approach)
+
+**Current State**: styled-components with SCSS for some components
+**Target State**: CSS variables for theme values + hybrid component styling
+
+**Migration Path** (incremental, can be done over time):
+
+#### Phase 1: Foundation (Do this first)
+1. Create `src/styles/` directory with:
+   - `variables.css` - CSS custom properties for all theme values
+   - `globals.css` - Global styles that consume CSS variables
+
+2. Define CSS variables matching current theme:
+```css
+:root {
+  /* Colors - matching current theme */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-primary: #3e64ff;        /* Current blue */
+  --color-secondary: #a0f669;      /* Current green */
+  --color-text-muted: #666666;     /* Subheader/secondary text */
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+
+  /* Header states */
+  --header-bg-transparent: transparent;
+  --header-bg-scrolled: rgba(255, 255, 255, 0.8);
+  --header-bg-menu-open: rgba(255, 255, 255, 0.95);
+
+  /* Transitions */
+  --transition-colors: 300ms ease-in-out;
+
+  /* Z-index */
+  --z-header: 100;
+}
+
+[data-theme="dark"] {
+  --color-white: #0a0a0a;
+  --color-black: #ffffff;
+  --header-bg-scrolled: rgba(10, 10, 10, 0.8);
+  --header-bg-menu-open: rgba(10, 10, 10, 0.95);
+}
+```
+
+3. Import `globals.css` in `src/components/Layout.tsx` or `gatsby-browser.tsx`
+
+#### Phase 2: Header Refactor (Current task)
+- Refactor Nav component to use CSS classes with CSS variables
+- Keep hamburger button as styled-component consuming CSS variables
+- Add scroll and menu state logic
+
+#### Phase 3: Gradual Component Migration
+When working on components, choose based on complexity:
+
+**New components or major refactors:**
+- Create component folder: `ComponentName/`
+  - `ComponentName.tsx` - Component logic (export directly)
+  - `ComponentName.module.css` - Component styles using CSS variables
+- Export directly from the component file, skip index.ts unless re-exporting multiple files
+
+**Simple updates to existing components:**
+- Keep styled-components
+- Update to consume CSS variables via `var(--variable-name)`
+- Example: `color: var(--color-primary);`
+
+#### Phase 4: Dark Mode Foundation
+- Add `[data-theme="dark"]` variables to `variables.css`
+- Add theme toggle in Layout or Navigation
+- Components using CSS variables automatically support dark mode
+
+#### Phase 5: Astro Migration (Future)
+- CSS modules (`.module.css`) work natively in Astro
+- CSS variables work everywhere
+- Convert React components to Astro components incrementally
+- Keep interactive components as React islands
+
+**To trigger this migration**: Say "begin CSS variables migration" or work on specific components incrementally.
+
+## Pending Design Tasks (Original Plan from Brainstorming Session)
+
+### Header Refactor with Glassmorphism Effect
+**Goal**: Refactor the Header component to handle scroll and mobile menu states consistently
+
+**Requirements**:
+1. **Initial State**: Transparent background, sticky at top-0
+2. **Scroll Logic**: Use scroll listener. If window.scrollY > 20, add bg-white/80 and backdrop-blur-md with border-b border-slate-100
+3. **Mobile/Medium Menu Fix**: Add state isMenuOpen. If true, header background becomes bg-white/95 (solid) regardless of scroll position
+4. **Z-Index**: Header has z-[100], mobile menu has matching background
+5. **Transition**: Apply transition-colors duration-300 to header wrapper
+
+### Section Content Changes
+1. **"What I Do" → "Core Expertise"** (rename section header)
+2. **Add subheaders**:
+   - Core Expertise: "Bridging the gap between complex technical architecture and scalable business solutions."
+   - Experience: "A proven track record of engineering excellence at industry-leading organizations."
+3. **Style adjustments for Skills/Core Expertise section**:
+   - "Full Stack Development" and "AI & Systems Engineering": Bold → Medium font weight
+   - Increase space above these two titles
+
 ## Code Quality Guidelines
 
 ### TypeScript
