@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'reactstrap'
+import { Button } from '../style'
 import { ServiceContainer } from './style'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'

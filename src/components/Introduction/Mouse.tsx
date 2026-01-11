@@ -13,7 +13,12 @@ const Container = styled.span`
   position: relative;
   margin: 0 auto;
   display: block;
-overflow: visible; /* Change to visible — no need to hide overflow anymore */
+  overflow: visible; /* Change to visible — no need to hide overflow anymore */
+
+  @media (max-width: 767.98px) {
+    width: 100px;
+    height: 100px;
+  }
 
 &:after {
     position: absolute;
@@ -79,7 +84,7 @@ export default function FallingArrow(props) {
           <FallDown>
             <IoMdArrowRoundDown color={theme.primaryColor}
               fontSize="25px"
-              onClick={() => scroller.scrollTo('Skills', { smooth: true, offset: 40, delay: 0 })}
+              onClick={() => scroller.scrollTo('Skills', { smooth: true, offset: -80, delay: 0 })}
             />
           </FallDown>
         </Container>

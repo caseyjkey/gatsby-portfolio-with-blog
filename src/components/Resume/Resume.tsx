@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
 import {
-  Button,
   Container,
   Row,
   Col,
@@ -10,7 +9,7 @@ import {
   AccordionHeader,
   AccordionItem,
 } from 'reactstrap';
-import { Heading } from '../style.ts'
+import { Heading, Button } from '../style.ts'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.ts'
 import ResumeFile from '../Introduction/resume.pdf'
 import Entry from './Entry'

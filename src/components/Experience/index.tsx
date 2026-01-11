@@ -22,22 +22,41 @@ const TimelineContainer = styled.div`
 
 const VerticalLine = styled.div`
   position: absolute;
-  left: 80px;
-  top: 0;
+  left: 78px;
+  top: 1px;
   bottom: 0;
   width: 2px;
   background-color: ${(props) => props.theme.black};
+  z-index: 0;
 
   @media (max-width: 767.98px) {
-    left: 60px;
+    left: 59px;
   }
 `
 
-const TimelineRow = styled.div`
+const TimelineRow = styled.div<{ $isLast?: boolean }>`
   display: flex;
   align-items: flex-start;
-  margin-bottom: 3rem;
+  margin-bottom: ${props => props.$isLast ? '0' : '3rem'};
   position: relative;
+
+  ${props => props.$isLast && `
+    &::after {
+      content: '';
+      position: absolute;
+      left: 78px;
+      top: calc(2.5rem / 2);
+      bottom: 0;
+      width: 4px;
+      background-color: ${props.theme.white};
+      z-index: 1;
+
+      @media (max-width: 767.98px) {
+        left: 58px;
+        top: 1rem;
+      }
+    }
+  `}
 `
 
 const Year = styled.div`
@@ -61,13 +80,13 @@ const TimelineDot = styled.div`
   border-radius: 50%;
   background-color: ${(props) => props.theme.primaryColor};
   position: absolute;
-  left: 80px;
+  left: 79px;
   transform: translateX(-50%);
-  z-index: 1;
+  z-index: 2;
   flex-shrink: 0;
 
   @media (max-width: 767.98px) {
-    left: 60px;
+    left: 59px;
     width: 2rem;
     height: 2rem;
   }
@@ -173,7 +192,7 @@ export default function Experience() {
             <TimelineContainer>
               <VerticalLine />
               {experienceData.map((entry, index) => (
-                <TimelineRow key={index}>
+                <TimelineRow key={index} $isLast={index === experienceData.length - 1}>
                   <Year>{extractStartYear(entry.year)}</Year>
                   <TimelineDot />
                   <Content>

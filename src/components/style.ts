@@ -1,6 +1,7 @@
 // This file contains common components and the global theme
 import styled, { createGlobalStyle } from 'styled-components'
 import { lighten } from 'polished'
+import { Button as BootstrapButton } from 'reactstrap'
 
 
 export const theme = {
@@ -78,6 +79,31 @@ export const Heading = styled.h2`
   }
   @media (max-width: 767.98px) {
     font-size: 38px;
+  }
+`;
+
+// Re-export Button with enhanced press animation for all buttons
+export const Button = styled(BootstrapButton)`
+  cursor: pointer;
+
+  /* Remove default link styling that causes blue text on click */
+  &:visited,
+  &:active,
+  &:link {
+    color: currentColor;
+    text-decoration: none;
+  }
+
+  /* Professional press animation */
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  &:hover:not(:active) {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2) !important;
   }
 `;
 

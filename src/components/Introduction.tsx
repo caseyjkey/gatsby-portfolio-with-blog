@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Container, Row, Col, Button } from 'reactstrap'
+import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
 import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.ts'
+import { Button } from './style.ts'
 import FallingArrow from './Introduction/Mouse'
 import Socials from './Social'
 import Resume from './Introduction/resume.pdf'
@@ -255,9 +256,13 @@ export default function Introduction(props) {
               style={{
                 transform: 'translateY(calc(-100% + 3rem))'
               }}
-              href={Resume}
+              onClick={(e) => {
+                e.preventDefault();
+                const Scroll = require('react-scroll');
+                Scroll.scroller.scrollTo('Experience', { smooth: true, offset: 40, delay: 0 });
+              }}
             >
-              Resume
+              View Experience
             </Button>
           </div>
         </div>

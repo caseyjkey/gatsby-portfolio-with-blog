@@ -104,5 +104,68 @@ src/
 └── templates/     # Gatsby templates for generated pages
 ```
 
+## Development Commands
+
+### Starting Dev Server
+```bash
+yarn develop
+# or: npm run develop
+```
+This starts the Gatsby development server with hot-reloading using auto-port selection, which tries ports 8001-8008 in sequence until one is available, without requiring terminal input.
+
+**Note**: The dev command uses `-H 0.0.0.0` to bind to all network interfaces for auto-port selection.
+
+### Worktree Development
+When working in a git worktree (e.g., `.worktrees/portfolio-enhancement`):
+```bash
+# Navigate to worktree
+cd .worktrees/portfolio-enhancement
+
+# Start dev server on alternative port
+gatsby develop -p 8003
+
+# Open in browser
+# Server will be at http://localhost:8003/
+```
+
+Worktrees are isolated workspaces that share the git repository. Changes made in a worktree don't affect your main branch until merged.
+
+### Creating a New Worktree
+When starting a new feature, create a worktree for isolation:
+```bash
+# From the base folder (main branch), create a new worktree with feature branch
+git worktree add .worktrees/feature-name -b feature-name
+
+# Navigate to worktree and start working
+cd .worktrees/feature-name
+yarn develop
+```
+
+**Important:** AI agents should work in worktrees and use feature branches when appropriate. This keeps the main branch clean and allows for isolated development and testing before merging.
+
+### Pushing Changes to Remote
+Feature branches must be pushed periodically to make them available in the remote origin:
+```bash
+# From within the worktree
+git push -u origin feature-name
+
+# Push subsequent changes
+git push
+```
+
+This ensures:
+- Changes are backed up remotely
+- Feature branches are available for code review
+- CI/CD pipelines can run on the feature branch
+- Team members can access and test the feature
+
+### Building for Production
+```bash
+yarn gatsby build
+```
+
+### Running Tests
+No test suite is currently configured for this project.
+
 ## Contact
 This file should be updated as the codebase evolves and migration plans solidify.

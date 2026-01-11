@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react'
-import { Container, Row, Col, Button } from 'reactstrap'
+import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
-import { Section, Image } from './style.ts'
+import { Section, Image, Button } from './style.ts'
 import bg from '../images/bg_1.jpg'
 import { Animated } from 'react-animated-css'
 import { Waypoint } from 'react-waypoint'

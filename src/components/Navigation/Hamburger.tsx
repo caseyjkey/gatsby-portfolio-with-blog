@@ -29,20 +29,36 @@ export default function Button(props) {
 }
 
 
-const HamburgerButton = styled.div`
+const HamburgerButton = styled.button`
   margin: 0;
-  padding: 0; 
+  padding: 0;
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 
-  div:focus {
+  &:focus {
     outline: none;
     box-shadow: none;
   }
 
-  /* Icon 1 */
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+
+  /* Icon wrapper */
     width: 30px;
     height: 22px;
     position: relative;
-    margin: 25px auto;
+    margin: 0;
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
@@ -51,7 +67,12 @@ const HamburgerButton = styled.div`
     -moz-transition: .5s ease-in-out;
     -o-transition: .5s ease-in-out;
     transition: .5s ease-in-out;
-    cursor: pointer;
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    span {
+      background: ${(props) => props.theme.black};
+    }
+  }
 
 .open {
     span:nth-child(1) {
@@ -106,5 +127,5 @@ const HamburgerButton = styled.div`
     top: 18px;
   }
 
-  
+
 `;

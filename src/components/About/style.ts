@@ -59,3 +59,31 @@ export const Counter = styled.div`
 		padding-left: 0.5rem !important;
 	}
 `;
+
+export const ConsultantIdentity = styled.div`
+	margin-top: 2rem;
+	padding: 1.5rem;
+	background-color: ${props => props.theme.lightGray || '#f8f9fa'};
+	border-left: 4px solid ${props => props.theme.primaryColor};
+	border-radius: 4px;
+
+	h3 {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: ${props => props.theme.primaryColor};
+		margin-bottom: 1rem;
+	}
+
+	p {
+		color: ${props => props.theme.black};
+		margin-bottom: 0.5rem;
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	@media (max-width: 375px) {
+		padding: 1rem;
+		margin-left: -0.5rem;
+		margin-right: -0.5rem;
+	}
+`;
