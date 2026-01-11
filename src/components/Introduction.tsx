@@ -234,7 +234,7 @@ export default function Introduction(props) {
       >
         <Container>
           <Row noGutters xs="1" md="2" className="justify-content-center align-items-center">
-            <Col className="text-center">
+            <Col md className="text-center">
               <Text ref={textRef} style={{ transform: `scale(${textScale})`, transformOrigin: 'top center' }}>
                 <Subheader>{data.introduction.greeting}</Subheader>
                 <Slider isFinished={headerEnd}>
@@ -262,6 +262,8 @@ export default function Introduction(props) {
 
               </Text>
             </Col>
+            {/* Empty right column to maintain original layout structure */}
+            <Col md className="d-none d-md-block"></Col>
           </Row>
         </Container>
       </AnimatedContent>
@@ -435,8 +437,9 @@ const DesktopIllustrationPositioner = styled.div`
   @media (min-width: 768px) {
     display: flex;
     position: absolute;
-    top: 50%;
+    top: 53%;
     left: 75%;
+    min-width: 337px;
     transform: translate(-50%, -50%);
     z-index: 10;
     pointer-events: none;
@@ -512,7 +515,7 @@ const DesktopHeadshotContainer = styled.div`
 
 const StyledDesktopBlob = styled(DesktopBlob)`
   position: absolute;
-  bottom: 44px;
+  bottom: 62px;
   left: 56%;
   transform: translateX(-50%);
   /* Width: same as headshot (100%) + 4rem */
