@@ -51,10 +51,11 @@ We are **aiming to make net-negative changes** (simplify the codebase) to eventu
 ## Current Technical Debt
 
 ### Known Issues
-1. **Lightbox Library**: Using `react-image-lightbox` (archived since Jan 2023)
-   - Ctrl+Zoom closes the lightbox (browser zoom interferes)
-   - Need better zoom functionality
-   - Consider simpler alternatives or native solutions
+1. **Lightbox Library**: ✅ **RESOLVED** - Migrated to `yet-another-react-lightbox` (v3.28.0)
+   - Previously used `react-image-lightbox` (archived since Jan 2023)
+   - Fixed: Ctrl+Zoom no longer closes the lightbox
+   - Added proper zoom functionality with Zoom plugin
+   - Configuration: maxZoomPixelRatio: 3, zoomInMultiplier: 2, scrollToZoom: true
 
 2. **TypeScript Coverage**: Not all components have proper types
    - Props often use `any` type
@@ -94,15 +95,295 @@ We are **aiming to make net-negative changes** (simplify the codebase) to eventu
 - Prefer framework-agnostic libraries
 - Document alternatives for future migration
 
-## File Structure
+## Detailed Project Structure
+
+### File Organization
 ```
 src/
-├── components/     # React components
-├── data/          # JSON data for projects, content
-├── pages/         # Gatsby page components
-├── styles/        # Global styles
-└── templates/     # Gatsby templates for generated pages
+├── components/               # React components (modular)
+│   ├── About/               # About section component
+│   ├── Contact/             # Contact form component
+│   ├── Footer/              # Footer component
+│   ├── Introduction/        # Hero section with SVG illustration
+│   │   ├── Introduction.tsx # Main component
+│   │   ├── style.ts         # Styled components (HeroWrap, Slider, etc.)
+│   │   ├── Mouse.tsx        # Animated arrow component
+│   │   └── resume.pdf       # Resume file
+│   ├── Layout.tsx           # Page wrapper component
+│   ├── Navigation/          # Header navigation
+│   ├── Projects/            # Projects section
+│   │   ├── Projects.tsx     # Container component
+│   │   ├── Project.tsx      # Individual project card with modal & lightbox
+│   │   └── style.ts         # Styled components (ProjectWrapper, etc.)
+│   ├── SEO.tsx              # SEO metadata component
+│   ├── Skills/              # Skills showcase component
+│   ├── Social.tsx           # Social media links component
+│   ├── main.ts              # Main initialization script
+│   └── style.ts             # Global theme and styled components
+│
+├── data/                    # JSON content files
+│   ├── introduction.json    # Hero section text and titles
+│   ├── favicon.png          # Site favicon
+│   └── projects/            # Project data (one folder per project)
+│       └── {project-name}/  # e.g., whatspython, promptbuilder
+│           ├── project.json # Project metadata, images, links
+│           └── images/      # Gallery images for the project
+│
+├── pages/                   # Gatsby pages (auto-routed)
+│   ├── index.tsx            # Homepage (/) - Main landing page
+│   ├── projects.tsx         # Projects page (/projects)
+│   └── blog.tsx             # Blog listing page (/blog)
+│
+├── templates/               # Gatsby templates for generated pages
+│   └── BlogPost.tsx         # Individual blog post template
+│
+└── styles/                  # Global CSS (if any)
+
+gatsby-config.js             # Gatsby configuration
+gatsby-node.js               # Dynamic page generation
+package.json                 # Dependencies and scripts
+tsconfig.json                # TypeScript configuration
 ```
+
+### Component Architecture Patterns
+
+#### 1. **Component + Style Pattern**
+Most components follow this structure:
+- `ComponentName.tsx` - React component logic
+- `style.ts` - Styled-components definitions exported for use
+
+Example:
+```typescript
+// Projects/Project.tsx
+import { ProjectWrapper, ReadMoreColor } from './style.ts'
+
+// Projects/style.ts
+export const ProjectWrapper = styled.div`...`
+export const ReadMoreColor = styled.div`...`
+```
+
+#### 2. **Modal + Lightbox Pattern** (Projects)
+- Modal: Reactstrap `<Modal>` component for project details
+- Carousel: `react-responsive-carousel` for image browsing
+- Lightbox: `yet-another-react-lightbox` with Zoom plugin for fullscreen image viewing
+- State management: Multiple `useState` hooks for modal, lightbox, and photoIndex
+
+**Key Components:**
+- `/src/components/Projects/Project.tsx` - Contains modal and lightbox implementation
+- Uses `GatsbyImage` for optimized images with fallback to `<img>`
+
+**Lightbox Configuration:**
+```typescript
+<Lightbox
+  open={lightboxOpen}
+  close={() => setLightbox(false)}
+  slides={images.map(src => ({ src }))}
+  index={photoIndex}
+  plugins={[Zoom]}
+  zoom={{
+    maxZoomPixelRatio: 3,
+    zoomInMultiplier: 2,
+    scrollToZoom: true
+  }}
+  on={{
+    view: ({ index }) => setPhotoIndex(index)
+  }}
+  styles={{ container: { zIndex: 1100 } }}
+/>
+```
+
+#### 3. **Data Flow**
+```
+JSON files (src/data/)
+  → GraphQL queries (useStaticQuery or page queries)
+  → Component props
+  → Rendered UI
+```
+
+Example from Introduction component:
+```typescript
+const data = useStaticQuery(graphql`
+  query {
+    introduction {
+      greeting, name, role, descriptions { ... }
+    }
+  }
+`);
+```
+
+### Styling Architecture
+
+#### Global Theme (`src/components/style.ts`)
+```typescript
+export const theme = {
+  primaryColor: '#3e64ff',     // Blue
+  secondaryColor: '#a0f669',   // Green
+  black: '#2d3748',
+  white: '#ffffff',
+  darken: '#718096'
+}
+```
+
+#### Responsive Breakpoints
+- Uses Bootstrap/reactstrap grid system
+- Common breakpoint: `@media (max-width: 767.98px)` for mobile
+
+#### Styled Components Usage
+- Global styles: `Body`, `theme` exported from `src/components/style.ts`
+- Component-specific: Each component has its own `style.ts`
+- Animations: Uses `react-animated-css` for fade-in effects
+
+### Key Dependencies
+
+#### Core Framework
+- **gatsby**: Static site generator
+- **react** + **react-dom**: UI library
+- **typescript**: Type safety
+
+#### Styling
+- **styled-components**: CSS-in-JS styling
+- **reactstrap** (Bootstrap 5): UI components (Modal, Button, etc.)
+- **react-animated-css**: Animation library
+
+#### Images
+- **gatsby-plugin-image**: Optimized image loading
+- **gatsby-plugin-sharp**: Image processing
+- **gatsby-source-filesystem**: File system data source
+
+#### Content & Data
+- **GraphQL**: Data querying (Gatsby's built-in)
+- **remark**: Markdown processing for blog posts
+
+#### UI Components
+- **react-responsive-carousel**: Image carousels
+- **yet-another-react-lightbox**: Modern lightbox gallery with zoom plugin (replaced react-image-lightbox)
+- **react-icons**: Icon library (FontAwesome, Ionicons, etc.)
+- **@caseykey/react-read-more-read-less**: Expandable text
+- **react-waypoint**: Scroll-based visibility detection
+- **typewriter-effect**: Typing animation in hero section
+
+#### Forms
+- **formik**: Form state management
+- **react-google-recaptcha**: CAPTCHA protection
+
+### Routing & Navigation
+
+#### Page Routes (Auto-generated by Gatsby)
+- `/` - Homepage (src/pages/index.tsx)
+- `/projects` - Projects listing (src/pages/projects.tsx)
+- `/blog` - Blog listing (src/pages/blog.tsx)
+- `/blog/{slug}` - Individual blog posts (generated from templates)
+
+#### Navigation Component
+Located at `src/components/Navigation/`
+- Uses reactstrap `Navbar` component
+- Links: Home, Resume, Blog, About, Projects, Contact
+
+### Common Patterns Found
+
+#### 1. **Animation Pattern**
+```typescript
+const [visible, setVisible] = useState(false);
+const makeVisible = () => setVisible(true);
+
+<Animated animationIn="fadeInUp" isVisible={visible}>
+  <Waypoint onEnter={makeVisible} />
+  {/* Content */}
+</Animated>
+```
+
+#### 2. **Icon Rendering Pattern**
+Icons are passed as components from GraphQL:
+```typescript
+icons.map((Icon, index) => (
+  <Icon size={21} key={index} />
+))
+```
+
+#### 3. **Image Handling Pattern**
+Dual support for optimized and fallback images:
+```typescript
+image.childImageSharp
+  ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} />
+  : <img src={image.publicURL} />
+```
+
+#### 4. **Modal Toggle Pattern**
+```typescript
+const [modal, setModal] = useState(false);
+const toggleModal = () => setModal(!modal);
+```
+
+### Project Data Structure
+
+Example: `src/data/projects/whatspython/project.json`
+```json
+{
+  "title": "Project Name",
+  "subtitle": "Short description",
+  "date": "YYYY-MM-DD",
+  "image": { /* GatsbyImage reference */ },
+  "galleryImages": [
+    { "image": { /* path or reference */ } }
+  ],
+  "icons": {
+    "fa": ["FaPython", "FaReact"],
+    "si": ["SiTypescript"]
+  },
+  "link": "https://external-link.com",
+  "postLink": "/blog/project-post"
+}
+```
+
+### Build & Development Scripts
+Corrected package.json scripts for Gatsby (previously had incorrect react-scripts references):
+```json
+{
+  "develop": "gatsby develop",
+  "start": "gatsby develop",
+  "build": "gatsby build",
+  "serve": "gatsby serve",
+  "clean": "gatsby clean",
+  "predeploy": "gatsby build",
+  "deploy": "gh-pages -d public -b master"
+}
+```
+
+### Git Workflow Notes
+- Branch: `source` (main development branch)
+- Recent commits show incremental improvements
+- Commits co-authored with Claude Opus 4.5
+
+---
+
+## 📝 Maintenance Instructions for AI Assistants
+
+**IMPORTANT**: This `.CLAUDE` file is a living document. As you work on this codebase:
+
+1. **After exploring new areas**, add findings here:
+   - Component patterns you discovered
+   - Data structures and their locations
+   - Common bugs or gotchas
+   - Useful file locations for specific tasks
+
+2. **After implementing features**, document:
+   - New dependencies and why they were chosen
+   - Architecture decisions made
+   - Migration-relevant notes (Gatsby → Astro)
+
+3. **Keep it organized**:
+   - Update existing sections rather than adding duplicates
+   - Use clear headings and examples
+   - Focus on information that helps locate and modify code quickly
+
+4. **Prioritize actionable information**:
+   - "Where to find X" over "How X works in theory"
+   - Specific file paths and line number ranges
+   - Common patterns with code examples
+
+**This file is your project memory** - treat it as a knowledge base that grows with each interaction.
+
+---
 
 ## Contact
 This file should be updated as the codebase evolves and migration plans solidify.

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-export default function Button(props) {
+interface HamburgerButtonProps {
+  scrolled: boolean;
+}
+
+export default function Button(props: { scrolled: boolean }) {
   const [open, setOpen] = useState(false);
   const toggleButton = () => setOpen(!open);
 
-  const [scrolled, setScrolled] = useState( props.scrolled );
- 
+  const [scrolled, setScrolled] = useState(props.scrolled);
+
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -16,20 +20,20 @@ export default function Button(props) {
     })
   });
 
-    
+
   return (
     <HamburgerButton onClick={toggleButton} id="hamburger" scrolled={scrolled}>
       <div className={open ? "open" : undefined}>
-       <span></span>
-       <span></span>
-       <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </HamburgerButton>
   );
 }
 
 
-const HamburgerButton = styled.div`
+const HamburgerButton = styled.div<HamburgerButtonProps>`
   margin: 0;
   padding: 0; 
 
@@ -92,6 +96,13 @@ const HamburgerButton = styled.div`
     -moz-transition: .1s ease-in-out;
     -o-transition: .1s ease-in-out;
     transition: .1s ease-in-out;
+  }
+
+  /* Media query for tablets: 767px < width < 992px */
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    span {
+      background: ${(props) => props.theme.black} !important;
+    }
   }
 
    span:nth-child(1) {
