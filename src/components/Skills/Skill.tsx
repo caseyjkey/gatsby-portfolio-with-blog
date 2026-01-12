@@ -1,28 +1,26 @@
-import React, { useState, Suspense } from 'react'
-import { Tooltip } from 'reactstrap'
+import React, { useRef, Suspense } from 'react'
+import { UncontrolledTooltip } from 'reactstrap'
 import { SkillContainer } from './style'
 
 export function Skill({ skill, Icon, ...props }) {
   const isSSR = typeof window === "undefined"
-  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const targetRef = useRef<HTMLSpanElement>(null);
   const id = skill.replace(/[^a-z0-9]/gi, '') + 'Tooltip';
 
   return (
     <SkillContainer>
       {!isSSR && (
         <Suspense fallback={null}>
-          <span id={id} {...props}>
+          <span id={id} ref={targetRef} {...props}>
             <Icon size={'2rem'} style={{textAlign: 'center'}}/>
           </span>
-          <Tooltip
+          <UncontrolledTooltip
             placement="top"
-            isOpen={tooltipOpen}
             target={id}
-            toggle={() => setTooltipOpen(!tooltipOpen)}
             fade={true}
           >
             {skill}
-          </Tooltip>
+          </UncontrolledTooltip>
         </Suspense>
       )}
     </SkillContainer>

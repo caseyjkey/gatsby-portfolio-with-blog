@@ -138,7 +138,7 @@ export default function ProjectsPage({ data }) {
                     <p>A mix of client work, late nights, and bold ideas.</p>
                   </Col>
                 </Row>
-                <Row>
+                <Row style={{ display: 'flex' }}>
                   {data.allProject.edges.map((project, index) => {
                     const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
                     const formattedEnd = project.node.end?.present
