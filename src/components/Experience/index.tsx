@@ -31,6 +31,7 @@ const VerticalLine = styled(motion.div)`
   background-color: ${(props) => props.theme.black};
   z-index: 0;
   transform-origin: top;
+  will-change: height;
 
   @media (max-width: 767.98px) {
     left: 59px;
@@ -49,8 +50,8 @@ const TimelineRow = styled.div<{ $isLast?: boolean }>`
       position: absolute;
       left: 78px;
       top: calc(2.5rem + 5px);
-      bottom: 0;
-      width: 4px;
+      bottom: -10px;
+      width: 6px;
       background-color: ${props.theme.white};
       z-index: 1;
 
@@ -242,7 +243,6 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated }: TimelineRow
           animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
           transition={{
             duration: 0.5,
-            delay: 0.5,
             ease: [0.2, 0.8, 0.2, 1]
           }}
         >
@@ -270,7 +270,6 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated }: TimelineRow
           animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
           transition={{
             duration: 0.5,
-            delay: 0.5,
             ease: [0.2, 0.8, 0.2, 1]
           }}
         >
@@ -281,7 +280,18 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated }: TimelineRow
           <Title>{entry.title}</Title>
           <BulletList>
             {entry.bullets.map((bullet, bulletIndex) => (
-              <li key={bulletIndex}>{bullet}</li>
+              <motion.li
+                key={bulletIndex}
+                initial={{ opacity: 0, x: isMobile ? -10 : 10 }}
+                animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
+                transition={{
+                  duration: 0.4,
+                  delay: nodePopped ? 0.2 + (bulletIndex * 0.1) : 0,
+                  ease: [0.2, 0.8, 0.2, 1]
+                }}
+              >
+                {bullet}
+              </motion.li>
             ))}
           </BulletList>
         </motion.div>
@@ -324,11 +334,9 @@ export default function Experience() {
           <Col md={12}>
             <TimelineContainer>
               <VerticalLine
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                style={{ height: `${lineHeight}%` }}
+                animate={{ height: `${lineHeight}%` }}
                 transition={{
-                  duration: 0.6,
+                  duration: 0.4,
                   ease: [0.2, 0.8, 0.2, 1],
                 }}
               />
