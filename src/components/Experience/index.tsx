@@ -25,16 +25,17 @@ const TimelineContainer = styled.div`
 
 const VerticalLine = styled(motion.div)`
   position: absolute;
-  left: 78px;
+  left: 77px;
   top: 1px;
   width: 2px;
   background-color: ${(props) => props.theme.black};
   z-index: 0;
   transform-origin: top;
   will-change: height;
+  transition: height 0.15s ease-out;
 
   @media (max-width: 767.98px) {
-    left: 59px;
+    left: 58px;
   }
 `
 
@@ -48,15 +49,15 @@ const TimelineRow = styled.div<{ $isLast?: boolean }>`
     &::after {
       content: '';
       position: absolute;
-      left: 78px;
+      left: 76px;
       top: calc(2.5rem + 5px);
-      bottom: -10px;
-      width: 6px;
+      bottom: -50px;
+      width: 8px;
       background-color: ${props.theme.white};
       z-index: 1;
 
       @media (max-width: 767.98px) {
-        left: 59px;
+        left: 57px;
         top: calc(2rem + 4px);
       }
     }
@@ -96,12 +97,12 @@ const TimelineDot = styled.div`
 
 const TimelineDotWrapper = styled.div`
   position: absolute;
-  left: 79px;
+  left: 77px;
   top: 0;
   transform: translateX(-50%);
 
   @media (max-width: 767.98px) {
-    left: 59px;
+    left: 58px;
   }
 `
 
@@ -207,18 +208,16 @@ interface TimelineRowItemProps {
 function TimelineRowItem({ entry, index, totalEntries, onAnimated }: TimelineRowItemProps) {
   const [nodePopped, setNodePopped] = useState(false);
 
+  // Trigger when entry is 1/3 to 1/2 up the viewport (negative margin means above bottom edge)
   const { ref: containerRef, isInView } = useInViewAnimation({
     once: true,
+    rootMargin: '-20% 0px -40% 0px', // Trigger when center 1/3 of viewport
   });
 
   useEffect(() => {
     if (isInView && !nodePopped) {
-      // Trigger node pop after visibility
-      const timer = setTimeout(() => {
-        setNodePopped(true);
-        onAnimated?.(index);
-      }, 200);
-      return () => clearTimeout(timer);
+      setNodePopped(true);
+      onAnimated?.(index);
     }
   }, [isInView, nodePopped, index, onAnimated]);
 
@@ -251,14 +250,14 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated }: TimelineRow
       </Year>
       <TimelineDotWrapper>
         <motion.div
-          initial={{ scale: 0, opacity: 0 }}
+          initial={{ scale: 0.8, opacity: 0 }}
           animate={{
-            scale: nodePopped ? [0, 1.2, 1] : 0,
+            scale: nodePopped ? 1 : 0.8,
             opacity: nodePopped ? 1 : 0,
           }}
           transition={{
-            duration: 0.6,
-            times: [0, 0.7, 1],
+            duration: 0.4,
+            ease: [0.25, 0.1, 0.25, 1],
           }}
         >
           <TimelineDot />
@@ -308,9 +307,9 @@ export default function Experience() {
     setAnimatedIndices(prev => new Set(prev).add(index));
   };
 
-  // Calculate line height percentage based on animated entries
+  // Calculate line height percentage - stop at center of last circle, not below it
   const lineHeight = animatedIndices.size > 0
-    ? Math.min(100, ((animatedIndices.size + 0.5) / experienceData.length) * 100)
+    ? Math.min(100, (animatedIndices.size / experienceData.length) * 100)
     : 0;
 
   return (
@@ -334,11 +333,7 @@ export default function Experience() {
           <Col md={12}>
             <TimelineContainer>
               <VerticalLine
-                animate={{ height: `${lineHeight}%` }}
-                transition={{
-                  duration: 0.4,
-                  ease: [0.2, 0.8, 0.2, 1],
-                }}
+                style={{ height: `${lineHeight}%` }}
               />
               {experienceData.map((entry, index) => (
                 <TimelineRowItem
