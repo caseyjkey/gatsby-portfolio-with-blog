@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from '../style.ts'
@@ -302,15 +302,42 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated }: TimelineRow
 
 export default function Experience() {
   const [animatedIndices, setAnimatedIndices] = useState<Set<number>>(new Set());
+  const lineRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>();
 
-  const handleEntryAnimated = (index: number) => {
-    setAnimatedIndices(prev => new Set(prev).add(index));
-  };
+  const handleEntryAnimated = useCallback((index: number) => {
+    setAnimatedIndices(prev => {
+      const newSet = new Set(prev).add(index);
 
-  // Calculate line height percentage - stop at center of last circle, not below it
-  const lineHeight = animatedIndices.size > 0
-    ? Math.min(100, (animatedIndices.size / experienceData.length) * 100)
-    : 0;
+      // Smooth line height update using requestAnimationFrame
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+
+      rafRef.current = requestAnimationFrame(() => {
+        if (lineRef.current) {
+          // Calculate height: stop before the last row entirely
+          // For 8 entries, max height is 7/8 = 87.5%
+          const targetSize = newSet.size === experienceData.length
+            ? experienceData.length - 1
+            : newSet.size;
+          const percentage = (targetSize / experienceData.length) * 100;
+          lineRef.current.style.height = `${Math.max(0, percentage)}%`;
+        }
+      });
+
+      return newSet;
+    });
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   return (
     <ExperienceSection name="Experience">
@@ -333,7 +360,8 @@ export default function Experience() {
           <Col md={12}>
             <TimelineContainer>
               <VerticalLine
-                style={{ height: `${lineHeight}%` }}
+                ref={lineRef}
+                style={{ height: '0%' }}
               />
               {experienceData.map((entry, index) => (
                 <TimelineRowItem
