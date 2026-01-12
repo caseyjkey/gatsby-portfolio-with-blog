@@ -11,6 +11,8 @@ import { fadeInUpVariants } from '../animations'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 
 export default function Skills() {
+    console.log('[Skills.tsx] WORKTREE VERSION - Component rendered');
+
     // Use the optimized hook for each section's viewport detection
     const { ref: mainHeaderRef, isInView: isVisible } = useInViewAnimation({
         once: true,
