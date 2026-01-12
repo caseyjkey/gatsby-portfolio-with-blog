@@ -1,13 +1,39 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect, useRef } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
-import { Heading } from './style.ts' // Global styled-components
+import { Heading } from './style.ts'
 import { Container, Row, Col } from 'reactstrap'
 import { ProjectSection } from './Projects/style.ts'
 import Project from './Projects/Project'
-import { format, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns'
+import { motion } from 'motion/react'
+import { TIMING, EASING, fadeInUpVariants } from '../animations'
 
 
 export const Projects = (props) => {
+	const [isVisible, setIsVisible] = React.useState(false);
+
+	// IntersectionObserver for visibility
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						setIsVisible(true);
+						observer.disconnect();
+					}
+				});
+			},
+			{ threshold: 0.3 }
+		);
+
+		const projectsSection = document.getElementById('projects-section');
+		if (projectsSection) {
+			observer.observe(projectsSection);
+		}
+
+		return () => observer.disconnect();
+	}, []);
+
 	const data = useStaticQuery(
 		graphql`{
 			allProject(sort: {start: DESC}) {
@@ -93,13 +119,26 @@ export const Projects = (props) => {
 		return Icons;
 	}
 
+	// Calculate delay for project cards based on index (3-column grid)
+	const getProjectDelay = (index: number) => {
+		const col = index % 3;
+		const row = Math.floor(index / 3);
+		return (col * 0.15) + (row * 0.05);
+	};
+
 	return (
-		<ProjectSection name="Projects">
+		<ProjectSection name="Projects" id="projects-section">
 			<Container fluid={true} className="">
 				<Row noGutters className="justify-content-center pb-5 mt-5">
-					<Col md={12} className="heading-section text-center ">
-						<Heading className="mb-4">Projects</Heading>
-						<p>A mix of client work, late nights, and bold ideas.</p>
+					<Col md={12} className="heading-section text-center">
+						<motion.div
+							initial="hidden"
+							animate={isVisible ? "visible" : "hidden"}
+							variants={fadeInUpVariants}
+						>
+							<Heading className="mb-4">Projects</Heading>
+							<p>A mix of client work, late nights, and bold ideas.</p>
+						</motion.div>
 					</Col>
 				</Row>
 				<Row>
@@ -117,17 +156,24 @@ export const Projects = (props) => {
 
 						return (
 							<Col key={index} md={4} className="pb-4">
-								<Project image={project.node.image.childImageSharp.gatsbyImageData}
-									galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
-									title={project.node.title}
-									subtitle={project.node.subtitle}
-									icons={loadIcons(project.node.icons)}
-									date={formattedStart + ' - ' + formattedEnd}
-									link={project.node.link}
-									postLink={postLink}
+								<motion.div
+									initial="hidden"
+									animate={isVisible ? "visible" : "hidden"}
+									custom={{ delay: getProjectDelay(index) }}
+									variants={fadeInUpVariants}
 								>
-									<div dangerouslySetInnerHTML={{ __html: project.node.description }} />
-								</Project>
+									<Project image={project.node.image.childImageSharp.gatsbyImageData}
+										galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
+										title={project.node.title}
+										subtitle={project.node.subtitle}
+										icons={loadIcons(project.node.icons)}
+										date={formattedStart + ' - ' + formattedEnd}
+										link={project.node.link}
+										postLink={postLink}
+									>
+										<div dangerouslySetInnerHTML={{ __html: project.node.description }} />
+									</Project>
+								</motion.div>
 							</Col>
 						)
 					})}

@@ -1,0 +1,148 @@
+/**
+ * Motion System - Global Configuration
+ *
+ * All site animations use these constants for consistent timing, easing, and behavior.
+ */
+
+/**
+ * Global animation constants
+ */
+export const ANIMATION_CONFIG = {
+  // Easing: "Power Out" curve
+  easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+
+  // Desktop trigger: 15% above viewport bottom
+  desktopRootMargin: '0px 0px -15% 0px',
+
+  // Mobile trigger: 10% above viewport bottom
+  mobileRootMargin: '0px 0px -10% 0px',
+
+  // Mobile threshold: 5% (mobile users scroll faster)
+  mobileThreshold: 0.05,
+
+  // Animation should only trigger once
+  once: true,
+
+  // Duration varies by element type (see TIMING below)
+  defaultDuration: 800,
+
+  // Mobile constraint: Disable lateral movement if width > 90% viewport
+  mobileMaxWidthPercent: 0.9,
+
+  // Breakpoint for mobile detection
+  mobileBreakpoint: 768,
+} as const;
+
+/**
+ * Standardized timing for all pages
+ * Delay is relative to the element entering the viewport
+ */
+export const TIMING = {
+  sectionHeader: {
+    delay: 0,
+    duration: 800,
+    distance: 30,
+  },
+  primaryUnit: {
+    delay: 150,
+    duration: 700,
+    distance: 20,
+  },
+  secondaryUnit: {
+    delay: 250, // primary + 100ms
+    duration: 700,
+    distance: 20,
+  },
+  illustration: {
+    delay: 300,
+    duration: 1000,
+    scaleFrom: 0.98,
+    scaleTo: 1.0,
+  },
+} as const;
+
+/**
+ * Horizontal Wave stagger calculation
+ * delay = (column_index * 150ms) + (row_index * 50ms)
+ */
+export const WAVE_STAGGER = {
+  columnDelay: 150, // ms
+  rowDelay: 50,     // ms
+} as const;
+
+/**
+ * Mobile sequential stagger
+ */
+export const MOBILE_STAGGER = 100; // ms between sequential elements
+
+/**
+ * Hero entrance timing (all in milliseconds)
+ */
+export const HERO_TIMING = {
+  hello: { delay: 0, duration: 800, distance: 30 },
+  intro: { delay: 150, duration: 800, distance: 20 },
+  typewriter: { delay: 300, duration: 800, distance: 10 },
+  subtext: { delay: 450, duration: 800, distance: 10 },
+  portrait: { delay: 400, duration: 1200, distance: 30, scaleFrom: 0.95, scaleTo: 1.0 },
+  cta: { delay: 600, duration: 800, distance: 20 },
+  arrow: { delay: 1000, duration: 800, distance: 0 },
+} as const;
+
+/**
+ * Down arrow bob loop (infinite)
+ */
+export const ARROW_BOB = {
+  distance: 5, // px (+/-)
+  duration: 1600, // ms
+} as const;
+
+/**
+ * Focus Scale text hierarchy distances (all upward lift in px)
+ */
+export const TEXT_HIERARCHY = {
+  sectionHeader: 40,
+  mainTitle: 30,
+  subheader: 20,
+  body: 10,
+} as const;
+
+/**
+ * Mobile text hierarchy
+ */
+export const MOBILE_TEXT_HIERARCHY = {
+  sectionHeader: 30,
+  subheader: 20,
+  body: 10,
+} as const;
+
+/**
+ * Inward Snap vectors (desktop)
+ */
+export const INWARD_SNAP = {
+  left: { x: -20, y: 30 },
+  right: { x: 20, y: 30 },
+  illustrationDelay: 150, // ms follow-through
+} as const;
+
+/**
+ * Mobile Vertical Stack
+ */
+export const MOBILE_VERTICAL_STACK = {
+  distance: 20, // px
+  stagger: MOBILE_STAGGER, // ms
+} as const;
+
+/**
+ * Timeline Draw (mobile)
+ */
+export const TIMELINE_DRAW = {
+  distance: 15, // px (slide from left)
+} as const;
+
+/**
+ * Accordion animations
+ */
+export const ACCORDION = {
+  contentLift: 10, // px (desktop: also 5px right)
+  repeat: true, // Always animate on open
+} as const;

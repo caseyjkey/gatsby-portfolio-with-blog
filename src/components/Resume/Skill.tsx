@@ -1,22 +1,60 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { Badge } from 'reactstrap'
 import { FaPython } from 'react-icons/fa'
-import { Waypoint } from 'react-waypoint'
-import { Animated } from 'react-animated-css'
+import { motion } from 'motion/react'
+import { fadeInUpVariants, getRootMargin, getThreshold } from '../../animations'
+import { ANIMATION_CONFIG } from '../../animations/config'
 
-export function Skill({ skill }) {
+interface SkillProps {
+  skill: string;
+}
+
+export function Skill({ skill }: SkillProps) {
   const [visible, setVisible] = useState(false);
 
+  useEffect(() => {
+    const isMobile = () => {
+      if (typeof window === 'undefined') return false;
+      return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: isMobile() ? getThreshold(true) : 0,
+        rootMargin: getRootMargin(isMobile()),
+      }
+    );
+
+    const skillElement = document.getElementById(`skill-${skill.replace(/\s+/g, '-')}`);
+    if (skillElement) {
+      observer.observe(skillElement);
+    }
+
+    return () => observer.disconnect();
+  }, [skill]);
+
   return (
-    <SkillContainer>
-      <Animated animationIn="fadeInUp" isVisible={visible}>
+    <motion.div
+      id={`skill-${skill.replace(/\s+/g, '-')}`}
+      initial="hidden"
+      animate={visible ? "visible" : "hidden"}
+      variants={fadeInUpVariants}
+    >
+      <SkillContainer>
         <FaPython size={'4rem'} style={{textAlign: 'center'}}/>
         <Badge className="d-block">{skill}</Badge>
-        <Waypoint onEnter={() => setVisible(true)} />
-      </Animated>
-    </SkillContainer>
+      </SkillContainer>
+    </motion.div>
   );
 }
 

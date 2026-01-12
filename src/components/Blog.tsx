@@ -27,12 +27,7 @@ export const Blog = (props) => {
                         frontmatter {
                             title
                             date(formatString: "YYYY MMMM Do")
-                            cover {
-                                publicURL
-                                childImageSharp {
-                                  gatsbyImageData(width: 2000) 
-                                }
-                            }
+                            cover
                         }
                         fields {
                             slug
@@ -58,12 +53,13 @@ export const Blog = (props) => {
                         ({ id, excerpt, frontmatter, fields }) => (
                             <BlogEntry key={id}>
                                 <Link to={fields.slug}>
-                                    {frontmatter.cover ? (
+                                    {/* TODO: Implement proper cover image handling - cover is currently a string path */}
+                                    {/* {frontmatter.cover ? (
                                         <Image
                                             image={frontmatter.cover.childImageSharp.gatsbyImageData}
                                             className='mx-auto'
                                         />
-                                    ) : null}
+                                    ) : null} */}
                                     <h1>{frontmatter.title}</h1>
                                     <p>{frontmatter.date}</p>
                                     <p class="excerpt">{excerpt}</p>

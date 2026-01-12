@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'gatsby'
 import styled from 'styled-components'
 import { lighten, darken } from 'polished'
 import { Container, Row, Col } from 'reactstrap'
-import { Animated } from 'react-animated-css'
-import { Waypoint } from 'react-waypoint'
-import { FaHeartBroken, FaLinkedinIn, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight, FaGithub } from 'react-icons/fa'
+import { FaLinkedinIn, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight, FaGithub } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 
 import { Section } from './style'
@@ -70,14 +68,9 @@ export default function Footer(props) {
 };
 
 function Social({ link, Icon }) {
-  const [visible, setVisible] = useState(false);
-  const makeVisible = () => setVisible(true);
-
+  // Simple link without animation for footer
   return (
-    <Animated animationIn={"fadeInUp"} isVisible={visible}>
-      <a href={link} target="_blank"><Icon /></a>
-      <Waypoint onEnter={makeVisible}></Waypoint>
-    </Animated>
+    <a href={link} target="_blank"><Icon /></a>
   );
 }
 
@@ -109,7 +102,7 @@ const FooterSection = styled.footer`
             color: ${props => props.theme.white};
           }
         }
-        
+
         svg {
           margin-right: 1em;
         }

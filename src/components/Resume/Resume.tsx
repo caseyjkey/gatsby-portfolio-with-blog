@@ -14,6 +14,7 @@ import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style.ts'
 import ResumeFile from '../Introduction/resume.pdf'
 import Entry from './Entry'
 import { Skill } from './Skill'
+import { AnimatedAccordionBody } from './AnimatedAccordionBody'
 import { GiGraduateCap } from 'react-icons/gi'
 import { AiOutlineTeam } from 'react-icons/ai'
 import { TbCertificate } from 'react-icons/tb'
@@ -44,7 +45,7 @@ function Resume(props) {
                   <AccordionHeader targetId='1'>
                     <SectionTitle>Education</SectionTitle>
                   </AccordionHeader>
-                  <AccordionBody accordionId='1'>
+                  <AnimatedAccordionBody accordionId='1'>
                     <Entry icon={GiGraduateCap}
                       title={"University of Southern California"}
                       subtitle={"Master's of Science in Computer Science"}>
@@ -64,7 +65,7 @@ function Resume(props) {
                       date={"May 2021"}>
                       Minor in Entrepreneurship and Innovation
                     </Entry>
-                  </AccordionBody>
+                  </AnimatedAccordionBody>
                 </Page>
               </AccordionItem>
 
@@ -73,7 +74,7 @@ function Resume(props) {
                   <AccordionHeader targetId='2'>
                     <SectionTitle>Experience</SectionTitle>
                   </AccordionHeader>
-                  <AccordionBody accordionId='2'>
+                  <AnimatedAccordionBody accordionId='2'>
                     {experienceData.map((entry, index) => (
                       <Entry
                         key={index}
@@ -90,7 +91,7 @@ function Resume(props) {
                         </ul>
                       </Entry>
                     ))}
-                  </AccordionBody>
+                  </AnimatedAccordionBody>
                 </Page>
               </AccordionItem>
 
@@ -99,7 +100,7 @@ function Resume(props) {
                   <AccordionHeader targetId='3'>
                     <SectionTitle>Awards</SectionTitle>
                   </AccordionHeader>
-                  <AccordionBody accordionId='3'>
+                  <AnimatedAccordionBody accordionId='3'>
                     <Entry icon={GoStar}
                       date={"July 2022"}
                       title={"Phoenix Award"}
@@ -148,7 +149,7 @@ function Resume(props) {
                         <li>Led the development of a VR solarsystem classroom within 48 hours.</li>
                       </ul>
                     </Entry>
-                  </AccordionBody>
+                  </AnimatedAccordionBody>
                 </Page>
               </AccordionItem>
 
@@ -157,7 +158,7 @@ function Resume(props) {
                   <AccordionHeader targetId='4'>
                     <SectionTitle>Leadership</SectionTitle>
                   </AccordionHeader>
-                  <AccordionBody accordionId='4'>
+                  <AnimatedAccordionBody accordionId='4'>
                     <Entry icon={AiOutlineTeam}
                       date={"September 2020 - May 2021"}
                       title={"President"}
@@ -179,7 +180,7 @@ function Resume(props) {
                         <li>Write budget proposals for education, outreach, and professional development</li>
                       </ul>
                     </Entry>
-                  </AccordionBody>
+                  </AnimatedAccordionBody>
                 </Page>
               </AccordionItem>
             </Col>

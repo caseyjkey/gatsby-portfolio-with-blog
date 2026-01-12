@@ -1,49 +1,26 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Button } from '../style'
 import { ServiceContainer } from './style'
-import { Animated } from 'react-animated-css'
-import { Waypoint } from 'react-waypoint'
-import { scroller } from 'react-scroll'
 
-export default class Service extends Component {
-  constructor(props) {
-    super(props);
+export default function Service(props) {
+  const Icon = props.icon;
+  const service = props.service;
+  const description = props.children;
+  const link = props.link;
+  const button = props.button;
 
-    this.state = {
-      visible: false
-    };
-    this.makeVisible = this.makeVisible.bind(this);
-  }
-
-  makeVisible() {
-    this.setState({visible: true});
-  }
-
-  
-  render() {
-    let Scroll = require('react-scroll');
-    let scroller = Scroll.scroller;
-    
-    let visible = this.state.visible;
-    let Icon = this.props.icon;
-    let service = this.props.service;
-    let description = this.props.children;
-    let link = this.props.link;
-    let button = this.props.button;
-
-    return (
-      <Animated animationIn="fadeInUp" isVisible={visible}>
-        <ServiceContainer className="shadow">
-          <Icon className="icon" />
-          <Waypoint onEnter={this.makeVisible}></Waypoint>
-          <div className="desc">
-            <h3 className="mb-5">{service}</h3>
-            <p>{description}</p>
-          </div>
-          {link && <Button color="primary" href={link} target="_blank">{button || "More info"}</Button>}
-          {!link && <Button color="primary" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>{button || "Contact me"}</Button>}
-        </ServiceContainer>
-      </Animated>
-    );
-  }
+  return (
+    <ServiceContainer className="shadow" {...props}>
+      <Icon className="icon" />
+      <div className="desc">
+        <h3 className="mb-5">{service}</h3>
+        <p>{description}</p>
+      </div>
+      {link && <Button color="primary" href={link} target="_blank">{button || "More info"}</Button>}
+      {!link && <Button color="primary" onClick={() => {
+        const Scroll = require('react-scroll');
+        Scroll.scroller.scrollTo('Contact', {smooth: true});
+      }}>{button || "Contact me"}</Button>}
+    </ServiceContainer>
+  );
 }

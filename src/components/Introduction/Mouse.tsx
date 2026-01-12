@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { lighten } from 'polished'
 import { theme } from '../style.ts'
+import { motion } from 'motion/react'
+import { HERO_TIMING, EASING } from '../../animations'
 
 import { IoMdArrowRoundDown } from 'react-icons/io'
 
@@ -35,7 +37,7 @@ const Container = styled.span`
   }
 `;
 
-const FallDown = styled.div`
+const FallDown = styled(motion.div)`
   width: 70px; /* Match the triangle width */
   height: 70px;
   margin: 0 auto; /* Perfectly centers the container */
@@ -44,26 +46,10 @@ const FallDown = styled.div`
   align-items: center;
   background: transparent;
   position: relative;
-  
+
   /* The Arrow Icon itself */
-  color: #3e64ff; 
+  color: #3e64ff;
   font-size: 24px;
-
-  animation: wheel-up-down 1.6s ease infinite;
-
-  @keyframes wheel-up-down {
-    0% {
-      transform: translateY(-10px);
-      opacity: 0;
-    }
-    30% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(17px);
-      opacity: 0;
-    }
-  }
 `;
 
 const Mouse = styled.div`
@@ -76,13 +62,39 @@ const Mouse = styled.div`
 export default function FallingArrow(props) {
   let Scroll = require('react-scroll');
   let scroller = Scroll.scroller;
+  const [hasEntranceCompleted, setHasEntranceCompleted] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
       <Mouse>
         <Container>
-          <FallDown>
-            <IoMdArrowRoundDown color={theme.primaryColor}
+          <FallDown
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              y: hasEntranceCompleted ? [0, 5, 0] : 0,
+            }}
+            transition={{
+              opacity: {
+                duration: HERO_TIMING.arrow.duration / 1000,
+                delay: HERO_TIMING.arrow.delay / 1000,
+                ease: EASING,
+              },
+              y: {
+                duration: 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: hasEntranceCompleted ? (HERO_TIMING.arrow.delay + HERO_TIMING.arrow.duration) / 1000 : 0,
+              },
+            }}
+            onAnimationComplete={() => {
+              if (!hasEntranceCompleted) {
+                setHasEntranceCompleted(true);
+              }
+            }}
+          >
+            <IoMdArrowRoundDown
+              color={theme.primaryColor}
               fontSize="25px"
               onClick={() => scroller.scrollTo('Skills', { smooth: true, offset: -80, delay: 0 })}
             />
