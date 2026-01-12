@@ -50,7 +50,10 @@ export default function Project({
 
   let images = galleryImages.map(dict => dict.image.publicURL);
   let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
-    result.push((image.childImageSharp) ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} /> : <img src={image.publicURL} />);
+    result.push((image.childImageSharp)
+      ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} alt="project" style={{ width: '100%', height: 'auto' }} />
+      : <img src={image.publicURL} alt="project" style={{ width: '100%', height: 'auto' }} />
+    );
     return result;
   }, []);
 
@@ -63,7 +66,7 @@ export default function Project({
   return (
     <ProjectWrapper onClick={toggleModal} className="shadow" {...props}>
       <GalleryFrame>
-        <GatsbyImage image={image} alt={title} />
+        <GatsbyImage image={image} alt={title} style={{ width: '100%', height: '100%' }} imgStyle={{ objectFit: 'contain' }} />
       </GalleryFrame>
       <ProjectInfo>
         <h3>{title}</h3>
