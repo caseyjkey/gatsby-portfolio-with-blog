@@ -2,7 +2,7 @@ import React, { lazy, useRef } from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style'
-import { SkillsSection, SubsectionTitle } from './Skills/style'
+import { SkillsSection, SubsectionTitle, MediumHeading, SectionSubheader } from './Skills/style'
 import { Skill } from './Skills/Skill'
 import { FullStackIllustration } from './Skills/FullStackIllustration'
 import { AiSystemsIllustration } from './Skills/AiSystemsIllustration'
@@ -100,7 +100,8 @@ export default function Skills() {
                             animate={isVisible ? "visible" : "hidden"}
                             variants={fadeInUpVariants}
                         >
-                            <Heading>What I Do</Heading>
+                            <Heading>Core Expertise</Heading>
+                            <SectionSubheader>Bridging the gap between complex technical architecture and scalable business solutions.</SectionSubheader>
                         </motion.div>
                     </Col>
                 </Row>
@@ -115,7 +116,7 @@ export default function Skills() {
                                 animate={isFullStackVisible ? "visible" : "hidden"}
                                 variants={fadeInUpVariants}
                             >
-                                <Heading className="mb-4">Full Stack Development</Heading>
+                                <MediumHeading className="mb-4">Full Stack Development</MediumHeading>
                             </motion.div>
                             {[
                                 { skill: 'Python', icon: 'FaPython', idx: 0 },
@@ -175,7 +176,7 @@ export default function Skills() {
                                 animate={isAiSystemsVisible ? "visible" : "hidden"}
                                 variants={fadeInUpVariants}
                             >
-                                <Heading className="mb-4">AI & Systems Engineering</Heading>
+                                <MediumHeading className="mb-4">AI & Systems Engineering</MediumHeading>
                             </motion.div>
                             {[
                                 { skill: 'Python', icon: 'FaPython', idx: 0 },

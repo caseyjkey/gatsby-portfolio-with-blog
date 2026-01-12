@@ -63,11 +63,29 @@ export default function FallingArrow(props) {
   let Scroll = require('react-scroll');
   let scroller = Scroll.scroller;
 
-  // Match main branch behavior: arrow moves from -10px to 17px with fade in/out
-  // This replicates the CSS keyframe animation using Motion
+  const handleScroll = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Calculate offset to position "Core Expertise" header with small margin below nav
+    // SkillsSection has 96px (6em) top padding on mobile
+    // Row with "Core Expertise" has additional pt-5 (48px) = 144px from section top
+    // We want header at ~102px from viewport top (70px nav + 32px margin)
+    // Mobile: 96px section padding - 70px nav + small buffer = ~-40 to -50
+    // Desktop: similar calculation, accounting for section structure
+    const offset = window.innerWidth < 768 ? -45 : -100;
+
+    scroller.scrollTo('Skills', {
+      smooth: true,
+      offset: offset,
+      delay: 0,
+      duration: 800
+    });
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <Mouse>
+      <Mouse onClick={handleScroll}>
         <Container>
           <FallDown
             animate={{
@@ -81,11 +99,7 @@ export default function FallingArrow(props) {
               ease: 'easeInOut',
             }}
           >
-            <IoMdArrowRoundDown
-              color={theme.primaryColor}
-              fontSize="25px"
-              onClick={() => scroller.scrollTo('Skills', { smooth: true, offset: -80, delay: 0 })}
-            />
+            <IoMdArrowRoundDown color={theme.primaryColor} fontSize="25px" />
           </FallDown>
         </Container>
       </Mouse>

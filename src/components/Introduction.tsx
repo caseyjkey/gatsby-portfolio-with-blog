@@ -492,6 +492,16 @@ const ResumeButtonWrapper = styled.div`
   }
   z-index: 100;
   height: 0;
+
+  /* Fade-in animation: 0.3s after the slide-up animation completes */
+  /* Slide-up: 500ms duration + 100ms delay = 600ms finish */
+  /* Resume fade-in: 800ms delay, 400ms duration */
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transition: opacity 400ms ease-out 800ms;
+
+  @media (min-width: 768px) {
+    margin-top: 1rem;
+  }
 `;
 
 // Mobile headshot + blob components
