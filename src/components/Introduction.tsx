@@ -221,9 +221,9 @@ export default function Introduction(props) {
               initial="hidden"
               animate="visible"
               custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
-              variants={fadeInUpVariants}
-              style={{
-                transform: 'translateY(calc(-100% + 1rem))',
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1 }
               }}
               onClick={(e) => {
                 e.preventDefault();

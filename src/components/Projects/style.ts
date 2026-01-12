@@ -9,6 +9,9 @@ export const ProjectSection = styled.section`
 
 export const ProjectWrapper = styled.div`
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 0;
   background-color: ${props => props.theme.white};
   border-radius: 8px;
@@ -34,16 +37,21 @@ export const ProjectWrapper = styled.div`
 export const GalleryFrame = styled.div`
   background-color: #f8fafc;
   aspect-ratio: 16 / 9;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
 
-  .gatsby-image-wrapper,
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+  .gatsby-image-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .gatsby-image-wrapper img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
   }
@@ -52,6 +60,10 @@ export const GalleryFrame = styled.div`
 export const ProjectInfo = styled.div`
   padding: 1.5rem;
   background-color: ${props => props.theme.white};
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
   h3 {
     color: ${props => props.theme.black};

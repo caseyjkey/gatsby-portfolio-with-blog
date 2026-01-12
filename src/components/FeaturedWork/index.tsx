@@ -159,7 +159,7 @@ const FeaturedWork = () => {
             </motion.div>
           </Col>
         </Row>
-        <Row className="gx-3" style={{ display: 'flex' }}>
+        <Row className="gx-3" style={{ display: 'flex', alignItems: 'stretch' }}>
           {data.allProject.edges.map((project: FeaturedProject, index: number) => {
             const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
             const formattedEnd = project.node.end?.present
@@ -175,12 +175,14 @@ const FeaturedWork = () => {
             const postLink = `/projects/${year}-${month}-${project.node.project}/`;
 
             return (
-              <Col key={index} md={4} className="pb-4">
+              <Col key={index} md={4} className="pb-4 d-flex align-items-stretch">
                 <motion.div
                   initial="hidden"
                   animate={isVisible ? "visible" : "hidden"}
                   custom={{ delay: getProjectDelay(index) }}
                   variants={fadeInUpVariants}
+                  className="h-100 d-flex flex-column"
+                  style={{ width: '100%', alignItems: 'stretch' }}
                 >
                   <Project
                     image={project.node.image.childImageSharp.gatsbyImageData}

@@ -316,10 +316,10 @@ export default function Experience() {
 
       rafRef.current = requestAnimationFrame(() => {
         if (lineRef.current) {
-          // Calculate height: stop before the last row entirely
-          // For 8 entries, max height is 7/8 = 87.5%
+          // Calculate height: extend to the center of the last dot when all entries are animated
+          // For 8 entries, the last dot's center is at 7.5/8 = 93.75%
           const targetSize = newSet.size === experienceData.length
-            ? experienceData.length - 1
+            ? experienceData.length - 0.5  // 7.5 instead of 7 to reach center of last dot
             : newSet.size;
           const percentage = (targetSize / experienceData.length) * 100;
           lineRef.current.style.height = `${Math.max(0, percentage)}%`;

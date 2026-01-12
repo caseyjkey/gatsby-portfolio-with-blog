@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { graphql } from 'gatsby'
-import Favicon from '../data/favicon.png' 
+import Favicon from '../data/favicon.png'
 import Layout from '../components/Layout'
 import Navigation from '../components/Navigation'
 import Introduction from '../components/Introduction'
@@ -16,7 +16,6 @@ import Footer from '../components/Footer'
 import { ThemeProvider } from 'styled-components'
 import { theme, Body } from '../components/style.ts'
 import { initPage } from '../components/main'
-import AOS from 'aos'
 import { SEO } from '../components/SEO'
 
 const IndexPage = ({ data }) => {
@@ -25,13 +24,9 @@ const IndexPage = ({ data }) => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
-		AOS.init({
-			duration: 800,
-			easing: 'slide'
-		});
-		initPage();
+    initPage();
   }, []);
-  
+
   return (
     <Layout>
       <ThemeProvider theme={theme}>

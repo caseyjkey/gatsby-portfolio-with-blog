@@ -66,7 +66,7 @@ export default function Project({
   return (
     <ProjectWrapper onClick={toggleModal} className="shadow" {...props}>
       <GalleryFrame>
-        <GatsbyImage image={image} alt={title} style={{ width: '100%', height: '100%' }} imgStyle={{ objectFit: 'contain' }} />
+        <GatsbyImage image={image} alt={title} />
       </GalleryFrame>
       <ProjectInfo>
         <h3>{title}</h3>
