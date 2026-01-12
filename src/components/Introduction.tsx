@@ -212,7 +212,7 @@ export default function Introduction(props) {
         </motion.div>
       </MobileSvgWrapper>
 
-      <ResumeButtonWrapper className="container position-absolute start-50 translate-middle-x resume-responsive-container">
+      <ResumeButtonWrapper isVisible={true} className="container position-absolute start-50 translate-middle-x resume-responsive-container">
         <div className="row justify-content-center-mobile">
           <div className="col-6-responsive d-flex justify-content-center">
             <motion.button
@@ -221,10 +221,7 @@ export default function Introduction(props) {
               initial="hidden"
               animate="visible"
               custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1 }
-              }}
+              variants={fadeInUpVariants}
               onClick={(e) => {
                 e.preventDefault();
                 const Scroll = require('react-scroll');
