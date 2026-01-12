@@ -126,6 +126,13 @@ const HamburgerButton = styled.button<HamburgerButtonProps>`
     }
   }
 
+  /* Media query for mobile: width < 768px - always white on black navbar background */
+  @media (max-width: 767.98px) {
+    span {
+      background: ${(props) => props.theme.white} !important;
+    }
+  }
+
    span:nth-child(1) {
     top: 0px;
   }

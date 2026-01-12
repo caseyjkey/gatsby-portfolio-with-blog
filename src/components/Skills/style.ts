@@ -52,10 +52,38 @@ export const SectionTitle = styled.h2`
 
 export const SubsectionTitle = styled.h2`
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   margin-bottom: 0px;
+  margin-top: 1.5rem;
   color: ${(props) => props.theme.black};
   @media (max-width: 767.98px) {
     clear: both;
+  }
+`;
+
+export const MediumHeading = styled.h2`
+  color: ${(props) => props.theme.black}
+  position: relative;
+  font-size: 50px;
+  font-weight: 500;
+  margin-top: 2rem;
+  span{
+    font-weight: 400;
+  }
+  @media (max-width: 767.98px) {
+    font-size: 38px;
+  }
+`;
+
+export const SectionSubheader = styled.p`
+  font-size: 18px;
+  color: ${(props) => props.theme.darken};
+  max-width: 700px;
+  margin: 1rem auto 0;
+  text-align: center;
+  line-height: 1.6;
+  @media (max-width: 767.98px) {
+    font-size: 16px;
+    padding: 0 1rem;
   }
 `;

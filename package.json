@@ -57,7 +57,7 @@
     "yet-another-react-lightbox": "^3.28.0"
   },
   "scripts": {
-    "develop": "sh -c 'for port in 8001 8002 8003 8004 8005 8006 8007 8008; do gatsby develop -H 0.0.0.0 --port $port && break; done'",
+    "dev": "yes Y | gatsby develop -H 0.0.0.0 --port 8001",
     "start": "gatsby develop -H 0.0.0.0",
     "build": "gatsby build",
     "serve": "gatsby serve",

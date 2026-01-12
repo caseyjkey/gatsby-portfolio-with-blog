@@ -438,8 +438,8 @@ Example: `src/data/projects/whatspython/project.json`
 Corrected package.json scripts for Gatsby (previously had incorrect react-scripts references):
 ```json
 {
-  "develop": "gatsby develop",
-  "start": "gatsby develop",
+  "dev": "gatsby develop -H 0.0.0.0",
+  "start": "gatsby develop -H 0.0.0.0",
   "build": "gatsby build",
   "serve": "gatsby serve",
   "clean": "gatsby clean",
@@ -457,8 +457,8 @@ Corrected package.json scripts for Gatsby (previously had incorrect react-script
 
 ### Starting Dev Server
 ```bash
-yarn develop
-# or: npm run develop
+yarn dev
+# or: npm run dev
 ```
 This starts the Gatsby development server with hot-reloading using auto-port selection, which tries ports 8001-8008 in sequence until one is available, without requiring terminal input.
 
@@ -487,7 +487,7 @@ git worktree add .worktrees/feature-name -b feature-name
 
 # Navigate to worktree and start working
 cd .worktrees/feature-name
-yarn develop
+yarn dev
 ```
 
 **Important:** AI agents should work in worktrees and use feature branches when appropriate. This keeps the main branch clean and allows for isolated development and testing before merging.

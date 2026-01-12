@@ -459,6 +459,10 @@ const ResumeButtonWrapper = styled.div<ResumeButtonWrapperProps>`
   /* Resume fade-in: 800ms delay, 400ms duration */
   opacity: ${props => props.isVisible ? 1 : 0};
   transition: opacity 400ms ease-out 800ms;
+
+  @media (min-width: 768px) {
+    margin-top: 1rem;
+  }
 `;
 
 // Mobile headshot + blob components

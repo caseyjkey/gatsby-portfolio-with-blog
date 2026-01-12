@@ -2,7 +2,7 @@ import React, { lazy } from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style'
-import { SkillsSection, SubsectionTitle } from './Skills/style'
+import { SkillsSection, SubsectionTitle, MediumHeading, SectionSubheader } from './Skills/style'
 import { Skill } from './Skills/Skill'
 import { lighten } from 'polished'
 export default function Skills() {
@@ -72,7 +72,8 @@ export default function Skills() {
             <Container>
                 <Row noGutters className="justify-content-center pb-2 pt-5">
                     <Col md={12} className="heading-section text-center ">
-                        <Heading>What I Do</Heading>
+                        <Heading>Core Expertise</Heading>
+                        <SectionSubheader>Bridging the gap between complex technical architecture and scalable business solutions.</SectionSubheader>
                     </Col>
                 </Row>
                 <Row xs={1} md={2} className='pt-4 pb-4'>
@@ -126,7 +127,7 @@ export default function Skills() {
                     </Col>
                     <Col lg={6} className="animate-box order-lg-2 order-lg-2 order-1">
                         <div align="center">
-                            <Heading className="mb-4">Full Stack Development</Heading>
+                            <MediumHeading className="mb-4">Full Stack Development</MediumHeading>
                             <Skill skill="Python" Icon={loadIcon('FaPython')} />
                             <Skill skill="Swift" Icon={loadIcon('GrSwift')} />
                             <Skill skill="C/C++" Icon={loadIcon('FaCuttlefish')} />
@@ -155,7 +156,7 @@ export default function Skills() {
                 <Row xs={1} md={2} className="pt-4">
                     <Col lg={6} className="animate-box">
                         <div align="center">
-                            <Heading className="mb-4">AI & Systems Engineering</Heading>
+                            <MediumHeading className="mb-4">AI & Systems Engineering</MediumHeading>
                             <Skill skill="Python" Icon={loadIcon('FaPython')} />
                             <Skill skill="PyTorch" Icon={loadIcon('SiPytorch')} />
                             <Skill skill="Jupyter Notebook" Icon={loadIcon('SiJupyter')} />
