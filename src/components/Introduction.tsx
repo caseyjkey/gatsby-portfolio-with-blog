@@ -485,6 +485,11 @@ const DesktopIllustrationPositioner = styled.div`
 `;
 
 const ResumeButtonWrapper = styled.div`
+  @media (min-width: 768px) {
+    #resume {
+      margin-top: 1rem;
+    }
+  }
   z-index: 100;
   height: 0;
 `;

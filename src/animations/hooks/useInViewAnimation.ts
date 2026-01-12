@@ -38,6 +38,7 @@ export function useInViewAnimation(
   const ref = useRef<HTMLElement | null>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [isInView, setIsInView] = useState(false);
+  const [isReady, setIsReady] = useState(false); // Track when ref has a value
 
   const isMobile = forceMobile || (typeof window !== 'undefined' && window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint);
 
@@ -51,6 +52,7 @@ export function useInViewAnimation(
     return isMobile ? ANIMATION_CONFIG.mobileThreshold : 0;
   }, [threshold, isMobile]);
 
+  // Set up observer when ref is ready
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
@@ -87,10 +89,11 @@ export function useInViewAnimation(
     return () => {
       observer.disconnect();
     };
-  }, [once, getRootMargin, getThreshold]);
+  }, [once, isReady, getRootMargin, getThreshold]); // Added isReady dependency
 
   const setRef = useCallback((node: HTMLElement | null) => {
     ref.current = node;
+    setIsReady(!!node); // Trigger re-render when ref gets a value
   }, []);
 
   return {

@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react'
+import React, { useMemo, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
@@ -17,12 +17,21 @@ interface EntryProps {
 }
 
 export default function Entry({ icon: Icon, date, title, subtitle, graduationDate, children, style }: EntryProps) {
+  const [nodePopped, setNodePopped] = useState(false);
+  const [hasDimensions, setHasDimensions] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // Use the optimized hook for viewport detection
-  const { ref: containerRef, isInView: isVisible } = useInViewAnimation({
+  const { ref: setContainerRef, isInView: isVisible } = useInViewAnimation({
     once: true,
   });
 
-  const [nodePopped, setNodePopped] = useState(false);
+  // Merge refs to handle both the hook and our local ref
+  useEffect(() => {
+    if (containerRef.current) {
+      setContainerRef(containerRef.current);
+    }
+  }, [setContainerRef]);
 
   // Memoize mobile detection
   const isMobile = useMemo(() => {
@@ -39,15 +48,38 @@ export default function Entry({ icon: Icon, date, title, subtitle, graduationDat
   // Line grows based on scroll progress (desktop)
   const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  // Trigger node pop after entry becomes visible
+  // Use ResizeObserver to detect when accordion opens (element gets dimensions)
   useEffect(() => {
-    if (isVisible) {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const height = entry.contentRect.height;
+        if (height > 0 && !hasDimensions) {
+          setHasDimensions(true);
+        }
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    // Check initial dimensions in case it's already open
+    if (containerRef.current.offsetHeight > 0) {
+      setHasDimensions(true);
+    }
+
+    return () => resizeObserver.disconnect();
+  }, [hasDimensions]);
+
+  // Trigger node pop after entry becomes visible and has dimensions
+  useEffect(() => {
+    if (isVisible && hasDimensions) {
       const timer = setTimeout(() => {
         setNodePopped(true);
       }, 400);
       return () => clearTimeout(timer);
     }
-  }, [isVisible]);
+  }, [isVisible, hasDimensions]);
 
   return (
     <EntryContainer ref={containerRef}>
@@ -56,7 +88,7 @@ export default function Entry({ icon: Icon, date, title, subtitle, graduationDat
         <motion.div
           className="timeline-line"
           style={{
-            scaleY: isMobile ? (isVisible ? 1 : 0) : lineScaleY,
+            scaleY: isMobile ? (isVisible && hasDimensions ? 1 : 0) : lineScaleY,
             transformOrigin: "top"
           }}
           transition={{ duration: isMobile ? 0.4 : 0 }}

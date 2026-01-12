@@ -3,6 +3,9 @@ import { useStaticQuery, graphql } from 'gatsby'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
 import { theme } from '../style.ts'
+import { motion } from 'motion/react'
+import { fadeInUpVariants } from '../../animations'
+import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
 import Project from '../Projects/Project'
 import { format, parseISO } from 'date-fns'
 
@@ -47,6 +50,11 @@ const FeaturedSection = styled.section`
 `;
 
 const FeaturedWork = () => {
+  // Use the optimized hook for viewport detection
+  const { ref: sectionRef, isInView: isVisible } = useInViewAnimation({
+    once: true,
+  });
+
   const data = useStaticQuery(
     graphql`{
       allProject(filter: {project: {in: ["datacatalog", "farmx", "yelp"]}}) {
@@ -127,17 +135,28 @@ const FeaturedWork = () => {
     return Icons;
   }
 
+  // Calculate delay for project cards
+  const getProjectDelay = (index: number) => {
+    return index * 0.1; // Simple sequential stagger
+  };
+
   return (
-    <FeaturedSection>
+    <FeaturedSection ref={sectionRef}>
       <Container fluid={true}>
         <Row noGutters className="justify-content-center pb-5">
           <Col md={12} className="heading-section text-center">
-            <h2 style={{ fontSize: '50px', fontWeight: 700, color: theme.black }}>
-              Featured Work
-            </h2>
-            <p style={{ fontSize: '16px', color: '#666' }}>
-              Highlighted projects from my portfolio
-            </p>
+            <motion.div
+              initial="hidden"
+              animate={isVisible ? "visible" : "hidden"}
+              variants={fadeInUpVariants}
+            >
+              <h2 style={{ fontSize: '50px', fontWeight: 700, color: theme.black }}>
+                Featured Work
+              </h2>
+              <p style={{ fontSize: '16px', color: '#666' }}>
+                Highlighted projects from my portfolio
+              </p>
+            </motion.div>
           </Col>
         </Row>
         <Row>
@@ -157,18 +176,25 @@ const FeaturedWork = () => {
 
             return (
               <Col key={index} md={4} className="pb-4">
-                <Project
-                  image={project.node.image.childImageSharp.gatsbyImageData}
-                  galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
-                  title={project.node.title}
-                  subtitle={project.node.subtitle}
-                  icons={loadIcons(project.node.icons)}
-                  date={formattedStart + ' - ' + formattedEnd}
-                  link={project.node.link}
-                  postLink={postLink}
+                <motion.div
+                  initial="hidden"
+                  animate={isVisible ? "visible" : "hidden"}
+                  custom={{ delay: getProjectDelay(index) }}
+                  variants={fadeInUpVariants}
                 >
-                  <div dangerouslySetInnerHTML={{ __html: project.node.description }} />
-                </Project>
+                  <Project
+                    image={project.node.image.childImageSharp.gatsbyImageData}
+                    galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
+                    title={project.node.title}
+                    subtitle={project.node.subtitle}
+                    icons={loadIcons(project.node.icons)}
+                    date={formattedStart + ' - ' + formattedEnd}
+                    link={project.node.link}
+                    postLink={postLink}
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: project.node.description }} />
+                  </Project>
+                </motion.div>
               </Col>
             )
           })}
