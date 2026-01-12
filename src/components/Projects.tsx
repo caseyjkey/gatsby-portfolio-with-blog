@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useRef } from 'react'
+import React, { lazy } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import { Heading } from './style.ts'
 import { Container, Row, Col } from 'reactstrap'
@@ -6,33 +6,19 @@ import { ProjectSection } from './Projects/style.ts'
 import Project from './Projects/Project'
 import { format, parseISO } from 'date-fns'
 import { motion } from 'motion/react'
-import { TIMING, EASING, fadeInUpVariants } from '../animations'
+import { fadeInUpVariants } from '../animations'
+import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 
 
 export const Projects = (props) => {
-	const [isVisible, setIsVisible] = React.useState(false);
+	// Use the unified animation hook
+	const { ref: projectsHeaderRef, isInView: isHeaderVisible } = useInViewAnimation({
+		once: true,
+	});
 
-	// IntersectionObserver for visibility
-	useEffect(() => {
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						setIsVisible(true);
-						observer.disconnect();
-					}
-				});
-			},
-			{ threshold: 0.3 }
-		);
-
-		const projectsSection = document.getElementById('projects-section');
-		if (projectsSection) {
-			observer.observe(projectsSection);
-		}
-
-		return () => observer.disconnect();
-	}, []);
+	const { ref: projectsGridRef, isInView: isProjectsVisible } = useInViewAnimation({
+		once: true,
+	});
 
 	const data = useStaticQuery(
 		graphql`{
@@ -130,10 +116,10 @@ export const Projects = (props) => {
 		<ProjectSection name="Projects" id="projects-section">
 			<Container fluid={true} className="">
 				<Row noGutters className="justify-content-center pb-5 mt-5">
-					<Col md={12} className="heading-section text-center">
+					<Col md={12} className="heading-section text-center" ref={projectsHeaderRef}>
 						<motion.div
 							initial="hidden"
-							animate={isVisible ? "visible" : "hidden"}
+							animate={isHeaderVisible ? "visible" : "hidden"}
 							variants={fadeInUpVariants}
 						>
 							<Heading className="mb-4">Projects</Heading>
@@ -141,7 +127,7 @@ export const Projects = (props) => {
 						</motion.div>
 					</Col>
 				</Row>
-				<Row>
+				<Row ref={projectsGridRef}>
 					{data.allProject.edges.map((project, index) => {
 						const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
 						const formattedEnd = project.node.end.present
@@ -158,7 +144,7 @@ export const Projects = (props) => {
 							<Col key={index} md={4} className="pb-4">
 								<motion.div
 									initial="hidden"
-									animate={isVisible ? "visible" : "hidden"}
+									animate={isProjectsVisible ? "visible" : "hidden"}
 									custom={{ delay: getProjectDelay(index) }}
 									variants={fadeInUpVariants}
 								>
