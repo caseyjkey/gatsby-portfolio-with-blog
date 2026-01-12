@@ -62,35 +62,23 @@ const Mouse = styled.div`
 export default function FallingArrow(props) {
   let Scroll = require('react-scroll');
   let scroller = Scroll.scroller;
-  const [hasEntranceCompleted, setHasEntranceCompleted] = useState(false);
 
+  // Match main branch behavior: arrow moves from -10px to 17px with fade in/out
+  // This replicates the CSS keyframe animation using Motion
   return (
     <ThemeProvider theme={theme}>
       <Mouse>
         <Container>
           <FallDown
-            initial={{ opacity: 0 }}
             animate={{
-              opacity: 1,
-              y: hasEntranceCompleted ? [0, 5, 0] : 0,
+              y: [-10, 17],
+              opacity: [0, 1, 0],
             }}
             transition={{
-              opacity: {
-                duration: HERO_TIMING.arrow.duration / 1000,
-                delay: HERO_TIMING.arrow.delay / 1000,
-                ease: EASING,
-              },
-              y: {
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: hasEntranceCompleted ? (HERO_TIMING.arrow.delay + HERO_TIMING.arrow.duration) / 1000 : 0,
-              },
-            }}
-            onAnimationComplete={() => {
-              if (!hasEntranceCompleted) {
-                setHasEntranceCompleted(true);
-              }
+              duration: 1.6,
+              times: [0, 0.3, 1],
+              repeat: Infinity,
+              ease: 'easeInOut',
             }}
           >
             <IoMdArrowRoundDown
