@@ -58,7 +58,7 @@ export function useInViewAnimation(
     if (!node) return;
 
     // Check for reduced motion preference
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       setIsInView(true);
       setHasAnimated(true);
@@ -89,7 +89,7 @@ export function useInViewAnimation(
     return () => {
       observer.disconnect();
     };
-  }, [once, isReady, getRootMargin, getThreshold]); // Added isReady dependency
+  }, [once, isReady, getRootMargin, getThreshold]);
 
   const setRef = useCallback((node: HTMLElement | null) => {
     ref.current = node;
