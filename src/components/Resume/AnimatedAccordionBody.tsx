@@ -23,10 +23,10 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
 
     useEffect(() => {
       const checkState = () => {
-        const accordionBody = containerRef.current;
-        if (accordionBody) {
-          const hasShowClass = accordionBody.classList.contains('show');
-          console.log(`Accordion ${accordionId} - hasShowClass: ${hasShowClass}, classes: ${accordionBody.className}`);
+        // The show class is on .accordion-collapse (grandparent of our div)
+        const accordionCollapse = containerRef.current?.parentElement?.parentElement;
+        if (accordionCollapse && accordionCollapse.classList.contains('accordion-collapse')) {
+          const hasShowClass = accordionCollapse.classList.contains('show');
 
           if (hasShowClass && !isOpen) {
             // Accordion just opened
@@ -46,13 +46,17 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
       });
 
       if (containerRef.current) {
-        observer.observe(containerRef.current, {
-          attributes: true,
-          attributeFilter: ['class']
-        });
+        // Observe the grandparent .accordion-collapse element for class changes
+        const accordionCollapse = containerRef.current.parentElement?.parentElement;
+        if (accordionCollapse) {
+          observer.observe(accordionCollapse, {
+            attributes: true,
+            attributeFilter: ['class']
+          });
 
-        // Check initial state immediately
-        checkState();
+          // Check initial state immediately
+          checkState();
+        }
       }
 
       return () => observer.disconnect();

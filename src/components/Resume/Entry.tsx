@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { motion } from 'motion/react'
 
 const ResumeWrap = styled.div`
   width: 100%;
@@ -14,7 +13,7 @@ const ResumeWrap = styled.div`
 		width: 50px;
 		height: 50px;
 		background: ${(props) => props.theme.primaryColor};
-		border-radius: 50%;	
+		border-radius: 50%;
 		span{
 			color: ${(props) => props.theme.white};
 			font-size: 28px;
@@ -32,7 +31,6 @@ const ResumeWrap = styled.div`
     @media (max-width: 767.98px) {
       position: relative;
     }
-    
 	}
 	.date{
 		font-weight: 700;
@@ -65,13 +63,11 @@ const ResumeWrap = styled.div`
     @media (max-width: 767.98px) {
       clear: both;
     }
-	}
+  }
 	.subtitle{
 		font-size: 18px;
     font-weight: 700;
-		// letter-spacing: 3px;
-    // text-transform: uppercase;
-		color: ${(props) => props.theme.black};
+    color: ${(props) => props.theme.black};
 	}
 `;
 
@@ -86,38 +82,22 @@ const Description = styled.div`
 `;
 
 export default function Entry({ icon, date, title, subtitle, graduationDate, children, style }) {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    // Make visible when component mounts
-    setVisible(true);
-  }, []);
-
   let Icon = icon;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 30 }}
-      transition={{
-        duration: 0.8,
-        ease: [0.2, 0.8, 0.2, 1],
-      }}
-    >
-      <ResumeWrap className="d-flex" style={style}>
-        <div className="icon d-flex align-items-center justify-content-center">
-          <span><Icon /></span>
-        </div>
-        <div className="text pl-3">
-          {date && <span className="date">{date}</span>}
-          {graduationDate && <span className="gpa">{graduationDate}</span>}
-          <span>
-            <h2>{title}</h2>
-            <span className="subtitle">{subtitle}</span>
-          </span>
-          <Description>{children}</Description>
-        </div>
-      </ResumeWrap>
-    </motion.div>
+    <ResumeWrap className="d-flex" style={style}>
+      <div className="icon d-flex align-items-center justify-content-center">
+        <span><Icon /></span>
+      </div>
+      <div className="text pl-3">
+        {date && <span className="date">{date}</span>}
+        {graduationDate && <span className="gpa">{graduationDate}</span>}
+        <span>
+          <h2>{title}</h2>
+          <span className="subtitle">{subtitle}</span>
+        </span>
+        <Description>{children}</Description>
+      </div>
+    </ResumeWrap>
   );
 }

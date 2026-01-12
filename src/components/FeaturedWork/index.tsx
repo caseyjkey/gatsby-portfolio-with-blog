@@ -159,7 +159,7 @@ const FeaturedWork = () => {
             </motion.div>
           </Col>
         </Row>
-        <Row>
+        <Row className="gx-3" style={{ display: 'flex' }}>
           {data.allProject.edges.map((project: FeaturedProject, index: number) => {
             const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
             const formattedEnd = project.node.end?.present
