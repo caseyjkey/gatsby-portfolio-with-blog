@@ -67,7 +67,9 @@ const Year = styled.div`
   color: ${(props) => props.theme.black};
   font-size: 1.1rem;
 
+  margin-top: 5px;
   @media (max-width: 767.98px) {
+    margin-top: 3px;
     min-width: 50px;
     padding-right: 1.5rem;
     font-size: 1rem;
