@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 interface HamburgerButtonProps {
-  scrolled: boolean;
+  'data-scrolled': boolean;
 }
 
 export default function Button(props: { scrolled: boolean }) {
@@ -22,7 +22,7 @@ export default function Button(props: { scrolled: boolean }) {
 
 
   return (
-    <HamburgerButton onClick={toggleButton} id="hamburger" scrolled={scrolled}>
+    <HamburgerButton onClick={toggleButton} id="hamburger" data-scrolled={scrolled}>
       <div className={open ? "open" : undefined}>
         <span></span>
         <span></span>
@@ -33,7 +33,7 @@ export default function Button(props: { scrolled: boolean }) {
 }
 
 
-const HamburgerButton = styled.button<HamburgerButtonProps>`
+const HamburgerButton = styled.div<HamburgerButtonProps>`
   margin: 0;
   padding: 0;
   outline: none;
@@ -105,7 +105,7 @@ const HamburgerButton = styled.button<HamburgerButtonProps>`
     position: absolute;
     height: 4px;
     width: 100%;
-    background: ${(props) => props.theme[props.scrolled ? 'black' : 'white']};
+    background: ${(props) => props.theme[props['data-scrolled'] ? 'black' : 'white']};
     border-radius: 3px;
     opacity: 1;
     left: 0;

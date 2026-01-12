@@ -25,24 +25,41 @@ import { experienceData } from '../../data/experience'
 
 function Resume(props) {
   const [open, setOpen] = useState<string | null>('1');
-  const toggle = (id: string) => {
-    if (open === id) {
-      setOpen(null);
-    } else {
-      setOpen(id);
-    }
+
+  const handleToggle = (id: string) => {
+    const openId = open;
+    setOpen(openId === id ? null : id);
+
+    // Map accordion IDs to header IDs for scrolling
+    const headerIdMap: Record<string, string> = {
+      '1': 'accordion-education',
+      '2': 'accordion-experience',
+      '3': 'accordion-awards',
+      '4': 'accordion-leadership'
+    };
+
+    // Wait a tiny bit for animation to start, then scroll
+    setTimeout(() => {
+      const headerId = headerIdMap[id];
+      if (headerId) {
+        const element = document.getElementById(headerId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }, 100);
   };
 
   return (
     <ResumeSection name="Resume" className="mb-4">
       <Container className="mb-4">
-        <Heading className="mb-4">Resume <span id="save"><Button color="primary" href={ResumeFile}>Download <BsSave /></Button></span></Heading>
-        <Accordion flush open={open} toggle={toggle}>
+        <Heading className="mb-4">Resume <span id="save"><a href={ResumeFile} className="btn btn-primary">Download <BsSave /></a></span></Heading>
+        <Accordion flush open={open || ''} toggle={handleToggle}>
           <Row>
             <Col>
               <AccordionItem>
                 <Page name="education">
-                  <AccordionHeader targetId='1'>
+                  <AccordionHeader targetId='1' id='accordion-education'>
                     <SectionTitle>Education</SectionTitle>
                   </AccordionHeader>
                   <AnimatedAccordionBody accordionId='1'>
@@ -71,7 +88,7 @@ function Resume(props) {
 
               <AccordionItem>
                 <Page name="experience">
-                  <AccordionHeader targetId='2'>
+                  <AccordionHeader targetId='2' id='accordion-experience'>
                     <SectionTitle>Experience</SectionTitle>
                   </AccordionHeader>
                   <AnimatedAccordionBody accordionId='2'>
@@ -97,7 +114,7 @@ function Resume(props) {
 
               <AccordionItem>
                 <Page name="awards">
-                  <AccordionHeader targetId='3'>
+                  <AccordionHeader targetId='3' id='accordion-awards'>
                     <SectionTitle>Awards</SectionTitle>
                   </AccordionHeader>
                   <AnimatedAccordionBody accordionId='3'>
@@ -155,7 +172,7 @@ function Resume(props) {
 
               <AccordionItem>
                 <Page name="leadership" className="mb-0">
-                  <AccordionHeader targetId='4'>
+                  <AccordionHeader targetId='4' id='accordion-leadership'>
                     <SectionTitle>Leadership</SectionTitle>
                   </AccordionHeader>
                   <AnimatedAccordionBody accordionId='4'>

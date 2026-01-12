@@ -94,18 +94,21 @@ export default function Skills() {
         <SkillsSection name="Skills">
             <Container>
                 <Row noGutters className="justify-content-center pb-2 pt-5">
-                    <Col md={12} className="heading-section text-center " ref={mainHeaderRef}>
-                        <motion.div
-                            initial="hidden"
-                            animate={isVisible ? "visible" : "hidden"}
-                            variants={fadeInUpVariants}
-                        >
-                            <Heading>Core Expertise</Heading>
-                            <SectionSubheader>Bridging the gap between complex technical architecture and scalable business solutions.</SectionSubheader>
-                        </motion.div>
-                    </Col>
+                    <div ref={mainHeaderRef}>
+                        <Col md={12} className="heading-section text-center ">
+                            <motion.div
+                                initial="hidden"
+                                animate={isVisible ? "visible" : "hidden"}
+                                variants={fadeInUpVariants}
+                            >
+                                <Heading>Core Expertise</Heading>
+                                <SectionSubheader>Bridging the gap between complex technical architecture and scalable business solutions.</SectionSubheader>
+                            </motion.div>
+                        </Col>
+                    </div>
                 </Row>
-                <Row xs={1} md={2} className='pt-4 pb-4' ref={fullStackRef}>
+                <div ref={fullStackRef}>
+                    <Row xs={1} md={2} className='pt-4 pb-4'>
                     <Col className='order-lg-1 order-md-1 order-2'>
                         <FullStackIllustration isVisible={isFullStackVisible} />
                     </Col>
@@ -168,7 +171,9 @@ export default function Skills() {
                         ))}
                     </Col>
                 </Row>
-                <Row xs={1} md={2} className="pt-4" ref={aiSystemsRef}>
+                </div>
+                <div ref={aiSystemsRef}>
+                    <Row xs={1} md={2} className="pt-4">
                     <Col lg={6} className="animate-box">
                         <div align="center">
                             <motion.div
@@ -220,6 +225,7 @@ export default function Skills() {
                         <AiSystemsIllustration isVisible={isAiSystemsVisible} />
                     </Col>
                 </Row>
+                </div>
             </Container>
         </SkillsSection>
     );

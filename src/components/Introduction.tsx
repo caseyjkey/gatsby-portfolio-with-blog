@@ -285,6 +285,7 @@ export default function Introduction(props) {
                     animate="visible"
                     custom={{ delay: HERO_TIMING.typewriter.delay / 1000 }}
                     variants={fadeInUpVariants}
+                    style={{ transition: 'none' }} // Disable CSS transitions to prevent conflicts
                   >
                     {/* THIS LAYER IS VISIBLE FIRST */}
                     <div className="view-layer tech-view">

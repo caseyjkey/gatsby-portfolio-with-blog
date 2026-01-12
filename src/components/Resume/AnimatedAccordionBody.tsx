@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useRef, useEffect, forwardRef } from 'react'
 import { AccordionBody as RSAccordionBody } from 'reactstrap'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { ANIMATION_CONFIG } from '../../animations/config'
 
 interface AnimatedAccordionBodyProps {
@@ -8,26 +8,78 @@ interface AnimatedAccordionBodyProps {
   children: React.ReactNode
 }
 
-export function AnimatedAccordionBody({ accordionId, children }: AnimatedAccordionBodyProps) {
-  // Check if mobile
-  const isMobile = () => {
-    if (typeof window === 'undefined') return false;
-    return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
-  };
+export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordionBodyProps>(
+  ({ accordionId, children }, ref) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [animationKey, setAnimationKey] = React.useState(0);
+    const [shouldAnimate, setShouldAnimate] = React.useState(false);
 
-  return (
-    <RSAccordionBody accordionId={accordionId}>
-      <motion.div
-        initial={{ y: 10, x: isMobile() ? 0 : 5, opacity: 0 }}
-        animate={{ y: 0, x: 0, opacity: 1 }}
-        transition={{
-          duration: 0.3,
-          delay: 0.1,
-          ease: [0.2, 0.8, 0.2, 1],
-        }}
-      >
-        {children}
-      </motion.div>
-    </RSAccordionBody>
-  )
-}
+    // Check if mobile
+    const isMobile = () => {
+      if (typeof window === 'undefined') return false;
+      return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
+    };
+
+    useEffect(() => {
+      const checkState = () => {
+        const accordionBody = containerRef.current;
+        if (accordionBody) {
+          const hasShowClass = accordionBody.classList.contains('show');
+          console.log(`Accordion ${accordionId} - hasShowClass: ${hasShowClass}, classes: ${accordionBody.className}`);
+
+          if (hasShowClass && !isOpen) {
+            // Accordion just opened
+            setIsOpen(true);
+            setShouldAnimate(true);
+            setAnimationKey(prev => prev + 1);
+          } else if (!hasShowClass && isOpen) {
+            // Accordion just closed
+            setIsOpen(false);
+            setShouldAnimate(false);
+          }
+        }
+      };
+
+      const observer = new MutationObserver(() => {
+        checkState();
+      });
+
+      if (containerRef.current) {
+        observer.observe(containerRef.current, {
+          attributes: true,
+          attributeFilter: ['class']
+        });
+
+        // Check initial state immediately
+        checkState();
+      }
+
+      return () => observer.disconnect();
+    }, [accordionId, isOpen]);
+
+    return (
+      <RSAccordionBody accordionId={accordionId}>
+        <div ref={ref || containerRef}>
+          {React.Children.map(children, (child, index) => (
+            <motion.div
+              key={`${animationKey}-${index}`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{
+                opacity: shouldAnimate ? 1 : 0,
+                y: shouldAnimate ? 0 : 15
+              }}
+              transition={{
+                duration: 0.5,
+                delay: shouldAnimate ? index * 0.1 : 0,
+                ease: [0.2, 0.8, 0.2, 1]
+              }}
+            >
+              {child}
+            </motion.div>
+          ))}
+        </div>
+      </RSAccordionBody>
+    )
+  }
+)

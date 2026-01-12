@@ -7,6 +7,8 @@ const ResumeWrap = styled.div`
 	margin-bottom: 30px;
 	border-bottom: 1px solid rgba(0,0,0,.1);
 	padding-bottom: 10px;
+	display: flex;
+	align-items: flex-start;
 	.icon{
     margin-right: 2em;
 		width: 50px;
@@ -16,6 +18,7 @@ const ResumeWrap = styled.div`
 		span{
 			color: ${(props) => props.theme.white};
 			font-size: 28px;
+			margin-bottom: 4px;
 		}
 	}
 	.text{
@@ -108,8 +111,10 @@ export default function Entry({ icon, date, title, subtitle, graduationDate, chi
         <div className="text pl-3">
           {date && <span className="date">{date}</span>}
           {graduationDate && <span className="gpa">{graduationDate}</span>}
-          <h2>{title}</h2>
-          <span className="subtitle">{subtitle}</span>
+          <span>
+            <h2>{title}</h2>
+            <span className="subtitle">{subtitle}</span>
+          </span>
           <Description>{children}</Description>
         </div>
       </ResumeWrap>
