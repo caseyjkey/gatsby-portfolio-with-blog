@@ -11,11 +11,11 @@ export const ANIMATION_CONFIG = {
   // Easing: "Power Out" curve
   easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
 
-  // Desktop trigger: 15% above viewport bottom
-  desktopRootMargin: '0px 0px -15% 0px',
+  // Desktop trigger: 0% (at viewport bottom) - triggers when element touches viewport edge
+  desktopRootMargin: '0px',
 
-  // Mobile trigger: 10% above viewport bottom
-  mobileRootMargin: '0px 0px -10% 0px',
+  // Mobile trigger: 0% - same as desktop for consistency
+  mobileRootMargin: '0px',
 
   // Mobile threshold: 5% (mobile users scroll faster)
   mobileThreshold: 0.05,
