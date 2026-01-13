@@ -138,7 +138,7 @@ export default function ProjectsPage({ data }) {
                     <p>A mix of client work, late nights, and bold ideas.</p>
                   </Col>
                 </Row>
-                <Row>
+                <Row style={{ display: 'flex', alignItems: 'stretch' }}>
                   {data.allProject.edges.map((project, index) => {
                     const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
                     const formattedEnd = project.node.end?.present
@@ -154,7 +154,7 @@ export default function ProjectsPage({ data }) {
                     const postLink = `/projects/${year}-${month}-${project.node.project}/`;
 
                     return (
-                      <Col key={index} md={4} className="pb-4">
+                      <Col key={index} md={4} className="pb-4 d-flex align-items-stretch">
                         <Project image={project.node.image.childImageSharp.gatsbyImageData}
                           galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
                           title={project.node.title}

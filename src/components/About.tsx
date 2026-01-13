@@ -23,33 +23,45 @@
 import React, { useEffect, useState, lazy } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style.ts'
-import { AboutSection, AboutImage, Counter, Description, ConsultantIdentity } from './About/style.ts'
+import { AboutSection, AboutImage, Description, ConsultantIdentity } from './About/style.ts'
 import { StaticImage } from 'gatsby-plugin-image'
 import Activity from './About/Activity.tsx'
 import { graphql, useStaticQuery } from 'gatsby'
-import { Waypoint } from 'react-waypoint'
-import { Animated } from 'react-animated-css'
-// For Github streak
-// import CountUp from 'react-countup'
+import { motion } from 'motion/react'
+import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
+import { ANIMATION_CONFIG } from '../animations/config'
 
 export default function About(props) {
+  const [isVisible, setIsVisible] = useState(false);
 
-  const [visible, setVisible] = useState({ info: false, counter: false });
-  const makeVisible = (section) => setVisible({ ...visible }[section] = true);
-
-  // const [github, setGithub] = useState({streak: NaN});
-
+  // Check if mobile
+  const isMobile = () => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
+  };
 
   useEffect(() => {
-    /* Commenting this out to see if it is holding up the page
-    fetch("https://8370nk0aoa.execute-api.us-east-2.amazonaws.com/api/streak/caseykey.github.io,git-analytics-api,react-read-more-read-less", {
-      method: "GET"
-    })
-      .then( res => res.json() )
-      .then(
-        (result) => setGithub({days: result.streak.days}),
-        (error) => setGithub(error)
-      ) */
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: isMobile() ? getThreshold(true) : 0,
+        rootMargin: getRootMargin(isMobile()),
+      }
+    );
+
+    const aboutSection = document.getElementById('about-section');
+    if (aboutSection) {
+      observer.observe(aboutSection);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   const data = useStaticQuery(
@@ -66,8 +78,8 @@ export default function About(props) {
       }
     }
   }
-}
-`);
+}`
+  );
 
   // Lazyload the an icon component
   // [param] icon {name: String, type: String}
@@ -98,7 +110,7 @@ export default function About(props) {
   }
 
   return (
-    <AboutSection name="About">
+    <AboutSection name="About" id="about-section">
       <Container>
         <Row className="justify-content-center pb-3">
           <Col md={7} className="heading-section text-center ftco-animate">
@@ -108,17 +120,20 @@ export default function About(props) {
         <Row noGutters className="block-9 justify-centent-center">
           <Col md="6" lg="6" className="justify-content-center pb-4" style={{ "paddingRight": "0.5rem" }}>
             <Row className="justify-content-center">
-              <Animated animationIn="fadeInUp" isVisible={visible.info} style={{ width: "100%" }}>
+              <motion.div
+                initial="hidden"
+                animate={isVisible ? "visible" : "hidden"}
+                variants={fadeInUpVariants}
+                style={{ width: "100%" }}
+              >
                 <Col className="col-md-12 heading-section">
-                  <Waypoint onEnter={() => makeVisible("info")}></Waypoint>
-
                   <Description>
                     <div dangerouslySetInnerHTML={{ __html: data.about.bio }} />
                   </Description>
                   <ul className="about-info mt-4 px-md-0 px-2">
                     {data.about.activities.map((activity, index) => {
                       return (
-                        <li>
+                        <li key={index}>
                           <Activity description={activity.activity.description}
                             Icon={loadIcon(activity.activity.icon)}
                           />
@@ -145,23 +160,8 @@ export default function About(props) {
                     </p>
                   </ConsultantIdentity>
                 </Col>
-              </Animated>
+              </motion.div>
             </Row>
-            {/*
-            <Animated animation="fadeInUp" isVisible={visible.counter}>
-              <Counter className="mt-md-3">
-                  {visible.counter && 
-                    ((Number.isInteger(github.streak) && 
-                      (this.state.github.days > 19 && 
-                      <p className="mb-4">
-                        <CountUp className="number" delay={0.3} duration={3} end={github.streak}>0</CountUp><span>&nbsp;consecutive days of coding</span> 
-                      </p>
-                    ) || <div></div>) || <p className="mb-4">Loading Github data...</p>)
-                  }
-              </Counter>
-            </Animated>
-            <Waypoint onEnter={() => makeVisible("counter") } />
-            */}
           </Col>
           <Col lg="6" md="6" className="d-flex">
             <AboutImage>

@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { lighten } from 'polished'
 import { theme } from '../style.ts'
+import { motion } from 'motion/react'
+import { HERO_TIMING, EASING } from '../../animations'
 
 import { IoMdArrowRoundDown } from 'react-icons/io'
 
@@ -35,7 +37,7 @@ const Container = styled.span`
   }
 `;
 
-const FallDown = styled.div`
+const FallDown = styled(motion.div)`
   width: 70px; /* Match the triangle width */
   height: 70px;
   margin: 0 auto; /* Perfectly centers the container */
@@ -44,26 +46,10 @@ const FallDown = styled.div`
   align-items: center;
   background: transparent;
   position: relative;
-  
+
   /* The Arrow Icon itself */
-  color: #3e64ff; 
+  color: #3e64ff;
   font-size: 24px;
-
-  animation: wheel-up-down 1.6s ease infinite;
-
-  @keyframes wheel-up-down {
-    0% {
-      transform: translateY(-10px);
-      opacity: 0;
-    }
-    30% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(17px);
-      opacity: 0;
-    }
-  }
 `;
 
 const Mouse = styled.div`
@@ -101,7 +87,18 @@ export default function FallingArrow(props) {
     <ThemeProvider theme={theme}>
       <Mouse onClick={handleScroll}>
         <Container>
-          <FallDown>
+          <FallDown
+            animate={{
+              y: [-10, 17],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: 1.6,
+              times: [0, 0.3, 1],
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          >
             <IoMdArrowRoundDown color={theme.primaryColor} fontSize="25px" />
           </FallDown>
         </Container>

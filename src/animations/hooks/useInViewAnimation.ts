@@ -1,0 +1,136 @@
+/**
+ * useInViewAnimation - IntersectionObserver wrapper for scroll-triggered animations
+ *
+ * Detects when an element enters the viewport and triggers animations.
+ * Respects desktop/mobile different triggers and once-only behavior.
+ */
+
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { ANIMATION_CONFIG } from '../config';
+
+interface UseInViewAnimationOptions {
+  /** Custom rootMargin override (uses desktop/mobile default if not specified) */
+  rootMargin?: string;
+  /** Custom threshold override */
+  threshold?: number;
+  /** Only trigger once (default: true) */
+  once?: boolean;
+  /** Force mobile mode */
+  forceMobile?: boolean;
+}
+
+interface UseInViewAnimationReturn {
+  ref: (node: HTMLElement | null) => void;
+  isInView: boolean;
+  hasAnimated: boolean;
+}
+
+export function useInViewAnimation(
+  options: UseInViewAnimationOptions = {}
+): UseInViewAnimationReturn {
+  const {
+    rootMargin,
+    threshold,
+    once = true,
+    forceMobile = false,
+  } = options;
+
+  const ref = useRef<HTMLElement | null>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const [isReady, setIsReady] = useState(false); // Track when ref has a value
+
+  const isMobile = forceMobile || (typeof window !== 'undefined' && window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint);
+
+  const getRootMargin = useCallback(() => {
+    if (rootMargin) return rootMargin;
+    return isMobile ? ANIMATION_CONFIG.mobileRootMargin : ANIMATION_CONFIG.desktopRootMargin;
+  }, [rootMargin, isMobile]);
+
+  const getThreshold = useCallback(() => {
+    if (threshold !== undefined) return threshold;
+    return isMobile ? ANIMATION_CONFIG.mobileThreshold : 0;
+  }, [threshold, isMobile]);
+
+  // Set up observer when ref is ready
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    console.log('[useInViewAnimation] Setting up observer for node:', node.tagName, 'isReady:', isReady);
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      console.log('[useInViewAnimation] Reduced motion detected, skipping animation');
+      setIsInView(true);
+      setHasAnimated(true);
+      return;
+    }
+
+    // Check if element is already visible (handles case where page loads with element in view)
+    const rect = node.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    // Add a small buffer (100px) for elements that are just below the viewport
+    const buffer = 100;
+    const isVisible = rect.top < (viewportHeight + buffer) && rect.bottom > -buffer;
+    console.log('[useInViewAnimation] Element position check:', {
+      rectTop: rect.top,
+      rectBottom: rect.bottom,
+      viewportHeight,
+      buffer,
+      isVisible
+    });
+
+    // If already visible (or very close) and once is true, mark as animated immediately
+    if (isVisible && once && !hasAnimated) {
+      console.log('[useInViewAnimation] Element already visible (or close), marking as animated');
+      setIsInView(true);
+      setHasAnimated(true);
+      // Don't return - still set up observer in case it goes out and comes back
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          console.log('[useInViewAnimation] Observer callback:', {
+            isIntersecting: entry.isIntersecting,
+            once,
+            hasAnimated,
+            intersectionRatio: entry.intersectionRatio
+          });
+          if (entry.isIntersecting) {
+            setIsInView(true);
+            if (once && !hasAnimated) {
+              setHasAnimated(true);
+            }
+          } else if (!once) {
+            setIsInView(false);
+          }
+        });
+      },
+      {
+        rootMargin: getRootMargin(),
+        threshold: getThreshold(),
+      }
+    );
+
+    observer.observe(node);
+    console.log('[useInViewAnimation] Observer created with rootMargin:', getRootMargin(), 'threshold:', getThreshold());
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [once, isReady, getRootMargin, getThreshold]);
+
+  const setRef = useCallback((node: HTMLElement | null) => {
+    ref.current = node;
+    setIsReady(!!node); // Trigger re-render when ref gets a value
+  }, []);
+
+  return {
+    ref: setRef,
+    isInView: once ? hasAnimated : isInView,
+    hasAnimated,
+  };
+}

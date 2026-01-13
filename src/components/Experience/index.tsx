@@ -1,9 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'reactstrap'
-import { Heading } from '../style.ts'
+import { Heading } from '../style'
 import { experienceData } from '../../data/experience'
 import { lighten } from 'polished'
+import { motion } from 'motion/react'
+import { ANIMATION_CONFIG } from '../../animations/config'
+import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
 
 const ExperienceSection = styled.section`
   position: relative;
@@ -25,10 +28,11 @@ interface VerticalLineProps {
 }
 
 const VerticalLine = styled.div<VerticalLineProps>`
+  transition: height 0.15s ease-out;
   position: absolute;
   left: 78px;
   top: 1px;
-  height: ${props => props.$height ? `${props.$height}px` : '100%'};
+  height: ${props => props.$height ? `${props.$height}px` : '0'};
   width: 2px;
   background-color: ${(props) => props.theme.black};
   z-index: 0;
@@ -43,6 +47,24 @@ const TimelineRow = styled.div<{ $isLast?: boolean }>`
   align-items: flex-start;
   margin-bottom: ${props => props.$isLast ? '0' : '3rem'};
   position: relative;
+
+  ${props => props.$isLast && `
+    &::after {
+      content: '';
+      position: absolute;
+      left: 76px;
+      top: calc(2.5rem + 5px);
+      bottom: -50px;
+      width: 8px;
+      background-color: ${props.theme.white};
+      z-index: 1;
+
+      @media (max-width: 767.98px) {
+        left: 57px;
+        top: calc(2rem + 4px);
+      }
+    }
+  `}
 `
 
 const Year = styled.div`
@@ -53,7 +75,9 @@ const Year = styled.div`
   color: ${(props) => props.theme.black};
   font-size: 1.1rem;
 
+  margin-top: 5px;
   @media (max-width: 767.98px) {
+    margin-top: 3px;
     min-width: 50px;
     padding-right: 1.5rem;
     font-size: 1rem;
@@ -65,9 +89,8 @@ const TimelineDot = styled.div`
   height: 2.5rem;
   border-radius: 50%;
   background-color: ${(props) => props.theme.primaryColor};
+  left: -18px;
   position: absolute;
-  left: 79px;
-  transform: translateX(-50%);
   z-index: 2;
   flex-shrink: 0;
 
@@ -75,6 +98,17 @@ const TimelineDot = styled.div`
     left: 59px;
     width: 2rem;
     height: 2rem;
+  }
+`
+
+const TimelineDotWrapper = styled.div`
+  position: absolute;
+  left: 77px;
+  top: 0;
+  transform: translateX(-50%);
+
+  @media (max-width: 767.98px) {
+    left: 58px;
   }
 `
 
@@ -162,6 +196,122 @@ const BulletList = styled.ul`
     }
   }
 `
+
+// Timeline row item with animations
+interface TimelineRowItemProps {
+  entry: {
+    year: string;
+    company: string;
+    location: string;
+    title: string;
+    bullets: string[];
+  };
+  index: number;
+  totalEntries: number;
+  onAnimated?: (index: number) => void;
+  rowRef?: (el: HTMLDivElement | null) => void;
+}
+
+function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef }: TimelineRowItemProps) {
+  const [nodePopped, setNodePopped] = useState(false);
+
+  // Trigger when entry is 1/3 to 1/2 up the viewport (negative margin means above bottom edge)
+  const { ref: containerRef, isInView } = useInViewAnimation({
+    once: true,
+    rootMargin: '-20% 0px -40% 0px', // Trigger when center 1/3 of viewport
+  });
+
+  useEffect(() => {
+    if (isInView && !nodePopped) {
+      setNodePopped(true);
+      onAnimated?.(index);
+    }
+  }, [isInView, nodePopped, index, onAnimated]);
+
+  const isMobile = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
+  }, []);
+
+  const extractStartYear = (dateString: string): string => {
+    const match = dateString.match(/[A-Za-z]+ (\d{4})/);
+    return match ? match[1] : dateString;
+  };
+
+  const isLast = index === totalEntries - 1;
+
+  // Combined ref handler
+  const setRefs = useCallback((el: HTMLDivElement | null) => {
+    containerRef(el);
+    rowRef?.(el);
+  }, [containerRef, rowRef]);
+
+  return (
+    <div ref={setRefs}>
+      <TimelineRow $isLast={isLast}>
+        <Year>
+          <motion.span
+            initial={{ opacity: 0, x: isMobile ? -15 : 15 }}
+            animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
+            transition={{
+              duration: 0.5,
+              ease: [0.2, 0.8, 0.2, 1]
+            }}
+          >
+            {extractStartYear(entry.year)}
+          </motion.span>
+        </Year>
+        <TimelineDotWrapper>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{
+              scale: nodePopped ? 1 : 0.8,
+              opacity: nodePopped ? 1 : 0,
+            }}
+            transition={{
+              duration: 0.4,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
+          >
+            <TimelineDot />
+          </motion.div>
+        </TimelineDotWrapper>
+        <Content>
+          <motion.div
+            initial={{ opacity: 0, x: isMobile ? -15 : 15 }}
+            animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
+            transition={{
+              duration: 0.5,
+              ease: [0.2, 0.8, 0.2, 1]
+            }}
+          >
+            <CompanyHeader>
+              <Company>{entry.company}</Company>
+              <Location>{entry.location}</Location>
+            </CompanyHeader>
+            <Title>{entry.title}</Title>
+            <BulletList>
+              {entry.bullets.map((bullet, bulletIndex) => (
+                <motion.li
+                  key={bulletIndex}
+                  initial={{ opacity: 0, x: isMobile ? -10 : 10 }}
+                  animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: nodePopped ? 0.2 + (bulletIndex * 0.1) : 0,
+                    ease: [0.2, 0.8, 0.2, 1]
+                  }}
+                >
+                  {bullet}
+                </motion.li>
+              ))}
+            </BulletList>
+          </motion.div>
+        </Content>
+      </TimelineRow>
+    </div>
+  );
+}
 
 export default function Experience() {
   const [lineHeight, setLineHeight] = useState<number>(0);
@@ -278,7 +428,7 @@ export default function Experience() {
   }, [experienceData.length]);
 
   return (
-    <ExperienceSection name="Experience" ref={sectionRef}>
+    <ExperienceSection ref={sectionRef}>
       <Container>
         <Row noGutters className="justify-content-center pb-2 pt-5">
           <Col md={12} className="heading-section text-center">
@@ -290,26 +440,13 @@ export default function Experience() {
             <TimelineContainer ref={timelineContainerRef}>
               <VerticalLine $height={lineHeight > 0 ? lineHeight : undefined} />
               {experienceData.map((entry, index) => (
-                <TimelineRow
+                <TimelineRowItem
                   key={index}
-                  $isLast={index === experienceData.length - 1}
-                  ref={(el) => { rowRefs.current[index] = el; }}
-                >
-                  <Year>{extractStartYear(entry.year)}</Year>
-                  <TimelineDot />
-                  <Content>
-                    <CompanyHeader>
-                      <Company>{entry.company}</Company>
-                      <Location>{entry.location}</Location>
-                    </CompanyHeader>
-                    <Title>{entry.title}</Title>
-                    <BulletList>
-                      {entry.bullets.map((bullet, bulletIndex) => (
-                        <li key={bulletIndex}>{bullet}</li>
-                      ))}
-                    </BulletList>
-                  </Content>
-                </TimelineRow>
+                  entry={entry}
+                  index={index}
+                  totalEntries={experienceData.length}
+                  rowRef={(el) => { rowRefs.current[index] = el; }}
+                />
               ))}
             </TimelineContainer>
           </Col>

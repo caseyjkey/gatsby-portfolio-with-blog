@@ -6,9 +6,10 @@ import { Button } from './style.ts'
 import FallingArrow from './Introduction/Mouse'
 import Socials from './Social'
 import Resume from './Introduction/resume.pdf'
-import { Animated } from 'react-animated-css'
 import { graphql, useStaticQuery } from 'gatsby'
 import Typewriter from 'typewriter-effect/dist/core'
+import { motion } from 'motion/react'
+import { HERO_TIMING, EASING, fadeInUpVariants } from '../animations'
 
 // Blob SVG components with preserveAspectRatio="none" for controlled stretching
 const MobileBlob = ({ className }: { className?: string }) => (
@@ -61,7 +62,9 @@ export default function Introduction(props) {
   const [headerEnd, setHeaderEnd] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [textScale, setTextScale] = useState(1);
+  const [entranceComplete, setEntranceComplete] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
+
   const endHeader = () => {
     setHeaderEnd(true);
   };
@@ -107,6 +110,12 @@ export default function Introduction(props) {
 
     return () => window.removeEventListener('resize', calculateTextScale);
   }, [headerEnd]); // Recalculate when headerEnd changes
+
+  // Trigger entrance animations
+  useEffect(() => {
+    const timer = setTimeout(() => setEntranceComplete(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     let header = document.getElementById('typewriter1');
@@ -187,24 +196,32 @@ export default function Introduction(props) {
       </MobileArrowWrapper>
 
       <MobileSvgWrapper>
-        <MobileHeadshotContainer>
-          <StyledMobileBlob />
-          <MobileHeadshotImage src="/mobile-headshot.webp" alt="Casey Key" />
-        </MobileHeadshotContainer>
+        <motion.div
+          initial={{ opacity: 0, scale: HERO_TIMING.portrait.scaleFrom }}
+          animate={{ opacity: 1, scale: HERO_TIMING.portrait.scaleTo }}
+          transition={{
+            duration: HERO_TIMING.portrait.duration / 1000,
+            delay: HERO_TIMING.portrait.delay / 1000,
+            ease: EASING,
+          }}
+        >
+          <MobileHeadshotContainer>
+            <StyledMobileBlob />
+            <MobileHeadshotImage src="/mobile-headshot.webp" alt="Casey Key" />
+          </MobileHeadshotContainer>
+        </motion.div>
       </MobileSvgWrapper>
 
-      <ResumeButtonWrapper
-        className="container position-absolute start-50 translate-middle-x resume-responsive-container"
-        isVisible={isReady}
-      >
+      <ResumeButtonWrapper isVisible={true} className="container position-absolute start-50 translate-middle-x resume-responsive-container">
         <div className="row justify-content-center-mobile">
           <div className="col-6-responsive d-flex justify-content-center">
-            <Button
+            <motion.button
               id="resume"
-              color="primary"
-              style={{
-                transform: 'translateY(calc(-100% + 3rem))'
-              }}
+              className="btn btn-primary"
+              initial="hidden"
+              animate="visible"
+              custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
+              variants={fadeInUpVariants}
               onClick={(e) => {
                 e.preventDefault();
                 const Scroll = require('react-scroll');
@@ -212,37 +229,61 @@ export default function Introduction(props) {
               }}
             >
               View Experience
-            </Button>
+            </motion.button>
           </div>
         </div>
       </ResumeButtonWrapper>
 
       {/* Desktop illustration - positioned outside container, centered at 75% viewport width */}
       <DesktopIllustrationPositioner>
-        <DesktopHeadshotContainer>
-          <StyledDesktopBlob />
-          <DesktopHeadshotImage src="/headshot.webp" alt="Casey Key" />
-        </DesktopHeadshotContainer>
+        <motion.div
+          initial={{ opacity: 0, scale: HERO_TIMING.portrait.scaleFrom }}
+          animate={{ opacity: 1, scale: HERO_TIMING.portrait.scaleTo }}
+          transition={{
+            duration: HERO_TIMING.portrait.duration / 1000,
+            delay: HERO_TIMING.portrait.delay / 1000,
+            ease: EASING,
+          }}
+        >
+          <DesktopHeadshotContainer>
+            <StyledDesktopBlob />
+            <DesktopHeadshotImage src="/headshot.webp" alt="Casey Key" />
+          </DesktopHeadshotContainer>
+        </motion.div>
       </DesktopIllustrationPositioner>
 
-      <AnimatedContent
-        animationIn="fadeInUp"
-        animationInDuration={500}
-        animationInDelay={100}
-        animateOnMount={false}
-        isVisible={isReady}
-      >
+      <AnimatedContent>
         <Container>
           <Row noGutters xs="1" md="2" className="justify-content-center align-items-center">
             <Col md className="text-center">
               <Text ref={textRef} style={{ transform: `scale(${textScale})`, transformOrigin: 'top center' }}>
-                <Subheader>{data.introduction.greeting}</Subheader>
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  custom={{ delay: HERO_TIMING.hello.delay / 1000 }}
+                  variants={fadeInUpVariants}
+                >
+                  <Subheader>{data.introduction.greeting}</Subheader>
+                </motion.div>
                 <Slider isFinished={headerEnd}>
-                  <h2 className="subheader">
+                  <motion.h2
+                    className="subheader"
+                    initial="hidden"
+                    animate="visible"
+                    custom={{ delay: HERO_TIMING.intro.delay / 1000 }}
+                    variants={fadeInUpVariants}
+                  >
                     I'm <span id="name">{data.introduction.name}</span>, the {data.introduction.role}.
-                  </h2>
+                  </motion.h2>
 
-                  <div id="typewriter">
+                  <motion.div
+                    id="typewriter"
+                    initial="hidden"
+                    animate="visible"
+                    custom={{ delay: HERO_TIMING.typewriter.delay / 1000 }}
+                    variants={fadeInUpVariants}
+                    style={{ transition: 'none' }} // Disable CSS transitions to prevent conflicts
+                  >
                     {/* THIS LAYER IS VISIBLE FIRST */}
                     <div className="view-layer tech-view">
                       <h2 className="subheader">Driving impact as...</h2>
@@ -257,7 +298,7 @@ export default function Introduction(props) {
                         <Socials />
                       </SocialStyle>
                     </div>
-                  </div>
+                  </motion.div>
                 </Slider>
 
               </Text>
@@ -394,7 +435,7 @@ const DesktopArrowWrapper = styled.div`
   }
 `;
 
-const AnimatedContent = styled(Animated)`
+const AnimatedContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -407,11 +448,6 @@ const AnimatedContent = styled(Animated)`
   /* Ensure the internal Reactstrap container also stays fluid */
   .container {
     height: auto !important;
-  }
-
-  /* Fix flash: When animated class exists but no animation class yet, hide the element */
-  &.animated:not([class*="fadeIn"]):not([class*="fadeOut"]) {
-    opacity: 0 !important;
   }
 
   @media (max-width: 767.98px) {
@@ -446,11 +482,12 @@ const DesktopIllustrationPositioner = styled.div`
   }
 `;
 
-interface ResumeButtonWrapperProps {
-  isVisible?: boolean;
-}
-
-const ResumeButtonWrapper = styled.div<ResumeButtonWrapperProps>`
+const ResumeButtonWrapper = styled.div`
+  @media (min-width: 768px) {
+    #resume {
+      margin-top: 1rem;
+    }
+  }
   z-index: 100;
   height: 0;
 

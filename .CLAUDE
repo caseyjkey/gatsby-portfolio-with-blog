@@ -438,8 +438,8 @@ Example: `src/data/projects/whatspython/project.json`
 Corrected package.json scripts for Gatsby (previously had incorrect react-scripts references):
 ```json
 {
-  "dev": "gatsby develop -H 0.0.0.0",
-  "start": "gatsby develop -H 0.0.0.0",
+  "develop": "gatsby develop",
+  "start": "gatsby develop",
   "build": "gatsby build",
   "serve": "gatsby serve",
   "clean": "gatsby clean",
@@ -455,10 +455,11 @@ Corrected package.json scripts for Gatsby (previously had incorrect react-script
 
 ## Development Commands
 
+**IMPORTANT:** Always use **yarn** instead of npm for this project.
+
 ### Starting Dev Server
 ```bash
-yarn dev
-# or: npm run dev
+yarn develop
 ```
 This starts the Gatsby development server with hot-reloading using auto-port selection, which tries ports 8001-8008 in sequence until one is available, without requiring terminal input.
 
@@ -487,7 +488,7 @@ git worktree add .worktrees/feature-name -b feature-name
 
 # Navigate to worktree and start working
 cd .worktrees/feature-name
-yarn dev
+yarn develop
 ```
 
 **Important:** AI agents should work in worktrees and use feature branches when appropriate. This keeps the main branch clean and allows for isolated development and testing before merging.
@@ -549,3 +550,155 @@ No test suite is currently configured for this project.
 
 ## Contact
 This file should be updated as the codebase evolves and migration plans solidify.
+
+---
+
+## Motion System (Sitewide Animation Unification)
+
+### Overview
+All site animations use a unified motion system powered by **Motion One** (framework-agnostic WAAPI-based library). This ensures smooth 60fps animations even on slower devices and compatibility with future Astro migration.
+
+### Technology Choice: Motion One
+- **Bundle size:** ~2-3KB (vs ~17-27KB for Framer Motion)
+- **Performance:** S-Tier compositor thread animations (uninterruptible by main thread blocking)
+- **Astro compatibility:** Framework-agnostic, works natively without React hydration
+- **Migration path:** Code written for Motion One works in both Gatsby and Astro
+
+### Global Constants (All Animations)
+
+| Setting | Desktop | Mobile |
+|---------|---------|--------|
+| **Duration** | 800ms (varies by element) | 800ms (varies by element) |
+| **Easing** | `cubic-bezier(0.2, 0.8, 0.2, 1)` | Same |
+| **Trigger** | `rootMargin: '0px 0px -15% 0px'` | `rootMargin: '0px 0px -10% 0px'` |
+| **Behavior** | `once: true` | `once: true` |
+| **Threshold** | Default | 0.05 (5%) |
+| **Constraint** | - | Disable lateral movement if width > 90% viewport |
+
+### Standardized Timing Table (All Pages)
+
+| Element Type | Delay | Duration | Effect |
+|--------------|-------|----------|--------|
+| Section Header | 0ms | 800ms | Slide up 30px + Fade |
+| Primary Column/Unit | 150ms | 700ms | Slide up 20px + Fade |
+| Secondary Unit | +100ms | 700ms | Slide up 20px + Fade |
+| Illustrations/Media | 300ms | 1000ms | Pure Fade or Soft Scale (0.98 → 1.0) |
+
+### Desktop Animation Rules
+
+| Rule | Pattern | Vector | Stagger |
+|------|---------|--------|---------|
+| **Inward Snap** | Split-Row (Illustration + Text) | Left: `translate(-20px, 30px) → 0`<br>Right: `translate(20px, 30px) → 0` | Same time, or Illustration +150ms |
+| **Horizontal Wave** | Card Grids (Skills, Blog list) | Pure vertical: `translateY(30px) → 0` | `(col × 150ms) + (row × 50ms)` via `data-col`/`data-row` |
+| **Focus Scale** | Text Hierarchy | 40px / 30px / 20px / 10px vertical lift | CSS transition-delay sequence |
+| **Logical Unit** | Expertise sub-sections | Apply Rule 1 or 2 to wrapper div | - |
+
+### Mobile Animation Rules
+
+| Rule | Pattern | Vector | Stagger |
+|------|---------|--------|---------|
+| **Vertical Stack** | Expertise & Work rows | `translateY(20px) → 0` | 100ms sequential |
+| **Timeline Draw** | Experience section | `translateX(-15px) → 0` | Triggered by blue dot |
+| **Weighted Lift** | General text hierarchy | 30px / 20px / 10px vertical | - |
+
+### Hero Entrance Rules (Home Page)
+
+**Initialization:** All hero elements (except logo/nav) start at `opacity: 0` and `transform: translateY(30px)`
+
+| Element | Delay | Vector | Duration | Special |
+|---------|-------|--------|----------|---------|
+| "Hello," H1 | 0ms | 30px up + Fade | 800ms | - |
+| Intro Sentence | 150ms | 20px up + Fade | 800ms | - |
+| Typewriter Container | 300ms | 10px up + Fade | 800ms | Must complete before typewriter starts |
+| Sub-text/Description | 450ms | 10px up + Fade | 800ms | - |
+| Portrait (Right) | 400ms | 30px vertical lift | 1200ms | Scale 0.95 → 1.0 |
+| CTA Button | 600ms | 20px up + Fade | 800ms | - |
+| Down Arrow | 1000ms | Fade in | 800ms | Then infinite bob loop (±5px) |
+
+### Component-Specific Rules
+
+#### Core Expertise "Rows"
+- Alternating rows (Text-Right/Image-Left, Text-Left/Image-Right)
+- Main Header ("Core Expertise") triggers first (Section Header timing)
+- Row Units: Illustration and Text Block are siblings
+- Logic: Text Block animates, Illustration follows with +150ms delay ("follow-through" effect)
+
+#### Experience "Timeline"
+
+| Device | Line Behavior | Node Trigger |
+|--------|--------------|--------------|
+| **Desktop** | Scroll-Linked ScaleY: Line length mapped to scroll depth | Triggers when container is 15% visible |
+| **Mobile** | Timed Segment Reveal: Line grows in "jumps" between jobs | Triggers instantly when top of job card appears |
+
+**Desktop Arrival Sequence:**
+1. Line Segment: Grows downward from previous year
+2. Blue Node: Fades + Pops `scale(0 → 1.2 → 1.0)` when line touches center
+3. Content (Year/Company): Slides Right 15px when node is stable
+
+#### Skills Icons
+- Desktop: Horizontal Wave (card grid stagger via `data-col`/`data-row`)
+- Mobile: Vertical Stack
+
+#### Resume Page Accordion
+- Height Animation: Smooth `grid-template-rows: 1fr` or `max-height` transition
+- Content Lift: 10px upward slide + fade (0 → 1)
+- Subsequent Opens: Repeat every time (no "cheap pop" on second open)
+- Desktop: Slide 10px Up + 5px Right
+- Mobile: Pure 10px vertical lift (prevent horizontal overflow)
+
+#### Blog/Project Cards
+- Desktop: Horizontal Wave with `data-col`/`data-row` attributes
+- Mobile: Vertical Stack
+
+### Keep Existing (No Changes)
+- Navigation bar scroll hide/show behavior
+- Hamburger menu animation
+
+### Implementation Notes
+
+#### Horizontal Wave Implementation
+Use `data-col` and `data-row` attributes on cards (build-time generated):
+```html
+<div class="card" data-col="0" data-row="0">Card 1</div>
+<div class="card" data-col="1" data-row="0">Card 2</div>
+<div class="card" data-col="2" data-row="0">Card 3</div>
+```
+
+Stagger calculation: `delay = (column_index × 150ms) + (row_index × 50ms)`
+
+#### Mobile Optimization
+- Threshold: 0.05 (mobile users scroll faster)
+- RootMargin: `0px 0px -10% 0px` (triggers earlier)
+- Disable lateral (X-axis) movement if element width > 90% viewport
+
+#### Reduced Motion Support
+Always respect `prefers-reduced-motion`:
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Disable or simplify animations */
+}
+```
+
+### Animation Library Migration
+
+**Removing:**
+- `react-animated-css` - Being replaced with Motion One
+- `react-waypoint` - Being replaced with IntersectionObserver
+- `aos` - Being removed entirely
+
+**Installing:**
+- Motion One (`motion`) - ~2-3KB
+
+**Files to Update:**
+All components using `<Animated>` or `<Waypoint>` pattern:
+- Introduction.tsx
+- About.tsx
+- Social.tsx
+- Services/Service.tsx
+- Skills/Skill.tsx
+- Resume/Entry.tsx
+- Resume/Skill.tsx
+- Contact/Info.tsx
+- Projects/Project.tsx
+- Footer.tsx
+- Hire.tsx

@@ -1,30 +1,39 @@
-import React, { useState, Suspense } from 'react'
-import { Tooltip } from 'reactstrap'
-import { Waypoint } from 'react-waypoint'
-import { Animated } from 'react-animated-css'
+import React, { useRef, Suspense, useEffect, useState } from 'react'
+import { UncontrolledTooltip } from 'reactstrap'
 import { SkillContainer } from './style'
 
-export function Skill({ skill, Icon }) {
-  const [visible, setVisible] = useState(false);
-  const isSSR = typeof window === "undefined"
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-  const id = skill.replace(/[^a-z0-9]/gi, '') + 'Tooltip';
+interface SkillProps {
+  skill: string;
+  Icon: React.ComponentType<{ size?: string | number; style?: React.CSSProperties }>;
+  [key: string]: any;
+}
+
+export function Skill({ skill, Icon, ...props }: SkillProps) {
+  const targetRef = useRef<HTMLSpanElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const id = `skill-${skill.replace(/[^a-z0-9]/gi, '')}-${Math.random().toString(36).substr(2, 9)}`;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <SkillContainer>
-      {!isSSR && ( 
-        <Suspense fallback={<p>Loading...</p>}>
-          <Animated animationIn="fadeInUp" isVisible={visible}>
-            <span id={id}>
-              <Icon size={'2rem'} style={{textAlign: 'center'}}/>
-            </span>
-            <Tooltip placement="top" isOpen={tooltipOpen} target={id} toggle={() => setTooltipOpen(!tooltipOpen)}>
-              {skill} 
-            </Tooltip>
-            <Waypoint onEnter={() => setVisible(true)} />
-          </Animated>
+      {isMounted && (
+        <Suspense fallback={null}>
+          <span id={id} ref={targetRef} {...props}>
+            <Icon size={'2rem'} style={{ textAlign: 'center' }} />
+          </span>
+          <UncontrolledTooltip
+            placement="top"
+            target={targetRef.current || id}
+            fade={true}
+            delay={{ show: 0, hide: 0 }}
+          >
+            {skill}
+          </UncontrolledTooltip>
         </Suspense>
       )}
     </SkillContainer>
   );
 }
-

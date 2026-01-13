@@ -5,7 +5,7 @@ import Button from './Hamburger'
 import { Link } from 'gatsby'
 import { useScrollDirection } from '../../hooks/useScrollDirection'
 
-export function Nav({children}) {
+export function Nav({ children }) {
   const [collapsed, setCollapsed] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const toggleNavbar = () => setCollapsed(!collapsed);
@@ -69,37 +69,37 @@ export function Nav({children}) {
       <Container>
         <a className="navbar-brand" href="/"><span>C</span>asey Key</a>
         <NavbarToggler onClick={toggleNavbar} className="js-fh5co-nav-toggle fh5co-nav-toggle" aria-label="Toggle navigation">
-          <Button scrolled={scrolled || isMenuOpen}/>
+          <Button scrolled={scrolled} />
         </NavbarToggler>
         <Collapse isOpen={!collapsed} className="navbar-collapse" id="ftco-nav" style={{
           backgroundColor: isMenuOpen ? (window.innerWidth < 768 ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)') : 'transparent',
           backdropFilter: isMenuOpen ? 'blur(0px)' : 'none'
         }}>
-            <ul className="navbar-nav nav ms-auto">
-              {children}
-            </ul>
+          <ul className="navbar-nav nav ms-auto">
+            {children}
+          </ul>
         </Collapse>
       </Container>
     </nav>
   );
 }
 
-export function Scroll({ to, children, offset}) {
+export function Scroll({ to, children, offset }) {
   return (
-      <li className="nav-item">
-        <ScrollLink to={to} activeClass="active" spy={true} smooth="true" offset={offset} className="nav-link">
-          <span>{children}</span>
-        </ScrollLink>
-      </li>
+    <li className="nav-item">
+      <ScrollLink to={to} activeClass="active" spy={true} smooth="true" offset={offset} className="nav-link">
+        <span>{children}</span>
+      </ScrollLink>
+    </li>
   );
 };
 
-export function TradLink({ to, children}) {
+export function TradLink({ to, children }) {
   return (
-      <li className="nav-item">
-        <Link to={to} className="nav-link">
-          <span>{children}</span>
-        </Link>
-      </li>
+    <li className="nav-item">
+      <Link to={to} className="nav-link">
+        <span>{children}</span>
+      </Link>
+    </li>
   );
 }
