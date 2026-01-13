@@ -23,17 +23,14 @@ const TimelineContainer = styled.div`
   position: relative;
 `
 
-interface VerticalLineProps {
-  $height?: number;
-}
-
-const VerticalLine = styled.div<VerticalLineProps>`
+const VerticalLine = styled.div`
+  /* Map the height to the CSS variable */
+  height: var(--line-height, 0px);
   transition: height 0.15s linear;
   will-change: height;
   position: absolute;
   left: 78px;
   top: 1px;
-  height: ${props => props.$height ? `${props.$height}px` : '0'};
   width: 2px;
   background: linear-gradient(
     to bottom,
@@ -41,22 +38,10 @@ const VerticalLine = styled.div<VerticalLineProps>`
     #3e64ff calc(100% - 20px),
     rgba(62, 100, 255, 0) 100%
   );
-  z-index: 0;
 
   @media (max-width: 767.98px) {
     left: 59px;
   }
-`
-
-const Shield = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #ffffff; // Must match your site background
-  border-radius: 50%;
-  z-index: 1; // Above the line (z-index: 0)
 `
 
 const TimelineRow = styled.div<{ $isLast?: boolean }>`
@@ -112,7 +97,7 @@ const TimelineDot = styled.div<{ animate?: boolean }>`
   flex-shrink: 0;
 
   @media (max-width: 767.98px) {
-    left: 59px;
+    left: -14px;
     width: 2rem;
     height: 2rem;
   }
@@ -228,10 +213,10 @@ interface TimelineRowItemProps {
   onAnimated?: (index: number) => void;
   rowRef?: (el: HTMLDivElement | null) => void;
   dotRef?: React.RefObject<HTMLDivElement | null>;
-  lineHeight?: number;
+  timelineContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
-function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRef, lineHeight }: TimelineRowItemProps) {
+function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRef, timelineContainerRef }: TimelineRowItemProps) {
   const [nodePopped, setNodePopped] = useState(false);
   const [hasBeenReached, setHasBeenReached] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -256,11 +241,25 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
     return rect.top;
   }, [containerRef]);
 
+  // Check if line has reached this dot by reading CSS variable
   useEffect(() => {
-    if (lineHeight !== undefined && lineHeight >= myTopOffset) {
-      setHasBeenReached(true); // Once this is true, it never goes back to false
-    }
-  }, [lineHeight, myTopOffset]);
+    const checkLineIntersection = () => {
+      if (timelineContainerRef.current) {
+        const lineHeight = parseInt(timelineContainerRef.current.style.getPropertyValue('--line-height') || '0');
+        if (lineHeight >= myTopOffset) {
+          setHasBeenReached(true); // Once this is true, it never goes back to false
+        }
+      }
+    };
+
+    checkLineIntersection();
+
+    // Listen for scroll events to recheck
+    const handleScroll = () => checkLineIntersection();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [myTopOffset]);
 
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
@@ -298,17 +297,16 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
         </Year>
         <TimelineDotWrapper>
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ opacity: 0, scale: 0 }}
             animate={{
-              scale: nodePopped ? 1 : 0.8,
               opacity: nodePopped ? 1 : 0,
+              scale: nodePopped ? 1 : 0,
             }}
             transition={{
               duration: 0.4,
-              ease: [0.25, 0.1, 0.25, 1],
+              ease: [0.34, 1.56, 0.64, 1],
             }}
           >
-            <Shield />
             <TimelineDot ref={dotRef} animate={hasBeenReached} />
           </motion.div>
         </TimelineDotWrapper>
@@ -350,7 +348,6 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
 }
 
 export default function Experience() {
-  const [lineHeight, setLineHeight] = useState<number>(0);
   const sectionRef = useRef<HTMLElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -423,15 +420,13 @@ export default function Experience() {
     // Throttle: only request animation frame if not already pending
     if (rafRef.current === null) {
       rafRef.current = requestAnimationFrame(() => {
-        const newHeight = calculateLineHeight();
+        const height = calculateLineHeight();
 
-        // Only update state if height actually changed
-        setLineHeight(prevHeight => {
-          if (prevHeight !== newHeight) {
-            return newHeight;
-          }
-          return prevHeight;
-        });
+        // Target the container and set a CSS variable
+        if (timelineContainerRef.current) {
+          timelineContainerRef.current.style.setProperty('--line-height', `${height}px`);
+        }
+
         rafRef.current = null;
       });
     }
@@ -477,7 +472,7 @@ export default function Experience() {
         <Row className="justify-content-center">
           <Col md={12}>
             <TimelineContainer ref={timelineContainerRef}>
-              <VerticalLine $height={lineHeight > 0 ? lineHeight : undefined} />
+              <VerticalLine />
               {experienceData.map((entry, index) => (
                 <TimelineRowItem
                   key={index}
@@ -486,7 +481,7 @@ export default function Experience() {
                   totalEntries={experienceData.length}
                   rowRef={(el) => { rowRefs.current[index] = el; }}
                   dotRef={index === 0 ? firstDotRef : index === experienceData.length - 1 ? lastDotRef : undefined}
-                  lineHeight={lineHeight}
+                  timelineContainerRef={timelineContainerRef}
                 />
               ))}
             </TimelineContainer>
