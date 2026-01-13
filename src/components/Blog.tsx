@@ -1,14 +1,14 @@
 import { useStaticQuery, graphql, Link } from 'gatsby'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Heading } from './style'
 import { Container, Row, Col } from 'reactstrap'
 import { BlogSection, BlogEntry } from './Blog/style'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
-import { ANIMATION_CONFIG, TIMING } from '../animations/config'
+import { ANIMATION_CONFIG, TIMING, STAGGER } from '../animations/config'
 
 // Animated blog entry component
-const AnimatedBlogEntry = ({ children, index }: { children: React.ReactNode; index: number }) => {
+const AnimatedBlogEntry = ({ children, index, initialBatchCount }: { children: React.ReactNode; index: number; initialBatchCount: number }) => {
     const [isVisible, setIsVisible] = useState(false);
     const entryRef = React.useRef<HTMLDivElement>(null);
 
@@ -22,7 +22,7 @@ const AnimatedBlogEntry = ({ children, index }: { children: React.ReactNode; ind
                     }
                 });
             },
-            { threshold: 0.1, rootMargin: ANIMATION_CONFIG.rootMargin }
+            { threshold: 0.1, rootMargin: '0px' }
         );
 
         if (entryRef.current) {
@@ -32,12 +32,23 @@ const AnimatedBlogEntry = ({ children, index }: { children: React.ReactNode; ind
         return () => observer.disconnect();
     }, [isVisible]);
 
+    // Only items in the first "screen-full" get the sequential delay
+    console.log(initialBatchCount, index)
+
+    // Responsive stagger: sequential on desktop, column-based on mobile
+    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
+    const delay = index < initialBatchCount
+        ? 0.3 + (index * STAGGER / 1000)  // Convert STAGGER ms to seconds
+        : isDesktop
+            ? ((index + 1) % 3) * STAGGER / 1000  // Column-based delay on desktop
+            : STAGGER / 1000;  // Fixed delay for mobile
+
     return (
-        <BlogEntry ref={entryRef}>
+        <BlogEntry ref={entryRef} className="blog-card-wrapper">
             <motion.div
                 initial="hidden"
                 animate={isVisible ? "visible" : "hidden"}
-                custom={{ delay: index * 0.1, distance: TIMING.primaryUnit.distance }}
+                custom={{ delay, distance: TIMING.primaryUnit.distance }}
                 variants={fadeInUpVariants}
             >
                 {children}
@@ -48,8 +59,32 @@ const AnimatedBlogEntry = ({ children, index }: { children: React.ReactNode; ind
 
 
 export const Blog = (props) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [initialBatchCount, setInitialBatchCount] = useState(0);
+
+    useLayoutEffect(() => {
+        const cards = containerRef.current?.querySelectorAll('.blog-card-wrapper');
+        if (!cards) return;
+
+        const viewportHeight = window.innerHeight;
+        let count = 0;
+
+        for (let i = 0; i < cards.length; i++) {
+            const rect = cards[i].getBoundingClientRect();
+            console.log(rect.top)
+            if (rect.top < viewportHeight) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        setInitialBatchCount(count);
+    }, []);
+
     const [isHeaderVisible, setIsHeaderVisible] = useState(false);
     const headerRef = React.useRef<HTMLDivElement>(null);
+    const [isSubheaderVisible, setIsSubheaderVisible] = useState(false);
+    const subheaderRef = React.useRef<HTMLParagraphElement>(null);
 
     const data = useStaticQuery(
         graphql`
@@ -84,7 +119,7 @@ export const Blog = (props) => {
                     }
                 });
             },
-            { threshold: 0.1, rootMargin: ANIMATION_CONFIG.rootMargin }
+            { threshold: 0.1, rootMargin: '0px' }
         );
 
         if (headerRef.current) {
@@ -94,9 +129,29 @@ export const Blog = (props) => {
         return () => observer.disconnect();
     }, [isHeaderVisible]);
 
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !isSubheaderVisible) {
+                        setIsSubheaderVisible(true);
+                        observer.disconnect();
+                    }
+                });
+            },
+            { threshold: 0.1, rootMargin: '0px' }
+        );
+
+        if (subheaderRef.current) {
+            observer.observe(subheaderRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [isSubheaderVisible]);
+
 
     return (
-        <BlogSection name="Blog">
+        <BlogSection>
             <Container fluid={true} className="">
                 <Row noGutters className="justify-content-center pb-5">
                     <Col md={12} className="heading-section text-center">
@@ -108,30 +163,41 @@ export const Blog = (props) => {
                             variants={fadeInUpVariants}
                         >
                             <Heading className="mb-4 mt-5">Blog</Heading>
-                            <p>Coding, reflecting, evolving.</p>
                         </motion.div>
+                        <motion.p
+                            ref={subheaderRef}
+                            initial="hidden"
+                            animate={isSubheaderVisible ? 'visible' : 'hidden'}
+                            custom={{ delay: 0.2 }}
+                            variants={fadeInUpVariants}
+                        >
+                            Coding, reflecting, evolving.
+
+                        </motion.p>
                     </Col>
                 </Row>
-                <Row>
-                    {data.allMdx.nodes.map(
-                        ({ id, excerpt, frontmatter, fields }, index) => (
-                            <AnimatedBlogEntry key={id} index={index}>
-                                <Link to={fields.slug}>
-                                    {/* TODO: Implement proper cover image handling - cover is currently a string path */}
-                                    {/* {frontmatter.cover ? (
+                <div ref={containerRef}>
+                    <Row>
+                        {data.allMdx.nodes.map(
+                            ({ id, excerpt, frontmatter, fields }, index) => (
+                                <AnimatedBlogEntry key={id} index={index} initialBatchCount={initialBatchCount}>
+                                    <Link to={fields.slug}>
+                                        {/* TODO: Implement proper cover image handling - cover is currently a string path */}
+                                        {/* {frontmatter.cover ? (
                                         <Image
                                             image={frontmatter.cover.childImageSharp.gatsbyImageData}
                                             className='mx-auto'
                                         />
                                     ) : null} */}
-                                    <h1>{frontmatter.title}</h1>
-                                    <p>{frontmatter.date}</p>
-                                    <p class="excerpt">{excerpt}</p>
-                                </Link>
-                            </AnimatedBlogEntry>
-                        )
-                    )}
-                </Row>
+                                        <h1>{frontmatter.title}</h1>
+                                        <p>{frontmatter.date}</p>
+                                        <p className="excerpt">{excerpt}</p>
+                                    </Link>
+                                </AnimatedBlogEntry>
+                            )
+                        )}
+                    </Row>
+                </div>
             </Container>
         </BlogSection>
     );

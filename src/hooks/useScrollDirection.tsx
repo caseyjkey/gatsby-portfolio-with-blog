@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface ScrollDirection {
   isScrollingDown: boolean;
@@ -8,16 +8,17 @@ interface ScrollDirection {
 export function useScrollDirection(threshold: number = 5): ScrollDirection {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const lastScrollY = lastScrollYRef.current;
 
       // Always show navbar at the very top
       if (currentScrollY < 10) {
         setIsVisible(true);
-        setLastScrollY(currentScrollY);
+        lastScrollYRef.current = currentScrollY;
         return;
       }
 
@@ -32,7 +33,7 @@ export function useScrollDirection(threshold: number = 5): ScrollDirection {
           setIsScrollingDown(false);
           setIsVisible(true);
         }
-        setLastScrollY(currentScrollY);
+        lastScrollYRef.current = currentScrollY;
       }
     };
 
@@ -43,7 +44,7 @@ export function useScrollDirection(threshold: number = 5): ScrollDirection {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [lastScrollY, threshold]);
+  }, [threshold]);
 
   return { isScrollingDown, isVisible };
 }

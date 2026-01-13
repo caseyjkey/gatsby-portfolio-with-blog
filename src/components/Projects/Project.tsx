@@ -1,8 +1,8 @@
-import React, { Suspense, useState, ReactNode } from 'react'
+import React, { Suspense, useState, ReactNode, forwardRef } from 'react'
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
-import { theme, Button as EnhancedButton } from '../style.ts'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo } from './style.ts'
+import { theme, Button as EnhancedButton } from '../style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -33,7 +33,7 @@ interface ProjectProps {
   [key: string]: any; // Allow data attributes
 }
 
-export default function Project({
+const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   children,
   title,
   subtitle,
@@ -44,7 +44,7 @@ export default function Project({
   postLink,
   date,
   ...props
-}: ProjectProps): JSX.Element {
+}, ref) => {
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
 
@@ -64,7 +64,7 @@ export default function Project({
   };
 
   return (
-    <ProjectWrapper onClick={toggleModal} className="shadow" {...props}>
+    <ProjectWrapper ref={ref} onClick={toggleModal} className="shadow" {...props}>
       <GalleryFrame>
         <GatsbyImage image={image} alt={title} />
       </GalleryFrame>
@@ -142,4 +142,6 @@ export default function Project({
       </Modal>
     </ProjectWrapper>
   );
-}
+});
+
+export default Project;

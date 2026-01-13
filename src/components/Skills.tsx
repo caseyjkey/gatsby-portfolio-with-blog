@@ -12,22 +12,21 @@ import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 import { ANIMATION_CONFIG, TIMING } from '../animations/config'
 
 export default function Skills() {
-    console.log('[Skills.tsx] WORKTREE VERSION - Component rendered');
-
     // Use the optimized hook for each section's viewport detection
     const { ref: mainHeaderRef, isInView: isVisible } = useInViewAnimation({
         once: true,
-        rootMargin: ANIMATION_CONFIG.rootMargin,
+    });
+
+    const { ref: subheaderRef, isInView: isSubheaderVisible } = useInViewAnimation({
+        once: true,
     });
 
     const { ref: fullStackRef, isInView: isFullStackVisible } = useInViewAnimation({
         once: true,
-        rootMargin: ANIMATION_CONFIG.rootMargin,
     });
 
     const { ref: aiSystemsRef, isInView: isAiSystemsVisible } = useInViewAnimation({
         once: true,
-        rootMargin: ANIMATION_CONFIG.rootMargin,
     });
 
     // Lazyload the an icon component
@@ -37,55 +36,83 @@ export default function Skills() {
         let iconGroup = Icon.slice(0, 2);
         if (iconGroup === 'Gi') {
             return lazy(() =>
-                import('react-icons/gi').then(module =>
-                    ({ default: module[Icon] })
-                )
+                import('react-icons/gi').then(module => {
+                    if (!module[Icon]) {
+                        console.warn(`Icon ${Icon} not found in react-icons/gi`);
+                        return { default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> };
+                    }
+                    return { default: module[Icon] };
+                }).catch(() => ({ default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> }))
             );
         }
         else if (iconGroup === 'Fi') {
             return lazy(() =>
-                import('react-icons/fi').then(module =>
-                    ({ default: module[Icon] })
-                )
+                import('react-icons/fi').then(module => {
+                    if (!module[Icon]) {
+                        console.warn(`Icon ${Icon} not found in react-icons/fi`);
+                        return { default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> };
+                    }
+                    return { default: module[Icon] };
+                }).catch(() => ({ default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> }))
             );
         }
         else if (iconGroup === 'Fa') {
             return lazy(() =>
-                import('react-icons/fa').then(module =>
-                    ({ default: module[Icon] })
-                )
+                import('react-icons/fa').then(module => {
+                    if (!module[Icon]) {
+                        console.warn(`Icon ${Icon} not found in react-icons/fa`);
+                        return { default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> };
+                    }
+                    return { default: module[Icon] };
+                }).catch(() => ({ default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> }))
             );
         }
         else if (iconGroup === 'Di') {
             return lazy(() =>
-                import('react-icons/di').then(module =>
-                    ({ default: module[Icon] })
-                )
+                import('react-icons/di').then(module => {
+                    if (!module[Icon]) {
+                        console.warn(`Icon ${Icon} not found in react-icons/di`);
+                        return { default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> };
+                    }
+                    return { default: module[Icon] };
+                }).catch(() => ({ default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> }))
             );
         }
         else if (iconGroup === 'Ri') {
             return lazy(() =>
-                import('react-icons/ri').then(module =>
-                    ({ default: module[Icon] })
-                )
+                import('react-icons/ri').then(module => {
+                    if (!module[Icon]) {
+                        console.warn(`Icon ${Icon} not found in react-icons/ri`);
+                        return { default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> };
+                    }
+                    return { default: module[Icon] };
+                }).catch(() => ({ default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> }))
             );
         }
         else if (iconGroup === 'Gr') {
             return lazy(() =>
-                import('react-icons/gr').then(module =>
-                    ({ default: module[Icon] })
-                )
+                import('react-icons/gr').then(module => {
+                    if (!module[Icon]) {
+                        console.warn(`Icon ${Icon} not found in react-icons/gr`);
+                        return { default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> };
+                    }
+                    return { default: module[Icon] };
+                }).catch(() => ({ default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> }))
             );
         }
         else if (iconGroup === 'Si') {
             return lazy(() =>
-                import('react-icons/si').then(module =>
-                    ({ default: module[Icon] })
-                )
+                import('react-icons/si').then(module => {
+                    if (!module[Icon]) {
+                        console.warn(`Icon ${Icon} not found in react-icons/si`);
+                        return { default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> };
+                    }
+                    return { default: module[Icon] };
+                }).catch(() => ({ default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> }))
             );
         }
         else {
-            return (<p>Not found.</p>);
+            return lazy(() => Promise.resolve({ default: () => <span style={{ fontSize: '2rem' }}>⚠️</span> }));
         }
     }
 
@@ -107,7 +134,15 @@ export default function Skills() {
                             variants={fadeInUpVariants}
                         >
                             <Heading>Core Expertise</Heading>
-                            <SectionSubheader>Bridging the gap between complex technical architecture and scalable business solutions.</SectionSubheader>
+                            <motion.p
+                                ref={subheaderRef}
+                                initial="hidden"
+                                animate={isSubheaderVisible ? 'visible' : 'hidden'}
+                                custom={{ delay: 0.2 }}
+                                variants={fadeInUpVariants}
+                            >
+                                Bridging the gap between complex technical architecture and scalable business solutions.
+                            </motion.p>
                         </motion.div>
                     </Col>
                 </Row>

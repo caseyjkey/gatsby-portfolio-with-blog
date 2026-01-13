@@ -36,19 +36,21 @@ export default function About(props) {
   // Use the optimized hook for header viewport detection
   const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({
     once: true,
-    rootMargin: ANIMATION_CONFIG.rootMargin,
   });
 
   // Use the optimized hook for content viewport detection
   const { ref: contentRef, isInView: isContentVisible } = useInViewAnimation({
     once: true,
-    rootMargin: ANIMATION_CONFIG.rootMargin,
   });
 
   // Use the optimized hook for headshot viewport detection
   const { ref: headshotRef, isInView: isHeadshotVisible } = useInViewAnimation({
     once: true,
-    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
+
+  // Use the optimized hook for subheader viewport detection
+  const { ref: subheaderRef, isInView: isSubheaderVisible } = useInViewAnimation({
+    once: true,
   });
 
   const data = useStaticQuery(
@@ -109,8 +111,16 @@ export default function About(props) {
               variants={fadeInUpVariants}
             >
               <Heading className="mb-4">About Me</Heading>
-              <p>Technical leadership, strategic mindset, and mission.</p>
             </motion.div>
+            <motion.p
+              ref={subheaderRef}
+              initial="hidden"
+              animate={isSubheaderVisible ? 'visible' : 'hidden'}
+              custom={{ delay: 0.2 }}
+              variants={fadeInUpVariants}
+            >
+              Technical leadership, strategic mindset, and mission.
+            </motion.p>
           </Col>
         </Row>
         <Row noGutters className="block-9 justify-centent-center">

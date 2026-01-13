@@ -76,9 +76,9 @@ export const WAVE_STAGGER = {
 } as const;
 
 /**
- * Mobile sequential stagger
+ * Sequential stagger (applies to both desktop and mobile)
  */
-export const MOBILE_STAGGER = 100; // ms between sequential elements
+export const STAGGER = 100; // ms between sequential elements
 
 /**
  * Hero entrance timing (all in milliseconds)
@@ -134,7 +134,7 @@ export const INWARD_SNAP = {
  */
 export const MOBILE_VERTICAL_STACK = {
   distance: 20, // px
-  stagger: MOBILE_STAGGER, // ms
+  stagger: STAGGER, // ms
 } as const;
 
 /**

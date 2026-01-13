@@ -54,7 +54,10 @@ const FeaturedWork = () => {
   // Use the optimized hook for viewport detection
   const { ref: sectionRef, isInView: isVisible } = useInViewAnimation({
     once: true,
-    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
+
+  const { ref: subheaderRef, isInView: isSubheaderVisible } = useInViewAnimation({
+    once: true,
   });
 
   const data = useStaticQuery(
@@ -155,9 +158,15 @@ const FeaturedWork = () => {
               <h2 style={{ fontSize: '50px', fontWeight: 700, color: theme.black }}>
                 Featured Work
               </h2>
-              <p style={{ fontSize: '16px', color: '#666' }}>
+              <motion.p
+                ref={subheaderRef}
+                initial="hidden"
+                animate={isSubheaderVisible ? 'visible' : 'hidden'}
+                custom={{ delay: 0.2 }}
+                variants={fadeInUpVariants}
+              >
                 Highlighted projects from my portfolio
-              </p>
+              </motion.p>
             </motion.div>
           </Col>
         </Row>

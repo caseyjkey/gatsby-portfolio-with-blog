@@ -18,13 +18,16 @@ export default function Contact(props) {
   // Use the optimized hook for header viewport detection
   const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({
     once: true,
-    rootMargin: ANIMATION_CONFIG.rootMargin,
   });
 
   // Use the optimized hook for form viewport detection
   const { ref: formRef, isInView: isFormVisible } = useInViewAnimation({
     once: true,
-    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
+
+  // Use the optimized hook for subheader viewport detection
+  const { ref: subheaderRef, isInView: isSubheaderVisible } = useInViewAnimation({
+    once: true,
   });
 
   const submitForm = (ev) => {
@@ -60,8 +63,16 @@ export default function Contact(props) {
             >
               <h1 className="big big-2">Contact</h1>
               <Heading className="mb-4">Start a Conversation</Heading>
-              <p>Available for architectural consulting and senior engineering lead roles.</p>
             </motion.div>
+            <motion.p
+              ref={subheaderRef}
+              initial="hidden"
+              animate={isSubheaderVisible ? 'visible' : 'hidden'}
+              custom={{ delay: 0.2 }}
+              variants={fadeInUpVariants}
+            >
+              Available for architectural consulting and senior engineering lead roles.
+            </motion.p>
           </Col>
         </Row>
         <Row noGutters className="block-9 mb-4">

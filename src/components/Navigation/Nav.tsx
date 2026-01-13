@@ -38,9 +38,9 @@ export function Nav({ children }) {
     <StyledNav
       className="ftco-navbar-light navbar navbar-expand-lg ftco_navbar site-navbar-target"
       id="ftco-navbar"
-      isVisible={isVisible}
-      scrolled={scrolled}
-      menuOpen={isMenuOpen}
+      $isVisible={isVisible}
+      $scrolled={scrolled}
+      $menuOpen={isMenuOpen}
     >
       <Container>
         <a className="navbar-brand" href="/"><span>C</span>asey Key</a>
@@ -48,7 +48,7 @@ export function Nav({ children }) {
           <Button />
         </NavbarToggler>
         <Collapse isOpen={!collapsed} navbar className="navbar-collapse" id="ftco-nav">
-          <StyledCollapse isOpen={!collapsed}>
+          <StyledCollapse $isOpen={!collapsed}>
             <ul className="navbar-nav nav ms-auto">
               {children}
             </ul>
