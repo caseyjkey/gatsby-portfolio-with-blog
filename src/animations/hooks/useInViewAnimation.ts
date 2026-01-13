@@ -68,28 +68,6 @@ export function useInViewAnimation(
       return;
     }
 
-    // Check if element is already visible (handles case where page loads with element in view)
-    const rect = node.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    // Add a small buffer (100px) for elements that are just below the viewport
-    const buffer = 100;
-    const isVisible = rect.top < (viewportHeight + buffer) && rect.bottom > -buffer;
-    console.log('[useInViewAnimation] Element position check:', {
-      rectTop: rect.top,
-      rectBottom: rect.bottom,
-      viewportHeight,
-      buffer,
-      isVisible
-    });
-
-    // If already visible (or very close) and once is true, mark as animated immediately
-    if (isVisible && once && !hasAnimated) {
-      console.log('[useInViewAnimation] Element already visible (or close), marking as animated');
-      setIsInView(true);
-      setHasAnimated(true);
-      // Don't return - still set up observer in case it goes out and comes back
-    }
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -97,7 +75,8 @@ export function useInViewAnimation(
             isIntersecting: entry.isIntersecting,
             once,
             hasAnimated,
-            intersectionRatio: entry.intersectionRatio
+            intersectionRatio: entry.intersectionRatio,
+            rootMargin: getRootMargin(),
           });
           if (entry.isIntersecting) {
             setIsInView(true);
@@ -121,7 +100,7 @@ export function useInViewAnimation(
     return () => {
       observer.disconnect();
     };
-  }, [once, isReady, getRootMargin, getThreshold]);
+  }, [once, isReady, getRootMargin, getThreshold, hasAnimated]);
 
   const setRef = useCallback((node: HTMLElement | null) => {
     ref.current = node;

@@ -12,7 +12,7 @@ var fullHeight = function() {
 
 // loader
 var loader = function() {
-	setTimeout(function() { 
+	setTimeout(function() {
 		if($('#ftco-loader').length > 0) {
 			$('#ftco-loader').removeClass('show');
 		}
@@ -29,8 +29,8 @@ var burgerMenu = function() {
 		if ( $('#ftco-nav').is(':visible') ) {
 			$(this).removeClass('active');
 		} else {
-			$(this).addClass('active');	
-		}			
+			$(this).addClass('active');
+		}
 	});
 };
 
@@ -38,8 +38,6 @@ var burgerMenu = function() {
 var onePageClick = function() {
 	$(document).on('click', '#ftco-nav a[href^="#"]', function (event) {
 		event.preventDefault();
-
-			// var href = $.attr(this, 'href');
 
 		$('html, body').animate({
 				scrollTop: $($.attr(this, 'href')).offset().top - 70
@@ -50,66 +48,27 @@ var onePageClick = function() {
 };
 
 
-// scroll
-var scrollWindow = function() {
-	$(window).scroll(function(){
-		var $w = $(this),
-				st = $w.scrollTop(),
-				navbar = $('.ftco_navbar'),
-				hamburger = $('#hamburger'),
-				sd = $('.js-scroll-wrap');
+// Note: scrollWindow() has been removed - scroll handling is now done in React Nav.tsx
 
-		if (st > 150) {
-			if ( !navbar.hasClass('scrolled') ) {
-				navbar.addClass('scrolled');
-				hamburger.attr('scrolled', true);	
-			}
-		} 
-		if (st < 150) {
-			if ( navbar.hasClass('scrolled') ) {
-				navbar.removeClass('scrolled sleep');
-				hamburger.attr('scrolled', false);
-			}
-		} 
-		if ( st > 350 ) {
-			if ( !navbar.hasClass('awake') ) {
-				navbar.addClass('awake');	
-			}
-			
-			if(sd.length > 0) {
-				sd.addClass('sleep');
-			}
-		}
-		if ( st < 350 ) {
-			if ( navbar.hasClass('awake') ) {
-				navbar.removeClass('awake');
-				navbar.addClass('sleep');
-			}
-			if(sd.length > 0) {
-				sd.removeClass('sleep');
-			}
-		}
-	});
-};
 
 /*
-var counter = function() {		
+var counter = function() {
 	$('#section-counter, .hero-wrap, .ftco-counter, .ftco-about').waypoint( function( direction ) {
 
 		if( direction === 'down' && !$(this.element).hasClass('ftco-animated') ) {
 
 			var comma_separator_number_step = $.animateNumber.numberStepFactories.separator(',')
-			$('.number').each(function(){
-				var $this = $(this),
-				num = $this.data('number');
-				$this.animateNumber(
-					{
-						number: num,
-						numberStep: comma_separator_number_step
-					}, 7000
-				);
-			});
-		}
+	$('.number').each(function(){
+		var $this = $(this),
+			num = $this.data('number');
+			$this.animateNumber(
+				{
+					number: num,
+					numberStep: comma_separator_number_step
+				}, 7000
+			);
+		});
+	}
 	} , { offset: '95%' } );
 }
 
@@ -132,7 +91,7 @@ var counter = function() {
 							el.addClass('fadeInUp ftco-animated');
 						}
 						el.removeClass('item-animate');
-					},  k * 50, 'easeInOutExpo' );
+					}, k * 50, 'easeInOutExpo' );
 				});
 			}, 100);
 		}
@@ -141,43 +100,43 @@ var counter = function() {
 
 /*
 $('.ftco-animate').waypoint( function( direction ) {
-		if( direction === 'down' && !$(this.element).hasClass('ftco-animated') ) {
-			// i++;
+	if( direction === 'down' && !$(this.element).hasClass('ftco-animated') ) {
+		// i++;
 
-			$(this.element).addClass('item-animate');
-			setTimeout(function(){
-				$('body .ftco-animate.item-animate').each(function(k){
-					var el = $(this);
-					setTimeout( function () {
-						var effect = el.data('animate-effect');
-						if ( effect === 'fadeIn') {
-							el.addClass('fadeIn ftco-animated');
-						} else if ( effect === 'fadeInLeft') {
-							el.addClass('fadeInLeft ftco-animated');
-						} else if ( effect === 'fadeInRight') {
-							el.addClass('fadeInRight ftco-animated');
-						} else {
-							el.addClass('fadeInUp ftco-animated');
-						}
-						el.removeClass('item-animate');
-					},  k * 50, 'easeInOutExpo' );
-				});
-			}, 100);
-		}
-	} , { offset: '95%' } );
+		$(this.element).addClass('item-animate');
+		setTimeout(function(){
+			$('body .ftco-animate.item-animate').each(function(k){
+				var el = $(this);
+				setTimeout( function () {
+					var effect = el.data('animate-effect');
+					if ( effect === 'fadeIn') {
+						el.addClass('fadeIn ftco-animated');
+					} else if ( effect === 'fadeInLeft') {
+						el.addClass('fadeInLeft ftco-animated');
+					} else if ( effect === 'fadeInRight') {
+						el.addClass('fadeInRight ftco-animated');
+					} else {
+						el.addClass('fadeInUp ftco-animated');
+					}
+					el.removeClass('item-animate');
+				}, k * 50, 'easeInOutExpo' );
+			});
+		}, 100);
+	}
+} , { offset: '95%' } );
 	*/
 
 // Scrolls to the resume section
 var goHere = function() {
 
 	$('.mouse-icon').on('click', function(event){
-		
+
 		event.preventDefault();
 
 		$('html,body').animate({
 			scrollTop: $('.goto-here').offset().top
 		}, 500, 'easeInOutExpo');
-		
+
 		return false;
 	});
 };
@@ -192,7 +151,6 @@ var TxtRotate = function(el, toRotate, period) {
 	this.period = parseInt(period, 10) || 2000;
 	this.txt = '';
 	this.tick();
-	this.isDeleting = false;
 };
 
 TxtRotate.prototype.tick = function() {
@@ -249,7 +207,7 @@ export function initPage() {
 	loader();
 	burgerMenu();
 	onePageClick();
-	scrollWindow();
+	// scrollWindow() - removed, now handled in React Nav.tsx
 	// Counter has an animated display of numberic data
 	//counter();
 	// Waypoints for lazy loading and fading in

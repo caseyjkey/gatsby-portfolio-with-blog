@@ -473,12 +473,17 @@ const DesktopIllustrationPositioner = styled.div`
   @media (min-width: 768px) {
     display: flex;
     position: absolute;
-    top: 53%;
+    top: 54%;
     left: 75%;
     min-width: 337px;
     transform: translate(-50%, -50%);
     z-index: 10;
     pointer-events: none;
+    transition: top 0.3s ease-in-out;
+  }
+
+  @media (min-width: 768px) and (max-width: 1580px) {
+    top: 58%;
   }
 `;
 
@@ -510,7 +515,7 @@ const MobileHeadshotContainer = styled.div`
   align-items: center;
   justify-content: flex-end;
   width: 100%;
-  max-width: 280px;
+  max-width: 400px;
   margin: 0 auto;
   overflow: visible !important;
   right: 17px;
@@ -534,7 +539,6 @@ const MobileHeadshotImage = styled.img`
   position: relative;
   z-index: 1;
   width: 78%;
-  max-width: 220px;
   height: auto;
   object-fit: cover;
   border-radius: 16px;

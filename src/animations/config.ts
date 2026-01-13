@@ -11,6 +11,11 @@ export const ANIMATION_CONFIG = {
   // Easing: "Power Out" curve
   easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
 
+  // Unified rootMargin for all scroll-triggered animations
+  // Bottom-relative: triggers when element is 1/3 to 1/2 from viewport bottom
+  // i.e., element bottom between 33% and 50% from bottom (or 66% to 50% from top)
+  rootMargin: '-88% 0px -66% 0px',
+
   // Desktop trigger: 0% (at viewport bottom) - triggers when element touches viewport edge
   desktopRootMargin: '0px',
 

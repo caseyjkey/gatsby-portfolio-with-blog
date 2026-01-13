@@ -103,78 +103,78 @@ export default function ProjectsPage({ data }) {
     return Icons;
   }
 
-    return (
-        <Layout>
-        <Helmet>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z"></script>
-            <script>
-            {`
+  return (
+    <Layout>
+      <Helmet>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z"></script>
+        <script>
+          {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
 
                 gtag('config', 'G-1QQK6QY29Z');
             `}
-            </script>
-            <meta charSet="utf-8" />
-            <title>{data.site.siteMetadata.title}</title>
-            <meta property='og:title' content="Casey Key's Website" />
-            <meta property='og:image' content={WebsiteImage} />
-            <meta property='og:description' content={data.site.siteMetadata.description} />
-            <meta property='og:url' content={data.site.siteMetadata.canonical} />
-            <meta name="description" content={data.site.siteMetadata.description} />
-            <link rel="canonical" href={data.site.siteMetadata.canonical} />
-            <link rel="icon" type="image/png" href={Favicon} sizes="16x16" />
-        </Helmet>
-        <ThemeProvider theme={theme}>
-            <Body>
-            <Navigation className="mb-4" />
-            <ProjectSection name="Projects" className="mt-4">
-              <Container fluid={true}>
-                <Row noGutters className="justify-content-center pb-5 mt-5">
-                  <Col md={12} className="heading-section text-center ">
-                    <Heading className="mb-4">Projects</Heading>
-                    <p>A mix of client work, late nights, and bold ideas.</p>
-                  </Col>
-                </Row>
-                <Row style={{ display: 'flex', alignItems: 'stretch' }}>
-                  {data.allProject.edges.map((project, index) => {
-                    const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
-                    const formattedEnd = project.node.end?.present
-                      ? 'Present'
-                      : project.node.end?.date
-                        ? format(parseISO(project.node.end.date), 'MMMM yyyy')
-                        : formattedStart;
+        </script>
+        <meta charSet="utf-8" />
+        <title>{data.site.siteMetadata.title}</title>
+        <meta property='og:title' content="Casey Key's Website" />
+        <meta property='og:image' content={WebsiteImage} />
+        <meta property='og:description' content={data.site.siteMetadata.description} />
+        <meta property='og:url' content={data.site.siteMetadata.canonical} />
+        <meta name="description" content={data.site.siteMetadata.description} />
+        <link rel="canonical" href={data.site.siteMetadata.canonical} />
+        <link rel="icon" type="image/png" href={Favicon} sizes="16x16" />
+      </Helmet>
+      <ThemeProvider theme={theme}>
+        <Body>
+          <Navigation className="mb-4" />
+          <ProjectSection name="Projects" className="">
+            <Container fluid={true}>
+              <Row noGutters className="justify-content-center pb-5 mt-5">
+                <Col md={12} className="heading-section text-center ">
+                  <Heading className="mb-4">Projects</Heading>
+                  <p>A mix of client work, late nights, and bold ideas.</p>
+                </Col>
+              </Row>
+              <Row style={{ display: 'flex', alignItems: 'stretch' }}>
+                {data.allProject.edges.map((project, index) => {
+                  const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
+                  const formattedEnd = project.node.end?.present
+                    ? 'Present'
+                    : project.node.end?.date
+                      ? format(parseISO(project.node.end.date), 'MMMM yyyy')
+                      : formattedStart;
 
-                    // Generate post link based on start date and project slug
-                    const startDate = parseISO(project.node.start);
-                    const year = format(startDate, 'yyyy');
-                    const month = format(startDate, 'MM');
-                    const postLink = `/projects/${year}-${month}-${project.node.project}/`;
+                  // Generate post link based on start date and project slug
+                  const startDate = parseISO(project.node.start);
+                  const year = format(startDate, 'yyyy');
+                  const month = format(startDate, 'MM');
+                  const postLink = `/projects/${year}-${month}-${project.node.project}/`;
 
-                    return (
-                      <Col key={index} md={4} className="pb-4 d-flex align-items-stretch">
-                        <Project image={project.node.image.childImageSharp.gatsbyImageData}
-                          galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
-                          title={project.node.title}
-                          subtitle={project.node.subtitle}
-                          icons={loadIcons(project.node.icons)}
-                          date={formattedStart + ' - ' + formattedEnd}
-                          link={project.node.link}
-                          postLink={postLink}
-                        >
-                          <div dangerouslySetInnerHTML={{ __html: project.node.description }} />
-                        </Project>
-                      </Col>
-                    )
-                  })}
-                </Row>
-              </Container>
-            </ProjectSection>
-            <Footer />
-            </Body>
-        </ThemeProvider>
-        </Layout>
-    );
+                  return (
+                    <Col key={index} md={4} className="pb-4 d-flex align-items-stretch">
+                      <Project image={project.node.image.childImageSharp.gatsbyImageData}
+                        galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
+                        title={project.node.title}
+                        subtitle={project.node.subtitle}
+                        icons={loadIcons(project.node.icons)}
+                        date={formattedStart + ' - ' + formattedEnd}
+                        link={project.node.link}
+                        postLink={postLink}
+                      >
+                        <div dangerouslySetInnerHTML={{ __html: project.node.description }} />
+                      </Project>
+                    </Col>
+                  )
+                })}
+              </Row>
+            </Container>
+          </ProjectSection>
+          <Footer />
+        </Body>
+      </ThemeProvider>
+    </Layout>
+  );
 }

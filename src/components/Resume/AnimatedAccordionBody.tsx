@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, forwardRef } from 'react'
-import { AccordionBody as RSAccordionBody } from 'reactstrap'
+import { AccordionBody } from 'reactstrap'
 import { motion } from 'motion/react'
 import { ANIMATION_CONFIG } from '../../animations/config'
 
@@ -63,7 +63,7 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
     }, [accordionId, isOpen]);
 
     return (
-      <RSAccordionBody accordionId={accordionId}>
+      <AccordionBody accordionId={accordionId}>
         <div ref={ref || containerRef}>
           {React.Children.map(children, (child, index) => (
             <motion.div
@@ -83,7 +83,7 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
             </motion.div>
           ))}
         </div>
-      </RSAccordionBody>
+      </AccordionBody>
     )
   }
 )

@@ -22,10 +22,10 @@
 
 import React, { useEffect, useState, lazy } from 'react'
 import { Container, Row, Col } from 'reactstrap'
-import { Heading } from './style.ts'
-import { AboutSection, AboutImage, Description, ConsultantIdentity } from './About/style.ts'
+import { Heading } from './style'
+import { AboutSection, AboutImage, Description, ConsultantIdentity } from './About/style'
 import { StaticImage } from 'gatsby-plugin-image'
-import Activity from './About/Activity.tsx'
+import Activity from './About/Activity'
 import { graphql, useStaticQuery } from 'gatsby'
 import { motion } from 'motion/react'
 import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
@@ -111,10 +111,11 @@ export default function About(props) {
 
   return (
     <AboutSection name="About" id="about-section">
-      <Container>
+      <Container className="mt-5">
         <Row className="justify-content-center pb-3">
           <Col md={7} className="heading-section text-center ftco-animate">
             <Heading className="mb-4">About Me</Heading>
+            <p>Technical leadership, strategic mindset, and mission.</p>
           </Col>
         </Row>
         <Row noGutters className="block-9 justify-centent-center">

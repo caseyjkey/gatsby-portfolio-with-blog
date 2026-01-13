@@ -6,6 +6,7 @@ import { theme } from '../style.ts'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../../animations'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
+import { ANIMATION_CONFIG } from '../../animations/config'
 import Project from '../Projects/Project'
 import { format, parseISO } from 'date-fns'
 
@@ -53,6 +54,7 @@ const FeaturedWork = () => {
   // Use the optimized hook for viewport detection
   const { ref: sectionRef, isInView: isVisible } = useInViewAnimation({
     once: true,
+    rootMargin: ANIMATION_CONFIG.rootMargin,
   });
 
   const data = useStaticQuery(

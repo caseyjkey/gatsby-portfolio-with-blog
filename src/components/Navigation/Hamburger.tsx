@@ -1,28 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-interface HamburgerButtonProps {
-  'data-scrolled': boolean;
-}
-
-export default function Button(props: { scrolled: boolean }) {
+export default function Button() {
   const [open, setOpen] = useState(false);
   const toggleButton = () => setOpen(!open);
 
-  const [scrolled, setScrolled] = useState(props.scrolled);
-
-
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      (window.pageYOffset > 150)
-        ? setScrolled(true)
-        : setScrolled(false);
-    })
-  });
-
-
   return (
-    <HamburgerButton onClick={toggleButton} id="hamburger" data-scrolled={scrolled}>
+    <HamburgerButton onClick={toggleButton} id="hamburger">
       <div className={open ? "open" : undefined}>
         <span></span>
         <span></span>
@@ -32,8 +16,7 @@ export default function Button(props: { scrolled: boolean }) {
   );
 }
 
-
-const HamburgerButton = styled.div<HamburgerButtonProps>`
+const HamburgerButton = styled.div`
   margin: 0;
   padding: 0;
   outline: none;
@@ -59,26 +42,20 @@ const HamburgerButton = styled.div<HamburgerButtonProps>`
   }
 
   /* Icon wrapper */
-    width: 30px;
-    height: 22px;
-    position: relative;
-    margin: 0;
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-    -webkit-transition: .5s ease-in-out;
-    -moz-transition: .5s ease-in-out;
-    -o-transition: .5s ease-in-out;
-    transition: .5s ease-in-out;
+  width: 30px;
+  height: 22px;
+  position: relative;
+  margin: 0;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
 
-  @media (min-width: 768px) and (max-width: 991px) {
-    span {
-      background: ${(props) => props.theme.black};
-    }
-  }
-
-.open {
+  .open {
     span:nth-child(1) {
       top: 9px;
       -webkit-transform: rotate(135deg);
@@ -100,12 +77,13 @@ const HamburgerButton = styled.div<HamburgerButtonProps>`
       transform: rotate(-135deg);
     }
   }
- span {
+
+  span {
     display: block;
     position: absolute;
     height: 4px;
     width: 100%;
-    background: ${(props) => props.theme[props['data-scrolled'] ? 'black' : 'white']};
+    background: ${(props) => props.theme.black};
     border-radius: 3px;
     opacity: 1;
     left: 0;
@@ -119,31 +97,15 @@ const HamburgerButton = styled.div<HamburgerButtonProps>`
     transition: .1s ease-in-out;
   }
 
-  /* Media query for tablets: 767px < width < 992px */
-  @media (min-width: 768px) and (max-width: 991.98px) {
-    span {
-      background: ${(props) => props.theme.black} !important;
-    }
-  }
-
-  /* Media query for mobile: width < 768px - always white on black navbar background */
-  @media (max-width: 767.98px) {
-    span {
-      background: ${(props) => props.theme.white} !important;
-    }
-  }
-
-   span:nth-child(1) {
+  span:nth-child(1) {
     top: 0px;
   }
 
-   span:nth-child(2) {
+  span:nth-child(2) {
     top: 9px;
   }
 
-   span:nth-child(3) {
+  span:nth-child(3) {
     top: 18px;
   }
-
-
 `;

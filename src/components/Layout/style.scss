@@ -66,22 +66,11 @@ h1, h2, h3, h4, h5,
 	left: 0;
 	right: 0;
 	z-index: 20;
-	// padding-top: 30px;
-	@include media-breakpoint-down(md) {
-		background: $black!important;
-		position: absolute;
-		top: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		padding-left: 15px;
-		padding-right: 15px;
-	}
+
 	.container{
 		width: 1110px;
 		margin: 0 auto;
 		padding: 0;
-		@include media-breakpoint-up(lg){
-		}
 	}
 
 	.navbar-brand {
@@ -90,9 +79,6 @@ h1, h2, h3, h4, h5,
 		padding-bottom: .7rem;
 		&:hover, &:focus{
 			color: $black !important;
-		}
-		@include media-breakpoint-down(md){
-			color: $white;
 		}
 	}
 	
@@ -232,104 +218,6 @@ h1, h2, h3, h4, h5,
 		&::-moz-focus-inner {
 			border: 0;
 			padding: 0;
-		}
-	}
-	
-	&.scrolled  {
-		position: fixed;
-		right: 0;
-		left: 0;
-		top: 0;
-		margin-top: -130px;
-		background: $white!important;
-		box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
-		padding: 0 15px;
-		.nav-item {
-			> .nav-link{
-				color: $black !important;
-				@include media-breakpoint-down(md){
-					padding-left: 0 !important;
-					padding-right: 0 !important;
-					padding-bottom: 20px !important;
-				}
-			}
-			&.active {
-				> a {
-					color: $primary!important;
-				}
-			}
-			&.cta {
-				> a {
-					color: $white !important;
-					background: $primary;
-					border: none !important;
-					padding-top: .5rem!important;
-					padding-bottom: .5rem !important;
-					padding-left: 20px !important;
-					padding-right: 20px !important;
-					margin-top: 5px !important;
-					@include border-radius(5px);
-					span {
-						display: inline-block;
-						color: $white !important;
-					}
-				}
-				&.cta-colored {
-					span {
-						border-color: $primary;
-					}
-				}
-			}
-		}
-
-		.navbar-nav {
-			@include media-breakpoint-down(md) {
-				background: none;
-				border-radius: 0px;
-				padding-left: 0!important;
-				padding-right: 0!important;
-				margin-left: 0 !important;
-			}
-		}
-
-		.navbar-toggler {
-			border: none;
-			color: transparent !important;
-			cursor: pointer;
-			padding: 0;
-			height: 22px;
-			width: 30px;
-			outline: none !important;
-			box-shadow: none !important;
-			-webkit-tap-highlight-color: transparent;
-			user-select: none;
-			&:hover, &:focus {
-				outline: none !important;
-				box-shadow: none !important;
-			}
-			&::-moz-focus-inner {
-				border: 0;
-				padding: 0;
-			}
-		}
-		.nav-link {
-			color: $black!important;
-			&.active {
-				color: $primary!important;
-			}
-		}
-		&.awake {
-			margin-top: 0px;
-			transition: .3s all ease-out;
-		}
-		&.sleep {
-			transition: .3s all ease-out;	
-		}
-
-		.navbar-brand {
-			color: $black;
-			padding-top: 0.7rem;
-			padding-bottom: 0.7rem;
 		}
 	}
 }

@@ -5,8 +5,9 @@ import { Heading } from '../style'
 import { experienceData } from '../../data/experience'
 import { lighten } from 'polished'
 import { motion } from 'motion/react'
-import { ANIMATION_CONFIG } from '../../animations/config'
+import { fadeInUpVariants } from '../../animations'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
+import { ANIMATION_CONFIG } from '../../animations/config'
 
 const ExperienceSection = styled.section`
   position: relative;
@@ -224,7 +225,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
   // Trigger when entry is 1/3 to 1/2 up viewport (negative margin means above bottom edge)
   const { ref: inViewRef, isInView } = useInViewAnimation({
     once: true,
-    rootMargin: '-20% 0px -40% 0px', // Trigger when center 1/3 of viewport
+    rootMargin: ANIMATION_CONFIG.rootMargin, // Trigger when center 1/3 of viewport
   });
 
   useEffect(() => {
@@ -328,13 +329,10 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
               {entry.bullets.map((bullet, bulletIndex) => (
                 <motion.li
                   key={bulletIndex}
-                  initial={{ opacity: 0, x: isMobile ? -10 : 10 }}
-                  animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
-                  transition={{
-                    duration: 0.4,
-                    delay: nodePopped ? 0.2 + (bulletIndex * 0.1) : 0,
-                    ease: [0.2, 0.8, 0.2, 1]
-                  }}
+                  initial="hidden"
+                  animate={nodePopped ? "visible" : "hidden"}
+                  custom={{ delay: 0.2 + (bulletIndex * 0.1), distance: isMobile ? 10 : 10 }}
+                  variants={fadeInUpVariants}
                 >
                   {bullet}
                 </motion.li>

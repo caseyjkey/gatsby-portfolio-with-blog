@@ -1,9 +1,9 @@
 import { useStaticQuery, graphql, Link } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import React from 'react'
-import { Heading } from './style.ts' // Global styled-components
+import { Heading } from './style' // Global styled-components
 import { Container, Row, Col } from 'reactstrap'
-import { BlogSection, BlogEntry } from './Blog/style.ts'
+import { BlogSection, BlogEntry } from './Blog/style'
 import styled from 'styled-components'
 
 const Image = styled(GatsbyImage)`
@@ -43,7 +43,7 @@ export const Blog = (props) => {
             <Container fluid={true} className="">
                 <Row noGutters className="justify-content-center pb-5">
                     <Col md={12} className="heading-section text-center">
-                        <Heading className="mb-4">Blog</Heading>
+                        <Heading className="mb-4 mt-5">Blog</Heading>
                         <p>Coding, reflecting, evolving.</p>
                     </Col>
                 </Row>

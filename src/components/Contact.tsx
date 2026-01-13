@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
 import Info from './Contact/Info'
-import { Section, NoPaddingBottom } from './style.ts'
+import { Section, NoPaddingBottom } from './style'
+import { Heading } from './style'
 import { FaSign, FaPhone } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
 import Headshot from './About/images/about.png'
@@ -33,12 +34,12 @@ export default function Contact(props) {
 
   return (
     <ContactSection className="ftco-section contact-section ftco-no-pb" name="Contact" id="contact-section">
-      <Container>
+      <Container className="mt-5">
         <Row className="justify-content-center pb-3">
           <Col md={7} className="heading-section text-center ftco-animate">
             <h1 className="big big-2">Contact</h1>
-            <h2 className="mb-4">Start a Conversation</h2>
-            <AvailabilityNote>Available for architectural consulting and senior engineering lead roles.</AvailabilityNote>
+            <Heading className="mb-4">Start a Conversation</Heading>
+            <p>Available for architectural consulting and senior engineering lead roles.</p>
           </Col>
         </Row>
         <Row noGutters className="block-9 mb-4">

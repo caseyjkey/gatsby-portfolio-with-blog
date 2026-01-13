@@ -8,16 +8,18 @@ import { format, parseISO } from 'date-fns'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
-
+import { ANIMATION_CONFIG } from '../animations/config'
 
 export const Projects = (props) => {
 	// Use the unified animation hook
 	const { ref: projectsHeaderRef, isInView: isHeaderVisible } = useInViewAnimation({
 		once: true,
+		rootMargin: ANIMATION_CONFIG.rootMargin,
 	});
 
 	const { ref: projectsGridRef, isInView: isProjectsVisible } = useInViewAnimation({
 		once: true,
+		rootMargin: ANIMATION_CONFIG.rootMargin,
 	});
 
 	const data = useStaticQuery(
@@ -111,10 +113,10 @@ export const Projects = (props) => {
 		const row = Math.floor(index / 3);
 		return (col * 0.15) + (row * 0.05);
 	};
-
+	console.log('test')
 	return (
 		<ProjectSection name="Projects" id="projects-section">
-			<Container fluid={true} className="">
+			<Container fluid={true}>
 				<Row noGutters className="justify-content-center pb-5 mt-5">
 					<Col md={12} className="heading-section text-center" ref={projectsHeaderRef}>
 						<motion.div
@@ -122,8 +124,8 @@ export const Projects = (props) => {
 							animate={isHeaderVisible ? "visible" : "hidden"}
 							variants={fadeInUpVariants}
 						>
-							<Heading className="mb-4">Projects</Heading>
-							<p>A mix of client work, late nights, and bold ideas.</p>
+							<Heading className="mt-5 mb-4">Projects</Heading>
+							<p>A testmix of client work, late nights, and bold ideas.</p>
 						</motion.div>
 					</Col>
 				</Row>
@@ -165,6 +167,6 @@ export const Projects = (props) => {
 					})}
 				</Row>
 			</Container>
-		</ProjectSection>
+		</ProjectSection >
 	);
 }
