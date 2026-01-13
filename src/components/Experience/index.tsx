@@ -28,18 +28,35 @@ interface VerticalLineProps {
 }
 
 const VerticalLine = styled.div<VerticalLineProps>`
-  transition: height 0.1s linear;
+  transition: height 0.15s linear;
+  will-change: height;
   position: absolute;
   left: 78px;
   top: 1px;
   height: ${props => props.$height ? `${props.$height}px` : '0'};
   width: 2px;
-  background-color: ${(props) => props.theme.black};
+  background: linear-gradient(
+    to bottom,
+    #3e64ff 0%,
+    #3e64ff calc(100% - 20px),
+    rgba(62, 100, 255, 0) 100%
+  );
   z-index: 0;
 
   @media (max-width: 767.98px) {
     left: 59px;
   }
+`
+
+const Shield = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff; // Must match your site background
+  border-radius: 50%;
+  z-index: 1; // Above the line (z-index: 0)
 `
 
 const TimelineRow = styled.div<{ $isLast?: boolean }>`
@@ -84,7 +101,7 @@ const Year = styled.div`
   }
 `
 
-const TimelineDot = styled.div`
+const TimelineDot = styled.div<{ animate?: boolean }>`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
@@ -211,13 +228,16 @@ interface TimelineRowItemProps {
   onAnimated?: (index: number) => void;
   rowRef?: (el: HTMLDivElement | null) => void;
   dotRef?: React.RefObject<HTMLDivElement | null>;
+  lineHeight?: number;
 }
 
-function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRef }: TimelineRowItemProps) {
+function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRef, lineHeight }: TimelineRowItemProps) {
   const [nodePopped, setNodePopped] = useState(false);
+  const [hasBeenReached, setHasBeenReached] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Trigger when entry is 1/3 to 1/2 up the viewport (negative margin means above bottom edge)
-  const { ref: containerRef, isInView } = useInViewAnimation({
+  // Trigger when entry is 1/3 to 1/2 up viewport (negative margin means above bottom edge)
+  const { ref: inViewRef, isInView } = useInViewAnimation({
     once: true,
     rootMargin: '-20% 0px -40% 0px', // Trigger when center 1/3 of viewport
   });
@@ -228,6 +248,19 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
       onAnimated?.(index);
     }
   }, [isInView, nodePopped, index, onAnimated]);
+
+  // Calculate dot's top offset for line intersection
+  const myTopOffset = useMemo(() => {
+    if (!containerRef.current) return 0;
+    const rect = containerRef.current.getBoundingClientRect();
+    return rect.top;
+  }, [containerRef]);
+
+  useEffect(() => {
+    if (lineHeight !== undefined && lineHeight >= myTopOffset) {
+      setHasBeenReached(true); // Once this is true, it never goes back to false
+    }
+  }, [lineHeight, myTopOffset]);
 
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
@@ -243,9 +276,10 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
 
   // Combined ref handler
   const setRefs = useCallback((el: HTMLDivElement | null) => {
-    containerRef(el);
+    containerRef.current = el;
+    inViewRef(el);
     rowRef?.(el);
-  }, [containerRef, rowRef]);
+  }, [inViewRef, rowRef]);
 
   return (
     <div ref={setRefs}>
@@ -274,7 +308,8 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
               ease: [0.25, 0.1, 0.25, 1],
             }}
           >
-            <TimelineDot ref={dotRef} />
+            <Shield />
+            <TimelineDot ref={dotRef} animate={hasBeenReached} />
           </motion.div>
         </TimelineDotWrapper>
         <Content>
@@ -346,7 +381,7 @@ export default function Experience() {
      * This gives the exact distance from the start of the line 
      * to the top edge of the last blue circle.
      */
-    const maxLineHeight = dotRect.top - containerRect.top;
+    const maxLineHeight = dotRect.top - containerRect.top + 20; // Add 20px to account for line gradient
 
     return Math.max(0, maxLineHeight);
   };
@@ -451,6 +486,7 @@ export default function Experience() {
                   totalEntries={experienceData.length}
                   rowRef={(el) => { rowRefs.current[index] = el; }}
                   dotRef={index === 0 ? firstDotRef : index === experienceData.length - 1 ? lastDotRef : undefined}
+                  lineHeight={lineHeight}
                 />
               ))}
             </TimelineContainer>
