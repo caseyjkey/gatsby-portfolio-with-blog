@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { lazy, useState, useEffect } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import { Heading } from './style.ts'
 import { Container, Row, Col } from 'reactstrap'
@@ -7,20 +7,12 @@ import Project from './Projects/Project'
 import { format, parseISO } from 'date-fns'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
-import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
-import { ANIMATION_CONFIG } from '../animations/config'
+import { ANIMATION_CONFIG, TIMING } from '../animations/config'
 
 export const Projects = (props) => {
-	// Use the unified animation hook
-	const { ref: projectsHeaderRef, isInView: isHeaderVisible } = useInViewAnimation({
-		once: true,
-		rootMargin: ANIMATION_CONFIG.rootMargin,
-	});
-
-	const { ref: projectsGridRef, isInView: isProjectsVisible } = useInViewAnimation({
-		once: true,
-		rootMargin: ANIMATION_CONFIG.rootMargin,
-	});
+	const [isMounted, setIsMounted] = useState(false);
+	const [isHeaderVisible, setIsHeaderVisible] = useState(false);
+	const headerWrapperRef = React.useRef<HTMLDivElement>(null);
 
 	const data = useStaticQuery(
 		graphql`{
@@ -70,6 +62,34 @@ export const Projects = (props) => {
 		}`
 	);
 
+	// Mark as mounted on client side - delays animation until after hydration
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
+	// Header viewport detection - starts after mount to prevent SSR mismatch
+	useEffect(() => {
+		if (!isMounted) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting && !isHeaderVisible) {
+						setIsHeaderVisible(true);
+						observer.disconnect();
+					}
+				});
+			},
+			{ threshold: 0.1, rootMargin: ANIMATION_CONFIG.rootMargin }
+		);
+
+		if (headerWrapperRef.current) {
+			observer.observe(headerWrapperRef.current);
+		}
+
+		return () => observer.disconnect();
+	}, [isMounted, isHeaderVisible]);
+
 	// Get components for icons specified in projects.json
 	function loadIcons(iconMap) {
 		let Icons = [];
@@ -107,29 +127,34 @@ export const Projects = (props) => {
 		return Icons;
 	}
 
-	// Calculate delay for project cards based on index (3-column grid)
+	// Calculate delay for project cards - row by row from top-left to bottom-right
 	const getProjectDelay = (index: number) => {
-		const col = index % 3;
 		const row = Math.floor(index / 3);
-		return (col * 0.15) + (row * 0.05);
+		const col = index % 3;
+		// Row-based delay: each row starts 0.15s after the previous row
+		// Within each row: left to right with 0.08s between cards
+		return (row * 0.15) + (col * 0.08);
 	};
-	console.log('test')
+
 	return (
 		<ProjectSection name="Projects" id="projects-section">
 			<Container fluid={true}>
 				<Row noGutters className="justify-content-center pb-5 mt-5">
-					<Col md={12} className="heading-section text-center" ref={projectsHeaderRef}>
-						<motion.div
-							initial="hidden"
-							animate={isHeaderVisible ? "visible" : "hidden"}
-							variants={fadeInUpVariants}
-						>
-							<Heading className="mt-5 mb-4">Projects</Heading>
-							<p>A testmix of client work, late nights, and bold ideas.</p>
-						</motion.div>
+					<Col md={12} className="heading-section text-center">
+						<div ref={headerWrapperRef} style={{ opacity: isMounted ? 1 : 0 }}>
+							<motion.div
+								initial="hidden"
+								animate={isHeaderVisible ? "visible" : "hidden"}
+								custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+								variants={fadeInUpVariants}
+							>
+								<Heading className="mt-5 mb-4">Projects</Heading>
+								<p>A testmix of client work, late nights, and bold ideas.</p>
+							</motion.div>
+						</div>
 					</Col>
 				</Row>
-				<Row ref={projectsGridRef}>
+				<Row>
 					{data.allProject.edges.map((project, index) => {
 						const formattedStart = format(parseISO(project.node.start), 'MMMM yyyy')
 						const formattedEnd = project.node.end.present
@@ -143,26 +168,19 @@ export const Projects = (props) => {
 						const postLink = `/projects/${year}-${month}-${project.node.project}/`;
 
 						return (
-							<Col key={index} md={4} className="pb-4">
-								<motion.div
-									initial="hidden"
-									animate={isProjectsVisible ? "visible" : "hidden"}
-									custom={{ delay: getProjectDelay(index) }}
-									variants={fadeInUpVariants}
+							<AnimatedProjectCol key={index} index={index} delay={getProjectDelay(index)} isMounted={isMounted}>
+								<Project image={project.node.image.childImageSharp.gatsbyImageData}
+									galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
+									title={project.node.title}
+									subtitle={project.node.subtitle}
+									icons={loadIcons(project.node.icons)}
+									date={formattedStart + ' - ' + formattedEnd}
+									link={project.node.link}
+									postLink={postLink}
 								>
-									<Project image={project.node.image.childImageSharp.gatsbyImageData}
-										galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
-										title={project.node.title}
-										subtitle={project.node.subtitle}
-										icons={loadIcons(project.node.icons)}
-										date={formattedStart + ' - ' + formattedEnd}
-										link={project.node.link}
-										postLink={postLink}
-									>
-										<div dangerouslySetInnerHTML={{ __html: project.node.description }} />
-									</Project>
-								</motion.div>
-							</Col>
+									<div dangerouslySetInnerHTML={{ __html: project.node.description }} />
+								</Project>
+							</AnimatedProjectCol>
 						)
 					})}
 				</Row>
@@ -170,3 +188,46 @@ export const Projects = (props) => {
 		</ProjectSection >
 	);
 }
+
+// Animated column component with individual viewport detection
+const AnimatedProjectCol = ({ children, index, delay, isMounted }: { children: React.ReactNode; index: number; delay: number; isMounted: boolean }) => {
+	const [isVisible, setIsVisible] = useState(false);
+	const colRef = React.useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (!isMounted) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting && !isVisible) {
+						setIsVisible(true);
+						observer.disconnect();
+					}
+				});
+			},
+			// Use negative bottom margin to trigger when card is properly in view
+			// -100px bottom means trigger when element is 100px into viewport from bottom
+			{ threshold: 0.01, rootMargin: '-100px 0px -100px 0px' }
+		);
+
+		if (colRef.current) {
+			observer.observe(colRef.current);
+		}
+
+		return () => observer.disconnect();
+	}, [isVisible, isMounted]);
+
+	return (
+		<Col ref={colRef} md={4} className="pb-4" style={{ opacity: isMounted ? 1 : 0 }}>
+			<motion.div
+				initial="hidden"
+				animate={isVisible ? "visible" : "hidden"}
+				custom={{ delay, distance: TIMING.primaryUnit.distance }}
+				variants={fadeInUpVariants}
+			>
+				{children}
+			</motion.div>
+		</Col>
+	);
+};

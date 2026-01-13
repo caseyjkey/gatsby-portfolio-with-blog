@@ -29,40 +29,27 @@ import Activity from './About/Activity'
 import { graphql, useStaticQuery } from 'gatsby'
 import { motion } from 'motion/react'
 import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
-import { ANIMATION_CONFIG } from '../animations/config'
+import { ANIMATION_CONFIG, TIMING } from '../animations/config'
+import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 
 export default function About(props) {
-  const [isVisible, setIsVisible] = useState(false);
+  // Use the optimized hook for header viewport detection
+  const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({
+    once: true,
+    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
 
-  // Check if mobile
-  const isMobile = () => {
-    if (typeof window === 'undefined') return false;
-    return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
-  };
+  // Use the optimized hook for content viewport detection
+  const { ref: contentRef, isInView: isContentVisible } = useInViewAnimation({
+    once: true,
+    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        threshold: isMobile() ? getThreshold(true) : 0,
-        rootMargin: getRootMargin(isMobile()),
-      }
-    );
-
-    const aboutSection = document.getElementById('about-section');
-    if (aboutSection) {
-      observer.observe(aboutSection);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  // Use the optimized hook for headshot viewport detection
+  const { ref: headshotRef, isInView: isHeadshotVisible } = useInViewAnimation({
+    once: true,
+    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
 
   const data = useStaticQuery(
     graphql`{
@@ -114,17 +101,27 @@ export default function About(props) {
       <Container className="mt-5">
         <Row className="justify-content-center pb-3">
           <Col md={7} className="heading-section text-center ftco-animate">
-            <Heading className="mb-4">About Me</Heading>
-            <p>Technical leadership, strategic mindset, and mission.</p>
+            <motion.div
+              ref={headerRef}
+              initial="hidden"
+              animate={isHeaderVisible ? "visible" : "hidden"}
+              custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+              variants={fadeInUpVariants}
+            >
+              <Heading className="mb-4">About Me</Heading>
+              <p>Technical leadership, strategic mindset, and mission.</p>
+            </motion.div>
           </Col>
         </Row>
         <Row noGutters className="block-9 justify-centent-center">
           <Col md="6" lg="6" className="justify-content-center pb-4" style={{ "paddingRight": "0.5rem" }}>
             <Row className="justify-content-center">
               <motion.div
+                ref={contentRef}
                 initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
+                animate={isContentVisible ? "visible" : "hidden"}
                 variants={fadeInUpVariants}
+                custom={{ delay: 0, distance: TIMING.primaryUnit.distance }}
                 style={{ width: "100%" }}
               >
                 <Col className="col-md-12 heading-section">
@@ -134,11 +131,17 @@ export default function About(props) {
                   <ul className="about-info mt-4 px-md-0 px-2">
                     {data.about.activities.map((activity, index) => {
                       return (
-                        <li key={index}>
+                        <motion.li
+                          key={index}
+                          initial="hidden"
+                          animate={isContentVisible ? "visible" : "hidden"}
+                          custom={{ delay: 0.1 + (index * 0.08) }}
+                          variants={fadeInUpVariants}
+                        >
                           <Activity description={activity.activity.description}
                             Icon={loadIcon(activity.activity.icon)}
                           />
-                        </li>
+                        </motion.li>
                       );
                     })}
                   </ul>
@@ -149,25 +152,54 @@ export default function About(props) {
                       or customize it further to complement the CMS content.
                   */}
                   <ConsultantIdentity>
-                    <h3>Consultant Approach</h3>
-                    <p>
+                    <motion.h3
+                      initial="hidden"
+                      animate={isContentVisible ? "visible" : "hidden"}
+                      custom={{ delay: 0.15 }}
+                      variants={fadeInUpVariants}
+                    >
+                      Consultant Approach
+                    </motion.h3>
+                    <motion.p
+                      initial="hidden"
+                      animate={isContentVisible ? "visible" : "hidden"}
+                      custom={{ delay: 0.2 }}
+                      variants={fadeInUpVariants}
+                    >
                       <strong>Problem-Solving:</strong> I tackle complex technical challenges by combining deep technical expertise with a strategic, business-first mindset.
-                    </p>
-                    <p>
+                    </motion.p>
+                    <motion.p
+                      initial="hidden"
+                      animate={isContentVisible ? "visible" : "hidden"}
+                      custom={{ delay: 0.3 }}
+                      variants={fadeInUpVariants}
+                    >
                       <strong>Technical Leadership:</strong> I guide teams through architectural decisions, mentor developers, and ensure scalable, maintainable solutions.
-                    </p>
-                    <p>
+                    </motion.p>
+                    <motion.p
+                      initial="hidden"
+                      animate={isContentVisible ? "visible" : "hidden"}
+                      custom={{ delay: 0.4 }}
+                      variants={fadeInUpVariants}
+                    >
                       <strong>Client Partnership:</strong> I bridge the gap between technical requirements and business goals, communicating complex concepts to stakeholders at all levels.
-                    </p>
+                    </motion.p>
                   </ConsultantIdentity>
                 </Col>
               </motion.div>
             </Row>
           </Col>
           <Col lg="6" md="6" className="d-flex">
-            <AboutImage>
-              <StaticImage src='./About/images/about.png' alt='Casey Key in a suit' />
-            </AboutImage>
+            <motion.div
+              ref={headshotRef}
+              initial={{ opacity: 0, x: 20, y: 30 }}
+              animate={isHeadshotVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: 20, y: 30 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+            >
+              <AboutImage>
+                <StaticImage src='./About/images/about.png' alt='Casey Key in a suit' />
+              </AboutImage>
+            </motion.div>
           </Col>
         </Row>
       </Container>

@@ -22,8 +22,18 @@ import { GoStar } from 'react-icons/go'
 import { MdWork } from 'react-icons/md'
 import { BsSave } from 'react-icons/bs'
 import { experienceData } from '../../data/experience'
+import { motion } from 'motion/react'
+import { fadeInUpVariants } from '../../animations'
+import { ANIMATION_CONFIG, TIMING } from '../../animations/config'
+import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
 
 function Resume(props) {
+  // Use the optimized hook for header viewport detection
+  const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({
+    once: true,
+    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
+
   const [open, setOpen] = useState<string | null>('1');
 
   const handleToggle = (id: string) => {
@@ -55,8 +65,16 @@ function Resume(props) {
       <Container className="mb-4">
         <Row noGutters className="justify-content-center pb-2 pt-5">
           <Col md={12} className="heading-section text-center">
-            <Heading className="mb-4">Resume</Heading>
-            <p>Professional experience, education, and achievements.</p>
+            <motion.div
+              ref={headerRef}
+              initial="hidden"
+              animate={isHeaderVisible ? "visible" : "hidden"}
+              custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+              variants={fadeInUpVariants}
+            >
+              <Heading className="mb-4">Resume</Heading>
+              <p>Professional experience, education, and achievements.</p>
+            </motion.div>
           </Col>
         </Row>
         <Row>

@@ -7,12 +7,26 @@ import { Heading } from './style'
 import { FaSign, FaPhone } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
 import Headshot from './About/images/about.png'
+import { motion } from 'motion/react'
+import { fadeInUpVariants } from '../animations'
+import { ANIMATION_CONFIG, TIMING } from '../animations/config'
+import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 
 export default function Contact(props) {
-  const [visible, setVisible] = useState(false);
-  const makeVisible = () => setVisible(true);
-
   const [status, setStatus] = useState("");
+
+  // Use the optimized hook for header viewport detection
+  const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({
+    once: true,
+    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
+
+  // Use the optimized hook for form viewport detection
+  const { ref: formRef, isInView: isFormVisible } = useInViewAnimation({
+    once: true,
+    rootMargin: ANIMATION_CONFIG.rootMargin,
+  });
+
   const submitForm = (ev) => {
     ev.preventDefault();
     const form = ev.target;
@@ -37,40 +51,84 @@ export default function Contact(props) {
       <Container className="mt-5">
         <Row className="justify-content-center pb-3">
           <Col md={7} className="heading-section text-center ftco-animate">
-            <h1 className="big big-2">Contact</h1>
-            <Heading className="mb-4">Start a Conversation</Heading>
-            <p>Available for architectural consulting and senior engineering lead roles.</p>
+            <motion.div
+              ref={headerRef}
+              initial="hidden"
+              animate={isHeaderVisible ? "visible" : "hidden"}
+              custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+              variants={fadeInUpVariants}
+            >
+              <h1 className="big big-2">Contact</h1>
+              <Heading className="mb-4">Start a Conversation</Heading>
+              <p>Available for architectural consulting and senior engineering lead roles.</p>
+            </motion.div>
           </Col>
         </Row>
         <Row noGutters className="block-9 mb-4">
           <Col className="order-md-last d-flex justify-content-center text-center mb-4">
-            <form onSubmit={submitForm}
+            <motion.form
+              ref={formRef}
+              initial="hidden"
+              animate={isFormVisible ? "visible" : "hidden"}
+              custom={{ delay: 0, distance: TIMING.primaryUnit.distance }}
+              variants={fadeInUpVariants}
+              onSubmit={submitForm}
               action="https://formspree.io/xvokgjed"
               method="POST"
               className="bg-light p-4 p-md-5 contact-form"
             >
-              <div className="form-group mb-2">
+              <motion.div
+                initial="hidden"
+                animate={isFormVisible ? "visible" : "hidden"}
+                custom={{ delay: 0.1 }}
+                variants={fadeInUpVariants}
+                className="form-group mb-2"
+              >
                 <input type="text" className="form-control" placeholder="Your Name" name="name" />
-              </div>
-              <div className="form-group mb-2">
+              </motion.div>
+              <motion.div
+                initial="hidden"
+                animate={isFormVisible ? "visible" : "hidden"}
+                custom={{ delay: 0.15 }}
+                variants={fadeInUpVariants}
+                className="form-group mb-2"
+              >
                 <input type="text" className="form-control" placeholder="Your Email" name="_replyto" />
-              </div>
-              <div className="form-group mb-2">
+              </motion.div>
+              <motion.div
+                initial="hidden"
+                animate={isFormVisible ? "visible" : "hidden"}
+                custom={{ delay: 0.2 }}
+                variants={fadeInUpVariants}
+                className="form-group mb-2"
+              >
                 <input type="text" className="form-control" placeholder="Subject" name="_subject" />
-              </div>
-              <div className="form-group mb-4">
+              </motion.div>
+              <motion.div
+                initial="hidden"
+                animate={isFormVisible ? "visible" : "hidden"}
+                custom={{ delay: 0.25 }}
+                variants={fadeInUpVariants}
+                className="form-group mb-4"
+              >
                 <textarea cols={30} rows={7}
                   className="form-control"
                   placeholder=""
                   name="message"
                   defaultValue={""}
                 />
-              </div>
-              <div className="form-group">
+              </motion.div>
+              <motion.div
+                initial="hidden"
+                animate={isFormVisible ? "visible" : "hidden"}
+                custom={{ delay: 0.3 }}
+                variants={fadeInUpVariants}
+                className="form-group"
+              >
                 {status == "SUCCESS" ? <p>Thanks!</p> : <button className="btn btn-primary py-3 px-5">Submit</button>}
                 {status == "ERROR" && <p>Oops! There was an error.</p>}
-              </div>
-            </form>
+              </motion.div>
+            </motion.form>
           </Col>
         </Row>
       </Container>
