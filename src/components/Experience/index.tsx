@@ -28,7 +28,7 @@ interface VerticalLineProps {
 }
 
 const VerticalLine = styled.div<VerticalLineProps>`
-  transition: height 0.15s ease-out;
+  transition: height 0.1s linear;
   position: absolute;
   left: 78px;
   top: 1px;
@@ -210,9 +210,10 @@ interface TimelineRowItemProps {
   totalEntries: number;
   onAnimated?: (index: number) => void;
   rowRef?: (el: HTMLDivElement | null) => void;
+  dotRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef }: TimelineRowItemProps) {
+function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRef }: TimelineRowItemProps) {
   const [nodePopped, setNodePopped] = useState(false);
 
   // Trigger when entry is 1/3 to 1/2 up the viewport (negative margin means above bottom edge)
@@ -273,7 +274,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef }: Tim
               ease: [0.25, 0.1, 0.25, 1],
             }}
           >
-            <TimelineDot />
+            <TimelineDot ref={dotRef} />
           </motion.div>
         </TimelineDotWrapper>
         <Content>
@@ -318,6 +319,8 @@ export default function Experience() {
   const sectionRef = useRef<HTMLElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const firstDotRef = useRef<HTMLDivElement>(null);
+  const lastDotRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
   const lastScrollYRef = useRef<number>(0);
 
@@ -330,51 +333,52 @@ export default function Experience() {
 
   // Calculate the maximum line height (distance to last dot)
   const getMaxLineHeight = (): number => {
-    if (!timelineContainerRef.current || rowRefs.current.length === 0) {
+    if (!timelineContainerRef.current || !lastDotRef.current) {
       return 0;
     }
 
+    // Get the absolute positioning in the viewport
     const containerRect = timelineContainerRef.current.getBoundingClientRect();
-    const lastRow = rowRefs.current[rowRefs.current.length - 1];
+    const dotRect = lastDotRef.current.getBoundingClientRect();
 
-    if (!lastRow) return 0;
-
-    const lastRowRect = lastRow.getBoundingClientRect();
-    const dotCenterOffset = window.innerWidth <= 767.98 ? 40 : 50; // Approximate center of dot
-
-    // Calculate from top of container to center of last dot
-    const maxLineHeight = (lastRowRect.top - containerRect.top) + dotCenterOffset;
+    /**
+     * MATH: Top of Dot - Top of Container 
+     * This gives the exact distance from the start of the line 
+     * to the top edge of the last blue circle.
+     */
+    const maxLineHeight = dotRect.top - containerRect.top;
 
     return Math.max(0, maxLineHeight);
   };
 
   // Calculate current line height based on scroll position
   const calculateLineHeight = (): number => {
-    if (!sectionRef.current || !timelineContainerRef.current) {
+    if (!sectionRef.current || !firstDotRef.current || !lastDotRef.current) {
       return 0;
     }
 
-    const sectionRect = sectionRef.current.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
+    // This matches your -40% bottom margin (100% - 40% = 60% from top)
+    const triggerPoint = viewportHeight * 0.6;
+
+    const firstDotRect = firstDotRef.current.getBoundingClientRect();
+    const lastDotRect = lastDotRef.current.getBoundingClientRect();
     const maxLineHeight = getMaxLineHeight();
 
-    if (maxLineHeight <= 0) {
-      return 0;
-    }
+    // 1. Total distance the line is physically capable of growing
+    // (The distance between the center of the first dot and the center of the last dot)
+    const totalGrowthDistance = lastDotRect.top - firstDotRect.top;
 
-    // The line starts growing when the section top reaches viewport center
-    // and completes when the section bottom passes viewport center
-    const scrollableDistance = sectionRect.height - viewportHeight;
+    if (totalGrowthDistance <= 0) return 0;
 
-    // Avoid division by zero
-    if (scrollableDistance <= 0) {
-      return maxLineHeight;
-    }
+    // 2. How far has the first dot traveled past our 60% trigger point?
+    const distancePassedTrigger = triggerPoint - firstDotRect.top;
 
-    const scrollProgress = (viewportHeight / 2 - sectionRect.top) / scrollableDistance;
+    // 3. Calculate progress (0 to 1) based ONLY on the distance between dots
+    const progress = distancePassedTrigger / totalGrowthDistance;
 
-    // Calculate line height based on scroll progress, clamped between 0 and maxLineHeight
-    const currentHeight = Math.max(0, Math.min(scrollProgress * maxLineHeight, maxLineHeight));
+    // 4. Clamp between 0 and 1, then apply to your max pixel height
+    const currentHeight = Math.max(0, Math.min(progress, 1)) * maxLineHeight;
 
     return Math.round(currentHeight);
   };
@@ -446,6 +450,7 @@ export default function Experience() {
                   index={index}
                   totalEntries={experienceData.length}
                   rowRef={(el) => { rowRefs.current[index] = el; }}
+                  dotRef={index === 0 ? firstDotRef : index === experienceData.length - 1 ? lastDotRef : undefined}
                 />
               ))}
             </TimelineContainer>
