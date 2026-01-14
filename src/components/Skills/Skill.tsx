@@ -1,6 +1,7 @@
-import React, { useRef, Suspense, useEffect, useState, useMemo } from 'react'
+import React, { Suspense, useState, useRef, useMemo } from 'react'
 import { UncontrolledTooltip } from 'reactstrap'
 import { SkillContainer } from './style'
+import { TOOLTIP } from '../../animations/config'
 
 interface SkillProps {
   skill: string;
@@ -9,62 +10,34 @@ interface SkillProps {
 }
 
 export function Skill({ skill, Icon, ...props }: SkillProps) {
-  const targetRef = useRef<HTMLSpanElement>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [iconError, setIconError] = useState(false);
+  const targetRef = useRef<HTMLSpanElement>(null);
+
+  // Stable ID that doesn't change during animations
   const id = useMemo(() =>
-    `skill-${skill.replace(/[^a-z0-9]/gi, '')}-${Math.random().toString(36).substr(2, 5)}`,
+    `skill-${skill.replace(/[^a-z0-9]/gi, '')}`,
     [skill]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const renderIcon = () => {
-    try {
-      return <Icon size={'2rem'} style={{ textAlign: 'center' }} />;
-    } catch (error) {
-      console.error(`Error rendering icon for ${skill}:`, error);
-      setIconError(true);
-      return <span style={{ fontSize: '2rem', textAlign: 'center' }}>⚠️</span>;
-    }
-  };
-
-  if (iconError) {
-    return (
-      <SkillContainer>
-        <span id={id} ref={targetRef} {...props}>
-          <span style={{ fontSize: '2rem', textAlign: 'center' }}>⚠️</span>
-        </span>
-        <UncontrolledTooltip
-          placement="top"
-          target={id}
-          transition={{ timeout: 150 }}
-          delay={{ show: 100, hide: 0 }}
-        >
-          {skill} (icon unavailable)
-        </UncontrolledTooltip>
-      </SkillContainer>
-    );
-  }
-
   return (
     <SkillContainer>
-      {isMounted && (
-        <Suspense fallback={<span style={{ fontSize: '2rem' }}>⏳</span>}>
-          <span id={id} ref={targetRef} {...props}>
-            {renderIcon()}
-          </span>
+      <Suspense fallback={<span style={{ fontSize: '2rem' }}>⏳</span>}>
+        <span id={id} ref={targetRef} {...props} style={{ cursor: 'pointer' }}>
+          <Icon size={'2rem'} />
+        </span>
+        {isMounted && targetRef.current && (
           <UncontrolledTooltip
             placement="top"
             target={id}
-            transition={{ timeout: 150 }}
-            delay={{ show: 100, hide: 0 }}
+            delay={{ show: TOOLTIP.show, hide: TOOLTIP.hide }}
           >
             {skill}
           </UncontrolledTooltip>
-        </Suspense>
-      )}
+        )}
+      </Suspense>
     </SkillContainer>
   );
 }

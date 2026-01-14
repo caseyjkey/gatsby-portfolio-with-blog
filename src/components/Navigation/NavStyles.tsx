@@ -90,7 +90,7 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
   top: ${props => props.$isOpen ? '100%' : 'auto'};
   left: 0;
   right: 0;
-  background-color: ${props => props.$isOpen ? `rgba(255, 255, 255, ${MENU_OPEN_OPACITY})` : 'transparent'};
+  background-color: ${props => props.$isOpen ? `rgba(255, 255, 255, ${HEADER_GLASS_OPACITY})` : 'transparent'};
   backdrop-filter: ${props => props.$isOpen ? 'blur(12px)' : 'none'};
   -webkit-backdrop-filter: ${props => props.$isOpen ? 'blur(12px)' : 'none'};
   border-top: ${props => props.$isOpen ? '1px solid rgba(0, 0, 0, 0.08)' : 'none'};
@@ -119,6 +119,7 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
     .nav-link {
       padding: 1.25rem 1.5rem !important;
       font-size: 1.1rem;
+      color: #000000 !important; /* Ensure black text on white background */
     }
   }
 `

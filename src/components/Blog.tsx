@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'reactstrap'
 import { BlogSection, BlogEntry } from './Blog/style'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
-import { ANIMATION_CONFIG, TIMING, STAGGER } from '../animations/config'
+import { ANIMATION_CONFIG, TIMING, STAGGER, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
 
 // Animated blog entry component
 const AnimatedBlogEntry = ({ children, index, initialBatchCount }: { children: React.ReactNode; index: number; initialBatchCount: number }) => {
@@ -33,7 +33,6 @@ const AnimatedBlogEntry = ({ children, index, initialBatchCount }: { children: R
     }, [isVisible]);
 
     // Only items in the first "screen-full" get the sequential delay
-    console.log(initialBatchCount, index)
 
     // Responsive stagger: sequential on desktop, column-based on mobile
     const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
@@ -71,7 +70,6 @@ export const Blog = (props) => {
 
         for (let i = 0; i < cards.length; i++) {
             const rect = cards[i].getBoundingClientRect();
-            console.log(rect.top)
             if (rect.top < viewportHeight) {
                 count++;
             } else {
@@ -168,7 +166,7 @@ export const Blog = (props) => {
                             ref={subheaderRef}
                             initial="hidden"
                             animate={isSubheaderVisible ? 'visible' : 'hidden'}
-                            custom={{ delay: 0.2 }}
+                            custom={{ delay: SECONDARY_DELAYS.default }}
                             variants={fadeInUpVariants}
                         >
                             Coding, reflecting, evolving.

@@ -6,7 +6,7 @@ import { format, parseISO } from 'date-fns'
 import { motion } from 'framer-motion'
 import { fadeInUpVariants } from '../../animations'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
-import { ANIMATION_CONFIG } from '../../animations/config'
+import { ANIMATION_CONFIG, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../../animations/config'
 import { theme } from '../style'
 import Project from '../Projects/Project'
 
@@ -142,7 +142,7 @@ const FeaturedWork = () => {
 
   // Calculate delay for project cards
   const getProjectDelay = (index: number) => {
-    return index * 0.1; // Simple sequential stagger
+    return index * PROGRESSIVE_STAGGER.cards.staggerIncrement; // Simple sequential stagger
   };
 
   // Individual viewport detection for each card
@@ -171,7 +171,7 @@ const FeaturedWork = () => {
               ref={subheaderRef}
               initial="hidden"
               animate={isSubheaderVisible ? 'visible' : 'hidden'}
-              custom={{ delay: 0.2 }}
+              custom={{ delay: SECONDARY_DELAYS.default }}
               variants={fadeInUpVariants}
             >
               Highlighted projects from my portfolio.

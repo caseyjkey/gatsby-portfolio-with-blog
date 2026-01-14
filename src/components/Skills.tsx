@@ -9,7 +9,7 @@ import { AiSystemsIllustration } from './Skills/AiSystemsIllustration'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
-import { ANIMATION_CONFIG, TIMING } from '../animations/config'
+import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
 
 export default function Skills() {
     // Use the optimized hook for each section's viewport detection
@@ -118,7 +118,7 @@ export default function Skills() {
 
     // Calculate delay for skill icons - simple sequential stagger
     const getSkillDelay = (index: number) => {
-        return index * 0.08; // Each icon animates 80ms after the previous one
+        return index * PROGRESSIVE_STAGGER.skills.staggerIncrement; // Each icon animates 100ms after the previous one
     };
 
     return (
@@ -129,6 +129,7 @@ export default function Skills() {
                         <motion.div
                             ref={mainHeaderRef}
                             initial="hidden"
+                            className="pb-5"
                             animate={isVisible ? "visible" : "hidden"}
                             custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
                             variants={fadeInUpVariants}
@@ -138,7 +139,7 @@ export default function Skills() {
                                 ref={subheaderRef}
                                 initial="hidden"
                                 animate={isSubheaderVisible ? 'visible' : 'hidden'}
-                                custom={{ delay: 0.2 }}
+                                custom={{ delay: SECONDARY_DELAYS.default }}
                                 variants={fadeInUpVariants}
                             >
                                 Bridging the gap between complex technical architecture and scalable business solutions.
@@ -147,21 +148,22 @@ export default function Skills() {
                     </Col>
                 </Row>
                 <div>
-                    <Row xs={1} md={2} className='pt-4 pb-4'>
+                    <Row xs={1} md={2} className='pb-4'>
                         <Col className='order-lg-1 order-md-1 order-2'>
                             <FullStackIllustration isVisible={isFullStackVisible} />
                         </Col>
-                        <Col lg={6} className="animate-box order-lg-2 order-lg-2 order-1">
-                            <div align="center">
+                        <Col lg={6} className="order-lg-2 order-lg-2 order-1">
+                            <div align="center" ref={fullStackRef}>
                                 <motion.div
                                     ref={fullStackRef}
                                     initial="hidden"
                                     animate={isFullStackVisible ? "visible" : "hidden"}
-                                    custom={{ delay: 0.5, distance: TIMING.sectionHeader.distance }}
+                                    custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
                                     variants={fadeInUpVariants}
                                 >
                                     <MediumHeading className="mb-4">Full Stack Development</MediumHeading>
                                 </motion.div>
+                                <div>
                                 {[
                                     { skill: 'Python', icon: 'FaPython', idx: 0 },
                                     { skill: 'Swift', icon: 'GrSwift', idx: 1 },
@@ -185,7 +187,7 @@ export default function Skills() {
                                         key={idx}
                                         initial="hidden"
                                         animate={isFullStackVisible ? "visible" : "hidden"}
-                                        custom={{ delay: 0.7 + getSkillDelay(idx) }}
+                                        custom={{ delay: 0.55 + getSkillDelay(idx) }}
                                         variants={fadeInUpVariants}
                                         style={{ display: 'inline-block' }}
                                     >
@@ -205,12 +207,13 @@ export default function Skills() {
                                     className="skillListItem"
                                     initial="hidden"
                                     animate={isFullStackVisible ? "visible" : "hidden"}
-                                    custom={{ delay: 0.85 + (idx * 0.1) }}
+                                    custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
                                     variants={fadeInUpVariants}
                                 >
                                     {text}
                                 </motion.p>
                             ))}
+                            </div>
                         </Col>
                     </Row>
                 </div>
@@ -227,6 +230,7 @@ export default function Skills() {
                                 >
                                     <MediumHeading className="mb-4">AI & Systems Engineering</MediumHeading>
                                 </motion.div>
+                                <div>
                                 {[
                                     { skill: 'Python', icon: 'FaPython', idx: 0 },
                                     { skill: 'PyTorch', icon: 'SiPytorch', idx: 1 },
@@ -248,6 +252,7 @@ export default function Skills() {
                                     </motion.div>
                                 ))}
                             </div>
+                            <div ref={aiSystemsRef}>
                             {[
                                 '⚡ Implement AI-powered DevOps workflows and automation',
                                 '⚡ Explore ML techniques for performance tuning and anomaly detection',
@@ -257,13 +262,16 @@ export default function Skills() {
                                 <motion.p
                                     key={idx}
                                     initial="hidden"
+                                    className="skillListItem"
                                     animate={isAiSystemsVisible ? "visible" : "hidden"}
-                                    custom={{ delay: 0.15 + (idx * 0.1) }}
+                                    custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
                                     variants={fadeInUpVariants}
                                 >
                                     {text}
                                 </motion.p>
                             ))}
+                            </div>
+                            </div>
                         </Col>
                         <Col>
                             <AiSystemsIllustration isVisible={isAiSystemsVisible} />

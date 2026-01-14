@@ -9,7 +9,7 @@ import { MdEmail } from 'react-icons/md'
 import Headshot from './About/images/about.png'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
-import { ANIMATION_CONFIG, TIMING } from '../animations/config'
+import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 
 export default function Contact(props) {
@@ -68,7 +68,7 @@ export default function Contact(props) {
               ref={subheaderRef}
               initial="hidden"
               animate={isSubheaderVisible ? 'visible' : 'hidden'}
-              custom={{ delay: 0.2 }}
+              custom={{ delay: SECONDARY_DELAYS.default }}
               variants={fadeInUpVariants}
             >
               Available for architectural consulting and senior engineering lead roles.
@@ -91,7 +91,7 @@ export default function Contact(props) {
               <motion.div
                 initial="hidden"
                 animate={isFormVisible ? "visible" : "hidden"}
-                custom={{ delay: 0.1 }}
+                custom={{ delay: PROGRESSIVE_STAGGER.contact.fieldBase + (1 * PROGRESSIVE_STAGGER.contact.fieldIncrement) }}
                 variants={fadeInUpVariants}
                 className="form-group mb-2"
               >
@@ -100,7 +100,7 @@ export default function Contact(props) {
               <motion.div
                 initial="hidden"
                 animate={isFormVisible ? "visible" : "hidden"}
-                custom={{ delay: 0.15 }}
+                custom={{ delay: PROGRESSIVE_STAGGER.contact.fieldBase + (3 * PROGRESSIVE_STAGGER.contact.fieldIncrement) }}
                 variants={fadeInUpVariants}
                 className="form-group mb-2"
               >
@@ -109,7 +109,7 @@ export default function Contact(props) {
               <motion.div
                 initial="hidden"
                 animate={isFormVisible ? "visible" : "hidden"}
-                custom={{ delay: 0.2 }}
+                custom={{ delay: PROGRESSIVE_STAGGER.contact.fieldBase + (4 * PROGRESSIVE_STAGGER.contact.fieldIncrement) }}
                 variants={fadeInUpVariants}
                 className="form-group mb-2"
               >
@@ -118,7 +118,7 @@ export default function Contact(props) {
               <motion.div
                 initial="hidden"
                 animate={isFormVisible ? "visible" : "hidden"}
-                custom={{ delay: 0.25 }}
+                custom={{ delay: PROGRESSIVE_STAGGER.contact.fieldBase + (5 * PROGRESSIVE_STAGGER.contact.fieldIncrement) }}
                 variants={fadeInUpVariants}
                 className="form-group mb-4"
               >
@@ -132,7 +132,7 @@ export default function Contact(props) {
               <motion.div
                 initial="hidden"
                 animate={isFormVisible ? "visible" : "hidden"}
-                custom={{ delay: 0.3 }}
+                custom={{ delay: PROGRESSIVE_STAGGER.contact.fieldBase + (6 * PROGRESSIVE_STAGGER.contact.fieldIncrement) }}
                 variants={fadeInUpVariants}
                 className="form-group"
               >

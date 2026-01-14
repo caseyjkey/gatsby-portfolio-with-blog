@@ -3,6 +3,7 @@ import { theme, Section } from '../style.ts'
 import { lighten } from 'polished'
 
 export const SkillsSection = styled.ul`
+  padding-bottom: 6em;
   ${Section}
   ul {
     list-style: none;
@@ -66,7 +67,6 @@ export const MediumHeading = styled.h2`
   position: relative;
   font-size: 50px;
   font-weight: 500;
-  margin-top: 2rem;
   span{
     font-weight: 400;
   }

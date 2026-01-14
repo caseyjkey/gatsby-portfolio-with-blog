@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { CSS_TRANSITIONS } from '../../animations/config'
 
 interface SliderProps {
   isFinished?: boolean;
@@ -139,7 +140,7 @@ export const Slider = styled.div<SliderProps>`
   #typewriter {
     position: relative; /* Context for absolute layers */
     margin-bottom: 6rem;
-    transition-delay: 0.3s; /* Smooth timing gap */    height: 120px; 
+    transition-delay: ${CSS_TRANSITIONS.viewLayer.delay}s; /* Smooth timing gap */    height: 120px; 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -155,7 +156,7 @@ export const Slider = styled.div<SliderProps>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: opacity 0.6s ease-in-out;
+    transition: opacity ${CSS_TRANSITIONS.viewLayer.duration}s ease-in-out;
   }
 
   .typewriter-cursor {
@@ -169,9 +170,9 @@ export const Slider = styled.div<SliderProps>`
     visibility: ${(props) => (props.isFinished ? 'hidden' : 'visible')};
     pointer-events: ${(props) => (props.isFinished ? 'none' : 'auto')};
     
-    /* We transition opacity normally, but we add a 0.6s delay to visibility ONLY when hiding */
-    transition: opacity 0.6s ease-out, 
-                visibility 0s linear ${props => (props.isFinished ? '0.6s' : '0s')};    z-index: ${props => (props.isFinished ? 1 : 2)};
+    /* We transition opacity normally, but we add a delay to visibility ONLY when hiding */
+    transition: opacity ${CSS_TRANSITIONS.viewLayer.duration}s ease-out,
+                visibility 0s linear ${props => (props.isFinished ? `${CSS_TRANSITIONS.viewLayer.duration}s` : '0s')};    z-index: ${props => (props.isFinished ? 1 : 2)};
 
     .typewriter-cursor {
       /* Kill cursor immediately on finish to stop jarring visual artifacts */
@@ -184,7 +185,7 @@ export const Slider = styled.div<SliderProps>`
     opacity: ${(props) => (props.isFinished ? 1 : 0)};
     visibility: ${(props) => (props.isFinished ? 'visible' : 'hidden')};
     pointer-events: ${(props) => (props.isFinished ? 'auto' : 'none')};
-    transition-delay: 0.6s; /* Smooth timing gap */
+    transition-delay: ${CSS_TRANSITIONS.socialView.delay}s; /* Smooth timing gap */
     z-index: ${props => (props.isFinished ? 2 : 1)};
   }
 

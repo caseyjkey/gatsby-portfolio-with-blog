@@ -7,7 +7,7 @@ import { lighten } from 'polished'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../../animations'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
-import { ANIMATION_CONFIG, TIMING } from '../../animations/config'
+import { ANIMATION_CONFIG, TIMING, TIMELINE, EASING, SECONDARY_DELAYS } from '../../animations/config'
 
 const ExperienceSection = styled.section`
   position: relative;
@@ -303,9 +303,9 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: hasBeenReached ? 1 : 0, y: 0 }}
             transition={{
-              duration: 0.5,
-              delay: isFirst ? 0.5 : 0,
-              ease: [0.2, 0.8, 0.2, 1]
+              duration: TIMELINE.year.duration,
+              delay: isFirst ? TIMELINE.year.firstDelay : TIMELINE.year.delay,
+              ease: EASING.standard,
             }}
           >
             {extractStartYear(entry.year)}
@@ -319,44 +319,51 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
               scale: hasBeenReached ? 1 : 0,
             }}
             transition={{
-              duration: 0.4,
-              delay: isFirst ? 0.5 : 0,
-              ease: [0.34, 1.56, 0.64, 1],
+              duration: TIMELINE.dot.duration,
+              delay: isFirst ? TIMELINE.dot.firstDelay : TIMELINE.dot.delay,
+              ease: TIMELINE.dot.ease,
             }}
           >
             <TimelineDot ref={dotRef} />
           </motion.div>
         </TimelineDotWrapper>
-        <Content>
-          <motion.div
-            initial={{ opacity: 0, x: isMobile ? -15 : 15 }}
-            animate={{ opacity: hasBeenReached ? 1 : 0, x: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: isFirst ? 0.5 : 0,
-              ease: [0.2, 0.8, 0.2, 1]
-            }}
-          >
-            <CompanyHeader>
-              <Company>{entry.company}</Company>
-              <Location>{entry.location}</Location>
-            </CompanyHeader>
-            <Title>{entry.title}</Title>
-            <BulletList>
-              {entry.bullets.map((bullet, bulletIndex) => (
-                <motion.li
-                  key={bulletIndex}
-                  initial="hidden"
-                  animate={hasBeenReached ? "visible" : "hidden"}
-                  custom={{ delay: 0.2 + (bulletIndex * 0.1), distance: isMobile ? 10 : 10 }}
-                  variants={fadeInUpVariants}
-                >
-                  {bullet}
-                </motion.li>
-              ))}
-            </BulletList>
-          </motion.div>
-        </Content>
+        <motion.div
+          layout="position"
+          initial={{ opacity: 0, x: isMobile ? -50 : 50, scale: 0.8 }}
+          animate={{ opacity: hasBeenReached ? 1 : 0, x: 0, scale: 1 }}
+          transition={{
+            duration: TIMELINE.entry.duration,
+            delay: isFirst ? TIMELINE.entry.firstDelay : TIMELINE.entry.delay,
+            ease: EASING.standard,
+          }}
+          style={{
+            flex: 1,
+            paddingLeft: '3rem',
+            minWidth: 0
+          }}
+        >
+          <CompanyHeader>
+            <Company>{entry.company}</Company>
+            <Location>{entry.location}</Location>
+          </CompanyHeader>
+          <Title>{entry.title}</Title>
+          <BulletList>
+            {entry.bullets.map((bullet, bulletIndex) => (
+              <motion.li
+                key={bulletIndex}
+                initial="hidden"
+                animate={hasBeenReached ? "visible" : "hidden"}
+                custom={{
+                  delay: TIMELINE.bullet.baseDelay + (bulletIndex * TIMELINE.bullet.staggerIncrement),
+                  distance: isMobile ? 10 : 10
+                }}
+                variants={fadeInUpVariants}
+              >
+                {bullet}
+              </motion.li>
+            ))}
+          </BulletList>
+        </motion.div>
       </TimelineRow>
     </div>
   );
@@ -497,7 +504,7 @@ export default function Experience() {
   return (
     <ExperienceSection ref={sectionRef} id="Experience">
       <Container>
-        <Row noGutters className="justify-content-center pb-2 pt-5">
+        <Row noGutters className="justify-content-center">
           <Col md={12} className="heading-section text-center">
             <motion.div
               ref={headerRef}
@@ -512,7 +519,7 @@ export default function Experience() {
               ref={subheaderRef}
               initial="hidden"
               animate={isSubheaderVisible ? 'visible' : 'hidden'}
-              custom={{ delay: 0.2 }}
+              custom={{ delay: SECONDARY_DELAYS.default }}
               variants={fadeInUpVariants}
             >
               Engineering scalable systems, high-availability cloud solutions, and technical leadership.
@@ -526,8 +533,8 @@ export default function Experience() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: firstItemReached ? 1 : 0 }}
                 transition={{
-                  duration: 0.5,
-                  ease: [0.2, 0.8, 0.2, 1]
+                  duration: TIMELINE.line.duration,
+                  ease: EASING.standard,
                 }}
               >
                 <div ref={verticalLineRef}>

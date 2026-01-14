@@ -8,6 +8,7 @@ import { FaChalkboardTeacher } from 'react-icons/fa'
 import { MdWeb, MdAndroid } from 'react-icons/md'
 import { motion } from 'motion/react'
 import { TIMING, EASING, fadeInUpVariants } from '../animations'
+import { PROGRESSIVE_STAGGER } from '../animations/config'
 
 export default function Services(props) {
   const servicesRef = useRef<HTMLDivElement>(null);
@@ -53,7 +54,7 @@ export default function Services(props) {
             <motion.div
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
-              custom={{ delay: 0.15 }}
+              custom={{ delay: PROGRESSIVE_STAGGER.services.baseDelay + (1 * PROGRESSIVE_STAGGER.services.staggerIncrement) }}
               variants={fadeInUpVariants}
             >
               <Service
@@ -69,7 +70,7 @@ export default function Services(props) {
             <motion.div
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
-              custom={{ delay: 0.30 }}
+              custom={{ delay: PROGRESSIVE_STAGGER.services.baseDelay + (2 * PROGRESSIVE_STAGGER.services.staggerIncrement) }}
               variants={fadeInUpVariants}
             >
               <Service
@@ -85,7 +86,7 @@ export default function Services(props) {
             <motion.div
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
-              custom={{ delay: 0.45 }}
+              custom={{ delay: PROGRESSIVE_STAGGER.services.baseDelay + (3 * PROGRESSIVE_STAGGER.services.staggerIncrement) }}
               variants={fadeInUpVariants}
             >
               <Service

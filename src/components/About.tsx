@@ -29,7 +29,7 @@ import Activity from './About/Activity'
 import { graphql, useStaticQuery } from 'gatsby'
 import { motion } from 'motion/react'
 import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
-import { ANIMATION_CONFIG, TIMING } from '../animations/config'
+import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER, ICON } from '../animations/config'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 
 export default function About(props) {
@@ -116,7 +116,7 @@ export default function About(props) {
               ref={subheaderRef}
               initial="hidden"
               animate={isSubheaderVisible ? 'visible' : 'hidden'}
-              custom={{ delay: 0.2 }}
+              custom={{ delay: SECONDARY_DELAYS.default }}
               variants={fadeInUpVariants}
             >
               Technical leadership, strategic mindset, and mission.
@@ -145,7 +145,9 @@ export default function About(props) {
                           key={index}
                           initial="hidden"
                           animate={isContentVisible ? "visible" : "hidden"}
-                          custom={{ delay: 0.1 + (index * 0.08) }}
+                          custom={{
+                            delay: PROGRESSIVE_STAGGER.about.baseDelay + (index * PROGRESSIVE_STAGGER.about.staggerIncrement)
+                          }}
                           variants={fadeInUpVariants}
                         >
                           <Activity description={activity.activity.description}
@@ -165,7 +167,7 @@ export default function About(props) {
                     <motion.h3
                       initial="hidden"
                       animate={isContentVisible ? "visible" : "hidden"}
-                      custom={{ delay: 0.15 }}
+                      custom={{ delay: SECONDARY_DELAYS.short }}
                       variants={fadeInUpVariants}
                     >
                       Consultant Approach
@@ -173,7 +175,7 @@ export default function About(props) {
                     <motion.p
                       initial="hidden"
                       animate={isContentVisible ? "visible" : "hidden"}
-                      custom={{ delay: 0.2 }}
+                      custom={{ delay: SECONDARY_DELAYS.default }}
                       variants={fadeInUpVariants}
                     >
                       <strong>Problem-Solving:</strong> I tackle complex technical challenges by combining deep technical expertise with a strategic, business-first mindset.
@@ -181,7 +183,7 @@ export default function About(props) {
                     <motion.p
                       initial="hidden"
                       animate={isContentVisible ? "visible" : "hidden"}
-                      custom={{ delay: 0.3 }}
+                      custom={{ delay: SECONDARY_DELAYS.medium }}
                       variants={fadeInUpVariants}
                     >
                       <strong>Technical Leadership:</strong> I guide teams through architectural decisions, mentor developers, and ensure scalable, maintainable solutions.
@@ -189,7 +191,7 @@ export default function About(props) {
                     <motion.p
                       initial="hidden"
                       animate={isContentVisible ? "visible" : "hidden"}
-                      custom={{ delay: 0.4 }}
+                      custom={{ delay: SECONDARY_DELAYS.long }}
                       variants={fadeInUpVariants}
                     >
                       <strong>Client Partnership:</strong> I bridge the gap between technical requirements and business goals, communicating complex concepts to stakeholders at all levels.
@@ -204,7 +206,7 @@ export default function About(props) {
               ref={headshotRef}
               initial={{ opacity: 0, x: 20, y: 30 }}
               animate={isHeadshotVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: 20, y: 30 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
             >
               <AboutImage>
                 <StaticImage src='./About/images/about.png' alt='Casey Key in a suit' />

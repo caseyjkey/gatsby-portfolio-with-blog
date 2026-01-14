@@ -24,7 +24,7 @@ import { BsSave } from 'react-icons/bs'
 import { experienceData } from '../../data/experience'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../../animations'
-import { ANIMATION_CONFIG, TIMING } from '../../animations/config'
+import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS } from '../../animations/config'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
 
 function Resume(props) {
@@ -90,7 +90,7 @@ function Resume(props) {
               ref={buttonRef}
               initial="hidden"
               animate={isButtonVisible ? "visible" : "hidden"}
-              custom={{ delay: 0.2, distance: TIMING.primaryUnit.distance }}
+              custom={{ delay: SECONDARY_DELAYS.default, distance: TIMING.primaryUnit.distance }}
               variants={fadeInUpVariants}
               className="mb-4 mt-5"
             >
@@ -129,7 +129,7 @@ function Resume(props) {
           ref={accordionRef}
           initial="hidden"
           animate={isAccordionVisible ? "visible" : "hidden"}
-          custom={{ delay: 0.4, distance: TIMING.primaryUnit.distance }}
+          custom={{ delay: SECONDARY_DELAYS.long, distance: TIMING.primaryUnit.distance }}
           variants={fadeInUpVariants}
         >
           <Accordion flush open={open || ''} toggle={handleToggle}>

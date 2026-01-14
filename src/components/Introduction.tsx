@@ -69,10 +69,7 @@ export default function Introduction(props) {
     setHeaderEnd(true);
   };
 
-  useEffect(() => {
-    console.log('headerEnd', headerEnd);
-  }, [headerEnd]);
-
+  
   // Delay rendering content until component is mounted to prevent flash
   useEffect(() => {
     const timer = setTimeout(() => setIsReady(true), 50);

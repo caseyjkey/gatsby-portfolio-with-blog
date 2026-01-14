@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, forwardRef } from 'react'
 import { AccordionBody } from 'reactstrap'
 import { motion } from 'motion/react'
-import { ANIMATION_CONFIG } from '../../animations/config'
+import { ANIMATION_CONFIG, ACCORDION, EASING } from '../../animations/config'
 
 interface AnimatedAccordionBodyProps {
   accordionId: string
@@ -68,15 +68,15 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
           {React.Children.map(children, (child, index) => (
             <motion.div
               key={`${animationKey}-${index}`}
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: ACCORDION.contentLift }}
               animate={{
                 opacity: shouldAnimate ? 1 : 0,
-                y: shouldAnimate ? 0 : 15
+                y: shouldAnimate ? 0 : ACCORDION.contentLift,
               }}
               transition={{
-                duration: 0.5,
-                delay: shouldAnimate ? index * 0.1 : 0,
-                ease: [0.2, 0.8, 0.2, 1]
+                duration: ACCORDION.duration,
+                delay: shouldAnimate ? index * ACCORDION.staggerDelay : 0,
+                ease: EASING.standard,
               }}
             >
               {child}

@@ -12,8 +12,7 @@ const components = {
   ),
   pre: ({ children: { props, type } }) => {
     if (type === 'code') {
-        console.log('code!', props);
-        return (
+                return (
             <Code 
                 codeString={props.children.trim()} 
                 language={

@@ -57,12 +57,10 @@ export function useInViewAnimation(
     const node = ref.current;
     if (!node) return;
 
-    console.log('[useInViewAnimation] Setting up observer for node:', node.tagName, 'isReady:', isReady);
 
     // Check for reduced motion preference
     const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
-      console.log('[useInViewAnimation] Reduced motion detected, skipping animation');
       setIsInView(true);
       setHasAnimated(true);
       return;
@@ -71,13 +69,6 @@ export function useInViewAnimation(
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          console.log('[useInViewAnimation] Observer callback:', {
-            isIntersecting: entry.isIntersecting,
-            once,
-            hasAnimated,
-            intersectionRatio: entry.intersectionRatio,
-            rootMargin: getRootMargin(),
-          });
           if (entry.isIntersecting) {
             setIsInView(true);
             if (once && !hasAnimated) {
@@ -95,7 +86,6 @@ export function useInViewAnimation(
     );
 
     observer.observe(node);
-    console.log('[useInViewAnimation] Observer created with rootMargin:', getRootMargin(), 'threshold:', getThreshold());
 
     return () => {
       observer.disconnect();

@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { motion } from 'motion/react'
+import { ICON } from '../../animations/config'
 
 interface FullStackIllustrationProps {
     isVisible: boolean
@@ -21,7 +22,7 @@ export function FullStackIllustration({ isVisible }: FullStackIllustrationProps)
         <motion.div
             initial={{ opacity: 0, x: -20, y: 30 }}
             animate={isVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -20, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
+            transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
         >
             <Svg id="ade8c9af-7e2e-4eda-b5c8-b06129257226" width="100%" height="100%" viewBox="0 0 1076.06371 755.2279">
             <path d="M926.11393,774.80937c-6.98452,26.59789-31.459,43.21966-31.459,43.21966s-13.15033-26.50193-6.16581-53.09982,31.459-43.21966,31.459-43.21966S933.09845,748.21148,926.11393,774.80937Z" transform="translate(-61.96814 -72.38605)" fill="#3f3d56"></path>

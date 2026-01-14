@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { motion } from 'motion/react'
+import { ICON } from '../../animations/config'
 
 interface AiSystemsIllustrationProps {
     isVisible: boolean
@@ -21,7 +22,7 @@ export function AiSystemsIllustration({ isVisible }: AiSystemsIllustrationProps)
         <motion.div
             initial={{ opacity: 0, x: 20, y: 30 }}
             animate={isVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: 20, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
+            transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
         >
             <Svg id="1dff4cb4-53bd-4ffc-acc1-5e8a2ceb72de" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 864.81 658.45" className="sc-dIfARi jcozdZ">
                 <defs>
