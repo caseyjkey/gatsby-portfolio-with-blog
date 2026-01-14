@@ -44,13 +44,13 @@ export function useInViewAnimation(
 
   const getRootMargin = useCallback(() => {
     if (rootMargin) return rootMargin;
-    return isMobile ? ANIMATION_CONFIG.mobileRootMargin : ANIMATION_CONFIG.desktopRootMargin;
-  }, [rootMargin, isMobile]);
+    return ANIMATION_CONFIG.rootMargin; // Use global rootMargin by default
+  }, [rootMargin]);
 
   const getThreshold = useCallback(() => {
     if (threshold !== undefined) return threshold;
-    return isMobile ? ANIMATION_CONFIG.mobileThreshold : 0;
-  }, [threshold, isMobile]);
+    return 0; // Use 0 threshold by default for consistent behavior
+  }, [threshold]);
 
   // Set up observer when ref is ready
   useEffect(() => {

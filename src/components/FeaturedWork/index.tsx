@@ -1,14 +1,14 @@
-import React, { lazy } from 'react'
+import React, { lazy, useRef, useState } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
-import { theme } from '../style.ts'
-import { motion } from 'motion/react'
+import { format, parseISO } from 'date-fns'
+import { motion } from 'framer-motion'
 import { fadeInUpVariants } from '../../animations'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
 import { ANIMATION_CONFIG } from '../../animations/config'
+import { theme } from '../style'
 import Project from '../Projects/Project'
-import { format, parseISO } from 'date-fns'
 
 interface FeaturedProject {
   node: {
@@ -145,6 +145,14 @@ const FeaturedWork = () => {
     return index * 0.1; // Simple sequential stagger
   };
 
+  // Individual viewport detection for each card
+  const { ref: card1Ref, isInView: isCard1Visible } = useInViewAnimation({ once: true });
+  const { ref: card2Ref, isInView: isCard2Visible } = useInViewAnimation({ once: true });
+  const { ref: card3Ref, isInView: isCard3Visible } = useInViewAnimation({ once: true });
+
+  const cardRefs = [card1Ref, card2Ref, card3Ref];
+  const cardVisibility = [isCard1Visible, isCard2Visible, isCard3Visible];
+
   return (
     <FeaturedSection ref={sectionRef}>
       <Container fluid={true}>
@@ -158,16 +166,16 @@ const FeaturedWork = () => {
               <h2 style={{ fontSize: '50px', fontWeight: 700, color: theme.black }}>
                 Featured Work
               </h2>
-              <motion.p
-                ref={subheaderRef}
-                initial="hidden"
-                animate={isSubheaderVisible ? 'visible' : 'hidden'}
-                custom={{ delay: 0.2 }}
-                variants={fadeInUpVariants}
-              >
-                Highlighted projects from my portfolio
-              </motion.p>
             </motion.div>
+            <motion.p
+              ref={subheaderRef}
+              initial="hidden"
+              animate={isSubheaderVisible ? 'visible' : 'hidden'}
+              custom={{ delay: 0.2 }}
+              variants={fadeInUpVariants}
+            >
+              Highlighted projects from my portfolio.
+            </motion.p>
           </Col>
         </Row>
         <Row className="gx-3" style={{ display: 'flex', alignItems: 'stretch' }}>
@@ -188,8 +196,9 @@ const FeaturedWork = () => {
             return (
               <Col key={index} md={4} className="pb-4 d-flex align-items-stretch">
                 <motion.div
+                  ref={cardRefs[index]}
                   initial="hidden"
-                  animate={isVisible ? "visible" : "hidden"}
+                  animate={cardVisibility[index] ? "visible" : "hidden"}
                   custom={{ delay: getProjectDelay(index) }}
                   variants={fadeInUpVariants}
                   className="h-100 d-flex flex-column"

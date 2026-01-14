@@ -15,7 +15,7 @@ export const SkillsSection = styled.ul`
     }
   }
 
-  p {
+  p.skillListItem {
     color: ${(props) => props.theme.black};
   }
 `;

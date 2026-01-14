@@ -1,4 +1,4 @@
-import React, { useRef, Suspense, useEffect, useState } from 'react'
+import React, { useRef, Suspense, useEffect, useState, useMemo } from 'react'
 import { UncontrolledTooltip } from 'reactstrap'
 import { SkillContainer } from './style'
 
@@ -12,7 +12,9 @@ export function Skill({ skill, Icon, ...props }: SkillProps) {
   const targetRef = useRef<HTMLSpanElement>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [iconError, setIconError] = useState(false);
-  const id = `skill-${skill.replace(/[^a-z0-9]/gi, '')}-${Math.random().toString(36).substr(2, 9)}`;
+  const id = useMemo(() =>
+    `skill-${skill.replace(/[^a-z0-9]/gi, '')}-${Math.random().toString(36).substr(2, 5)}`,
+    [skill]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -37,7 +39,7 @@ export function Skill({ skill, Icon, ...props }: SkillProps) {
         <UncontrolledTooltip
           placement="top"
           target={id}
-          fade={true}
+          transition={{ timeout: 150 }}
           delay={{ show: 100, hide: 0 }}
         >
           {skill} (icon unavailable)
@@ -56,7 +58,7 @@ export function Skill({ skill, Icon, ...props }: SkillProps) {
           <UncontrolledTooltip
             placement="top"
             target={id}
-            fade={true}
+            transition={{ timeout: 150 }}
             delay={{ show: 100, hide: 0 }}
           >
             {skill}

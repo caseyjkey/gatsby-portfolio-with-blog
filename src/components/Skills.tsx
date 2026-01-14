@@ -157,7 +157,7 @@ export default function Skills() {
                                     ref={fullStackRef}
                                     initial="hidden"
                                     animate={isFullStackVisible ? "visible" : "hidden"}
-                                    custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+                                    custom={{ delay: 0.5, distance: TIMING.sectionHeader.distance }}
                                     variants={fadeInUpVariants}
                                 >
                                     <MediumHeading className="mb-4">Full Stack Development</MediumHeading>
@@ -185,7 +185,7 @@ export default function Skills() {
                                         key={idx}
                                         initial="hidden"
                                         animate={isFullStackVisible ? "visible" : "hidden"}
-                                        custom={{ delay: getSkillDelay(idx) }}
+                                        custom={{ delay: 0.7 + getSkillDelay(idx) }}
                                         variants={fadeInUpVariants}
                                         style={{ display: 'inline-block' }}
                                     >
@@ -202,9 +202,10 @@ export default function Skills() {
                             ].map((text, idx) => (
                                 <motion.p
                                     key={idx}
+                                    className="skillListItem"
                                     initial="hidden"
                                     animate={isFullStackVisible ? "visible" : "hidden"}
-                                    custom={{ delay: 0.15 + (idx * 0.1) }}
+                                    custom={{ delay: 0.85 + (idx * 0.1) }}
                                     variants={fadeInUpVariants}
                                 >
                                     {text}

@@ -7,7 +7,7 @@ import { lighten } from 'polished'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../../animations'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
-import { ANIMATION_CONFIG } from '../../animations/config'
+import { ANIMATION_CONFIG, TIMING } from '../../animations/config'
 
 const ExperienceSection = styled.section`
   position: relative;
@@ -41,7 +41,7 @@ const VerticalLine = styled.div`
   );
 
   @media (max-width: 767.98px) {
-    left: 59px;
+    left: 69px;
   }
 `
 
@@ -111,7 +111,7 @@ const TimelineDotWrapper = styled.div`
   transform: translateX(-50%);
 
   @media (max-width: 767.98px) {
-    left: 58px;
+    left: 68px;
   }
 `
 
@@ -202,22 +202,17 @@ const BulletList = styled.ul`
 
 // Timeline row item with animations
 interface TimelineRowItemProps {
-  entry: {
-    year: string;
-    company: string;
-    location: string;
-    title: string;
-    bullets: string[];
-  };
+  entry: ExperienceEntry;
   index: number;
   totalEntries: number;
   onAnimated?: (index: number) => void;
+  onFirstItemReached?: () => void;
   rowRef?: (el: HTMLDivElement | null) => void;
   dotRef?: React.RefObject<HTMLDivElement | null>;
   timelineContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
-function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRef, timelineContainerRef }: TimelineRowItemProps) {
+function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemReached, rowRef, dotRef, timelineContainerRef }: TimelineRowItemProps) {
   const [nodePopped, setNodePopped] = useState(false);
   const [hasBeenReached, setHasBeenReached] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -225,8 +220,14 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
   // Trigger when entry is 1/3 to 1/2 up viewport (negative margin means above bottom edge)
   const { ref: inViewRef, isInView } = useInViewAnimation({
     once: true,
-    rootMargin: ANIMATION_CONFIG.rootMargin, // Trigger when center 1/3 of viewport
   });
+
+  // Call onFirstItemReached when first item is reached
+  useEffect(() => {
+    if (hasBeenReached && index === 0 && onFirstItemReached) {
+      onFirstItemReached();
+    }
+  }, [hasBeenReached, index, onFirstItemReached]);
 
   useEffect(() => {
     if (isInView && !nodePopped) {
@@ -245,9 +246,21 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
   // Check if line has reached this dot by reading CSS variable
   useEffect(() => {
     const checkLineIntersection = () => {
-      if (timelineContainerRef.current) {
+      if (timelineContainerRef.current && containerRef.current) {
         const lineHeight = parseInt(timelineContainerRef.current.style.getPropertyValue('--line-height') || '0');
-        if (lineHeight >= myTopOffset) {
+        const containerRect = timelineContainerRef.current.getBoundingClientRect();
+        const dotRect = containerRef.current.getBoundingClientRect();
+
+        // Calculate the dot's position relative to the container
+        const dotPositionRelativeToContainer = dotRect.top - containerRect.top;
+
+        // For first item, require both line reaches dot AND item is in view
+        // For other items, only require line reaches dot
+        const shouldTrigger = index === 0
+          ? lineHeight >= dotPositionRelativeToContainer && isInView
+          : lineHeight >= dotPositionRelativeToContainer;
+
+        if (shouldTrigger) {
           setHasBeenReached(true); // Once this is true, it never goes back to false
         }
       }
@@ -260,7 +273,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [myTopOffset]);
+  }, [timelineContainerRef, containerRef, isInView, index]);
 
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
@@ -273,6 +286,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
   };
 
   const isLast = index === totalEntries - 1;
+  const isFirst = index === 0;
 
   // Combined ref handler
   const setRefs = useCallback((el: HTMLDivElement | null) => {
@@ -286,10 +300,11 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
       <TimelineRow $isLast={isLast}>
         <Year>
           <motion.span
-            initial={{ opacity: 0, x: isMobile ? -15 : 15 }}
-            animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: hasBeenReached ? 1 : 0, y: 0 }}
             transition={{
               duration: 0.5,
+              delay: isFirst ? 0.5 : 0,
               ease: [0.2, 0.8, 0.2, 1]
             }}
           >
@@ -300,23 +315,25 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{
-              opacity: nodePopped ? 1 : 0,
-              scale: nodePopped ? 1 : 0,
+              opacity: hasBeenReached ? 1 : 0,
+              scale: hasBeenReached ? 1 : 0,
             }}
             transition={{
               duration: 0.4,
+              delay: isFirst ? 0.5 : 0,
               ease: [0.34, 1.56, 0.64, 1],
             }}
           >
-            <TimelineDot ref={dotRef} animate={hasBeenReached} />
+            <TimelineDot ref={dotRef} />
           </motion.div>
         </TimelineDotWrapper>
         <Content>
           <motion.div
             initial={{ opacity: 0, x: isMobile ? -15 : 15 }}
-            animate={{ opacity: nodePopped ? 1 : 0, x: 0 }}
+            animate={{ opacity: hasBeenReached ? 1 : 0, x: 0 }}
             transition={{
               duration: 0.5,
+              delay: isFirst ? 0.5 : 0,
               ease: [0.2, 0.8, 0.2, 1]
             }}
           >
@@ -330,7 +347,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, rowRef, dotRe
                 <motion.li
                   key={bulletIndex}
                   initial="hidden"
-                  animate={nodePopped ? "visible" : "hidden"}
+                  animate={hasBeenReached ? "visible" : "hidden"}
                   custom={{ delay: 0.2 + (bulletIndex * 0.1), distance: isMobile ? 10 : 10 }}
                   variants={fadeInUpVariants}
                 >
@@ -353,6 +370,24 @@ export default function Experience() {
   const lastDotRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
   const lastScrollYRef = useRef<number>(0);
+
+  // Use the optimized hook for header viewport detection
+  const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({
+    once: true,
+  });
+
+  // Use the optimized hook for subheader viewport detection
+  const { ref: subheaderRef, isInView: isSubheaderVisible } = useInViewAnimation({
+    once: true,
+  });
+
+  // Use the optimized hook for vertical line viewport detection
+  const { ref: verticalLineRef, isInView: isVerticalLineVisible } = useInViewAnimation({
+    once: true,
+  });
+
+  // Track first timeline item's reached state for fade-in trigger
+  const [firstItemReached, setFirstItemReached] = useState(false);
 
   // Extract start year from date string
   const extractStartYear = (dateString: string): string => {
@@ -460,23 +495,53 @@ export default function Experience() {
   }, [experienceData.length]);
 
   return (
-    <ExperienceSection ref={sectionRef}>
+    <ExperienceSection ref={sectionRef} id="Experience">
       <Container>
         <Row noGutters className="justify-content-center pb-2 pt-5">
           <Col md={12} className="heading-section text-center">
-            <Heading>Experience</Heading>
+            <motion.div
+              ref={headerRef}
+              initial="hidden"
+              animate={isHeaderVisible ? "visible" : "hidden"}
+              custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+              variants={fadeInUpVariants}
+            >
+              <Heading>Professional Journey</Heading>
+            </motion.div>
+            <motion.p
+              ref={subheaderRef}
+              initial="hidden"
+              animate={isSubheaderVisible ? 'visible' : 'hidden'}
+              custom={{ delay: 0.2 }}
+              variants={fadeInUpVariants}
+            >
+              Engineering scalable systems, high-availability cloud solutions, and technical leadership.
+            </motion.p>
           </Col>
         </Row>
         <Row className="justify-content-center">
           <Col md={12}>
             <TimelineContainer ref={timelineContainerRef}>
-              <VerticalLine />
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: firstItemReached ? 1 : 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.2, 0.8, 0.2, 1]
+                }}
+              >
+                <div ref={verticalLineRef}>
+                  <VerticalLine />
+                </div>
+              </motion.div>
               {experienceData.map((entry, index) => (
                 <TimelineRowItem
                   key={index}
                   entry={entry}
                   index={index}
                   totalEntries={experienceData.length}
+                  onAnimated={index === 0 ? () => setFirstItemReached(true) : undefined}
+                  onFirstItemReached={index === 0 ? () => setFirstItemReached(true) : undefined}
                   rowRef={(el) => { rowRefs.current[index] = el; }}
                   dotRef={index === 0 ? firstDotRef : index === experienceData.length - 1 ? lastDotRef : undefined}
                   timelineContainerRef={timelineContainerRef}
