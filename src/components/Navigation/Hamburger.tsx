@@ -57,7 +57,8 @@ const HamburgerButton = styled.div`
 
   .open {
     span:nth-child(1) {
-      top: 9px;
+      top: 11px;
+      height: 3.5px;
       -webkit-transform: rotate(135deg);
       -moz-transform: rotate(135deg);
       -o-transform: rotate(135deg);
@@ -70,7 +71,8 @@ const HamburgerButton = styled.div`
     }
 
     span:nth-child(3) {
-      top: 9px;
+      top: 11px;
+      height: 3.5px;
       -webkit-transform: rotate(-135deg);
       -moz-transform: rotate(-135deg);
       -o-transform: rotate(-135deg);
@@ -81,20 +83,20 @@ const HamburgerButton = styled.div`
   span {
     display: block;
     position: absolute;
-    height: 4px;
+    height: 5px;
     width: 100%;
     background: ${(props) => props.theme.black};
-    border-radius: 3px;
+    border-radius: 2px;
     opacity: 1;
     left: 0;
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     transform: rotate(0deg);
-    -webkit-transition: .05s ease-in-out;
-    -moz-transition: .1s ease-in-out;
-    -o-transition: .1s ease-in-out;
-    transition: .1s ease-in-out;
+    -webkit-transition: .25s ease-in-out;
+    -moz-transition: .25s ease-in-out;
+    -o-transition: .25s ease-in-out;
+    transition: .25s ease-in-out, height 0.25s ease-in-out;
   }
 
   span:nth-child(1) {
@@ -102,10 +104,10 @@ const HamburgerButton = styled.div`
   }
 
   span:nth-child(2) {
-    top: 9px;
+    top: 11px;
   }
 
   span:nth-child(3) {
-    top: 18px;
+    top: 22px;
   }
 `;

@@ -1,40 +1,33 @@
 import styled from 'styled-components'
 
 // Header glass opacity values (shared across header and dropdown)
-const HEADER_GLASS_OPACITY = 0.85; // Decreased from 0.8
-const MENU_OPEN_OPACITY = 0.90; // Decreased from 0.95
+const GLASS_OPACITY = 0.88;
+const PRIMARY_COLOR = '#3e64ff';
 
 // Consolidated navbar styles - all in one place
 export const StyledNav = styled.nav<{ $isVisible: boolean; $scrolled: boolean; $menuOpen: boolean }>`
   padding-left: 2rem;
   padding-right: 2rem;
   position: fixed;
-  top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
-  transform: ${props => props.$isVisible ? 'translateY(0)' : 'translateY(-100%)'};
+  /* Use top positioning instead of transform to avoid breaking fixed children */
+  top: ${props => props.$isVisible ? '0' : '-100px'};
+  transition: top 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, backdrop-filter 0.3s ease;
 
-  /* Unified styles for all states */
+  /* Unified styles for all states - header matches drawer when menu open */
   background-color: ${props => {
-    if (!props.$isVisible) return 'transparent' // Don't apply background when hidden
-    if (props.$menuOpen) return `rgba(255, 255, 255, ${MENU_OPEN_OPACITY})`
-    if (props.$scrolled) return `rgba(255, 255, 255, ${HEADER_GLASS_OPACITY})`
+    if (!props.$isVisible) return 'transparent'
+    if (props.$menuOpen || props.$scrolled) return `rgba(255, 255, 255, ${GLASS_OPACITY})`
     return 'transparent'
   }};
-  backdrop-filter: ${props => (!props.$isVisible || (!props.$scrolled && !props.$menuOpen)) ? 'none' : 'blur(12px)'};
-  -webkit-backdrop-filter: ${props => (!props.$isVisible || (!props.$scrolled && !props.$menuOpen)) ? 'none' : 'blur(12px)'};
+  backdrop-filter: ${props => (!props.$isVisible || (!props.$scrolled && !props.$menuOpen)) ? 'none' : 'blur(16px)'};
+  -webkit-backdrop-filter: ${props => (!props.$isVisible || (!props.$scrolled && !props.$menuOpen)) ? 'none' : 'blur(16px)'};
 
   /* Only show border/shadow when visible AND scrolled/menu is open */
   ${props => {
     if (!props.$isVisible) return ''
-    if (props.$menuOpen) {
-      return 'box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);'
-    }
-    if (props.$scrolled) {
-      return 'box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);'
-    }
     return 'box-shadow: none;'
   }}
 
@@ -81,21 +74,23 @@ export const StyledNav = styled.nav<{ $isVisible: boolean; $scrolled: boolean; $
   }
 
   @media (max-width: 991.98px) {
-    /* Mobile uses same unified styles - no separate black background */
+    /* When menu open: extend nav to full viewport */
+    ${props => props.$menuOpen ? `
+      top: 0 !important;
+      bottom: 0 !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      overflow: hidden !important;
+    ` : ''}
   }
 `
 
 export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
-  position: ${props => props.$isOpen ? 'absolute' : 'static'};
-  top: ${props => props.$isOpen ? '100%' : 'auto'};
-  left: 0;
-  right: 0;
-  background-color: ${props => props.$isOpen ? `rgba(255, 255, 255, ${HEADER_GLASS_OPACITY})` : 'transparent'};
-  backdrop-filter: ${props => props.$isOpen ? 'blur(12px)' : 'none'};
-  -webkit-backdrop-filter: ${props => props.$isOpen ? 'blur(12px)' : 'none'};
-  border-top: ${props => props.$isOpen ? '1px solid rgba(0, 0, 0, 0.08)' : 'none'};
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   padding: ${props => props.$isOpen ? '1rem 2rem' : '0'};
-  overflow: hidden;
+  box-shadow: none;
 
   /* Desktop: always visible */
   @media (min-width: 992px) {
@@ -103,23 +98,174 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
     visibility: visible;
   }
 
-  /* Mobile dropdown styles only */
+  /* Mobile dropdown styles */
   @media (max-width: 991.98px) {
-    opacity: ${props => props.$isOpen ? 1 : 0};
-    visibility: ${props => props.$isOpen ? 'visible' : 'hidden'};
-    transition: opacity 0.2s ease, visibility 0.2s ease;
+    /* No position:fixed - allows backdrop-filter to work */
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100vw !important;
+    margin-left: -2rem !important; /* Offset nav padding */
+    margin-top: 1rem !important; /* Space below header */
+    padding: 1rem 2rem 2rem 2rem !important;
+    min-height: calc(100vh - 85px) !important;
+    min-height: calc(100dvh - 85px) !important;
+    opacity: ${props => props.$isOpen ? 1 : 0} !important;
+    visibility: ${props => props.$isOpen ? 'visible' : 'hidden'} !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    /* Transparent - nav provides the glassmorphism */
+    background: transparent !important;
 
     .navbar-nav {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      gap: 1rem !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
+      height: auto !important;
+      min-height: 0 !important;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-item {
+      width: 280px; /* Fixed width instead of max-width */
+      min-width: 280px; /* Prevent shrinking */
+      max-width: 280px; /* Prevent growing */
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
+      justify-content: center;
+      flex-shrink: 0;
+      opacity: ${props => props.$isOpen ? 1 : 0};
+      transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(20px)'};
+      transition: opacity 0.4s ease, transform 0.4s ease;
+
+      /* Stagger animation - 0.05s delay per item */
+      &:nth-child(1) { transition-delay: ${props => props.$isOpen ? '0s' : '0s'}; }
+      &:nth-child(2) { transition-delay: ${props => props.$isOpen ? '0.05s' : '0s'}; }
+      &:nth-child(3) { transition-delay: ${props => props.$isOpen ? '0.1s' : '0s'}; }
+      &:nth-child(4) { transition-delay: ${props => props.$isOpen ? '0.15s' : '0s'}; }
+      &:nth-child(5) { transition-delay: ${props => props.$isOpen ? '0.2s' : '0s'}; }
+      &:nth-child(6) { transition-delay: ${props => props.$isOpen ? '0.25s' : '0s'}; }
     }
 
     .nav-link {
-      padding: 1.25rem 1.5rem !important;
-      font-size: 1.1rem;
-      color: #000000 !important; /* Ensure black text on white background */
+      /* FIXED dimensions - prevent ANY size change on click/active */
+      width: 280px !important;
+      min-width: 280px !important;
+      max-width: 280px !important;
+      height: 60px !important;
+      min-height: 60px !important;
+      max-height: 60px !important;
+      padding: 0 2rem !important; /* Use 0 vertical padding since height is fixed */
+      margin: 0 !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #000000 !important;
+      position: relative;
+      background: rgba(62, 100, 255, 0.25);
+      border-radius: 12px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      will-change: background-color;
+      border: none !important;
+      outline: none !important;
+      text-decoration: none !important;
+      flex-shrink: 0 !important;
+      flex-grow: 0 !important;
+
+      /* Reset ALL underline sources */
+      &, &:link, &:visited, &:hover, &:focus, &:active {
+        width: 280px !important;
+        min-width: 280px !important;
+        max-width: 280px !important;
+        height: 60px !important;
+        padding: 0 2rem !important;
+        margin: 0 !important;
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        border-bottom: none !important;
+        border: none !important;
+        outline: none !important;
+      }
+
+      /* Prevent child elements from having underline */
+      > span {
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        border-bottom: none !important;
+        border: none !important;
+      }
+
+      &:hover {
+        color: ${PRIMARY_COLOR} !important;
+        background: rgba(62, 100, 255, 0.35);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      }
+
+      /* Active state for current page - single underline on the link text */
+      &.active,
+      &.manual-active,
+      &.react-scroll-active,
+      &.current-page {
+        color: ${PRIMARY_COLOR} !important;
+        background: rgba(62, 100, 255, 0.4);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+
+        /* Single underline via span only */
+        > span {
+          text-decoration: underline !important;
+          text-decoration-line: underline !important;
+          text-underline-offset: 4px;
+          text-decoration-thickness: 2px;
+          text-decoration-color: ${PRIMARY_COLOR} !important;
+        }
+      }
+
+      /* Ripple effect on click - contained within fixed button bounds */
+      &.ripple-effect::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(62, 100, 255, 0.4);
+        transform: translate(-50%, -50%);
+        animation: ripple 0.6s ease-out;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Ensure text stays above ripple */
+      > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes ripple {
+        0% {
+          width: 0;
+          height: 0;
+          opacity: 0.6;
+        }
+        100% {
+          width: 300px;
+          height: 300px;
+          opacity: 0;
+        }
+      }
     }
   }
 `

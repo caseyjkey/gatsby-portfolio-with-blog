@@ -21,11 +21,31 @@ export default function Skills() {
         once: true,
     });
 
+    // Full Stack illustration - independent element triggers
     const { ref: fullStackRef, isInView: isFullStackVisible } = useInViewAnimation({
         once: true,
     });
+    const { ref: fullStackPersonRef, isInView: isFullStackPersonVisible } = useInViewAnimation({
+        once: true,
+    });
+    const { ref: fullStackComputerRef, isInView: isFullStackComputerVisible } = useInViewAnimation({
+        once: true,
+    });
+    const { ref: fullStackBadgeRef, isInView: isFullStackBadgeVisible } = useInViewAnimation({
+        once: true,
+    });
 
+    // AI Systems illustration - independent element triggers
     const { ref: aiSystemsRef, isInView: isAiSystemsVisible } = useInViewAnimation({
+        once: true,
+    });
+    const { ref: aiSystemsPersonRef, isInView: isAiSystemsPersonVisible } = useInViewAnimation({
+        once: true,
+    });
+    const { ref: aiSystemsCodeRef, isInView: isAiSystemsCodeVisible } = useInViewAnimation({
+        once: true,
+    });
+    const { ref: aiSystemsAwsRef, isInView: isAiSystemsAwsVisible } = useInViewAnimation({
         once: true,
     });
 
@@ -124,7 +144,7 @@ export default function Skills() {
     return (
         <SkillsSection name="Skills">
             <Container>
-                <Row noGutters className="justify-content-center pb-2 pt-5">
+                <Row className="g-0 justify-content-center pb-2 pt-5">
                     <Col md={12} className="heading-section text-center ">
                         <motion.div
                             ref={mainHeaderRef}
@@ -149,8 +169,16 @@ export default function Skills() {
                 </Row>
                 <div>
                     <Row xs={1} md={2} className='pb-4'>
-                        <Col className='order-lg-1 order-md-1 order-2'>
-                            <FullStackIllustration isVisible={isFullStackVisible} />
+                        <Col className='order-lg-1 order-md-1 order-2' style={{ position: 'relative' }}>
+                            {/* Ref anchors for independent triggers */}
+                            <span ref={fullStackPersonRef} style={{ position: 'absolute', top: '0' }}></span>
+                            <span ref={fullStackComputerRef} style={{ position: 'absolute', top: '30%' }}></span>
+                            <span ref={fullStackBadgeRef} style={{ position: 'absolute', top: '50%' }}></span>
+                            <FullStackIllustration
+                                personVisible={isFullStackPersonVisible}
+                                computerVisible={isFullStackComputerVisible}
+                                badgeVisible={isFullStackBadgeVisible}
+                            />
                         </Col>
                         <Col lg={6} className="order-lg-2 order-lg-2 order-1">
                             <div align="center" ref={fullStackRef}>
@@ -273,8 +301,16 @@ export default function Skills() {
                             </div>
                             </div>
                         </Col>
-                        <Col>
-                            <AiSystemsIllustration isVisible={isAiSystemsVisible} />
+                        <Col style={{ position: 'relative' }}>
+                            {/* Ref anchors for independent triggers */}
+                            <span ref={aiSystemsPersonRef} style={{ position: 'absolute', top: '0' }}></span>
+                            <span ref={aiSystemsCodeRef} style={{ position: 'absolute', top: '30%' }}></span>
+                            <span ref={aiSystemsAwsRef} style={{ position: 'absolute', top: '60%' }}></span>
+                            <AiSystemsIllustration
+                                personVisible={isAiSystemsPersonVisible}
+                                codeBlocksVisible={isAiSystemsCodeVisible}
+                                awsLogoVisible={isAiSystemsAwsVisible}
+                            />
                         </Col>
                     </Row>
                 </div>

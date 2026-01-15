@@ -5,7 +5,9 @@ import { motion } from 'motion/react'
 import { ICON } from '../../animations/config'
 
 interface FullStackIllustrationProps {
-    isVisible: boolean
+    personVisible?: boolean
+    computerVisible?: boolean
+    badgeVisible?: boolean
 }
 
 const Svg = styled.svg`
@@ -17,16 +19,29 @@ const Svg = styled.svg`
     }
 `
 
-export function FullStackIllustration({ isVisible }: FullStackIllustrationProps) {
+export function FullStackIllustration({ personVisible = false, computerVisible = false, badgeVisible = false }: FullStackIllustrationProps) {
     return (
         <motion.div
             initial={{ opacity: 0, x: -20, y: 30 }}
-            animate={isVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -20, y: 30 }}
+            animate={personVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -20, y: 30 }}
             transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
         >
             <Svg id="ade8c9af-7e2e-4eda-b5c8-b06129257226" width="100%" height="100%" viewBox="0 0 1076.06371 755.2279">
+            {/* Decorative leaves - bottom right */}
+            <motion.g
+                initial={{ opacity: 0 }}
+                animate={personVisible ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay + 0.1 }}
+            >
             <path d="M926.11393,774.80937c-6.98452,26.59789-31.459,43.21966-31.459,43.21966s-13.15033-26.50193-6.16581-53.09982,31.459-43.21966,31.459-43.21966S933.09845,748.21148,926.11393,774.80937Z" transform="translate(-61.96814 -72.38605)" fill="#3f3d56"></path>
             <path d="M915.52,769.18266c-19.56251,19.32716-21.75117,48.83128-21.75117,48.83128s29.52845-1.83141,49.091-21.15858,21.75116-48.83129,21.75116-48.83129S935.08248,749.85549,915.52,769.18266Z" transform="translate(-61.96814 -72.38605)" className="primaryColor"></path>
+            </motion.g>
+            {/* Person figure */}
+            <motion.g
+                initial={{ opacity: 0, y: 15 }}
+                animate={personVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+            >
             <path d="M206.70221,674.19438h36.8414l90.78774-35.52564s64.47245-26.31528,59.20939,23.68376-14.47341,117.103-14.47341,117.103-28.94681-13.15764-44.736-9.21035-5.26306-80.26162-5.26306-80.26162-128.9449,61.84092-140.78678,53.94634-14.4734-63.15669-14.4734-63.15669Z" transform="translate(-61.96814 -72.38605)" className="darkColor"></path>
             <path d="M206.70221,674.19438h36.8414l90.78774-35.52564s64.47245-26.31528,59.20939,23.68376-14.47341,117.103-14.47341,117.103-28.94681-13.15764-44.736-9.21035-5.26306-80.26162-5.26306-80.26162-128.9449,61.84092-140.78678,53.94634-14.4734-63.15669-14.4734-63.15669Z" transform="translate(-61.96814 -72.38605)" opacity="0.1"></path>
             <path d="M264.74607,558.82036l44.58576,64.05921L413.2772,709.72s96.0508,22.368,82.89315,38.15717S402.75109,732.088,402.75109,732.088s-119.73455-86.84044-123.68184-93.41927S231.70174,570.249,231.70174,570.249Z" transform="translate(-61.96814 -72.38605)" fill="#FCB696"></path>
@@ -47,8 +62,21 @@ export function FullStackIllustration({ isVisible }: FullStackIllustrationProps)
             <path d="M306.58925,414.56777c4.03,1.79653,8.02621,3.92291,12.40755,4.4444s9.37055-1.00819,11.44376-4.903c1.11982-2.10373,1.24778-4.57826,1.3-6.96089.15849-7.22517-.36406-15.03591-4.94264-20.6274-2.9139-3.55854-7.16747-5.80183-10.18374-9.274-2.161-2.48761-3.59924-5.50284-5.14786-8.41141-5.866-11.01725-14.55128-21.60559-26.62195-24.78175-5.04041-1.32629-10.328-1.26157-15.53945-1.188l-30.39725.42884c-4.91906.0694-9.914.15005-14.623,1.57383-9.784,2.95823-16.90779,11.18591-23.43216,19.05427-4.88119,5.88668-9.7753,11.83425-13.43862,18.54685a65.07888,65.07888,0,0,0-7.71423,31.88675,29.83261,29.83261,0,0,0,1.09276,8.43732,46.82177,46.82177,0,0,0,3.31627,7.28423c5.70049,11.19673,9.08523,25.18219,2.66543,35.98258,11.15187-4.55542,22.18591-10.52835,29.54232-20.0677,3.29093-4.26748,5.87181-9.26316,10.25758-12.39472s11.532-3.40321,14.34592,1.1928a12.85719,12.85719,0,0,1,1.4508,6.02242c.20551,3.44983.1999,7.03258,1.66258,10.16374s4.94686,5.65758,8.27337,4.72061c5.72869-1.61358,5.18009-10.406,9.59251-14.4,3.35094-3.03318,8.52074-2.45334,12.82574-3.83026,5.01582-1.60428,8.77937-5.94959,10.92379-10.75939,1.63-3.65594,1.60645-13.223,4.69084-15.20283C294.20755,409.02219,303.00386,412.96943,306.58925,414.56777Z" transform="translate(-61.96814 -72.38605)" className=""></path>
             <path d="M159.2397,472.56207a15.61579,15.61579,0,0,1,8.128.02069c8.44618,2.26753,27.38021,8.27035,31.43989,17.40462,5.26306,11.84188,23.68376,30.26258,23.68376,30.26258s24.99952,24.99952,19.73646,42.10446-24.99952,36.8414-24.99952,36.8414,5.26306,81.57738-21.05223,102.62961-36.8414,6.57882-36.8414,26.31528S77.75732,809.7181,61.96814,771.56094c0,0,7.89459-71.05128,5.26306-96.0508C64.63762,650.87116,68.43448,497.14537,159.2397,472.56207Z" transform="translate(-61.96814 -72.38605)" className="primaryColor"></path>
             <path d="M201.43916,505.77655s80.26162,59.2094,65.78821,84.20892c0,0-48.68328,23.68375-59.20939,22.368s-51.31481-47.36751-61.84092-51.31481S130.38789,486.04009,201.43916,505.77655Z" transform="translate(-61.96814 -72.38605)" className="primaryColor"></path>
+            </motion.g>
+            {/* Badge/circle element */}
+            <motion.g
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={badgeVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+            >
             <circle cx="498.06371" cy="237.45791" r="65" className="primaryColor"></circle>
-            <path d="M1096.8978,225.42666H732.64912V149.20722H1096.8978ZM734.25374,223.822h361.03944v-73.0102H734.25374Z" transform="translate(-61.96814 -72.38605)" fill="#3f3d56"></path>
+            </motion.g>
+            {/* Computer/browser illustration */}
+            <motion.g
+                initial={{ opacity: 0, x: 20 }}
+                animate={computerVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+            >            <path d="M1096.8978,225.42666H732.64912V149.20722H1096.8978ZM734.25374,223.822h361.03944v-73.0102H734.25374Z" transform="translate(-61.96814 -72.38605)" fill="#3f3d56"></path>
             <rect x="645.80936" y="92.06506" width="362.64407" height="74.61482" className="primaryColor"></rect>
             <circle cx="416.56486" cy="15.24386" r="5.61624" className="primaryColor"></circle>
             <circle cx="435.8203" cy="15.24386" r="5.61624" className="primaryColor"></circle>
@@ -69,6 +97,7 @@ export function FullStackIllustration({ isVisible }: FullStackIllustrationProps)
             <path d="M1061.195,310.07035H941.65084V292.41953H1061.195Zm-117.93955-1.60462h116.33493V294.02415H943.25546Z" transform="translate(-61.96814 -72.38605)" fill="#3f3d56"></path>
             <path d="M571.03186,357.844a66,66,0,1,1,66-66A66.07468,66.07468,0,0,1,571.03186,357.844Zm0-130a64,64,0,1,0,64,64A64.0727,64.0727,0,0,0,571.03186,227.844Z" transform="translate(-61.96814 -72.38605)" fill="#3f3d56"></path>
             <rect x="748.06371" y="744.45791" width="283" height="2" fill="#3f3d56"></rect>
+            </motion.g>
             </Svg>
         </motion.div>
     )

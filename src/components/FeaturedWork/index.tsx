@@ -156,7 +156,7 @@ const FeaturedWork = () => {
   return (
     <FeaturedSection ref={sectionRef}>
       <Container fluid={true}>
-        <Row noGutters className="justify-content-center pb-5">
+        <Row className="g-0 justify-content-center pb-5">
           <Col md={12} className="heading-section text-center">
             <motion.div
               initial="hidden"

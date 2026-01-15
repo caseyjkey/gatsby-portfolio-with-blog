@@ -209,7 +209,7 @@ export default function Introduction(props) {
         </motion.div>
       </MobileSvgWrapper>
 
-      <ResumeButtonWrapper isVisible={true} className="container position-absolute start-50 translate-middle-x resume-responsive-container">
+      <ResumeButtonWrapper $isVisible={true} className="container position-absolute start-50 translate-middle-x resume-responsive-container">
         <div className="row justify-content-center-mobile">
           <div className="col-6-responsive d-flex justify-content-center">
             <motion.button
@@ -251,7 +251,7 @@ export default function Introduction(props) {
 
       <AnimatedContent>
         <Container>
-          <Row noGutters xs="1" md="2" className="justify-content-center align-items-center">
+          <Row className="g-0 justify-content-center align-items-center" xs="1" md="2">
             <Col md className="text-center">
               <Text ref={textRef} style={{ transform: `scale(${textScale})`, transformOrigin: 'top center' }}>
                 <motion.div
@@ -262,7 +262,7 @@ export default function Introduction(props) {
                 >
                   <Subheader>{data.introduction.greeting}</Subheader>
                 </motion.div>
-                <Slider isFinished={headerEnd}>
+                <Slider $isFinished={headerEnd}>
                   <motion.h2
                     className="subheader"
                     initial="hidden"
@@ -291,7 +291,7 @@ export default function Introduction(props) {
                     {/* THIS LAYER FADES IN AFTER A DELAY */}
                     <div className="view-layer social-view">
                       <h2 id="typewriter3" className="subheader"></h2>
-                      <SocialStyle isFinished={headerEnd}>
+                      <SocialStyle $isFinished={headerEnd}>
                         <Socials />
                       </SocialStyle>
                     </div>
@@ -311,13 +311,13 @@ export default function Introduction(props) {
 
 
 interface SocialStyleProps {
-  isFinished?: boolean;
+  $isFinished?: boolean;
 }
 
 /* Remove the <{ isVisible: boolean }> prop requirement */
 const SocialStyle = styled.div<SocialStyleProps>`
-  opacity: ${(props) => (props.isFinished ? 1 : 0)};
-  transform: ${(props) => (props.isFinished ? 'translateY(0)' : 'translateY(10px)')};
+  opacity: ${(props) => (props.$isFinished ? 1 : 0)};
+  transform: ${(props) => (props.$isFinished ? 'translateY(0)' : 'translateY(10px)')};
   
   /* 0.6s duration, but wait 1.8s so the text types first */
   transition: opacity 0.6s ease-out 1.8s, transform 0.6s ease-out 1.8s;
@@ -484,7 +484,7 @@ const DesktopIllustrationPositioner = styled.div`
   }
 `;
 
-const ResumeButtonWrapper = styled.div`
+const ResumeButtonWrapper = styled.div<{ $isVisible?: boolean }>`
   @media (min-width: 768px) {
     #resume {
       margin-top: 1rem;
@@ -496,7 +496,7 @@ const ResumeButtonWrapper = styled.div`
   /* Fade-in animation: 0.3s after the slide-up animation completes */
   /* Slide-up: 500ms duration + 100ms delay = 600ms finish */
   /* Resume fade-in: 800ms delay, 400ms duration */
-  opacity: ${props => props.isVisible ? 1 : 0};
+  opacity: ${props => props.$isVisible ? 1 : 0};
   transition: opacity 400ms ease-out 800ms;
 
   @media (min-width: 768px) {

@@ -139,7 +139,7 @@ export const Projects = (props) => {
 	return (
 		<ProjectSection name="Projects" id="projects-section">
 			<Container fluid={true}>
-				<Row noGutters className="justify-content-center pb-5 mt-5">
+				<Row className="g-0 justify-content-center pb-5 mt-5">
 					<Col md={12} className="heading-section text-center">
 						<div ref={headerWrapperRef} style={{ opacity: isMounted ? 1 : 0 }}>
 							<motion.div

@@ -70,7 +70,7 @@ function Resume(props) {
   return (
     <ResumeSection name="Resume" className="mb-4">
       <Container className="mb-4">
-        <Row noGutters className="justify-content-center pb-2 pt-5">
+        <Row className="g-0 justify-content-center pb-2 pt-5">
           <Col md={12} className="heading-section text-center">
             <motion.div
               ref={headerRef}

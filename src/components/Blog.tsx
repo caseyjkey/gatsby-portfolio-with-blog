@@ -151,7 +151,7 @@ export const Blog = (props) => {
     return (
         <BlogSection>
             <Container fluid={true} className="">
-                <Row noGutters className="justify-content-center pb-5">
+                <Row className="g-0 justify-content-center pb-5">
                     <Col md={12} className="heading-section text-center">
                         <motion.div
                             ref={headerRef}

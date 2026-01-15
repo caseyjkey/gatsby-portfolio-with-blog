@@ -504,7 +504,7 @@ export default function Experience() {
   return (
     <ExperienceSection ref={sectionRef} id="Experience">
       <Container>
-        <Row noGutters className="justify-content-center">
+        <Row className="g-0 justify-content-center">
           <Col md={12} className="heading-section text-center">
             <motion.div
               ref={headerRef}

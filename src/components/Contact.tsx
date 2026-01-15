@@ -75,7 +75,7 @@ export default function Contact(props) {
             </motion.p>
           </Col>
         </Row>
-        <Row noGutters className="block-9 mb-4">
+        <Row className="g-0 block-9 mb-4">
           <Col className="order-md-last d-flex justify-content-center text-center mb-4">
             <motion.form
               ref={formRef}

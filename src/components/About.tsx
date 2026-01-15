@@ -123,7 +123,7 @@ export default function About(props) {
             </motion.p>
           </Col>
         </Row>
-        <Row noGutters className="block-9 justify-centent-center">
+        <Row className="g-0 block-9 justify-centent-center">
           <Col md="6" lg="6" className="justify-content-center pb-4" style={{ "paddingRight": "0.5rem" }}>
             <Row className="justify-content-center">
               <motion.div

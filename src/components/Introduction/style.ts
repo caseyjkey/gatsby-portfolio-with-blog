@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { CSS_TRANSITIONS } from '../../animations/config'
 
 interface SliderProps {
-  isFinished?: boolean;
+  $isFinished?: boolean;
 }
 
 export const HeroWrap = styled.section`
@@ -166,27 +166,27 @@ export const Slider = styled.div<SliderProps>`
 
   .tech-view {
     /* Fades out the technical block including cursor */
-    opacity: ${(props) => (props.isFinished ? 0 : 1)};
-    visibility: ${(props) => (props.isFinished ? 'hidden' : 'visible')};
-    pointer-events: ${(props) => (props.isFinished ? 'none' : 'auto')};
-    
+    opacity: ${(props) => (props.$isFinished ? 0 : 1)};
+    visibility: ${(props) => (props.$isFinished ? 'hidden' : 'visible')};
+    pointer-events: ${(props) => (props.$isFinished ? 'none' : 'auto')};
+
     /* We transition opacity normally, but we add a delay to visibility ONLY when hiding */
     transition: opacity ${CSS_TRANSITIONS.viewLayer.duration}s ease-out,
-                visibility 0s linear ${props => (props.isFinished ? `${CSS_TRANSITIONS.viewLayer.duration}s` : '0s')};    z-index: ${props => (props.isFinished ? 1 : 2)};
+                visibility 0s linear ${props => (props.$isFinished ? `${CSS_TRANSITIONS.viewLayer.duration}s` : '0s')};    z-index: ${props => (props.$isFinished ? 1 : 2)};
 
     .typewriter-cursor {
       /* Kill cursor immediately on finish to stop jarring visual artifacts */
-      display: ${(props) => (props.isFinished ? 'none' : 'inline-block')};
+      display: ${(props) => (props.$isFinished ? 'none' : 'inline-block')};
     }
   }
 
   .social-view {
     /* Reveal social block after tech-view is gone */
-    opacity: ${(props) => (props.isFinished ? 1 : 0)};
-    visibility: ${(props) => (props.isFinished ? 'visible' : 'hidden')};
-    pointer-events: ${(props) => (props.isFinished ? 'auto' : 'none')};
+    opacity: ${(props) => (props.$isFinished ? 1 : 0)};
+    visibility: ${(props) => (props.$isFinished ? 'visible' : 'hidden')};
+    pointer-events: ${(props) => (props.$isFinished ? 'auto' : 'none')};
     transition-delay: ${CSS_TRANSITIONS.socialView.delay}s; /* Smooth timing gap */
-    z-index: ${props => (props.isFinished ? 2 : 1)};
+    z-index: ${props => (props.$isFinished ? 2 : 1)};
   }
 
   span#name {
