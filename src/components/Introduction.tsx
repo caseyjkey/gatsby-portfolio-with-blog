@@ -69,7 +69,7 @@ export default function Introduction(props) {
     setHeaderEnd(true);
   };
 
-  
+
   // Delay rendering content until component is mounted to prevent flash
   useEffect(() => {
     const timer = setTimeout(() => setIsReady(true), 50);
@@ -535,10 +535,14 @@ const StyledMobileBlob = styled(MobileBlob)`
 const MobileHeadshotImage = styled.img`
   position: relative;
   z-index: 1;
-  width: 78%;
+width: 76%;
   height: auto;
   object-fit: cover;
   border-radius: 16px;
+  
+  @media (max-height: 836px) {
+    width: 58%;
+  }
 `;
 
 // Desktop headshot + blob components

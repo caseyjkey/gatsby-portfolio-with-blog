@@ -201,7 +201,16 @@ export function TradLink({ to, children, isHomePage, atTop, currentPath, onNavCl
   // Desktop: Active based on current path
   // Mobile: Active state is based on click OR current page
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 992;
-  const isPathActive = currentPath === to;
+
+  // Normalize paths for comparison (handle trailing slashes)
+  const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
+  const isPathActive = normalizePath(currentPath) === normalizePath(to);
+
+  // DEBUG: Log to see what's happening
+  if (typeof window !== 'undefined' && (to === '/resume' || to === '/about' || to === '/blog')) {
+    console.log(`TradLink ${to}: currentPath="${currentPath}" (normalized: "${normalizePath(currentPath)}"), isPathActive=${isPathActive}`);
+  }
+
   const isClickActive = !isDesktop && activeNavIndex === navIndex;
 
   // Build class list
@@ -226,7 +235,13 @@ export function TradLink({ to, children, isHomePage, atTop, currentPath, onNavCl
 
   return (
     <li className="nav-item">
-      <Link to={to} className={classNames.join(' ')} onClick={handleClick}>
+      <Link
+        to={to}
+        className={classNames.join(' ')}
+        onClick={handleClick}
+        // Add aria-current for better accessibility and as a fallback
+        aria-current={isPathActive ? 'page' : undefined}
+      >
         <span>{children}</span>
       </Link>
     </li>

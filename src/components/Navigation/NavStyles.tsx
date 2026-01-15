@@ -71,6 +71,61 @@ export const StyledNav = styled.nav<{ $isVisible: boolean; $scrolled: boolean; $
       margin-left: auto !important;
       margin-right: 0 !important;
     }
+
+    /* Desktop nav-link styles - font-weight 500 */
+    && .navbar-nav > .nav-item > .nav-link {
+      font-weight: 500 !important;
+
+      /* Add :before pseudo-element for underline - matches mobile style */
+      > span {
+        position: relative;
+        text-underline-offset: 4px;
+
+        &:before {
+          content: "" !important;
+          position: absolute !important;
+          width: 100% !important;
+          height: 2px !important;
+          bottom: 4px !important;
+          left: 0 !important;
+          background: ${PRIMARY_COLOR} !important;
+          transform: scaleX(0) !important;
+          transform-origin: center !important;
+          transition: transform 0.3s ease-in-out !important;
+        }
+      }
+
+      /* Hover state - growing blue underline from center (not for active pages) */
+      &:hover:not(.active):not(.current-page):not(.react-scroll-active):not([aria-current="page"]) {
+        color: ${PRIMARY_COLOR} !important;
+
+        > span:before {
+          transform: scaleX(1) !important;
+        }
+      }
+
+      /* Active page - static underline */
+      &.active,
+      &.current-page,
+      &.react-scroll-active,
+      &[aria-current="page"] {
+        color: ${PRIMARY_COLOR} !important;
+
+        > span:before {
+          transform: scaleX(1) !important;
+        }
+      }
+    }
+  }
+
+  /* Mobile nav-link styles - NO underlines (but allow active state underlines in StyledCollapse) */
+  @media (max-width: 991.98px) {
+    && .navbar-nav > .nav-item > .nav-link {
+      /* Reset :before pseudo-element from SCSS (mobile uses text-decoration for underlines) */
+      > span:before {
+        display: none !important;
+      }
+    }
   }
 
   @media (max-width: 991.98px) {
@@ -166,7 +221,7 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
       letter-spacing: 0.1em;
       color: #000000 !important;
       position: relative;
-      background: rgba(62, 100, 255, 0.25);
+      background: rgba(62, 100, 255, 0.35);
       border-radius: 12px;
       transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -179,42 +234,21 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
       flex-shrink: 0 !important;
       flex-grow: 0 !important;
 
-      /* Reset ALL underline sources */
-      &, &:link, &:visited, &:hover, &:focus, &:active {
-        width: 280px !important;
-        min-width: 280px !important;
-        max-width: 280px !important;
-        height: 72px !important; /* Updated from 60px */
-        padding: 0 2rem !important;
-        margin: 0 !important;
-        text-decoration: none !important;
-        text-decoration-line: none !important;
-        border-bottom: none !important;
-        border: none !important;
-        outline: none !important;
-      }
-
-      /* Prevent child elements from having underline */
-      > span {
-        text-decoration: none !important;
-        text-decoration-line: none !important;
-        border-bottom: none !important;
-        border: none !important;
-      }
+      /* Reset ALL underline sources - moved to mobile only above */
 
       &:hover {
         color: ${PRIMARY_COLOR} !important;
-        background: rgba(62, 100, 255, 0.35);
+        background: rgba(62, 100, 255, 0.45);
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
       }
 
       /* Active state for current page - single underline on the link text */
       &.active,
-      &.manual-active,
+      &.current-page,
       &.react-scroll-active,
-      &.current-page {
+      &[aria-current="page"] {
         color: ${PRIMARY_COLOR} !important;
-        background: rgba(62, 100, 255, 0.4);
+        background: rgba(62, 100, 255, 0.55);
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 
         /* Single underline via span only */
@@ -225,6 +259,13 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
           text-decoration-thickness: 2px;
           text-decoration-color: ${PRIMARY_COLOR} !important;
         }
+      }
+
+      /* manual-active for click ripple effect (color/bg only, no underline until page loads) */
+      &.manual-active {
+        color: ${PRIMARY_COLOR} !important;
+        background: rgba(62, 100, 255, 0.55);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
       }
 
       /* Ripple effect on click - contained within fixed button bounds */

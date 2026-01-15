@@ -33,7 +33,7 @@ export const HeroWrap = styled.section`
   /* Mobile Breakpoint (Matches your overlay) */
   @media (max-width: 767.98px) {
     .resume-responsive-container {
-      top: 60% !important; /* Below the arrow (at 50%), above the SVG */
+      top: 57% !important; /* Below the arrow (at 50%), above the SVG */
       transform: translateX(-50%) !important;
     }
 
