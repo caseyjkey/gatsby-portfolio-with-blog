@@ -74,14 +74,7 @@ export const StyledNav = styled.nav<{ $isVisible: boolean; $scrolled: boolean; $
   }
 
   @media (max-width: 991.98px) {
-    /* When menu open: extend nav to full viewport */
-    ${props => props.$menuOpen ? `
-      top: 0 !important;
-      bottom: 0 !important;
-      height: 100vh !important;
-      height: 100dvh !important;
-      overflow: hidden !important;
-    ` : ''}
+    /* Header stays fixed at top, drawer grows downward */
   }
 `
 
@@ -103,10 +96,11 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
     /* No position:fixed - allows backdrop-filter to work */
     display: flex !important;
     flex-direction: column !important;
-    width: 100vw !important;
-    margin-left: -2rem !important; /* Offset nav padding */
+    width: 100% !important;
     margin-top: 1rem !important; /* Space below header */
-    padding: 1rem 2rem 2rem 2rem !important;
+    padding: 1rem 0 2rem 0 !important;
+    /* Extend drawer to viewport bottom with flex grow */
+    flex: 1 1 auto !important;
     min-height: calc(100vh - 85px) !important;
     min-height: calc(100dvh - 85px) !important;
     opacity: ${props => props.$isOpen ? 1 : 0} !important;
@@ -123,11 +117,12 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
       align-items: center !important;
       width: 100% !important;
       max-width: 100% !important;
-      gap: 1rem !important;
+      gap: 1.5rem !important; /* Increased spacing between buttons */
       margin: 0 auto !important;
-      padding: 0 !important;
-      height: auto !important;
-      min-height: 0 !important;
+      padding: 1rem 0 2rem 0 !important; /* Add padding to push content to fill drawer */
+      height: 100% !important;
+      flex: 1 0 auto !important;
+      justify-content: center !important; /* Center content vertically in available space */
       position: relative;
       z-index: 1;
     }
@@ -157,17 +152,17 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
       width: 280px !important;
       min-width: 280px !important;
       max-width: 280px !important;
-      height: 60px !important;
-      min-height: 60px !important;
-      max-height: 60px !important;
+      height: 72px !important; /* Increased from 60px */
+      min-height: 72px !important;
+      max-height: 72px !important;
       padding: 0 2rem !important; /* Use 0 vertical padding since height is fixed */
       margin: 0 !important;
       box-sizing: border-box !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      font-size: 1.6rem;
-      font-weight: 800;
+      font-size: 1.8rem; /* Increased from 1.6rem */
+      font-weight: 900; /* Increased from 800 */
       letter-spacing: 0.1em;
       color: #000000 !important;
       position: relative;
@@ -189,7 +184,7 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
         width: 280px !important;
         min-width: 280px !important;
         max-width: 280px !important;
-        height: 60px !important;
+        height: 72px !important; /* Updated from 60px */
         padding: 0 2rem !important;
         margin: 0 !important;
         text-decoration: none !important;

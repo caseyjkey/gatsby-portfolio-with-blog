@@ -59,24 +59,28 @@ const HamburgerButton = styled.div`
     span:nth-child(1) {
       top: 11px;
       height: 3.5px;
-      -webkit-transform: rotate(135deg);
-      -moz-transform: rotate(135deg);
-      -o-transform: rotate(135deg);
-      transform: rotate(135deg);
+      -webkit-transform: translateX(-50%) rotate(135deg);
+      -moz-transform: translateX(-50%) rotate(135deg);
+      -o-transform: translateX(-50%) rotate(135deg);
+      transform: translateX(-50%) rotate(135deg);
     }
 
     span:nth-child(2) {
       opacity: 0;
-      left: -30px;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      -moz-transform: translateX(-50%);
+      -o-transform: translateX(-50%);
+      transform: translateX(-50%);
     }
 
     span:nth-child(3) {
       top: 11px;
       height: 3.5px;
-      -webkit-transform: rotate(-135deg);
-      -moz-transform: rotate(-135deg);
-      -o-transform: rotate(-135deg);
-      transform: rotate(-135deg);
+      -webkit-transform: translateX(-50%) rotate(-135deg);
+      -moz-transform: translateX(-50%) rotate(-135deg);
+      -o-transform: translateX(-50%) rotate(-135deg);
+      transform: translateX(-50%) rotate(-135deg);
     }
   }
 
@@ -88,11 +92,11 @@ const HamburgerButton = styled.div`
     background: ${(props) => props.theme.black};
     border-radius: 2px;
     opacity: 1;
-    left: 0;
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+    left: 50%;
+    -webkit-transform: translateX(-50%) rotate(0deg);
+    -moz-transform: translateX(-50%) rotate(0deg);
+    -o-transform: translateX(-50%) rotate(0deg);
+    transform: translateX(-50%) rotate(0deg);
     -webkit-transition: .25s ease-in-out;
     -moz-transition: .25s ease-in-out;
     -o-transition: .25s ease-in-out;
