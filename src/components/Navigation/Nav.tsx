@@ -206,11 +206,6 @@ export function TradLink({ to, children, isHomePage, atTop, currentPath, onNavCl
   const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
   const isPathActive = normalizePath(currentPath) === normalizePath(to);
 
-  // DEBUG: Log to see what's happening
-  if (typeof window !== 'undefined' && (to === '/resume' || to === '/about' || to === '/blog')) {
-    console.log(`TradLink ${to}: currentPath="${currentPath}" (normalized: "${normalizePath(currentPath)}"), isPathActive=${isPathActive}`);
-  }
-
   const isClickActive = !isDesktop && activeNavIndex === navIndex;
 
   // Build class list
