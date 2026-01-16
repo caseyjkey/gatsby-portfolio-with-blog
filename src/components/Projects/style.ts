@@ -112,8 +112,8 @@ export const CarouselGlobalStyles = createGlobalStyle`
   }
 
   /* Default/Partial (Floating) image styling - tall/small images */
-  .project-modal-carousel .slide:not(.full-bleed) .gatsby-image-wrapper img,
-  .project-modal-carousel .full-bleed ~ .slide .gatsby-image-wrapper img {
+  /* Note: full-bleed class is on the child div, not on slide */
+  .project-modal-carousel .slide > div:not(.full-bleed) .gatsby-image-wrapper img {
     width: auto !important;
     height: 100% !important;
     max-width: 100% !important;
@@ -126,8 +126,7 @@ export const CarouselGlobalStyles = createGlobalStyle`
   }
 
   /* Full-Bleed image styling - 16:9 images that fill the frame */
-  .project-modal-carousel .slide.full-bleed .gatsby-image-wrapper img,
-  .project-modal-carousel .full-bleed .gatsby-image-wrapper img {
+  .project-modal-carousel .slide > div.full-bleed .gatsby-image-wrapper img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
@@ -151,7 +150,7 @@ export const CarouselGlobalStyles = createGlobalStyle`
   }
 
   /* Regular img tags (non-Gatsby) - floating styling */
-  .project-modal-carousel .slide:not(.full-bleed) > div > img {
+  .project-modal-carousel .slide > div:not(.full-bleed) > img {
     max-width: 100% !important;
     max-height: 70vh !important;
     height: auto !important;
@@ -163,7 +162,7 @@ export const CarouselGlobalStyles = createGlobalStyle`
   }
 
   /* Regular img tags (non-Gatsby) - full-bleed styling */
-  .project-modal-carousel .slide.full-bleed > div > img {
+  .project-modal-carousel .slide > div.full-bleed > img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
