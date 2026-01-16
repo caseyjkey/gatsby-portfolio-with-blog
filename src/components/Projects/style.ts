@@ -44,6 +44,8 @@ export const CarouselGlobalStyles = createGlobalStyle`
     /* Use aspect-ratio directly on carousel */
     aspect-ratio: 16 / 9 !important;
     max-height: 70vh !important;
+    /* CSS custom property for floating image calculations */
+    --carousel-height: 70vh;
   }
 
   .project-modal-carousel .slider-wrapper {
@@ -104,25 +106,58 @@ export const CarouselGlobalStyles = createGlobalStyle`
   }
 
   .project-modal-carousel .slide .gatsby-image-wrapper picture {
-    display: flex !important;
+    display: block !important;
     width: 100% !important;
     height: 100% !important;
-    align-items: center !important;
-    justify-content: center !important;
   }
 
   /* Default/Partial (Floating) image styling - tall/small images */
-  /* Note: full-bleed class is on the child div, not on slide */
-  .project-modal-carousel .slide > div:not(.full-bleed) .gatsby-image-wrapper img {
-    width: auto !important;
+
+  /* Outer div: provides flex centering context */
+  .project-modal-carousel .slide > div:not(.full-bleed) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
     height: 100% !important;
+  }
+
+  /* Floating image container: aspect-ratio set by JS, constrained by max dimensions */
+  .project-modal-carousel .floating-image-container {
+    display: block !important;
+    /* Constrain to fit within carousel bounds */
     max-width: 100% !important;
-    object-fit: contain !important;
-    margin: 0 auto !important;
+    max-height: 100% !important;
+    /* Effects applied to container which matches visible image dimensions exactly */
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 0.75rem;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  /* Gatsby wrapper inside floating container: fill container completely */
+  .project-modal-carousel .floating-image-container .gatsby-image-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+
+  /* Disable GatsbyImage's padding hack since we set explicit dimensions */
+  .project-modal-carousel .floating-image-container .gatsby-image-wrapper > div[aria-hidden="true"] {
+    display: none !important;
+  }
+
+  /* Picture and img fill container completely */
+  .project-modal-carousel .floating-image-container .gatsby-image-wrapper picture,
+  .project-modal-carousel .floating-image-container .gatsby-image-wrapper picture img {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+
+  /* Use cover to fill without distortion since container aspect matches image */
+  .project-modal-carousel .floating-image-container .gatsby-image-wrapper picture img {
+    object-fit: cover !important;
   }
 
   /* Full-Bleed image styling - 16:9 images that fill the frame */
@@ -152,7 +187,8 @@ export const CarouselGlobalStyles = createGlobalStyle`
   /* Regular img tags (non-Gatsby) - floating styling */
   .project-modal-carousel .slide > div:not(.full-bleed) > img {
     max-width: 100% !important;
-    max-height: 70vh !important;
+    max-height: 100% !important;
+    width: auto !important;
     height: auto !important;
     object-fit: contain !important;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -192,9 +228,13 @@ export const CarouselGlobalStyles = createGlobalStyle`
     z-index: 10 !important;
   }
 
-  /* Mobile */
+  /* Mobile responsive styles */
   @media (max-width: 767.98px) {
-    .project-modal-carousel,
+    .project-modal-carousel {
+      max-height: 50vh !important;
+      --carousel-height: 50vh;
+    }
+
     .project-modal-carousel .slider-wrapper,
     .project-modal-carousel .slider,
     .project-modal-carousel .slide {
@@ -320,42 +360,115 @@ export const ModalImage = styled.img`
 export const ModalMetaHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 1rem;
-  margin: 1.5rem 0 1rem 0;
+  width: 100%;
+  margin-bottom: 1rem;
 
-  @media (max-width: 767.98px) {
+  /* Desktop (>= 640px): Horizontal row with title and date */
+  @media (min-width: 640px) {
+    flex-direction: row;
+  }
+
+  /* Mobile (< 640px): Vertical stack */
+  @media (max-width: 639px) {
     flex-direction: column;
-    align-items: flex-start;
+    gap: 0.25rem;
   }
 `;
 
-// Meta title (category/position)
+// Title and Date Row (desktop)
+export const MetaTitleRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 0.5rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+  }
+
+  @media (max-width: 639px) {
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0;
+  }
+`;
+
+// Meta title (category/position) - Position Title
 export const MetaTitle = styled.h4`
   font-size: 1rem;
-  font-weight: 600;
-  color: ${props => props.theme.darken};
+  font-weight: 700;
+  color: ${props => props.theme.black}; /* text-slate-900 */
   margin: 0;
+  line-height: 1.25; /* leading-tight */
+
+  @media (min-width: 640px) {
+    max-width: 70%;
+  }
+
+  @media (max-width: 639px) {
+    font-size: 1rem;
+    width: 100%;
+    white-space: normal;
+  }
+`;
+
+// Meta date in header
+export const MetaDate = styled.div`
+  color: #64748b; /* text-slate-500 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  white-space: nowrap;
+
+  @media (min-width: 640px) {
+    flex-shrink: 0;
+    margin-top: 0;
+  }
+
+  @media (max-width: 639px) {
+    margin-top: 0;
+  }
 `;
 
 // Meta icons container
 export const MetaIcons = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem; /* gap-3 equivalent */
   list-style: none;
   margin: 0;
   padding: 0;
   color: ${props => props.theme.black};
+  width: 100%;
 
-  @media (max-width: 767.98px) {
-    width: 100%;
+  @media (min-width: 640px) {
+    margin-top: 1rem; /* mt-4 equivalent */
+  }
+
+  @media (max-width: 639px) {
+    margin-top: 0.75rem; /* mt-3 equivalent */
   }
 `;
 
-// Modal footer divider
+// Modal footer with aligned buttons
 export const ModalFooterDivider = styled.div`
   border-top: 1px solid #f1f5f9; /* border-slate-100 equivalent */
   padding-top: 1rem;
+
+  .footer-actions {
+    display: flex;
+    justify-content: flex-end; /* Align all buttons to the right */
+    align-items: center;
+    gap: 0.5rem;
+
+    @media (max-width: 399px) {
+      /* Very narrow screens: stack buttons */
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+  }
 `;

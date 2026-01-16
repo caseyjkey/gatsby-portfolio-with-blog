@@ -1,8 +1,8 @@
-import React, { Suspense, useState, ReactNode, forwardRef, useMemo } from 'react'
+import React, { Suspense, useState, ReactNode, forwardRef, useMemo, useEffect, useRef } from 'react'
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalBackdrop, ModalImageContainer, ModalImage, ModalMetaHeader, MetaTitle, MetaIcons, ModalFooterDivider, CarouselGlobalStyles } from './style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalBackdrop, ModalImageContainer, ModalImage, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -57,6 +57,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 }, ref) => {
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
+  const modalImageContainerRef = useRef<HTMLDivElement>(null);
+  const [floatingSizes, setFloatingSizes] = useState<Record<number, { width: number; height: number }>>({});
 
   // Detect which images are full-bleed (16:9) vs floating
   const fullBleedIndices = useMemo(() => {
@@ -69,14 +71,79 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     });
   }, [galleryImages]);
 
+  useEffect(() => {
+    if (!modal) return;
+    const container = modalImageContainerRef.current;
+    if (!container) return;
+
+    const updateSizes = () => {
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
+      if (!containerWidth || !containerHeight) return;
+
+      const nextSizes: Record<number, { width: number; height: number }> = {};
+      galleryImages.forEach((dict, idx) => {
+        if (fullBleedIndices[idx]) return;
+        const imageData = dict.image.childImageSharp?.gatsbyImageData;
+        if (!imageData?.width || !imageData?.height) return;
+
+        const scale = Math.min(containerWidth / imageData.width, containerHeight / imageData.height);
+        nextSizes[idx] = {
+          width: Math.round(imageData.width * scale),
+          height: Math.round(imageData.height * scale),
+        };
+      });
+      setFloatingSizes(nextSizes);
+    };
+
+    updateSizes();
+    const resizeObserver = new ResizeObserver(() => updateSizes());
+    resizeObserver.observe(container);
+
+    return () => resizeObserver.disconnect();
+  }, [modal, galleryImages, fullBleedIndices]);
+
   let images = galleryImages.map(dict => dict.image.publicURL);
-  let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
-    result.push((image.childImageSharp)
-      ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} alt="project" />
-      : <img src={image.publicURL} alt="project" />
-    );
-    return result;
-  }, []);
+  let carouselImages = galleryImages.map((dict, idx) => {
+    const image = dict.image;
+    const imageData = image.childImageSharp?.gatsbyImageData;
+    const isFullBleed = fullBleedIndices[idx];
+
+    if (imageData) {
+      const aspectRatio = imageData.width / imageData.height;
+      if (isFullBleed) {
+        return <GatsbyImage image={imageData} alt="project" />;
+      } else {
+        // Use image's actual aspect ratio for the container
+        const aspectRatio = imageData.width / imageData.height;
+        const carouselAspect = 16 / 9;
+        const isWide = aspectRatio > carouselAspect;
+
+        const floatingSize = floatingSizes[idx];
+        const floatingStyle = floatingSize
+          ? { width: floatingSize.width, height: floatingSize.height, flexShrink: 0 }
+          : {
+              aspectRatio: `${imageData.width} / ${imageData.height}`,
+              ...(isWide ? { width: '100%' } : { height: '100%' }),
+            };
+
+        return (
+          <div
+            className={`floating-image-container`}
+            style={floatingStyle}
+          >
+            <GatsbyImage
+              image={imageData}
+              alt="project"
+              imgStyle={{ objectFit: 'cover' }}
+            />
+          </div>
+        );
+      }
+    } else {
+      return <img src={image.publicURL} alt="project" />;
+    }
+  });
 
   const [photoIndex, setPhotoIndex] = useState(0);
   const [lightboxOpen, setLightbox] = useState(false);
@@ -105,7 +172,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         <Suspense fallback={<ModalBody>Loading...</ModalBody>}>
           <ModalBody>
             {/* Backdrop + Image Container */}
-            <ModalImageContainer>
+            <ModalImageContainer ref={modalImageContainerRef}>
               {/* Backdrop uses current carousel image - hidden for full-bleed images */}
               <ModalBackdrop $backdropImage={images[photoIndex]} $hidden={isCurrentFullBleed} />
               <Carousel
@@ -130,9 +197,12 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
               </Carousel>
             </ModalImageContainer>
 
-            {/* Meta Header with aligned title/icons */}
+            {/* Meta Header with aligned title/date/icons */}
             <ModalMetaHeader>
-              <MetaTitle>{subtitle}</MetaTitle>
+              <MetaTitleRow>
+                <MetaTitle>{subtitle}</MetaTitle>
+                <MetaDate>{date}</MetaDate>
+              </MetaTitleRow>
               <MetaIcons>
                 {icons.map((Icon, i) => <li key={i}><Icon size={21} /></li>)}
               </MetaIcons>
@@ -170,24 +240,21 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         </Suspense>
         <ModalFooter>
           <ModalFooterDivider>
-            <div className="d-flex justify-content-between align-items-center" style={{ width: '100%' }}>
-              <div className="date small">{date}</div>
-              <div className="d-flex gap-2">
-                {/* Tertiary: Source Code */}
-                {sourceLink && (
-                  <TextIconButton as="a" href={sourceLink} target="_blank" rel="noopener noreferrer">
-                    <FaGithub size={16} /> Source
-                  </TextIconButton>
-                )}
-                {/* Secondary: Read Post - always ghost style */}
-                {postLink && (
-                  <GhostButton href={postLink}>Read post</GhostButton>
-                )}
-                {/* Primary: View Project - always solid */}
-                {link && (
-                  <PrimaryButton href={link} target="_blank">View project</PrimaryButton>
-                )}
-              </div>
+            <div className="footer-actions">
+              {/* Tertiary: Source Code */}
+              {sourceLink && (
+                <TextIconButton as="a" href={sourceLink} target="_blank" rel="noopener noreferrer">
+                  <FaGithub size={16} /> Source
+                </TextIconButton>
+              )}
+              {/* Secondary: Read Post - always ghost style */}
+              {postLink && (
+                <GhostButton href={postLink}>Read post</GhostButton>
+              )}
+              {/* Primary: View Project - always solid */}
+              {link && (
+                <PrimaryButton href={link} target="_blank">View project</PrimaryButton>
+              )}
             </div>
           </ModalFooterDivider>
         </ModalFooter>
