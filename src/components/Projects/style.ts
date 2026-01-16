@@ -117,6 +117,10 @@ export const CarouselGlobalStyles = createGlobalStyle`
     max-width: 100% !important;
     object-fit: contain !important;
     margin: 0 auto !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.75rem;
   }
 
   /* Regular img tags (non-Gatsby) */
