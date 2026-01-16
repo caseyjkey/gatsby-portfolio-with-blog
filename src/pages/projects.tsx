@@ -13,7 +13,7 @@ import { ProjectSection } from '../components/Projects/style'
 import Project from '../components/Projects/Project'
 import { format, parseISO } from 'date-fns'
 import { motion } from 'motion/react'
-import { fadeInUpVariants, useInViewAnimation, WAVE_STAGGER, STAGGER, TIMING } from '../animations'
+import { fadeInUpVariants, useInViewAnimation, WAVE_STAGGER, STAGGER, TIMING, PROGRESSIVE_STAGGER } from '../animations'
 
 export const query = graphql`
   query {
@@ -65,25 +65,6 @@ export const query = graphql`
 
 export default function ProjectsPage({ data }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [initialBatchCount, setInitialBatchCount] = useState(0);
-
-  useLayoutEffect(() => {
-    const cards = containerRef.current?.querySelectorAll('.project-card-wrapper');
-    if (!cards) return;
-
-    const viewportHeight = window.innerHeight;
-    let count = 0;
-
-    for (let i = 0; i < cards.length; i++) {
-      const rect = cards[i].getBoundingClientRect();
-      if (rect.top < viewportHeight) {
-        count++;
-      } else {
-        break;
-      }
-    }
-    setInitialBatchCount(count);
-  }, []);
 
   // Get components for icons specified in projects.json
   function loadIcons(iconMap) {
@@ -196,10 +177,7 @@ export default function ProjectsPage({ data }) {
                     const month = format(startDate, 'MM');
                     const postLink = `/projects/${year}-${month}-${project.node.project}/`;
 
-                    // Only items in the first "screen-full" get the sequential delay
-                    const delay = index < initialBatchCount
-                      ? 0.3 + (index * STAGGER / 1000)  // Convert STAGGER ms to seconds
-                      : STAGGER / 1000;  // Fixed delay for items below the fold
+                    const delay = PROGRESSIVE_STAGGER.cards.baseDelay + (index * PROGRESSIVE_STAGGER.cards.staggerIncrement);
                     const { ref, isInView } = useInViewAnimation();
 
                     return (
