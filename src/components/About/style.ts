@@ -41,6 +41,7 @@ export const ActivityIconWrapper = styled.div`
     color: ${(props) => props.theme.white};
     font-size: 28px;
     margin: 0; /* Override any default margin */
+    margin-right: 3px; /* Add margin-right */
   }
 `;
 
@@ -82,7 +83,7 @@ export const Counter = styled.div`
 
 export const ConsultantIdentity = styled.div`
 	margin-top: 2rem;
-	padding: 1.5rem;
+	padding: 1.5rem 0;
 	background-color: ${props => props.theme.lightGray || '#f8f9fa'};
 	border-left: 4px solid ${props => props.theme.primaryColor};
 	border-radius: 4px;
@@ -102,8 +103,6 @@ export const ConsultantIdentity = styled.div`
 	}
 
 	@media (max-width: 375px) {
-		padding: 1rem;
-		margin-left: -0.5rem;
-		margin-right: -0.5rem;
+		padding: 1rem 0;
 	}
 `;
