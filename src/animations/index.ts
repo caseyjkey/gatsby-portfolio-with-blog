@@ -55,6 +55,7 @@ export {
   MOBILE_VERTICAL_STACK,
   TIMELINE_DRAW,
   ACCORDION,
+  PROGRESSIVE_STAGGER,
 } from './config';
 
 // Types
