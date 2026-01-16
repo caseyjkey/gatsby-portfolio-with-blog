@@ -177,7 +177,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         <span>{subtitle}</span>
       </ProjectInfo>
 
-      <Modal isOpen={modal} toggle={handleModalToggle} >
+      <Modal isOpen={modal} toggle={handleModalToggle} centered>
         <ModalHeader toggle={handleModalToggle}>
           {title}
         </ModalHeader>
