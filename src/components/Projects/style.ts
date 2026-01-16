@@ -81,7 +81,6 @@ export const CarouselGlobalStyles = createGlobalStyle`
   .project-modal-carousel .slide > div {
     width: 100%;
     height: 100%;
-    max-height: 70vh !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -91,8 +90,7 @@ export const CarouselGlobalStyles = createGlobalStyle`
   /* Make images in carousel properly sized - constrained by container */
   .project-modal-carousel .slide .gatsby-image-wrapper {
     width: 100% !important;
-    max-width: 100% !important;
-    max-height: 70vh !important;
+    height: 100% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -106,16 +104,19 @@ export const CarouselGlobalStyles = createGlobalStyle`
   }
 
   .project-modal-carousel .slide .gatsby-image-wrapper picture {
-    display: block !important;
+    display: flex !important;
+    width: 100% !important;
+    height: 100% !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .project-modal-carousel .slide .gatsby-image-wrapper img {
-    max-width: 100% !important;
-    max-height: 70vh !important;
     width: auto !important;
-    height: auto !important;
+    height: 100% !important;
+    max-width: 100% !important;
     object-fit: contain !important;
-    display: block !important;
+    margin: 0 auto !important;
   }
 
   /* Regular img tags (non-Gatsby) */
