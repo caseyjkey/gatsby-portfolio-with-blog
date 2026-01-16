@@ -103,7 +103,14 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     return () => resizeObserver.disconnect();
   }, [modal, galleryImages, fullBleedIndices]);
 
-  let images = galleryImages.map(dict => dict.image.publicURL);
+  // Ensure publicURL exists, otherwise fallback to empty string (will be handled by lightbox)
+  let images = galleryImages.map((dict, idx) => {
+    const url = dict.image.publicURL || dict.image.childImageSharp?.gatsbyImageData?.images?.fallback?.src || '';
+    if (!url && process.env.NODE_ENV === 'development') {
+      console.warn(`Missing image URL for gallery image ${idx} in project "${title}":`, dict);
+    }
+    return url;
+  });
   let carouselImages = galleryImages.map((dict, idx) => {
     const image = dict.image;
     const imageData = image.childImageSharp?.gatsbyImageData;
@@ -148,6 +155,11 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const [photoIndex, setPhotoIndex] = useState(0);
   const [lightboxOpen, setLightbox] = useState(false);
   const toggleLightbox = () => {
+    // Ensure photoIndex is valid before opening lightbox
+    const validImages = images.filter(src => src);
+    if (photoIndex >= validImages.length) {
+      setPhotoIndex(0);
+    }
     setLightbox(!lightboxOpen);
   };
 
@@ -235,7 +247,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
             <Lightbox
               open={lightboxOpen}
               close={() => setLightbox(false)}
-              slides={images.map(src => ({ src }))}
+              slides={images.filter(src => src).map(src => ({ src }))}
               index={photoIndex}
               plugins={[Zoom]}
               zoom={{

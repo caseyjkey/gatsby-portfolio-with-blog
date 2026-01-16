@@ -170,7 +170,7 @@ export const Projects = (props) => {
 						return (
 							<AnimatedProjectCol key={index} index={index} delay={getProjectDelay(index)} isMounted={isMounted}>
 								<Project image={project.node.image.childImageSharp.gatsbyImageData}
-									galleryImages={(project.node.galleryImages || [{ "image": project.node.image }])}
+									galleryImages={(project.node.galleryImages && project.node.galleryImages.length > 0) ? project.node.galleryImages : [{ "image": project.node.image }]}
 									title={project.node.title}
 									subtitle={project.node.subtitle}
 									icons={loadIcons(project.node.icons)}

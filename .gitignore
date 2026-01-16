@@ -38,3 +38,5 @@ node_modules
 !.yarn/sdks
 !.yarn/versions
 .worktrees/
+
+.claude
