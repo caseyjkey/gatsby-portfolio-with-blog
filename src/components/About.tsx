@@ -24,7 +24,7 @@ import React, { useEffect, useState, lazy } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style'
 import { AboutSection, AboutImage, Description, ConsultantIdentity } from './About/style'
-import { StaticImage } from 'gatsby-plugin-image'
+// Removed: import { StaticImage } from 'gatsby-plugin-image'
 import Activity from './About/Activity'
 import { graphql, useStaticQuery } from 'gatsby'
 import { motion } from 'motion/react'
@@ -209,7 +209,7 @@ export default function About(props) {
               transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
             >
               <AboutImage>
-                <StaticImage src='/about.webp' alt='Casey Key in a suit' />
+                <img src="/about.webp" alt="Casey Key in a suit" />
               </AboutImage>
             </motion.div>
           </Col>

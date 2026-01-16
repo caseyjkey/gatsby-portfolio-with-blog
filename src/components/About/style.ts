@@ -10,19 +10,38 @@ export const AboutSection = styled.section`
 	flex: 1 0 auto;
 
 	ul.about-info {
-		display: inline-block;
 		margin: 0;
+		padding: 0;
 		word-break: break-word;
 		li {
 			list-style: none;
 			margin-bottom: 10px;
 			color: ${props => props.theme.black};
-			svg {
-					font-weight: 600;
-					font-size: 25px;
-					margin-right: 0.7rem;
-				}
-		}	
+			display: flex; /* Make li a flex container */
+			align-items: center; /* Vertically center icon and text */
+
+			span { /* For the description text */
+				margin-left: 0.7rem; /* Space between icon and text */
+			}
+		}
+	}
+`;
+
+export const ActivityIconWrapper = styled.div`
+  margin-right: 2em;
+  min-width: 50px; /* Use min-width to ensure the circle doesn't shrink */
+  height: 50px;
+  background: ${(props) => props.theme.primaryColor};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    color: ${(props) => props.theme.white};
+    font-size: 28px;
+    margin: 0; /* Override any default margin */
+  }
 `;
 
 export const Description = styled.p`

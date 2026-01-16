@@ -1,4 +1,5 @@
 import React, { Fragment, Suspense } from 'react'
+import { ActivityIconWrapper } from './style'
 
 export default function Activity({Icon, description}) {
     const isSSR = typeof window === "undefined"
@@ -7,7 +8,9 @@ export default function Activity({Icon, description}) {
         <Fragment>
             {!isSSR && (
                 <Suspense fallback={<p>Loading...</p>}>
-                    <Icon />
+                    <ActivityIconWrapper>
+                        <Icon />
+                    </ActivityIconWrapper>
                     <span dangerouslySetInnerHTML={{ __html: description}} />
                 </Suspense>
             )}
