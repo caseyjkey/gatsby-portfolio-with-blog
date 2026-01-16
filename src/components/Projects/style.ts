@@ -384,7 +384,7 @@ export const MetaTitleRow = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
 
   @media (min-width: 640px) {
     flex-direction: row;
@@ -445,7 +445,8 @@ export const MetaIcons = styled.ul`
   width: 100%;
 
   @media (min-width: 640px) {
-    margin-top: 1rem; /* mt-4 equivalent */
+    margin-top: 0.0rem; /* mt-4 equivalent */
+    
   }
 
   @media (max-width: 639px) {
