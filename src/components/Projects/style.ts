@@ -111,7 +111,9 @@ export const CarouselGlobalStyles = createGlobalStyle`
     justify-content: center !important;
   }
 
-  .project-modal-carousel .slide .gatsby-image-wrapper img {
+  /* Default/Partial (Floating) image styling - tall/small images */
+  .project-modal-carousel .slide:not(.full-bleed) .gatsby-image-wrapper img,
+  .project-modal-carousel .full-bleed ~ .slide .gatsby-image-wrapper img {
     width: auto !important;
     height: 100% !important;
     max-width: 100% !important;
@@ -123,12 +125,51 @@ export const CarouselGlobalStyles = createGlobalStyle`
     border-radius: 0.75rem;
   }
 
-  /* Regular img tags (non-Gatsby) */
-  .project-modal-carousel .slide > div > img {
+  /* Full-Bleed image styling - 16:9 images that fill the frame */
+  .project-modal-carousel .slide.full-bleed .gatsby-image-wrapper img,
+  .project-modal-carousel .full-bleed .gatsby-image-wrapper img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* Fade transition for smooth image transitions */
+  .project-modal-carousel .slide {
+    transition: opacity 0.3s ease-in-out !important;
+  }
+
+  .project-modal-carousel .slide.fade-exit {
+    opacity: 0 !important;
+  }
+
+  .project-modal-carousel .slide.fade-enter {
+    opacity: 1 !important;
+  }
+
+  /* Regular img tags (non-Gatsby) - floating styling */
+  .project-modal-carousel .slide:not(.full-bleed) > div > img {
     max-width: 100% !important;
     max-height: 70vh !important;
     height: auto !important;
     object-fit: contain !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.75rem;
+  }
+
+  /* Regular img tags (non-Gatsby) - full-bleed styling */
+  .project-modal-carousel .slide.full-bleed > div > img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
   }
 
   /* Position controls within the container bounds */
@@ -235,15 +276,17 @@ export const ReadMoreColor = styled.div`
 `;
 
 // Modal backdrop - blurred version of current carousel image
-export const ModalBackdrop = styled.div<{ $backdropImage?: string }>`
+export const ModalBackdrop = styled.div<{ $backdropImage?: string; $hidden?: boolean }>`
   position: absolute;
   inset: 0;
   background-image: url(${props => props.$backdropImage || ''});
   background-size: cover;
   background-position: center;
   filter: blur(2px);
-  opacity: 1;
+  opacity: ${props => props.$hidden ? 0 : 1};
   z-index: 0;
+  pointer-events: ${props => props.$hidden ? 'none' : 'auto'};
+  transition: opacity 0.3s ease-in-out;
 `;
 
 // Modal image container with aspect ratio

@@ -1,4 +1,4 @@
-import React, { Suspense, useState, ReactNode, forwardRef } from 'react'
+import React, { Suspense, useState, ReactNode, forwardRef, useMemo } from 'react'
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
@@ -11,6 +11,13 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ReactReadMoreReadLess from '@caseykey/react-read-more-read-less'
 import { IconType } from 'react-icons'
 import { FaGithub } from 'react-icons/fa'
+
+// Helper: Check if image is approximately 16:9 aspect ratio (within 5% tolerance)
+const is16by9 = (width: number, height: number): boolean => {
+  const ratio = width / height;
+  const targetRatio = 16 / 9;
+  return Math.abs(ratio - targetRatio) < 0.1;
+};
 
 interface GalleryImage {
   image: {
@@ -51,6 +58,17 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
 
+  // Detect which images are full-bleed (16:9) vs floating
+  const fullBleedIndices = useMemo(() => {
+    return galleryImages.map((dict) => {
+      if (dict.image.childImageSharp?.gatsbyImageData) {
+        const { width, height } = dict.image.childImageSharp.gatsbyImageData;
+        return is16by9(width, height);
+      }
+      return false;
+    });
+  }, [galleryImages]);
+
   let images = galleryImages.map(dict => dict.image.publicURL);
   let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
     result.push((image.childImageSharp)
@@ -65,6 +83,9 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const toggleLightbox = () => {
     setLightbox(!lightboxOpen);
   };
+
+  // Check if current image is full-bleed for backdrop visibility
+  const isCurrentFullBleed = fullBleedIndices[photoIndex] ?? false;
 
   return (
     <ProjectWrapper ref={ref} onClick={toggleModal} className="shadow" {...props}>
@@ -85,8 +106,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
           <ModalBody>
             {/* Backdrop + Image Container */}
             <ModalImageContainer>
-              {/* Backdrop uses current carousel image - updates on slide change */}
-              <ModalBackdrop $backdropImage={images[photoIndex]} />
+              {/* Backdrop uses current carousel image - hidden for full-bleed images */}
+              <ModalBackdrop $backdropImage={images[photoIndex]} $hidden={isCurrentFullBleed} />
               <Carousel
                 dynamicHeight={false}
                 infiniteLoop
@@ -104,7 +125,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                 showArrows={true}
               >
                 {carouselImages.map((image, index) => (
-                  <div key={index}>{image}</div>
+                  <div key={index} className={fullBleedIndices[index] ? 'full-bleed' : ''}>{image}</div>
                 ))}
               </Carousel>
             </ModalImageContainer>
