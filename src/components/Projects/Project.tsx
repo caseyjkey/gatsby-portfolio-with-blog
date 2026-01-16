@@ -151,11 +151,23 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     setLightbox(!lightboxOpen);
   };
 
+  // Custom function to close modal only if lightbox is not open
+  const handleModalToggle = () => {
+    if (!lightboxOpen) {
+      toggleModal();
+    }
+  };
+
   // Check if current image is full-bleed for backdrop visibility
   const isCurrentFullBleed = fullBleedIndices[photoIndex] ?? false;
 
   return (
-    <ProjectWrapper ref={ref} onClick={toggleModal} className="shadow" {...props}>
+    <ProjectWrapper ref={ref} onClick={(e) => {
+      // Only toggle modal if not already open and not clicking a button/link
+      if (!modal && !(e.target as HTMLElement).closest('a, button')) {
+        toggleModal();
+      }
+    }} className="shadow" {...props}>
       <CarouselGlobalStyles />
       <GalleryFrame>
         <GatsbyImage image={image} alt={title} />
@@ -165,8 +177,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         <span>{subtitle}</span>
       </ProjectInfo>
 
-      <Modal isOpen={modal} toggle={toggleModal} >
-        <ModalHeader toggle={toggleModal}>
+      <Modal isOpen={modal} toggle={handleModalToggle} >
+        <ModalHeader toggle={handleModalToggle}>
           {title}
         </ModalHeader>
         <Suspense fallback={<ModalBody>Loading...</ModalBody>}>
