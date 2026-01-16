@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
-import { Section, Image, Button } from './style.ts'
+import { Section, Image, PrimaryButton } from './style.ts'
 import bg from '../images/bg_1.jpg'
 import { motion } from 'motion/react'
 import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
@@ -57,7 +57,7 @@ export default function HireMe({status}) {
               <Col md={7} className="text-center">
                 <h2>I'm <span>{status}</span> for freelancing</h2>
                 {status && <p>Let's get in contact! I can turn your concept into reality.</p>}
-                {status && <p className="mb-0"><Button color="primary" className="py-3 px-5" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>Hire me</Button></p>}
+                {status && <p className="mb-0"><PrimaryButton className="py-3 px-5" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>Hire me</PrimaryButton></p>}
               </Col>
           </Row>
         </Container>
@@ -92,22 +92,5 @@ const HireMeWrapper = styled.section`
   }
   p{
     color: rgba(255,255,255,.9);
-  }
-  button {
-    background: ${(props) => props.theme.primaryColor};
-    border: 1px solid ${(props) => props.theme.primaryColor}!important;
-    color: ${(props) => props.theme.white}!important;
-    cursor: pointer;
-    -webkit-border-radius: 40px;
-    -moz-border-radius: 40px;
-    -ms-border-radius: 40px;
-    border-radius: 40px;
-    -webkit-box-shadow: 0 24px 36px -11px rgba(0,0,0,.09);
-    -moz-box-shadow: 0 24px 36px -11px rgba(0,0,0,.09);
-    box-shadow: 0 24px 36px -11px rgba(0,0,0,.09);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 600;
   }
 `;

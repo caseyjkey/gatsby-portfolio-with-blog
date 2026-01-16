@@ -210,9 +210,10 @@ interface TimelineRowItemProps {
   rowRef?: (el: HTMLDivElement | null) => void;
   dotRef?: React.RefObject<HTMLDivElement | null>;
   timelineContainerRef: React.RefObject<HTMLDivElement | null>;
+  triggeredScroll?: boolean;
 }
 
-function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemReached, rowRef, dotRef, timelineContainerRef }: TimelineRowItemProps) {
+function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemReached, rowRef, dotRef, timelineContainerRef, triggeredScroll = false }: TimelineRowItemProps) {
   const [nodePopped, setNodePopped] = useState(false);
   const [hasBeenReached, setHasBeenReached] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -287,6 +288,26 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
 
   const isLast = index === totalEntries - 1;
   const isFirst = index === 0;
+  const isSecond = index === 1;
+
+  // Calculate delay: first item has delay, second item has stagger if triggered by button
+  const getYearDelay = () => {
+    if (isFirst) return TIMELINE.year.firstDelay;
+    if (isSecond && triggeredScroll) return TIMELINE.year.firstDelay + 0.5; // 0.5s stagger after first
+    return TIMELINE.year.delay;
+  };
+
+  const getDotDelay = () => {
+    if (isFirst) return TIMELINE.dot.firstDelay;
+    if (isSecond && triggeredScroll) return TIMELINE.dot.firstDelay + 0.5;
+    return TIMELINE.dot.delay;
+  };
+
+  const getEntryDelay = () => {
+    if (isFirst) return TIMELINE.entry.firstDelay;
+    if (isSecond && triggeredScroll) return TIMELINE.entry.firstDelay + TIMELINE.entry.delay;
+    return TIMELINE.entry.delay;
+  };
 
   // Combined ref handler
   const setRefs = useCallback((el: HTMLDivElement | null) => {
@@ -304,7 +325,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
             animate={{ opacity: hasBeenReached ? 1 : 0, y: 0 }}
             transition={{
               duration: TIMELINE.year.duration,
-              delay: isFirst ? TIMELINE.year.firstDelay : TIMELINE.year.delay,
+              delay: getYearDelay(),
               ease: EASING.standard,
             }}
           >
@@ -320,7 +341,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
             }}
             transition={{
               duration: TIMELINE.dot.duration,
-              delay: isFirst ? TIMELINE.dot.firstDelay : TIMELINE.dot.delay,
+              delay: getDotDelay(),
               ease: TIMELINE.dot.ease,
             }}
           >
@@ -333,7 +354,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
           animate={{ opacity: hasBeenReached ? 1 : 0, x: 0, scale: 1 }}
           transition={{
             duration: TIMELINE.entry.duration,
-            delay: isFirst ? TIMELINE.entry.firstDelay : TIMELINE.entry.delay,
+            delay: getEntryDelay(),
             ease: EASING.standard,
           }}
           style={{
@@ -377,6 +398,9 @@ export default function Experience() {
   const lastDotRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
   const lastScrollYRef = useRef<number>(0);
+
+  // Track if scroll was triggered by "View Experience" button
+  const [triggeredScroll, setTriggeredScroll] = useState(false);
 
   // Use the optimized hook for header viewport detection
   const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({
@@ -501,6 +525,19 @@ export default function Experience() {
     handleScroll();
   }, [experienceData.length]);
 
+  // Listen for "View Experience" button click
+  useEffect(() => {
+    const handleScrollTrigger = () => {
+      setTriggeredScroll(true);
+      // Reset flag after 3 seconds (enough time for animations to complete)
+      const timer = setTimeout(() => setTriggeredScroll(false), 3000);
+      return () => clearTimeout(timer);
+    };
+
+    window.addEventListener('experience-scroll-trigger', handleScrollTrigger);
+    return () => window.removeEventListener('experience-scroll-trigger', handleScrollTrigger);
+  }, []);
+
   return (
     <ExperienceSection ref={sectionRef} id="Experience">
       <Container>
@@ -552,6 +589,7 @@ export default function Experience() {
                   rowRef={(el) => { rowRefs.current[index] = el; }}
                   dotRef={index === 0 ? firstDotRef : index === experienceData.length - 1 ? lastDotRef : undefined}
                   timelineContainerRef={timelineContainerRef}
+                  triggeredScroll={triggeredScroll}
                 />
               ))}
             </TimelineContainer>

@@ -1,8 +1,8 @@
 import React, { Suspense, useState, ReactNode, forwardRef } from 'react'
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
-import { theme, Button as EnhancedButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo } from './style'
+import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalBackdrop, ModalImageContainer, ModalImage, ModalMetaHeader, MetaTitle, MetaIcons, ModalFooterDivider, CarouselGlobalStyles } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -10,6 +10,7 @@ import { Carousel } from 'react-responsive-carousel'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ReactReadMoreReadLess from '@caseykey/react-read-more-read-less'
 import { IconType } from 'react-icons'
+import { FaGithub } from 'react-icons/fa'
 
 interface GalleryImage {
   image: {
@@ -29,6 +30,7 @@ interface ProjectProps {
   icons: IconType[];
   link?: string;
   postLink?: string;
+  sourceLink?: string;  // Optional: GitHub repository URL
   date: string;
   [key: string]: any; // Allow data attributes
 }
@@ -42,6 +44,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   icons,
   link,
   postLink,
+  sourceLink,
   date,
   ...props
 }, ref) => {
@@ -51,8 +54,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   let images = galleryImages.map(dict => dict.image.publicURL);
   let carouselImages = galleryImages.map(dict => dict.image).reduce((result, image) => {
     result.push((image.childImageSharp)
-      ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} alt="project" style={{ width: '100%', height: 'auto' }} />
-      : <img src={image.publicURL} alt="project" style={{ width: '100%', height: 'auto' }} />
+      ? <GatsbyImage image={image.childImageSharp.gatsbyImageData} alt="project" />
+      : <img src={image.publicURL} alt="project" />
     );
     return result;
   }, []);
@@ -65,6 +68,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
   return (
     <ProjectWrapper ref={ref} onClick={toggleModal} className="shadow" {...props}>
+      <CarouselGlobalStyles />
       <GalleryFrame>
         <GatsbyImage image={image} alt={title} />
       </GalleryFrame>
@@ -79,31 +83,41 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         </ModalHeader>
         <Suspense fallback={<ModalBody>Loading...</ModalBody>}>
           <ModalBody>
-            <Carousel dynamicHeight
-              infiniteLoop
-              useKeyboardArrows
-              showThumbs={false}
-              onChange={(index: number) => {
-                setPhotoIndex(index);
-              }}
-              onClickItem={() => toggleLightbox()}
-              selectedItem={photoIndex}
-              style={{ paddingBottom: "16px" }}
-            >
-              {carouselImages.map((image, index) => {
-                return <div key={index}>{image}</div>
-              })}
-            </Carousel>
-            <ul className="list-unstyled d-flex flex-row flex-wrap my-1 pt-4">
-              {icons.map((Icon, index) => {
-                return (
-                  <li key={index} className="ml-4" mb-2 style={{ color: theme.black, marginRight: '0.5rem' }}>
-                    <Icon size={21} />
-                  </li>
-                );
-              })}
-            </ul>
-            <h4 className="h6">{subtitle}</h4>
+            {/* Backdrop + Image Container */}
+            <ModalImageContainer>
+              {/* Backdrop uses current carousel image - updates on slide change */}
+              <ModalBackdrop $backdropImage={images[photoIndex]} />
+              <Carousel
+                dynamicHeight={false}
+                infiniteLoop
+                useKeyboardArrows
+                showThumbs={false}
+                showStatus={false}
+                showIndicators
+                onChange={(index: number) => {
+                  setPhotoIndex(index);
+                }}
+                onClickItem={() => toggleLightbox()}
+                selectedItem={photoIndex}
+                renderThumbs={() => []}
+                className="project-modal-carousel"
+                showArrows={true}
+              >
+                {carouselImages.map((image, index) => (
+                  <div key={index}>{image}</div>
+                ))}
+              </Carousel>
+            </ModalImageContainer>
+
+            {/* Meta Header with aligned title/icons */}
+            <ModalMetaHeader>
+              <MetaTitle>{subtitle}</MetaTitle>
+              <MetaIcons>
+                {icons.map((Icon, i) => <li key={i}><Icon size={21} /></li>)}
+              </MetaIcons>
+            </ModalMetaHeader>
+
+            {/* Description with read-more */}
             <ReadMoreColor>
               <ReactReadMoreReadLess charLimit={200}
                 readMoreText={"Read More ▼"}
@@ -114,6 +128,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                 {children.props.dangerouslySetInnerHTML.__html}
               </ReactReadMoreReadLess>
             </ReadMoreColor>
+
             <Lightbox
               open={lightboxOpen}
               close={() => setLightbox(false)}
@@ -132,12 +147,28 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
             />
           </ModalBody>
         </Suspense>
-        <ModalFooter className="d-flex justify-content-between align-items-center">
-          <div className="date small">{date}</div>
-          <div>
-            {postLink && <EnhancedButton color={link ? "secondary" : "primary"} href={postLink} style={{ marginRight: '8px' }}>Read post</EnhancedButton>}
-            {link && <EnhancedButton color="primary" href={link} target={"_blank"}>View project</EnhancedButton>}
-          </div>
+        <ModalFooter>
+          <ModalFooterDivider>
+            <div className="d-flex justify-content-between align-items-center" style={{ width: '100%' }}>
+              <div className="date small">{date}</div>
+              <div className="d-flex gap-2">
+                {/* Tertiary: Source Code */}
+                {sourceLink && (
+                  <TextIconButton as="a" href={sourceLink} target="_blank" rel="noopener noreferrer">
+                    <FaGithub size={16} /> Source
+                  </TextIconButton>
+                )}
+                {/* Secondary: Read Post - always ghost style */}
+                {postLink && (
+                  <GhostButton href={postLink}>Read post</GhostButton>
+                )}
+                {/* Primary: View Project - always solid */}
+                {link && (
+                  <PrimaryButton href={link} target="_blank">View project</PrimaryButton>
+                )}
+              </div>
+            </div>
+          </ModalFooterDivider>
         </ModalFooter>
       </Modal>
     </ProjectWrapper>

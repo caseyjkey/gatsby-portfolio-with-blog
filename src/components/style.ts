@@ -107,6 +107,185 @@ export const Button = styled(BootstrapButton)`
   }
 `;
 
+// Primary button that uses theme.primaryColor consistently across the site
+export const PrimaryButton = styled(BootstrapButton)`
+  cursor: pointer;
+  background-color: ${props => props.theme.primaryColor} !important;
+  border-color: ${props => props.theme.primaryColor} !important;
+  color: ${props => props.theme.white} !important;
+
+  /* Remove default link styling that causes blue text on click */
+  &:visited,
+  &:active,
+  &:link {
+    color: ${props => props.theme.white} !important;
+    text-decoration: none;
+  }
+
+  /* Hover state - slightly darker primary color */
+  &:hover:not(:active) {
+    background-color: ${props => lighten(-0.1, props.theme.primaryColor)} !important;
+    border-color: ${props => lighten(-0.1, props.theme.primaryColor)} !important;
+    color: ${props => props.theme.white} !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  /* Active/pressed state */
+  &:active,
+  &:focus {
+    background-color: ${props => lighten(-0.15, props.theme.primaryColor)} !important;
+    border-color: ${props => lighten(-0.15, props.theme.primaryColor)} !important;
+    color: ${props => props.theme.white} !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Professional press animation */
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  /* Disabled state */
+  &:disabled,
+  &.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+`;
+
+// Secondary button with neutral gray styling (complements PrimaryButton)
+export const SecondaryButton = styled(BootstrapButton)`
+  cursor: pointer;
+  background-color: ${props => props.theme.darken} !important;
+  border-color: ${props => props.theme.darken} !important;
+  color: ${props => props.theme.white} !important;
+
+  /* Remove default link styling that causes blue text on click */
+  &:visited,
+  &:active,
+  &:link {
+    color: ${props => props.theme.white} !important;
+    text-decoration: none;
+  }
+
+  /* Hover state - lighter gray */
+  &:hover:not(:active) {
+    background-color: #393f47 !important;
+    border-color: #393f47 !important;
+    color: ${props => props.theme.white} !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  /* Active/pressed state */
+  &:active,
+  &:focus {
+    background-color: #2d3238 !important;
+    border-color: #2d3238 !important;
+    color: ${props => props.theme.white} !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Professional press animation */
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  /* Disabled state */
+  &:disabled,
+  &.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+`;
+
+// Ghost button with border only, transparent background (for secondary "Read Post" button)
+export const GhostButton = styled(BootstrapButton)`
+  cursor: pointer;
+  background-color: transparent !important;
+  border-color: ${props => props.theme.primaryColor} !important;
+  color: ${props => props.theme.primaryColor} !important;
+
+  /* Remove default link styling */
+  &:visited,
+  &:active,
+  &:link {
+    color: ${props => props.theme.primaryColor} !important;
+    text-decoration: none;
+  }
+
+  /* Hover state - solid primary background */
+  &:hover:not(:active) {
+    background-color: ${props => props.theme.primaryColor} !important;
+    border-color: ${props => props.theme.primaryColor} !important;
+    color: ${props => props.theme.white} !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  /* Active/pressed state */
+  &:active,
+  &:focus {
+    background-color: ${props => lighten(-0.1, props.theme.primaryColor)} !important;
+    border-color: ${props => lighten(-0.1, props.theme.primaryColor)} !important;
+    color: ${props => props.theme.white} !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Professional press animation */
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  /* Disabled state */
+  &:disabled,
+  &.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+`;
+
+// Text-only button with icon (for tertiary "Source Code" button)
+export const TextIconButton = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.theme.darken};
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  transition: color 0.15s ease-out, text-decoration 0.15s ease-out;
+
+  &:visited,
+  &:active,
+  &:link {
+    color: ${props => props.theme.darken};
+    text-decoration: none;
+  }
+
+  &:hover:not(:active) {
+    color: ${props => props.theme.primaryColor};
+    text-decoration: underline;
+  }
+
+  &:active,
+  &:focus {
+    color: ${props => props.theme.primaryColor};
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+`;
+
 export const HeadingRaw = `
 	position: relative;
 	.subheading{

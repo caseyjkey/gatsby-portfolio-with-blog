@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
 import Info from './Contact/Info'
-import { Section, NoPaddingBottom } from './style'
+import { Section, NoPaddingBottom, PrimaryButton } from './style'
 import { Heading } from './style'
 import { FaSign, FaPhone } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
@@ -136,7 +136,7 @@ export default function Contact(props) {
                 variants={fadeInUpVariants}
                 className="form-group"
               >
-                {status == "SUCCESS" ? <p>Thanks!</p> : <button className="btn btn-primary py-3 px-5">Submit</button>}
+                {status == "SUCCESS" ? <p>Thanks!</p> : <PrimaryButton className="py-3 px-5" type="submit">Submit</PrimaryButton>}
                 {status == "ERROR" && <p>Oops! There was an error.</p>}
               </motion.div>
             </motion.form>

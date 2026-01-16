@@ -6,6 +6,8 @@ import { Link } from 'gatsby'
 import { useLocation } from '@reach/router'
 import { useScrollDirection } from '../../hooks/useScrollDirection'
 import { StyledNav, StyledCollapse } from './NavStyles'
+import { motion } from 'motion/react'
+import { fadeInUpVariants, MOBILE_VERTICAL_STACK, useIsMobile } from '../../animations'
 
 export function Nav({ children }) {
   const [collapsed, setCollapsed] = useState(true);
@@ -111,7 +113,8 @@ export function Nav({ children }) {
                     currentPath: location.pathname,
                     onNavClick: handleRippleClick,
                     navIndex: index,
-                    activeNavIndex
+                    activeNavIndex,
+                    collapsed
                   } as any);
                 }
                 return child;
@@ -134,12 +137,15 @@ interface ScrollProps {
   onNavClick?: (e: React.MouseEvent<HTMLElement>, index: number, callback?: () => void) => void;
   navIndex?: number;
   activeNavIndex?: number | null;
+  collapsed?: boolean;
 }
 
-export function Scroll({ to, children, offset, isHomePage, atTop, currentPath, onNavClick, navIndex, activeNavIndex }: ScrollProps) {
+export function Scroll({ to, children, offset, isHomePage, atTop, currentPath, onNavClick, navIndex, activeNavIndex, collapsed }: ScrollProps) {
   // Desktop: Home link is active when on homepage and at top
   // Mobile: Active state is based on click
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 992;
+  const isMobile = useIsMobile();
+  const shouldAnimate = !isDesktop && collapsed !== undefined ? !collapsed : false;
   const isHomeActive = isDesktop && isHomePage && atTop && to === 'Introduction';
   const isClickActive = !isDesktop && activeNavIndex === navIndex;
 
@@ -169,19 +175,36 @@ export function Scroll({ to, children, offset, isHomePage, atTop, currentPath, o
     }
   };
 
-  return (
+  const linkContent = (
+    <ScrollLink
+      to={to}
+      activeClass="react-scroll-active" // Use custom class instead of "active"
+      spy={isDesktop} // Only use spy on desktop
+      smooth={true}
+      offset={offset}
+      className={`nav-link ${isActive ? 'manual-active' : ''}`}
+      onClick={handleClick}
+    >
+      <span>{children}</span>
+    </ScrollLink>
+  );
+
+  return isMobile ? (
+    <motion.li
+      className="nav-item"
+      variants={fadeInUpVariants}
+      initial={shouldAnimate ? 'hidden' : false}
+      animate={shouldAnimate ? 'visible' : false}
+      custom={{
+        delay: navIndex !== undefined ? navIndex * MOBILE_VERTICAL_STACK.stagger / 1000 : 0,
+        distance: MOBILE_VERTICAL_STACK.distance
+      }}
+    >
+      {linkContent}
+    </motion.li>
+  ) : (
     <li className="nav-item">
-      <ScrollLink
-        to={to}
-        activeClass="react-scroll-active" // Use custom class instead of "active"
-        spy={isDesktop} // Only use spy on desktop
-        smooth={true}
-        offset={offset}
-        className={`nav-link ${isActive ? 'manual-active' : ''}`}
-        onClick={handleClick}
-      >
-        <span>{children}</span>
-      </ScrollLink>
+      {linkContent}
     </li>
   );
 };
@@ -195,12 +218,15 @@ interface TradLinkProps {
   onNavClick?: (e: React.MouseEvent<HTMLElement>, index: number, callback?: () => void) => void;
   navIndex?: number;
   activeNavIndex?: number | null;
+  collapsed?: boolean;
 }
 
-export function TradLink({ to, children, isHomePage, atTop, currentPath, onNavClick, navIndex, activeNavIndex }: TradLinkProps) {
+export function TradLink({ to, children, isHomePage, atTop, currentPath, onNavClick, navIndex, activeNavIndex, collapsed }: TradLinkProps) {
   // Desktop: Active based on current path
   // Mobile: Active state is based on click OR current page
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 992;
+  const isMobile = useIsMobile();
+  const shouldAnimate = !isDesktop && collapsed !== undefined ? !collapsed : false;
 
   // Normalize paths for comparison (handle trailing slashes)
   const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
@@ -228,17 +254,34 @@ export function TradLink({ to, children, isHomePage, atTop, currentPath, onNavCl
     }
   };
 
-  return (
+  const linkContent = (
+    <Link
+      to={to}
+      className={classNames.join(' ')}
+      onClick={handleClick}
+      // Add aria-current for better accessibility and as a fallback
+      aria-current={isPathActive ? 'page' : undefined}
+    >
+      <span>{children}</span>
+    </Link>
+  );
+
+  return isMobile ? (
+    <motion.li
+      className="nav-item"
+      variants={fadeInUpVariants}
+      initial={shouldAnimate ? 'hidden' : false}
+      animate={shouldAnimate ? 'visible' : false}
+      custom={{
+        delay: navIndex !== undefined ? navIndex * MOBILE_VERTICAL_STACK.stagger / 1000 : 0,
+        distance: MOBILE_VERTICAL_STACK.distance
+      }}
+    >
+      {linkContent}
+    </motion.li>
+  ) : (
     <li className="nav-item">
-      <Link
-        to={to}
-        className={classNames.join(' ')}
-        onClick={handleClick}
-        // Add aria-current for better accessibility and as a fallback
-        aria-current={isPathActive ? 'page' : undefined}
-      >
-        <span>{children}</span>
-      </Link>
+      {linkContent}
     </li>
   );
 }

@@ -9,7 +9,7 @@ import {
   AccordionHeader,
   AccordionItem,
 } from 'reactstrap';
-import { Heading } from '../style'
+import { Heading, PrimaryButton } from '../style'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style'
 import ResumeFile from '../Introduction/resume.pdf'
 import Entry from './Entry'
@@ -94,22 +94,27 @@ function Resume(props) {
               variants={fadeInUpVariants}
               className="mb-4 mt-5"
             >
-              <a href={ResumeFile} className="py-4 btn btn-primary" style={{
-                width: '100%',
-                height: 'auto',
-                minHeight: '3rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 800,
-                fontSize: '30px',
-                color: 'white',
-                lineHeight: 1
-              }}>Download<span className="ms-2"><BsSave /></span></a>
+              <PrimaryButton
+                href={ResumeFile}
+                className="py-4"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  minHeight: '3rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 800,
+                  fontSize: '30px',
+                  lineHeight: 1
+                }}
+              >
+                Download<span className="ms-2"><BsSave /></span>
+              </PrimaryButton>
             </motion.div>
             <style>{`
               @media (max-width: 767.98px) {
-                .btn-primary {
+                .btn-primary, a.btn {
                   min-height: 5rem !important;
                   font-size: 30px !important;
                   font-weight: 800 !important;
@@ -118,7 +123,7 @@ function Resume(props) {
                   justify-content: center !important;
                   line-height: 1 !important;
                 }
-                .btn-primary svg {
+                .btn-primary svg, a.btn svg {
                   margin-left: 0.3rem !important;
                 }
               }

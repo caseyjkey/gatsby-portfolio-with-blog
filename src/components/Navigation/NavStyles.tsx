@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 // Header glass opacity values (shared across header and dropdown)
-const GLASS_OPACITY = 0.88;
+const GLASS_OPACITY = 0.7;
 const PRIMARY_COLOR = '#3e64ff';
 
 // Consolidated navbar styles - all in one place
@@ -14,16 +14,38 @@ export const StyledNav = styled.nav<{ $isVisible: boolean; $scrolled: boolean; $
   z-index: 100;
   /* Use top positioning instead of transform to avoid breaking fixed children */
   top: ${props => props.$isVisible ? '0' : '-100px'};
-  transition: top 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, backdrop-filter 0.3s ease;
+  transition: top 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
 
   /* Unified styles for all states - header matches drawer when menu open */
-  background-color: ${props => {
-    if (!props.$isVisible) return 'transparent'
-    if (props.$menuOpen || props.$scrolled) return `rgba(255, 255, 255, ${GLASS_OPACITY})`
-    return 'transparent'
+  background-color: transparent !important;
+  ${props => {
+    if (props.$isVisible && (props.$menuOpen || props.$scrolled)) {
+      return `background-color: rgba(255, 255, 255, ${GLASS_OPACITY}) !important;`
+    }
+    return ''
+  }}
+  backdrop-filter: ${props => {
+    if (!props.$isVisible) return 'none'
+    if (props.$menuOpen) return 'blur(40px)'
+    if (props.$scrolled) return 'blur(16px)'
+    return 'none'
   }};
-  backdrop-filter: ${props => (!props.$isVisible || (!props.$scrolled && !props.$menuOpen)) ? 'none' : 'blur(16px)'};
-  -webkit-backdrop-filter: ${props => (!props.$isVisible || (!props.$scrolled && !props.$menuOpen)) ? 'none' : 'blur(16px)'};
+  -webkit-backdrop-filter: ${props => {
+    if (!props.$isVisible) return 'none'
+    if (props.$menuOpen) return 'blur(40px)'
+    if (props.$scrolled) return 'blur(16px)'
+    return 'none'
+  }};
+
+  /* Bottom border - slate-100/50 equivalent */
+  border-bottom: 1px solid rgba(241, 245, 249, 0.5) !important;
+  ${props => {
+    // Mobile: fade border when menu is open
+    if (props.$menuOpen && typeof window !== 'undefined' && window.innerWidth < 992) {
+      return 'border-bottom-color: transparent !important;'
+    }
+    return ''
+  }}
 
   /* Only show border/shadow when visible AND scrolled/menu is open */
   ${props => {
@@ -134,16 +156,16 @@ export const StyledNav = styled.nav<{ $isVisible: boolean; $scrolled: boolean; $
 `
 
 export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
-  background-color: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   padding: ${props => props.$isOpen ? '1rem 2rem' : '0'};
   box-shadow: none;
 
-  /* Desktop: always visible */
+  /* Desktop: always visible, transparent background */
   @media (min-width: 992px) {
     opacity: 1;
     visibility: visible;
+    background-color: transparent !important;
   }
 
   /* Mobile dropdown styles */
@@ -163,8 +185,6 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
     transition: opacity 0.3s ease, visibility 0.3s ease;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    /* Transparent - nav provides the glassmorphism */
-    background: transparent !important;
 
     .navbar-nav {
       display: flex !important;
@@ -172,7 +192,7 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
       align-items: center !important;
       width: 100% !important;
       max-width: 100% !important;
-      gap: 1.5rem !important; /* Increased spacing between buttons */
+      gap: clamp(0.5rem, 2vh, 1.5rem) !important; /* Responsive gap: min 0.5rem, scales with vh, max 1.5rem */
       margin: 0 auto !important;
       padding: 1rem 0 2rem 0 !important; /* Add padding to push content to fill drawer */
       height: 100% !important;
@@ -189,17 +209,6 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
       display: flex;
       justify-content: center;
       flex-shrink: 0;
-      opacity: ${props => props.$isOpen ? 1 : 0};
-      transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(20px)'};
-      transition: opacity 0.4s ease, transform 0.4s ease;
-
-      /* Stagger animation - 0.05s delay per item */
-      &:nth-child(1) { transition-delay: ${props => props.$isOpen ? '0s' : '0s'}; }
-      &:nth-child(2) { transition-delay: ${props => props.$isOpen ? '0.05s' : '0s'}; }
-      &:nth-child(3) { transition-delay: ${props => props.$isOpen ? '0.1s' : '0s'}; }
-      &:nth-child(4) { transition-delay: ${props => props.$isOpen ? '0.15s' : '0s'}; }
-      &:nth-child(5) { transition-delay: ${props => props.$isOpen ? '0.2s' : '0s'}; }
-      &:nth-child(6) { transition-delay: ${props => props.$isOpen ? '0.25s' : '0s'}; }
     }
 
     .nav-link {
@@ -221,86 +230,32 @@ export const StyledCollapse = styled.div<{ $isOpen: boolean }>`
       letter-spacing: 0.1em;
       color: #000000 !important;
       position: relative;
-      background: rgba(62, 100, 255, 0.35);
-      border-radius: 12px;
-      transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      will-change: background-color;
       border: none !important;
       outline: none !important;
       text-decoration: none !important;
       flex-shrink: 0 !important;
       flex-grow: 0 !important;
-
-      /* Reset ALL underline sources - moved to mobile only above */
+      transition: color 0.2s ease;
 
       &:hover {
         color: ${PRIMARY_COLOR} !important;
-        background: rgba(62, 100, 255, 0.45);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
       }
 
-      /* Active state for current page - single underline on the link text */
       &.active,
       &.current-page,
       &.react-scroll-active,
       &[aria-current="page"] {
         color: ${PRIMARY_COLOR} !important;
-        background: rgba(62, 100, 255, 0.55);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-
-        /* Single underline via span only */
         > span {
           text-decoration: underline !important;
-          text-decoration-line: underline !important;
           text-underline-offset: 4px;
           text-decoration-thickness: 2px;
           text-decoration-color: ${PRIMARY_COLOR} !important;
         }
       }
 
-      /* manual-active for click ripple effect (color/bg only, no underline until page loads) */
       &.manual-active {
         color: ${PRIMARY_COLOR} !important;
-        background: rgba(62, 100, 255, 0.55);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-      }
-
-      /* Ripple effect on click - contained within fixed button bounds */
-      &.ripple-effect::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(62, 100, 255, 0.4);
-        transform: translate(-50%, -50%);
-        animation: ripple 0.6s ease-out;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      /* Ensure text stays above ripple */
-      > * {
-        position: relative;
-        z-index: 1;
-      }
-
-      @keyframes ripple {
-        0% {
-          width: 0;
-          height: 0;
-          opacity: 0.6;
-        }
-        100% {
-          width: 300px;
-          height: 300px;
-          opacity: 0;
-        }
       }
     }
   }

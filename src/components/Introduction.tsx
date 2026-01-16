@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
 import { HeroWrap, Overlay, Text, Subheader, Header, Slider } from './Introduction/style.ts'
-import { Button } from './style.ts'
+import { Button, PrimaryButton } from './style.ts'
 import FallingArrow from './Introduction/Mouse'
 import Socials from './Social'
 import Resume from './Introduction/resume.pdf'
@@ -212,21 +212,25 @@ export default function Introduction(props) {
       <ResumeButtonWrapper $isVisible={true} className="container position-absolute start-50 translate-middle-x resume-responsive-container">
         <div className="row justify-content-center-mobile">
           <div className="col-6-responsive d-flex justify-content-center">
-            <motion.button
-              id="resume"
-              className="btn btn-primary"
+            <motion.div
               initial="hidden"
               animate="visible"
               custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
               variants={fadeInUpVariants}
-              onClick={(e) => {
-                e.preventDefault();
-                const Scroll = require('react-scroll');
-                Scroll.scroller.scrollTo('Experience', { smooth: true, offset: 40, delay: 0 });
-              }}
             >
-              View Experience
-            </motion.button>
+              <PrimaryButton
+                id="resume"
+                onClick={(e) => {
+                  e.preventDefault();
+                  // Fire custom event to signal Experience section to use staggered timing
+                  window.dispatchEvent(new CustomEvent('experience-scroll-trigger'));
+                  const Scroll = require('react-scroll');
+                  Scroll.scroller.scrollTo('Experience', { smooth: true, offset: 40, delay: 0 });
+                }}
+              >
+                View Experience
+              </PrimaryButton>
+            </motion.div>
           </div>
         </div>
       </ResumeButtonWrapper>

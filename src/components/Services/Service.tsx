@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '../style'
+import { PrimaryButton } from '../style'
 import { ServiceContainer } from './style'
 
 export default function Service(props) {
@@ -16,11 +16,11 @@ export default function Service(props) {
         <h3 className="mb-5">{service}</h3>
         <p>{description}</p>
       </div>
-      {link && <Button color="primary" href={link} target="_blank">{button || "More info"}</Button>}
-      {!link && <Button color="primary" onClick={() => {
+      {link && <PrimaryButton href={link} target="_blank">{button || "More info"}</PrimaryButton>}
+      {!link && <PrimaryButton onClick={() => {
         const Scroll = require('react-scroll');
         Scroll.scroller.scrollTo('Contact', {smooth: true});
-      }}>{button || "Contact me"}</Button>}
+      }}>{button || "Contact me"}</PrimaryButton>}
     </ServiceContainer>
   );
 }
