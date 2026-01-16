@@ -36,6 +36,7 @@ export const AboutImage = styled.div`
 	width: 100%;
 	z-index: 0;
 	position: relative;
+	filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
 	${Image}
 
 	@media (max-width: 767.98px) {

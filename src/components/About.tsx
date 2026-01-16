@@ -101,7 +101,7 @@ export default function About(props) {
   return (
     <AboutSection name="About" id="about-section">
       <Container className="mt-5">
-        <Row className="justify-content-center pb-3">
+        <Row className="justify-content-center pb-5">
           <Col md={7} className="heading-section text-center ftco-animate">
             <motion.div
               ref={headerRef}
@@ -209,7 +209,7 @@ export default function About(props) {
               transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
             >
               <AboutImage>
-                <StaticImage src='./About/images/about.png' alt='Casey Key in a suit' />
+                <StaticImage src='/about.webp' alt='Casey Key in a suit' />
               </AboutImage>
             </motion.div>
           </Col>
