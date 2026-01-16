@@ -152,6 +152,7 @@ export default function About(props) {
                         >
                           <Activity description={activity.activity.description}
                             Icon={loadIcon(activity.activity.icon)}
+                            icon={activity.activity.icon}
                           />
                         </motion.li>
                       );

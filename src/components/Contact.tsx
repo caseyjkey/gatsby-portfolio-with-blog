@@ -52,7 +52,7 @@ export default function Contact(props) {
   return (
     <ContactSection className="ftco-section contact-section ftco-no-pb" name="Contact" id="contact-section">
       <Container className="mt-5">
-        <Row className="justify-content-center pb-3">
+        <Row className="justify-content-center pb-5">
           <Col md={7} className="heading-section text-center ftco-animate">
             <motion.div
               ref={headerRef}
