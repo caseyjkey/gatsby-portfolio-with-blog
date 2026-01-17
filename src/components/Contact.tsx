@@ -149,6 +149,11 @@ export default function Contact(props) {
 
 const ContactSection = styled.section`
   margin-top: 6em;
+
+  @media (max-width: 767.98px) {
+    margin-top: 0;
+  }
+
   ${Section}
   ${NoPaddingBottom}
   flex: 1 0 auto;

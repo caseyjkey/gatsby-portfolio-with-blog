@@ -3,6 +3,11 @@ import { Section, Image } from '../style.ts'
 
 export const ProjectSection = styled.section`
   margin-top: 6em;
+
+  @media (max-width: 767.98px) {
+    margin-top: 0;
+  }
+
   ${Section}
   flex: 1 0 auto;
 `;
