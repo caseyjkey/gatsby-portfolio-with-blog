@@ -16,10 +16,16 @@ export const Pre = styled.pre`
     padding: 0.5em;
     overflow-x: auto;
     border-radius: 3px;
+    -webkit-overflow-scrolling: touch;
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+
+    @media (max-width: 767.98px) {
+        max-width: calc(100vw - 40px);
+    }
 
     & .token-line {
-        line-height: 1.3em;
-        height: 1.3em;
+        line-height: 1.5em;
+        min-height: 1.5em;
     }
 `;
 
@@ -27,7 +33,8 @@ export const LineNo = styled.span`
     display: inline-block;
     width: 2em;
     user-select: none;
-    opacity: 0.3;
+    opacity: 0.6; /* Increased from 0.3 for better visibility */
+    margin-right: 1em;
 `;
 
 const CopyCode = styled.button`

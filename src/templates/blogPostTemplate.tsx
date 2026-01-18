@@ -13,6 +13,12 @@ export const BlogPost = styled.div`
     margin-top: 6em;
     max-width: 800px;
     padding: 20px;
+    color: ${props => props.theme.black};
+
+    /* Ensure all child elements inherit black text, but not code blocks */
+    p, li {
+        color: ${props => props.theme.black};
+    }
 `;
 
 export default function BlogPostTemplate({ data, pageContext, children }) {

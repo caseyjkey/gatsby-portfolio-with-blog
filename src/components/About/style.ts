@@ -1,6 +1,27 @@
 import styled from 'styled-components'
 import { Section, Image, NoPaddingTop, NoPaddingBottom } from '../style.ts' // Global styles
 
+/*
+ * Alignment System for About Page
+ * ================================
+ * The header circle (navbar-brand::after) is:
+ *   - 40px diameter
+ *   - Positioned at left: -11px from the brand text
+ *   - Brand text is at the left edge of the Container
+ *   - So circle center is at: -11px + 20px = 9px from container left
+ *
+ * Activity icons (50px desktop, 40px mobile) should center-align with header circle.
+ * Bio text and Consultant border should left-align with icon left edge.
+ *
+ * Desktop (50px icon): center at 9px → left edge at 9px - 25px = -16px
+ * Mobile (40px icon): center at 9px → left edge at 9px - 20px = -11px
+ *
+ * Since Container has 15px padding on each side, we offset from the content area.
+ */
+const ICON_SIZE_DESKTOP = 35; // Reduced by 30% from 50px
+const ICON_SIZE_MOBILE = 40;
+const ICON_GAP = 16; // Gap between icon and text
+
 export const AboutSection = styled.section`
 	margin-top: 6em;
 	${Image}
@@ -8,6 +29,16 @@ export const AboutSection = styled.section`
 	${NoPaddingTop}
 	${NoPaddingBottom}
 	flex: 1 0 auto;
+
+	/* CSS custom properties for alignment */
+	--icon-size: ${ICON_SIZE_DESKTOP}px;
+	--icon-gap: ${ICON_GAP}px;
+	/* Content left edge aligns with icon left edge */
+	--content-indent: 0px;
+
+	@media (max-width: 767.98px) {
+		--icon-size: ${ICON_SIZE_MOBILE}px;
+	}
 
 	ul.about-info {
 		margin: 0;
@@ -21,17 +52,20 @@ export const AboutSection = styled.section`
 			align-items: center; /* Vertically center icon and text */
 
 			span { /* For the description text */
-				margin-left: 0; /* Remove margin to align text with Description */
+				margin-left: 0; /* Text follows after icon + gap */
 			}
 		}
 	}
 `;
 
 export const ActivityIconWrapper = styled.div`
-  margin-left: calc(-50px - 2em); /* Pull icon back to the left edge */
-  margin-right: 2em;
-  min-width: 50px; /* Use min-width to ensure the circle doesn't shrink */
-  height: 50px;
+  /* Use CSS custom properties for responsive sizing */
+  width: var(--icon-size);
+  min-width: var(--icon-size);
+  height: var(--icon-size);
+  margin-right: var(--icon-gap);
+  flex-shrink: 0;
+
   background: ${(props) => props.theme.primaryColor};
   border-radius: 50%;
   display: flex;
@@ -40,8 +74,9 @@ export const ActivityIconWrapper = styled.div`
 
   svg {
     color: ${(props) => props.theme.white};
-    font-size: 28px;
-    margin: 0; /* Override any default margin */
+    /* Scale icon size proportionally with wrapper */
+    font-size: calc(var(--icon-size) * 0.56); /* 28px at 50px = 0.56 ratio */
+    margin: 0;
   }
 
   /* Specific icon adjustments */
@@ -57,11 +92,11 @@ export const ActivityIconWrapper = styled.div`
 `;
 
 export const Description = styled.p`
-	@media (max-width: 375px) {
-		padding-left: 0.5rem !important;
-	}
 	color: ${props => props.theme.black};
 	text-align: left;
+	/* Left edge aligns with icon left edge (both start at same position in flow) */
+	margin-left: 0;
+	padding-left: 0;
 `;
 
 export const AboutImage = styled.div`
@@ -86,7 +121,7 @@ export const AboutImage = styled.div`
 		max-width: 350px;
 	}
 
-	/* Dual-layered background blur - Layer 1 (outer) */
+	/* Dual-layered background blur - Layer 1 (outer) - Sharper effect */
 	&::before {
 		content: '';
 		position: absolute;
@@ -95,12 +130,12 @@ export const AboutImage = styled.div`
 		transform: translate(-50%, -50%);
 		width: 100%;
 		height: 100%;
-		background-color: ${props => props.theme.primaryColor}33; /* 20% opacity */
-		filter: blur(40px); /* blur-2xl */
+		background-color: ${props => props.theme.primaryColor}4D; /* 30% opacity - increased from 20% */
+		filter: blur(20px); /* Reduced from 40px for sharper effect */
 		z-index: -1;
 	}
 
-	/* Dual-layered background blur - Layer 2 (inner) */
+	/* Dual-layered background blur - Layer 2 (inner) - Sharper effect */
 	&::after {
 		content: '';
 		position: absolute;
@@ -109,8 +144,8 @@ export const AboutImage = styled.div`
 		transform: translate(-50%, -50%);
 		width: 100%;
 		height: 100%;
-		background-color: ${props => props.theme.primaryColor}1A; /* 10% opacity */
-		filter: blur(100px);
+		background-color: ${props => props.theme.primaryColor}26; /* 15% opacity - increased from 10% */
+		filter: blur(50px); /* Reduced from 100px for sharper effect */
 		z-index: -1;
 	}
 
@@ -143,7 +178,8 @@ export const Counter = styled.div`
 
 export const ConsultantIdentity = styled.div`
 	margin-top: 2rem;
-	margin-left: calc(-1.5rem - 4px); /* Shift container left to align text with Description */
+	/* Left border aligns with icon left edge (both start at same position in flow) */
+	margin-left: 0;
 	padding: 1.5rem;
 	background-color: ${props => props.theme.lightGray || '#f8f9fa'};
 	border-left: 4px solid ${props => props.theme.primaryColor};
@@ -168,7 +204,5 @@ export const ConsultantIdentity = styled.div`
 
 	@media (max-width: 375px) {
 		padding: 1rem;
-		margin-left: calc(-1rem - 0.0rem);
-		margin-right: -0.5rem;
 	}
 `;

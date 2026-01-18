@@ -1,6 +1,6 @@
 {
   "section": "About",
-  "bio": "Artificial intelligence's (AI's) societal impact thrills me! My focus is AI, security, and full-stack software engineering. I want to give back by providing jobs, scholarships, and education. <br /><br /> Outside, I enjoy skateboarding, the beach, sports, car tuning, and sound systems. I'm always happy to help, so let's connect.",
+  "bio": "I am driven by the intersection of AI, security, and scalable engineering because I see the potential for these technologies to create lasting societal impact. My focus is on building high-level systems that matter. Beyond the code, I want to give back by providing jobs, scholarships, and education to those coming up behind me. <br /><br /> When I am not working, I am usually skateboarding, heading to the beach, or tuning cars and sound systems. I'm always down to talk tech or hear about what you're building.",
   "activities": [
     {
       "activity": {
@@ -8,7 +8,7 @@
           "type": "gi",
           "name": "GiBackpack"
         },
-        "description": "CS for AI @ USC, SoCal"
+        "description": "Comp. Sci. for AI @ USC, SoCal"
       }
     },
     {
@@ -17,7 +17,7 @@
           "type": "fi",
           "name": "FiBookOpen"
         },
-        "description": "<i>Effective Modern C++</i> by Scott Meyer"
+        "description": "<i>Effective Modern C++</i> by Scott Meyers"
       }
     },
     {
@@ -26,7 +26,7 @@
           "type": "fi",
           "name": "FiMusic"
         },
-        "description": "\"Night Drive\" - Wilee"
+        "description": "\"HTML\" - Bones & MoneySign Suede"
       }
     },
     {
@@ -35,7 +35,7 @@
           "type": "fa",
           "name": "FaLaptopCode"
         },
-        "description": "<a href='https://fake-my-git.keycasey.com/'>Fake My Git</a>"
+        "description": "<a href='https://thebeadedcase.com/'>Spirit Beads</a>"
       }
     }
   ],
