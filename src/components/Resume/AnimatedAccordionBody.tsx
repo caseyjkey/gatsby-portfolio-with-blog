@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, forwardRef } from 'react'
 import { AccordionBody } from 'reactstrap'
+import styled from 'styled-components'
 import { motion } from 'motion/react'
 import { ANIMATION_CONFIG, ACCORDION, EASING } from '../../animations/config'
 
@@ -7,6 +8,14 @@ interface AnimatedAccordionBodyProps {
   accordionId: string
   children: React.ReactNode
 }
+
+const StyledAccordionBody = styled(AccordionBody)`
+  padding: 0 !important;
+
+  .accordion-body {
+    padding-left: 0;
+  }
+`
 
 export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordionBodyProps>(
   ({ accordionId, children }, ref) => {
@@ -63,7 +72,7 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
     }, [accordionId, isOpen]);
 
     return (
-      <AccordionBody accordionId={accordionId}>
+      <StyledAccordionBody accordionId={accordionId}>
         <div ref={ref || containerRef}>
           {React.Children.map(children, (child, index) => (
             <motion.div
@@ -78,12 +87,13 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
                 delay: shouldAnimate ? index * ACCORDION.staggerDelay : 0,
                 ease: EASING.standard,
               }}
+              style={index === 0 ? { marginTop: '10px' } : undefined}
             >
               {child}
             </motion.div>
           ))}
         </div>
-      </AccordionBody>
+      </StyledAccordionBody>
     )
   }
 )

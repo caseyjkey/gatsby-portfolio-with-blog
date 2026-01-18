@@ -39,232 +39,6 @@ export const ProjectWrapper = styled.div`
   }
 `;
 
-// Global styles to make react-responsive-carousel fill its container
-export const CarouselGlobalStyles = createGlobalStyle`
-  /* Target the carousel inside ModalImageContainer */
-  .project-modal-carousel {
-    width: 100% !important;
-    position: relative !important;
-    z-index: 2 !important;
-    /* Use aspect-ratio directly on carousel */
-    aspect-ratio: 16 / 9 !important;
-    max-height: 70vh !important;
-    /* CSS custom property for floating image calculations */
-    --carousel-height: 70vh;
-  }
-
-  .project-modal-carousel .slider-wrapper {
-    width: 100% !important;
-    position: relative !important;
-    z-index: 2 !important;
-    aspect-ratio: 16 / 9 !important;
-    max-height: 70vh !important;
-  }
-
-  .project-modal-carousel .slider {
-    width: 100% !important;
-    position: relative !important;
-    z-index: 2 !important;
-    aspect-ratio: 16 / 9 !important;
-    max-height: 70vh !important;
-  }
-
-  .project-modal-carousel .slide {
-    background: transparent !important;
-    width: 100% !important;
-    display: flex !important;
-    /* Start from top, not center */
-    align-items: flex-start !important;
-    justify-content: center !important;
-    position: relative !important;
-    z-index: 2 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    aspect-ratio: 16 / 9 !important;
-    max-height: 70vh !important;
-  }
-
-  /* Target the div inside the slide - this is what contains the GatsbyImage */
-  .project-modal-carousel .slide > div {
-    width: 100%;
-    height: 100%;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: hidden !important;
-  }
-
-  /* Make images in carousel properly sized - constrained by container */
-  .project-modal-carousel .slide .gatsby-image-wrapper {
-    width: 100% !important;
-    height: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important;
-  }
-
-  /* Override GatsbyImage's aspect-ratio padding hack */
-  .project-modal-carousel .slide .gatsby-image-wrapper > div[aria-hidden="true"] {
-    padding-top: 0 !important;
-    display: none !important;
-  }
-
-  .project-modal-carousel .slide .gatsby-image-wrapper picture {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  /* Default/Partial (Floating) image styling - tall/small images */
-
-  /* Outer div: provides flex centering context */
-  .project-modal-carousel .slide > div:not(.full-bleed) {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  /* Floating image container: aspect-ratio set by JS, constrained by max dimensions */
-  .project-modal-carousel .floating-image-container {
-    display: block !important;
-    /* Constrain to fit within carousel bounds */
-    max-width: 100% !important;
-    max-height: 100% !important;
-    /* Effects applied to container which matches visible image dimensions exactly */
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    border-radius: 0.75rem;
-    overflow: hidden !important;
-    position: relative !important;
-  }
-
-  /* Gatsby wrapper inside floating container: fill container completely */
-  .project-modal-carousel .floating-image-container .gatsby-image-wrapper {
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-  }
-
-  /* Disable GatsbyImage's padding hack since we set explicit dimensions */
-  .project-modal-carousel .floating-image-container .gatsby-image-wrapper > div[aria-hidden="true"] {
-    display: none !important;
-  }
-
-  /* Picture and img fill container completely */
-  .project-modal-carousel .floating-image-container .gatsby-image-wrapper picture,
-  .project-modal-carousel .floating-image-container .gatsby-image-wrapper picture img {
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-  }
-
-  /* Use cover to fill without distortion since container aspect matches image */
-  .project-modal-carousel .floating-image-container .gatsby-image-wrapper picture img {
-    object-fit: cover !important;
-  }
-
-  /* Full-Bleed image styling - 16:9 images that fill the frame */
-  .project-modal-carousel .slide > div.full-bleed .gatsby-image-wrapper img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    margin: 0 !important;
-    box-shadow: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-  }
-
-  /* Fade transition for smooth image transitions */
-  .project-modal-carousel .slide {
-    transition: opacity 0.3s ease-in-out !important;
-  }
-
-  .project-modal-carousel .slide.fade-exit {
-    opacity: 0 !important;
-  }
-
-  .project-modal-carousel .slide.fade-enter {
-    opacity: 1 !important;
-  }
-
-  /* Regular img tags (non-Gatsby) - floating styling */
-  .project-modal-carousel .slide > div:not(.full-bleed) > img {
-    max-width: 100% !important;
-    max-height: 100% !important;
-    width: auto !important;
-    height: auto !important;
-    object-fit: contain !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 0.75rem;
-  }
-
-  /* Regular img tags (non-Gatsby) - full-bleed styling */
-  .project-modal-carousel .slide > div.full-bleed > img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    box-shadow: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-  }
-
-  /* Position controls within the container bounds */
-  .project-modal-carousel .control-prev,
-  .project-modal-carousel .control-next {
-    z-index: 10 !important;
-    position: absolute !important;
-  }
-
-  /* Position dots at the bottom within container */
-  .project-modal-carousel .control-dots {
-    position: absolute !important;
-    bottom: 10px !important;
-    z-index: 10 !important;
-    margin: 0 !important;
-  }
-
-  .project-modal-carousel .carousel-status {
-    position: absolute !important;
-    top: 0 !important;
-    z-index: 10 !important;
-  }
-
-  /* Mobile responsive styles */
-  @media (max-width: 767.98px) {
-    .project-modal-carousel {
-      max-height: 50vh !important;
-      --carousel-height: 50vh;
-    }
-
-    .project-modal-carousel .slider-wrapper,
-    .project-modal-carousel .slider,
-    .project-modal-carousel .slide {
-      max-height: 50vh !important;
-      aspect-ratio: 16 / 9 !important;
-    }
-
-    .project-modal-carousel .slide > div {
-      max-height: 50vh !important;
-    }
-
-    .project-modal-carousel .slide .gatsby-image-wrapper {
-      max-height: 50vh !important;
-    }
-
-    .project-modal-carousel .slide .gatsby-image-wrapper img {
-      max-height: 50vh !important;
-    }
-
-    .project-modal-carousel .slide > div > img {
-      max-height: 50vh !important;
-    }
-  }
-`;
-
 export const GalleryFrame = styled.div`
   background-color: #f8fafc;
   border: 1px solid #f1f5f9; /* border-slate-100 equivalent */
@@ -274,16 +48,26 @@ export const GalleryFrame = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  overflow: hidden;
 
   .gatsby-image-wrapper {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
   }
 
+  /* Disable GatsbyImage's aspect ratio padding hack */
+  .gatsby-image-wrapper > div[aria-hidden="true"] {
+    display: none !important;
+  }
+
+  .gatsby-image-wrapper picture,
   .gatsby-image-wrapper img {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
+  }
+
+  .gatsby-image-wrapper img {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
   }

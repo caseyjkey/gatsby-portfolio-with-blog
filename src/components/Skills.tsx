@@ -2,7 +2,7 @@ import React, { lazy, useRef } from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style'
-import { SkillsSection, SubsectionTitle, MediumHeading, SectionSubheader } from './Skills/style'
+import { SkillsSection, SubsectionTitle, MediumHeading, SectionSubheader, TopIllustrationCol, BottomIllustrationCol } from './Skills/style'
 import { Skill } from './Skills/Skill'
 import { FullStackIllustration } from './Skills/FullStackIllustration'
 import { AiSystemsIllustration } from './Skills/AiSystemsIllustration'
@@ -169,7 +169,7 @@ export default function Skills() {
                 </Row>
                 <div>
                     <Row xs={1} md={2} className='pb-4'>
-                        <Col className='order-lg-1 order-md-1 order-2' style={{ position: 'relative' }}>
+                        <TopIllustrationCol className='order-lg-1 order-md-1 order-2'>
                             {/* Ref anchors for independent triggers */}
                             <span ref={fullStackPersonRef} style={{ position: 'absolute', top: '0' }}></span>
                             <span ref={fullStackComputerRef} style={{ position: 'absolute', top: '30%' }}></span>
@@ -179,9 +179,9 @@ export default function Skills() {
                                 computerVisible={isFullStackComputerVisible}
                                 badgeVisible={isFullStackBadgeVisible}
                             />
-                        </Col>
+                        </TopIllustrationCol>
                         <Col lg={6} className="order-lg-2 order-lg-2 order-1">
-                            <div align="center" ref={fullStackRef}>
+                            <div ref={fullStackRef}>
                                 <motion.div
                                     ref={fullStackRef}
                                     initial="hidden"
@@ -191,7 +191,7 @@ export default function Skills() {
                                 >
                                     <MediumHeading className="mb-4">Full Stack Development</MediumHeading>
                                 </motion.div>
-                                <div>
+                                <div style={{ marginLeft: '-0.45rem' }}>
                                 {[
                                     { skill: 'Python', icon: 'FaPython', idx: 0 },
                                     { skill: 'Swift', icon: 'GrSwift', idx: 1 },
@@ -223,14 +223,19 @@ export default function Skills() {
                                     </motion.div>
                                 ))}
                             </div>
+                            <motion.ul
+                                initial="hidden"
+                                animate={isFullStackVisible ? "visible" : "hidden"}
+                                style={{ listStyle: 'none', padding: 0, marginLeft: '-1.4rem' }}
+                            >
                             {[
-                                '⚡ Deploy applications with Docker and orchestrate services using Kubernetes',
-                                '⚡ Build accessible, responsive UIs with modern JavaScript frameworks',
-                                '⚡ Design robust APIs in Python, integrating SQL and NoSQL databases',
-                                '⚡ Architect real-time, event-driven systems using Kafka and queues',
-                                '⚡ Optimize system availability, performance, and operational efficiency',
+                                'Deploy applications with Docker and orchestrate services using Kubernetes',
+                                'Build accessible, responsive UIs with modern JavaScript frameworks',
+                                'Design robust APIs in Python, integrating SQL and NoSQL databases',
+                                'Architect real-time, event-driven systems using Kafka and queues',
+                                'Optimize system availability, performance, and operational efficiency',
                             ].map((text, idx) => (
-                                <motion.p
+                                <motion.li
                                     key={idx}
                                     className="skillListItem"
                                     initial="hidden"
@@ -239,8 +244,9 @@ export default function Skills() {
                                     variants={fadeInUpVariants}
                                 >
                                     {text}
-                                </motion.p>
+                                </motion.li>
                             ))}
+                            </motion.ul>
                             </div>
                         </Col>
                     </Row>
@@ -248,7 +254,7 @@ export default function Skills() {
                 <div>
                     <Row xs={1} md={2} className="pt-4">
                         <Col lg={6} className="animate-box">
-                            <div align="center">
+                            <div>
                                 <motion.div
                                     ref={aiSystemsRef}
                                     initial="hidden"
@@ -258,7 +264,7 @@ export default function Skills() {
                                 >
                                     <MediumHeading className="mb-4">AI & Systems Engineering</MediumHeading>
                                 </motion.div>
-                                <div>
+                                <div style={{ marginLeft: '-0.45rem' }}>
                                 {[
                                     { skill: 'Python', icon: 'FaPython', idx: 0 },
                                     { skill: 'PyTorch', icon: 'SiPytorch', idx: 1 },
@@ -280,28 +286,32 @@ export default function Skills() {
                                     </motion.div>
                                 ))}
                             </div>
-                            <div ref={aiSystemsRef}>
+                            <motion.ul
+                                initial="hidden"
+                                animate={isAiSystemsVisible ? "visible" : "hidden"}
+                                style={{ listStyle: 'none', padding: 0, marginLeft: '-1.4rem' }}
+                            >
                             {[
-                                '⚡ Implement AI-powered DevOps workflows and automation',
-                                '⚡ Explore ML techniques for performance tuning and anomaly detection',
-                                '⚡ Apply data-driven solutions for scalable backend systems',
-                                '⚡ Study ethical ML practices and Indigenous data sovereignty',
+                                'Implement AI-powered DevOps workflows and automation',
+                                'Explore ML techniques for performance tuning and anomaly detection',
+                                'Apply data-driven solutions for scalable backend systems',
+                                'Study ethical ML practices and Indigenous data sovereignty',
                             ].map((text, idx) => (
-                                <motion.p
+                                <motion.li
                                     key={idx}
-                                    initial="hidden"
                                     className="skillListItem"
+                                    initial="hidden"
                                     animate={isAiSystemsVisible ? "visible" : "hidden"}
                                     custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
                                     variants={fadeInUpVariants}
                                 >
                                     {text}
-                                </motion.p>
+                                </motion.li>
                             ))}
-                            </div>
+                            </motion.ul>
                             </div>
                         </Col>
-                        <Col style={{ position: 'relative' }}>
+                        <BottomIllustrationCol>
                             {/* Ref anchors for independent triggers */}
                             <span ref={aiSystemsPersonRef} style={{ position: 'absolute', top: '0' }}></span>
                             <span ref={aiSystemsCodeRef} style={{ position: 'absolute', top: '30%' }}></span>
@@ -311,7 +321,7 @@ export default function Skills() {
                                 codeBlocksVisible={isAiSystemsCodeVisible}
                                 awsLogoVisible={isAiSystemsAwsVisible}
                             />
-                        </Col>
+                        </BottomIllustrationCol>
                     </Row>
                 </div>
             </Container>

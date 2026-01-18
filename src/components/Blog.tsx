@@ -8,7 +8,7 @@ import { fadeInUpVariants } from '../animations'
 import { ANIMATION_CONFIG, TIMING, STAGGER, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
 
 // Animated blog entry component
-const AnimatedBlogEntry = ({ children, index, initialBatchCount }: { children: React.ReactNode; index: number; initialBatchCount: number }) => {
+const AnimatedBlogEntry = ({ children, index, initialBatchCount, isLast }: { children: React.ReactNode; index: number; initialBatchCount: number; isLast?: boolean }) => {
     const [isVisible, setIsVisible] = useState(false);
     const entryRef = React.useRef<HTMLDivElement>(null);
 
@@ -43,7 +43,7 @@ const AnimatedBlogEntry = ({ children, index, initialBatchCount }: { children: R
             : STAGGER / 1000;  // Fixed delay for mobile
 
     return (
-        <BlogEntry ref={entryRef} className="blog-card-wrapper">
+        <BlogEntry ref={entryRef} className="blog-card-wrapper" isLast={isLast}>
             <motion.div
                 initial="hidden"
                 animate={isVisible ? "visible" : "hidden"}
@@ -150,7 +150,7 @@ export const Blog = (props) => {
 
     return (
         <BlogSection>
-            <Container fluid={true} className="">
+            <Container className="">
                 <Row className="g-0 justify-content-center pb-5">
                     <Col md={12} className="heading-section text-center">
                         <motion.div
@@ -178,7 +178,12 @@ export const Blog = (props) => {
                     <Row>
                         {data.allMdx.nodes.map(
                             ({ id, excerpt, frontmatter, fields }, index) => (
-                                <AnimatedBlogEntry key={id} index={index} initialBatchCount={initialBatchCount}>
+                                <AnimatedBlogEntry
+                                    key={id}
+                                    index={index}
+                                    initialBatchCount={initialBatchCount}
+                                    isLast={index === data.allMdx.nodes.length - 1}
+                                >
                                     <Link to={fields.slug}>
                                         {/* TODO: Implement proper cover image handling - cover is currently a string path */}
                                         {/* {frontmatter.cover ? (

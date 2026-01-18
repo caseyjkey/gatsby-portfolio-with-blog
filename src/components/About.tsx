@@ -53,6 +53,16 @@ export default function About(props) {
     once: true,
   });
 
+  // Use the optimized hook for bio text viewport detection
+  const { ref: bioRef, isInView: isBioVisible } = useInViewAnimation({
+    once: true,
+  });
+
+  // Use the optimized hook for consultant section viewport detection
+  const { ref: consultantRef, isInView: isConsultantVisible } = useInViewAnimation({
+    once: true,
+  });
+
   const data = useStaticQuery(
     graphql`{
   about {
@@ -123,7 +133,21 @@ export default function About(props) {
             </motion.p>
           </Col>
         </Row>
-        <Row className="g-0 block-9 justify-centent-center">
+        <Row>
+          <motion.div
+            ref={bioRef}
+            initial="hidden"
+            animate={isBioVisible ? "visible" : "hidden"}
+            custom={{ delay: SECONDARY_DELAYS.extended, distance: TIMING.primaryUnit.distance }}
+            variants={fadeInUpVariants}
+            style={{ width: "100%" }}
+          >
+            <Description>
+              <div dangerouslySetInnerHTML={{ __html: data.about.bio }} />
+            </Description>
+          </motion.div>
+        </Row>
+        <Row className="g-0 block-9 justify-centent-center mt-4">
           <Col md="6" lg="6" className="justify-content-center pb-4" style={{ "paddingRight": "0.5rem" }}>
             <Row className="justify-content-center">
               <motion.div
@@ -135,10 +159,7 @@ export default function About(props) {
                 style={{ width: "100%" }}
               >
                 <Col className="col-md-12 heading-section">
-                  <Description>
-                    <div dangerouslySetInnerHTML={{ __html: data.about.bio }} />
-                  </Description>
-                  <ul className="about-info mt-4 px-md-0 px-2">
+                  <ul className="about-info px-md-0 px-2">
                     {data.about.activities.map((activity, index) => {
                       return (
                         <motion.li
@@ -158,51 +179,11 @@ export default function About(props) {
                       );
                     })}
                   </ul>
-
-                  {/* Consultant Identity Placeholder Section
-                      NOTE: This section emphasizes the consultant identity. Once the CMS bio
-                      is updated with consultant-focused content, you can remove this section
-                      or customize it further to complement the CMS content.
-                  */}
-                  <ConsultantIdentity>
-                    <motion.h3
-                      initial="hidden"
-                      animate={isContentVisible ? "visible" : "hidden"}
-                      custom={{ delay: SECONDARY_DELAYS.short }}
-                      variants={fadeInUpVariants}
-                    >
-                      Consultant Approach
-                    </motion.h3>
-                    <motion.p
-                      initial="hidden"
-                      animate={isContentVisible ? "visible" : "hidden"}
-                      custom={{ delay: SECONDARY_DELAYS.default }}
-                      variants={fadeInUpVariants}
-                    >
-                      <strong>Problem-Solving:</strong> I tackle complex technical challenges by combining deep technical expertise with a strategic, business-first mindset.
-                    </motion.p>
-                    <motion.p
-                      initial="hidden"
-                      animate={isContentVisible ? "visible" : "hidden"}
-                      custom={{ delay: SECONDARY_DELAYS.medium }}
-                      variants={fadeInUpVariants}
-                    >
-                      <strong>Technical Leadership:</strong> I guide teams through architectural decisions, mentor developers, and ensure scalable, maintainable solutions.
-                    </motion.p>
-                    <motion.p
-                      initial="hidden"
-                      animate={isContentVisible ? "visible" : "hidden"}
-                      custom={{ delay: SECONDARY_DELAYS.long }}
-                      variants={fadeInUpVariants}
-                    >
-                      <strong>Client Partnership:</strong> I bridge the gap between technical requirements and business goals, communicating complex concepts to stakeholders at all levels.
-                    </motion.p>
-                  </ConsultantIdentity>
                 </Col>
               </motion.div>
             </Row>
           </Col>
-          <Col lg="6" md="6" className="d-flex">
+          <Col lg="6" md="6" className="d-flex justify-content-center">
             <motion.div
               ref={headshotRef}
               initial={{ opacity: 0, x: 20, y: 30 }}
@@ -212,6 +193,58 @@ export default function About(props) {
               <AboutImage>
                 <img src="/about.webp" alt="Casey Key in a suit" />
               </AboutImage>
+            </motion.div>
+          </Col>
+        </Row>
+        <Row className="my-4">
+          <Col>
+            <motion.div
+              ref={consultantRef}
+              initial="hidden"
+              animate={isConsultantVisible ? "visible" : "hidden"}
+              custom={{ delay: SECONDARY_DELAYS.default, distance: TIMING.primaryUnit.distance }}
+              variants={fadeInUpVariants}
+              style={{ width: "100%" }}
+            >
+              {/* Consultant Identity Placeholder Section
+                  NOTE: This section emphasizes the consultant identity. Once the CMS bio
+                  is updated with consultant-focused content, you can remove this section
+                  or customize it further to complement the CMS content.
+              */}
+              <ConsultantIdentity>
+                <motion.h3
+                  initial="hidden"
+                  animate={isConsultantVisible ? "visible" : "hidden"}
+                  custom={{ delay: SECONDARY_DELAYS.medium }}
+                  variants={fadeInUpVariants}
+                >
+                  Consultant Approach
+                </motion.h3>
+                <motion.p
+                  initial="hidden"
+                  animate={isConsultantVisible ? "visible" : "hidden"}
+                  custom={{ delay: SECONDARY_DELAYS.long }}
+                  variants={fadeInUpVariants}
+                >
+                  <strong>Problem-Solving:</strong> I tackle complex technical challenges by combining deep technical expertise with a strategic, business-first mindset.
+                </motion.p>
+                <motion.p
+                  initial="hidden"
+                  animate={isConsultantVisible ? "visible" : "hidden"}
+                  custom={{ delay: SECONDARY_DELAYS.extended }}
+                  variants={fadeInUpVariants}
+                >
+                  <strong>Technical Leadership:</strong> I guide teams through architectural decisions, mentor developers, and ensure scalable, maintainable solutions.
+                </motion.p>
+                <motion.p
+                  initial="hidden"
+                  animate={isConsultantVisible ? "visible" : "hidden"}
+                  custom={{ delay: SECONDARY_DELAYS.extended + 0.1 }}
+                  variants={fadeInUpVariants}
+                >
+                  <strong>Client Partnership:</strong> I bridge the gap between technical requirements and business goals, communicating complex concepts to stakeholders at all levels.
+                </motion.p>
+              </ConsultantIdentity>
             </motion.div>
           </Col>
         </Row>

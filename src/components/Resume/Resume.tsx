@@ -45,7 +45,11 @@ function Resume(props) {
 
   const handleToggle = (id: string) => {
     const openId = open;
+    const isOpening = openId !== id; // Will this action open the accordion?
     setOpen(openId === id ? null : id);
+
+    // Only scroll when opening an accordion, not when closing
+    if (!isOpening) return;
 
     // Map accordion IDs to header IDs for scrolling
     const headerIdMap: Record<string, string> = {
@@ -55,7 +59,9 @@ function Resume(props) {
       '4': 'accordion-leadership'
     };
 
-    // Wait a tiny bit for animation to start, then scroll
+    // Wait for accordion animation to complete before scrolling
+    // Animation duration is 500ms + stagger delays for multiple items
+    // Using 700ms to ensure content is fully expanded
     setTimeout(() => {
       const headerId = headerIdMap[id];
       if (headerId) {
@@ -64,7 +70,7 @@ function Resume(props) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }
-    }, 100);
+    }, 700);
   };
 
   return (
@@ -145,6 +151,7 @@ function Resume(props) {
                 </AccordionHeader>
                 <AnimatedAccordionBody accordionId='1'>
                   <Entry icon={GiGraduateCap}
+                    style={{ marginTop: "10px" }}
                     title={"University of Southern California"}
                     subtitle={"Master's of Science in Computer Science"}>
                     Specializing in Artificial Intelligence
@@ -178,9 +185,15 @@ function Resume(props) {
                       key={index}
                       icon={MdWork}
                       date={entry.year}
-                      title={entry.title}
-                      subtitle={entry.company}
-                      style={index === experienceData.length - 1 ? { marginBottom: "0", paddingBottom: "0", borderBottom: "none" } : undefined}
+                      title={entry.company}
+                      subtitle={entry.title}
+                      style={
+                        index === 0
+                          ? { marginTop: "10px" }
+                          : index === experienceData.length - 1
+                          ? { marginBottom: "0", paddingBottom: "0", borderBottom: "none" }
+                          : undefined
+                      }
                     >
                       <ul>
                         {entry.bullets.map((bullet, bulletIndex) => (
@@ -200,6 +213,7 @@ function Resume(props) {
                 </AccordionHeader>
                 <AnimatedAccordionBody accordionId='3'>
                   <Entry icon={GoStar}
+                    style={{ marginTop: "10px" }}
                     date={"July 2022"}
                     title={"Phoenix Award"}
                     subtitle={"Capital One"}>
@@ -258,6 +272,7 @@ function Resume(props) {
                 </AccordionHeader>
                 <AnimatedAccordionBody accordionId='4'>
                   <Entry icon={AiOutlineTeam}
+                    style={{ marginTop: "10px" }}
                     date={"September 2020 - May 2021"}
                     title={"President"}
                     subtitle={"CSU's American Indian Science and Engineering Society"}

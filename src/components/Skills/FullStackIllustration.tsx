@@ -11,6 +11,8 @@ interface FullStackIllustrationProps {
 }
 
 const Svg = styled.svg`
+    padding-right: 3rem;
+    padding-top: 0.5rem;
     .primaryColor {
         fill: ${props => props.theme.primaryColor};
     }

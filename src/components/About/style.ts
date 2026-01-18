@@ -46,10 +46,14 @@ export const AboutSection = styled.section`
 		word-break: break-word;
 		li {
 			list-style: none;
-			margin-bottom: 10px;
+			margin-bottom: 16px;
 			color: ${props => props.theme.black};
 			display: flex; /* Make li a flex container */
 			align-items: center; /* Vertically center icon and text */
+
+			&:last-child {
+				margin-bottom: 0;
+			}
 
 			span { /* For the description text */
 				margin-left: 0; /* Text follows after icon + gap */
@@ -96,19 +100,20 @@ export const Description = styled.p`
 	text-align: left;
 	/* Left edge aligns with icon left edge (both start at same position in flow) */
 	margin-left: 0;
-	padding-left: 0;
+	margin-bottom: 1.5rem; /* 24px - combines with Row mt-4 for 48px total gap */
 `;
 
 export const AboutImage = styled.div`
 	display: none; /* Hidden by default for screens < 767px */
 	z-index: 0;
 	position: relative;
-	margin-left: 32px; /* Clean gutter spacing */
 	align-self: flex-start; /* Top-align with first line of bio text */
 
 	/* Visible for screens >= 767px */
 	@media (min-width: 767px) {
 		display: block;
+		width: 280px;
+		margin-top: -50px;
 	}
 
 	/* Responsive sizing: 767px to 1024px */
@@ -118,7 +123,7 @@ export const AboutImage = styled.div`
 
 	/* Responsive sizing: 1024px+ */
 	@media (min-width: 1025px) {
-		max-width: 350px;
+		/* max-width: 350px; */
 	}
 
 	/* Dual-layered background blur - Layer 1 (outer) - Sharper effect */
@@ -130,7 +135,7 @@ export const AboutImage = styled.div`
 		transform: translate(-50%, -50%);
 		width: 100%;
 		height: 100%;
-		background-color: ${props => props.theme.primaryColor}4D; /* 30% opacity - increased from 20% */
+		background-color: ${props => props.theme.primaryColor}26; /* 15% opacity */
 		filter: blur(20px); /* Reduced from 40px for sharper effect */
 		z-index: -1;
 	}
@@ -144,7 +149,7 @@ export const AboutImage = styled.div`
 		transform: translate(-50%, -50%);
 		width: 100%;
 		height: 100%;
-		background-color: ${props => props.theme.primaryColor}26; /* 15% opacity - increased from 10% */
+		background-color: ${props => props.theme.primaryColor}1A; /* 10% opacity */
 		filter: blur(50px); /* Reduced from 100px for sharper effect */
 		z-index: -1;
 	}
@@ -177,7 +182,8 @@ export const Counter = styled.div`
 `;
 
 export const ConsultantIdentity = styled.div`
-	margin-top: 2rem;
+	/* Row already has my-4 margin, no additional margin-top needed */
+	margin-top: 0;
 	/* Left border aligns with icon left edge (both start at same position in flow) */
 	margin-left: 0;
 	padding: 1.5rem;

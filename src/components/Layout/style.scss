@@ -79,15 +79,14 @@ h5,
 	z-index: 20;
 
 	.container {
-		width: 1110px;
 		margin: 0 auto;
-		padding: 0;
 	}
 
 	.navbar-brand {
 		color: $black;
 		padding-top: .7rem;
 		padding-bottom: .7rem;
+		margin-left: .7rem;
 
 		&:hover,
 		&:focus {

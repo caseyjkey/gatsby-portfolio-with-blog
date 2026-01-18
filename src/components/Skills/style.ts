@@ -1,8 +1,10 @@
 import styled from 'styled-components'
+import { Col } from 'reactstrap'
 import { theme, Section } from '../style.ts'
 import { lighten } from 'polished'
 
 export const SkillsSection = styled.ul`
+  padding-left: 0;
   padding-bottom: 6em;
   ${Section}
   ul {
@@ -16,8 +18,18 @@ export const SkillsSection = styled.ul`
     }
   }
 
-  p.skillListItem {
+  li.skillListItem {
     color: ${(props) => props.theme.black};
+    list-style: none;
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+
+    &::before {
+      content: '⚡';
+      position: absolute;
+      left: 0;
+    }
   }
 `;
 
@@ -34,7 +46,8 @@ export const SkillContainer = styled.li`
   svg {
     display: block;
     color: ${(props) => props.theme.primaryColor};
-    margin: auto;
+    margin-left: 0;
+    margin-right: auto;
     margin-bottom: 1.2rem;
   }
   span {
@@ -62,11 +75,11 @@ export const SubsectionTitle = styled.h2`
   }
 `;
 
-export const MediumHeading = styled.h2`
+export const MediumHeading = styled.h3`
   color: ${(props) => props.theme.black}
   position: relative;
-  font-size: 50px;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 700;
   span{
     font-weight: 400;
   }
@@ -85,5 +98,19 @@ export const SectionSubheader = styled.p`
   @media (max-width: 767.98px) {
     font-size: 16px;
     padding: 0 1rem;
+  }
+`;
+
+export const TopIllustrationCol = styled(Col)`
+  position: relative;
+  @media (min-width: 992px) {
+    padding-right: 3rem;
+  }
+`;
+
+export const BottomIllustrationCol = styled(Col)`
+  position: relative;
+  @media (min-width: 992px) {
+    padding-right: 1rem;
   }
 `;

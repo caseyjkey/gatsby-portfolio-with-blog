@@ -11,6 +11,7 @@ interface AiSystemsIllustrationProps {
 }
 
 const Svg = styled.svg`
+    padding-top: 0.5rem;
     .primaryColor {
         fill: ${props => props.theme.primaryColor};
     }

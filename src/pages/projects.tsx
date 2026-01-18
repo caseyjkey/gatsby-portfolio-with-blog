@@ -30,7 +30,7 @@ export const query = graphql`
           project
           image {
             childImageSharp {
-              gatsbyImageData(width: 605, height: 350, layout: CONSTRAINED)
+              gatsbyImageData(width: 605, layout: CONSTRAINED)
             }
           }
           galleryImages {
@@ -136,7 +136,7 @@ export default function ProjectsPage({ data }) {
         <Body>
           <Navigation />
           <ProjectSection name="Projects" className="">
-            <Container fluid={true} className="mt-5">
+            <Container className="mt-5">
               <Row className="g-0 justify-content-center pb-5">
                 <Col md={12} className="heading-section text-center ">
                   <motion.div

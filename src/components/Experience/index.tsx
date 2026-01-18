@@ -20,7 +20,7 @@ const ExperienceSection = styled.section`
 
 const TimelineContainer = styled.div`
   max-width: 900px;
-  margin: 0 auto;
+  margin-left: -3.6rem;
   position: relative;
 `
 
@@ -73,7 +73,7 @@ const TimelineRow = styled.div<{ $isLast?: boolean }>`
 const Year = styled.div`
   min-width: 60px;
   text-align: right;
-  padding-right: 2rem;
+  padding-right: 0.5rem;
   font-weight: 700;
   color: ${(props) => props.theme.black};
   font-size: 1.1rem;
@@ -117,11 +117,12 @@ const TimelineDotWrapper = styled.div`
 
 const Content = styled.div`
   flex: 1;
-  padding-left: 3rem;
+  padding-left: 3.5rem;
   min-width: 0;
+  padding-top: 0.1rem;
 
   @media (max-width: 767.98px) {
-    padding-left: 2.5rem;
+    padding-left: 3rem;
   }
 `
 
@@ -182,7 +183,7 @@ const BulletList = styled.ul`
     position: relative;
     padding-left: 1.5rem;
     margin-bottom: 0.75rem;
-    color: ${(props) => lighten(0.4, props.theme.black)};
+    color: ${(props) => props.theme.black};
     line-height: 1.6;
 
     &:before {
@@ -359,7 +360,8 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
           }}
           style={{
             flex: 1,
-            paddingLeft: '3rem',
+            paddingLeft: '3.5rem',
+            paddingTop: '0.1rem',
             minWidth: 0
           }}
         >
@@ -541,7 +543,7 @@ export default function Experience() {
   return (
     <ExperienceSection ref={sectionRef} id="Experience">
       <Container>
-        <Row className="g-0 justify-content-center">
+        <Row className="g-0 justify-content-center pb-5">
           <Col md={12} className="heading-section text-center">
             <motion.div
               ref={headerRef}

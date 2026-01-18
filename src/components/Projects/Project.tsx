@@ -2,15 +2,14 @@ import React, { Suspense, useState, ReactNode, forwardRef, useMemo, useEffect, u
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalBackdrop, ModalImageContainer, ModalImage, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles } from './style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalBackdrop, ModalImageContainer, ModalImage, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
-import { Carousel } from 'react-responsive-carousel'
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ReactReadMoreReadLess from '@caseykey/react-read-more-read-less'
 import { IconType } from 'react-icons'
-import { FaGithub } from 'react-icons/fa'
+import { FaGithub, FaChevronLeft, FaChevronRight, FaSearchPlus } from 'react-icons/fa'
+import { motion, AnimatePresence } from 'motion/react'
 
 // Helper: Check if image is approximately 16:9 aspect ratio (within 5% tolerance)
 const is16by9 = (width: number, height: number): boolean => {
@@ -59,6 +58,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const toggleModal = () => setModal(!modal);
   const modalImageContainerRef = useRef<HTMLDivElement>(null);
   const [floatingSizes, setFloatingSizes] = useState<Record<number, { width: number; height: number }>>({});
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [lightboxOpen, setLightbox] = useState(false);
 
   // Detect which images are full-bleed (16:9) vs floating
   const fullBleedIndices = useMemo(() => {
@@ -103,6 +104,50 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     return () => resizeObserver.disconnect();
   }, [modal, galleryImages, fullBleedIndices]);
 
+  // Navigation effect state for indicator animations
+  const [navigationDirection, setNavigationDirection] = useState<'left' | 'right' | null>(null);
+  const [keyboardActive, setKeyboardActive] = useState<'left' | 'right' | null>(null);
+
+  // Navigation handlers with direction tracking
+  const goToPrevious = () => {
+    setNavigationDirection('left');
+    setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+  };
+
+  const goToNext = () => {
+    setNavigationDirection('right');
+    setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setNavigationDirection(index > photoIndex ? 'right' : 'left');
+    setPhotoIndex(index);
+  };
+
+  // Keyboard navigation for carousel
+  useEffect(() => {
+    if (!modal) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        setKeyboardActive('left');
+        goToPrevious();
+        setTimeout(() => setKeyboardActive(null), 200);
+      } else if (e.key === 'ArrowRight') {
+        setKeyboardActive('right');
+        goToNext();
+        setTimeout(() => setKeyboardActive(null), 200);
+      } else if (e.key === ' ' || e.key === 'Enter') {
+        // Spacebar or Enter opens lightbox (accessibility standard)
+        e.preventDefault();
+        toggleLightbox();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modal, galleryImages.length, photoIndex]);
+
   // Ensure publicURL exists, otherwise fallback to empty string (will be handled by lightbox)
   let images = galleryImages.map((dict, idx) => {
     const url = dict.image.publicURL || dict.image.childImageSharp?.gatsbyImageData?.images?.fallback?.src || '';
@@ -111,49 +156,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     }
     return url;
   });
-  let carouselImages = galleryImages.map((dict, idx) => {
-    const image = dict.image;
-    const imageData = image.childImageSharp?.gatsbyImageData;
-    const isFullBleed = fullBleedIndices[idx];
 
-    if (imageData) {
-      const aspectRatio = imageData.width / imageData.height;
-      if (isFullBleed) {
-        return <GatsbyImage image={imageData} alt="project" />;
-      } else {
-        // Use image's actual aspect ratio for the container
-        const aspectRatio = imageData.width / imageData.height;
-        const carouselAspect = 16 / 9;
-        const isWide = aspectRatio > carouselAspect;
-
-        const floatingSize = floatingSizes[idx];
-        const floatingStyle = floatingSize
-          ? { width: floatingSize.width, height: floatingSize.height, flexShrink: 0 }
-          : {
-              aspectRatio: `${imageData.width} / ${imageData.height}`,
-              ...(isWide ? { width: '100%' } : { height: '100%' }),
-            };
-
-        return (
-          <div
-            className={`floating-image-container`}
-            style={floatingStyle}
-          >
-            <GatsbyImage
-              image={imageData}
-              alt="project"
-              imgStyle={{ objectFit: 'cover' }}
-            />
-          </div>
-        );
-      }
-    } else {
-      return <img src={image.publicURL} alt="project" />;
-    }
-  });
-
-  const [photoIndex, setPhotoIndex] = useState(0);
-  const [lightboxOpen, setLightbox] = useState(false);
   const toggleLightbox = () => {
     // Ensure photoIndex is valid before opening lightbox
     const validImages = images.filter(src => src);
@@ -173,6 +176,48 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   // Check if current image is full-bleed for backdrop visibility
   const isCurrentFullBleed = fullBleedIndices[photoIndex] ?? false;
 
+  // Helper to render the current carousel image inline with fresh state
+  const renderCurrentImage = () => {
+    const dict = galleryImages[photoIndex];
+    if (!dict) return null;
+
+    const imageData = dict.image.childImageSharp?.gatsbyImageData;
+    const isFullBleed = fullBleedIndices[photoIndex];
+
+    if (imageData) {
+      if (isFullBleed) {
+        return <GatsbyImage image={imageData} alt="project" />;
+      } else {
+        const aspectRatio = imageData.width / imageData.height;
+        const carouselAspect = 16 / 9;
+        const isWide = aspectRatio > carouselAspect;
+
+        const floatingSize = floatingSizes[photoIndex];
+        const floatingStyle = floatingSize
+          ? { width: floatingSize.width, height: floatingSize.height, flexShrink: 0 }
+          : {
+              aspectRatio: `${imageData.width} / ${imageData.height}`,
+              ...(isWide ? { width: '100%' } : { height: '100%' }),
+            };
+
+        return (
+          <div
+            className="floating-image-container"
+            style={floatingStyle}
+          >
+            <GatsbyImage
+              image={imageData}
+              alt="project"
+              imgStyle={{ objectFit: 'cover' }}
+            />
+          </div>
+        );
+      }
+    } else {
+      return <img src={dict.image.publicURL} alt="project" />;
+    }
+  };
+
   return (
     <ProjectWrapper ref={ref} onClick={(e) => {
       // Only toggle modal if not already open and not clicking a button/link
@@ -180,7 +225,6 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         toggleModal();
       }
     }} className="shadow" {...props}>
-      <CarouselGlobalStyles />
       <GalleryFrame>
         <GatsbyImage image={image} alt={title} />
       </GalleryFrame>
@@ -199,26 +243,174 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
             <ModalImageContainer ref={modalImageContainerRef}>
               {/* Backdrop uses current carousel image - hidden for full-bleed images */}
               <ModalBackdrop $backdropImage={images[photoIndex]} $hidden={isCurrentFullBleed} />
-              <Carousel
-                dynamicHeight={false}
-                infiniteLoop
-                useKeyboardArrows
-                showThumbs={false}
-                showStatus={false}
-                showIndicators
-                onChange={(index: number) => {
-                  setPhotoIndex(index);
-                }}
-                onClickItem={() => toggleLightbox()}
-                selectedItem={photoIndex}
-                renderThumbs={() => []}
-                className="project-modal-carousel"
-                showArrows={true}
-              >
-                {carouselImages.map((image, index) => (
-                  <div key={index} className={fullBleedIndices[index] ? 'full-bleed' : ''}>{image}</div>
-                ))}
-              </Carousel>
+
+              {/* Custom Framer Motion Carousel */}
+              <div className="project-modal-carousel" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={photoIndex}
+                    className="slide"
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.02 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    onClick={() => toggleLightbox()}
+                  >
+                    <div className={fullBleedIndices[photoIndex] ? 'full-bleed' : ''} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {renderCurrentImage()}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Navigation Arrows */}
+                {galleryImages.length > 1 && (
+                  <>
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: 1,
+                        scale: keyboardActive === 'left' ? 0.95 : 1,
+                      }}
+                      transition={{ delay: 0.1 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        goToPrevious();
+                      }}
+                      style={{
+                        position: 'absolute',
+                        left: 8,
+                        top: '50%',
+                        width: 40,
+                        height: 40,
+                        borderRadius: '50%',
+                        border: 'none',
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                        zIndex: 10,
+                        transformOrigin: 'center center',
+                      }}
+                      whileHover={{ scale: 1.1, y: '-50%', transition: { duration: 0.15 } }}
+                      whileTap={{ scale: 0.95, y: '-50%', transition: { duration: 0.1 } }}
+                      aria-label="Previous image"
+                    >
+                      <FaChevronLeft size={18} color="#333" />
+                    </motion.button>
+
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: 1,
+                        scale: keyboardActive === 'right' ? 0.95 : 1,
+                      }}
+                      transition={{ delay: 0.1 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        goToNext();
+                      }}
+                      style={{
+                        position: 'absolute',
+                        right: 8,
+                        top: '50%',
+                        width: 40,
+                        height: 40,
+                        borderRadius: '50%',
+                        border: 'none',
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                        zIndex: 10,
+                        transformOrigin: 'center center',
+                      }}
+                      whileHover={{ scale: 1.1, y: '-50%', transition: { duration: 0.15 } }}
+                      whileTap={{ scale: 0.95, y: '-50%', transition: { duration: 0.1 } }}
+                      aria-label="Next image"
+                    >
+                      <FaChevronRight size={18} color="#333" />
+                    </motion.button>
+
+                    {/* Indicators with better contrast - dark background with semi-transparent overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 12,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      display: 'flex',
+                      gap: 8,
+                      padding: '6px 12px',
+                      borderRadius: 20,
+                      background: 'rgba(0, 0, 0, 0.5)',
+                      backdropFilter: 'blur(4px)',
+                      zIndex: 10,
+                    }}>
+                      {galleryImages.map((_, index) => (
+                        <motion.button
+                          key={index}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            goToSlide(index);
+                          }}
+                          initial={false}
+                          animate={{
+                            width: photoIndex === index ? 24 : 8,
+                            backgroundColor: photoIndex === index ? '#ffffff' : 'rgba(255, 255, 255, 0.4)',
+                          }}
+                          transition={{
+                            width: { duration: 0.3, ease: 'easeInOut' },
+                            backgroundColor: { duration: 0.3 }
+                          }}
+                          style={{
+                            height: 8,
+                            borderRadius: 4,
+                            border: 'none',
+                            cursor: 'pointer',
+                          }}
+                          aria-label={`Go to image ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {/* Magnifying glass icon in top-right corner */}
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.7 }}
+                  transition={{ delay: 0.1 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleLightbox();
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: 12,
+                    right: 12,
+                    width: 36,
+                    height: 36,
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: 'rgba(0, 0, 0, 0.5)',
+                    backdropFilter: 'blur(4px)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 10,
+                  }}
+                  whileHover={{ opacity: 1, scale: 1.05, transition: { duration: 0.15 } }}
+                  whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                  aria-label="Open lightbox"
+                >
+                  <FaSearchPlus size={16} color="#fff" />
+                </motion.button>
+              </div>
             </ModalImageContainer>
 
             {/* Meta Header with aligned title/date/icons */}

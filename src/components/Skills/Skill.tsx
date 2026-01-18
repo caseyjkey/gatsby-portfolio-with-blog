@@ -26,7 +26,7 @@ export function Skill({ skill, Icon, ...props }: SkillProps) {
     <SkillContainer>
       <Suspense fallback={<span style={{ fontSize: '2rem' }}>⏳</span>}>
         <span id={id} ref={targetRef} {...props} style={{ cursor: 'pointer' }}>
-          <Icon size={'2rem'} />
+          <Icon size={'1.5rem'} />
         </span>
         {isMounted && targetRef.current && (
           <UncontrolledTooltip

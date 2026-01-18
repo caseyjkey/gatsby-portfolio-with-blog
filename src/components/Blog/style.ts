@@ -5,9 +5,8 @@ export const BlogSection = styled.section`
   margin-top: 6em;
 `;
 
-export const BlogEntry = styled.div`
-    margin: 0 auto;
-    padding-bottom: 2em;
+export const BlogEntry = styled.div<{ isLast?: boolean }>`
+    padding-bottom: ${props => props.isLast ? '1.5rem' : '2em'};
     width: 75% !important;
     img {
         width: 100%;
@@ -18,4 +17,9 @@ export const BlogEntry = styled.div`
     a, p {
       text-decoration: none;
     }
+    ${props => props.isLast && `
+        p {
+            margin-bottom: 0;
+        }
+    `}
 `;
