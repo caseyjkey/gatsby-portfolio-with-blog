@@ -339,8 +339,10 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           scale: keyboardActive === 'left' ? 0.95 : 1,
                         }}
                         transition={{
-                          opacity: { delay: 0.1 },
-                          scale: { duration: 0.1 }
+                          opacity: {
+                            duration: isAnimating ? 0 : 0.2, // Instant when dimming, 200ms when restoring
+                          },
+                          scale: { duration: 0.1 },
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -353,13 +355,12 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           borderRadius: '50%',
                           border: 'none',
                           background: 'rgba(255, 255, 255, 0.9)',
-                          cursor: isAnimating ? 'not-allowed' : 'pointer',
+                          cursor: isAnimating ? 'default' : 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                           transformOrigin: 'center center',
-                          opacity: isAnimating ? 0.5 : 1,
                         }}
                         whileHover={isAnimating ? {} : { scale: 1.1, transition: { duration: 0.15 } }}
                         whileTap={isAnimating ? {} : { scale: 0.95, transition: { duration: 0.1 } }}
@@ -377,8 +378,10 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           scale: keyboardActive === 'right' ? 0.95 : 1,
                         }}
                         transition={{
-                          opacity: { delay: 0.1 },
-                          scale: { duration: 0.1 }
+                          opacity: {
+                            duration: isAnimating ? 0 : 0.2, // Instant when dimming, 200ms when restoring
+                          },
+                          scale: { duration: 0.1 },
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -391,13 +394,12 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           borderRadius: '50%',
                           border: 'none',
                           background: 'rgba(255, 255, 255, 0.9)',
-                          cursor: isAnimating ? 'not-allowed' : 'pointer',
+                          cursor: isAnimating ? 'default' : 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                           transformOrigin: 'center center',
-                          opacity: isAnimating ? 0.5 : 1,
                         }}
                         whileHover={isAnimating ? {} : { scale: 1.1, transition: { duration: 0.15 } }}
                         whileTap={isAnimating ? {} : { scale: 0.95, transition: { duration: 0.1 } }}
@@ -417,7 +419,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         transform: 'translateX(-50%)',
                         display: 'flex',
                         gap: 8,
-                        padding: '6px 12px',
+                        padding: '6px 20px',
                         borderRadius: 20,
                         background: 'rgba(0, 0, 0, 0.5)',
                         backdropFilter: 'blur(4px)',
