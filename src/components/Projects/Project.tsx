@@ -251,7 +251,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                     animate={{ opacity: 1, zIndex: 1 }}  // Fade in and rise to top layer
                     exit={{ opacity: 0, zIndex: 0 }}     // Fade out and drop behind entering slide
                     transition={{ duration: 0.5, ease: "easeInOut" }}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     onClick={() => toggleLightbox()}
                   >
                     {/* Backdrop rendered INSIDE motion.div so it fades in/out with its slide.
@@ -296,6 +296,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         position: 'absolute',
                         left: 8,
                         top: '50%',
+                        transform: 'translateY(-50%)',
                         width: 40,
                         height: 40,
                         borderRadius: '50%',
@@ -331,6 +332,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         position: 'absolute',
                         right: 8,
                         top: '50%',
+                        transform: 'translateY(-50%)',
                         width: 40,
                         height: 40,
                         borderRadius: '50%',
