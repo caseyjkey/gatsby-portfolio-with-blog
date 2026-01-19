@@ -266,6 +266,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           backgroundSize: 'cover',
                           backgroundPosition: 'center',
                           filter: 'blur(2px)',
+                          zIndex: -1,
                         }}
                       />
                     )}

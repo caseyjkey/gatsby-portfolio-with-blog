@@ -108,13 +108,13 @@ export const CarouselGlobalStyles = createGlobalStyle`
   /* Cross-fade slide stacking - all slides absolutely positioned on top of each other */
   .project-modal-carousel {
     position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   .project-modal-carousel .slide {
     position: absolute !important;
     inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
   }
 
   /* Floating image container: enhanced shadow for depth */
