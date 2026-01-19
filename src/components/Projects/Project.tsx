@@ -60,6 +60,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const [floatingSizes, setFloatingSizes] = useState<Record<number, { width: number; height: number }>>({});
   const [photoIndex, setPhotoIndex] = useState(0);
   const [lightboxOpen, setLightbox] = useState(false);
+  const indicatorContainerRef = useRef<HTMLDivElement>(null);
+  const indicatorRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Detect which images are full-bleed (16:9) vs floating
   const fullBleedIndices = useMemo(() => {
@@ -147,6 +149,20 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [modal, galleryImages.length, photoIndex]);
+
+  // Auto-scroll indicator container to keep active dot in view
+  useEffect(() => {
+    if (!indicatorContainerRef.current) return;
+
+    const activeIndicator = indicatorRefs.current[photoIndex];
+    if (activeIndicator) {
+      activeIndicator.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [photoIndex]);
 
   // Ensure publicURL exists, otherwise fallback to empty string (will be handled by lightbox)
   let images = galleryImages.map((dict, idx) => {
@@ -350,25 +366,30 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                     </div>
 
                     {/* Indicators with better contrast - dark background with semi-transparent overlay */}
-                    <div style={{
-                      position: 'absolute',
-                      bottom: 12,
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      display: 'flex',
-                      gap: 8,
-                      padding: '6px 12px',
-                      borderRadius: 20,
-                      background: 'rgba(0, 0, 0, 0.5)',
-                      backdropFilter: 'blur(4px)',
-                      zIndex: 10,
-                      maxWidth: 'calc(100% - 40px)',
-                      overflowX: 'auto',
-                      overflowY: 'hidden',
-                    }}>
+                    <div
+                      ref={indicatorContainerRef}
+                      style={{
+                        position: 'absolute',
+                        bottom: 12,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        display: 'flex',
+                        gap: 8,
+                        padding: '6px 12px',
+                        borderRadius: 20,
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        backdropFilter: 'blur(4px)',
+                        zIndex: 10,
+                        maxWidth: 'calc(100% - 40px)',
+                        overflowX: 'auto',
+                        overflowY: 'hidden',
+                        scrollBehavior: 'smooth',
+                      }}
+                    >
                       {galleryImages.map((_, index) => (
                         <motion.button
                           key={index}
+                          ref={(el) => { indicatorRefs.current[index] = el; }}
                           onClick={(e) => {
                             e.stopPropagation();
                             goToSlide(index);
