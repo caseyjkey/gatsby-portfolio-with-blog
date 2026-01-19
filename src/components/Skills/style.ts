@@ -4,6 +4,7 @@ import { theme, Section } from '../style.ts'
 import { lighten } from 'polished'
 
 export const SkillsSection = styled.ul`
+  margin-bottom: 0;
   padding-left: 0;
   padding-bottom: 6em;
   ${Section}

@@ -113,7 +113,9 @@ export const AboutImage = styled.div`
 	@media (min-width: 767px) {
 		display: block;
 		width: 280px;
-		margin-top: -50px;
+		margin-top: -30px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	/* Responsive sizing: 767px to 1024px */
@@ -158,7 +160,6 @@ export const AboutImage = styled.div`
 		width: 100%;
 		height: auto;
 		object-fit: contain;
-		margin-top: -30px;
 		filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.18));
 	}
 

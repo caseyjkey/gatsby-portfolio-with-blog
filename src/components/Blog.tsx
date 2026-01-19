@@ -1,53 +1,66 @@
 import { useStaticQuery, graphql, Link } from 'gatsby'
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Heading } from './style'
 import { Container, Row, Col } from 'reactstrap'
 import { BlogSection, BlogEntry } from './Blog/style'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
-import { ANIMATION_CONFIG, TIMING, STAGGER, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
+import { TIMING, STAGGER, SECONDARY_DELAYS } from '../animations/config'
+import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 
-// Animated blog entry component
-const AnimatedBlogEntry = ({ children, index, initialBatchCount, isLast }: { children: React.ReactNode; index: number; initialBatchCount: number; isLast?: boolean }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const entryRef = React.useRef<HTMLDivElement>(null);
+// Animated blog entry component using enhanced hook
+const AnimatedBlogEntry = ({
+    children,
+    index,
+    isInitialBatch,
+    shouldDelayForHeader,
+    isCalculated,
+    isLast
+}: {
+    children: React.ReactNode;
+    index: number;
+    isInitialBatch: boolean;
+    shouldDelayForHeader: boolean;
+    isCalculated: boolean;
+    isLast?: boolean;
+}) => {
+    const entryRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting && !isVisible) {
-                        setIsVisible(true);
-                        observer.disconnect();
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: '0px' }
-        );
+    // Use enhanced hook with position detection
+    const { ref: hookRef, isInView, position } = useInViewAnimation({
+        skipAboveViewport: true,
+    });
 
-        if (entryRef.current) {
-            observer.observe(entryRef.current);
-        }
+    // Combine refs
+    const combinedRef = useCallback((node: HTMLDivElement | null) => {
+        entryRef.current = node;
+        hookRef(node);
+    }, [hookRef]);
 
-        return () => observer.disconnect();
-    }, [isVisible]);
+    // Default delay is 0 for items that are scrolled into view later.
+    let delay = 0;
 
-    // Only items in the first "screen-full" get the sequential delay
+    // For the initial batch of items visible on load, calculate a staggered delay.
+    if (isInitialBatch) {
+        // Start with a base delay to allow the header/subheader to animate first.
+        const baseDelay = shouldDelayForHeader ? 0.5 : 0;
+        // Add a stagger based on the item's index.
+        const staggerDelay = index * (STAGGER / 1000);
+        delay = baseDelay + staggerDelay;
+    }
 
-    // Responsive stagger: sequential on desktop, column-based on mobile
-    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
-    const delay = index < initialBatchCount
-        ? 0.3 + (index * STAGGER / 1000)  // Convert STAGGER ms to seconds
-        : isDesktop
-            ? ((index + 1) % 3) * STAGGER / 1000  // Column-based delay on desktop
-            : STAGGER / 1000;  // Fixed delay for mobile
+    // Prevent animation from starting until the initial batch calculation is complete.
+    const animateState = isCalculated && isInView ? "visible" : "hidden";
 
     return (
-        <BlogEntry ref={entryRef} className="blog-card-wrapper" isLast={isLast}>
+        <BlogEntry ref={combinedRef} className="blog-card-wrapper" isLast={isLast}>
             <motion.div
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                custom={{ delay, distance: TIMING.primaryUnit.distance }}
+                initial={position === 'above' ? false : 'hidden'}
+                animate={animateState}
+                custom={{
+                    delay,
+                    distance: TIMING.primaryUnit.distance
+                }}
                 variants={fadeInUpVariants}
             >
                 {children}
@@ -60,29 +73,8 @@ const AnimatedBlogEntry = ({ children, index, initialBatchCount, isLast }: { chi
 export const Blog = (props) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [initialBatchCount, setInitialBatchCount] = useState(0);
-
-    useLayoutEffect(() => {
-        const cards = containerRef.current?.querySelectorAll('.blog-card-wrapper');
-        if (!cards) return;
-
-        const viewportHeight = window.innerHeight;
-        let count = 0;
-
-        for (let i = 0; i < cards.length; i++) {
-            const rect = cards[i].getBoundingClientRect();
-            if (rect.top < viewportHeight) {
-                count++;
-            } else {
-                break;
-            }
-        }
-        setInitialBatchCount(count);
-    }, []);
-
-    const [isHeaderVisible, setIsHeaderVisible] = useState(false);
-    const headerRef = React.useRef<HTMLDivElement>(null);
-    const [isSubheaderVisible, setIsSubheaderVisible] = useState(false);
-    const subheaderRef = React.useRef<HTMLParagraphElement>(null);
+    const [isCalculated, setIsCalculated] = useState(false);
+    const [shouldDelayForHeader, setShouldDelayForHeader] = useState(false);
 
     const data = useStaticQuery(
         graphql`
@@ -100,6 +92,7 @@ export const Blog = (props) => {
                         }
                         fields {
                             slug
+                            preview
                         }
                     }
                 }
@@ -107,46 +100,45 @@ export const Blog = (props) => {
         `
     );
 
+    // Use the optimized hook for header viewport detection
+    const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({
+        once: true,
+    });
+
+    // Use the optimized hook for subheader viewport detection
+    const { ref: subheaderRef, isInView: isSubheaderVisible } = useInViewAnimation({
+        once: true,
+    });
+
+    // Calculate initial batch count after DOM is rendered
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting && !isHeaderVisible) {
-                        setIsHeaderVisible(true);
-                        observer.disconnect();
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: '0px' }
-        );
+        setShouldDelayForHeader(typeof window !== 'undefined' ? window.scrollY < 10 : false);
 
-        if (headerRef.current) {
-            observer.observe(headerRef.current);
-        }
+        const timer = setTimeout(() => {
+            const cards = containerRef.current?.querySelectorAll('.blog-card-wrapper');
+            if (!cards || cards.length === 0) {
+                setIsCalculated(true);
+                return;
+            }
 
-        return () => observer.disconnect();
-    }, [isHeaderVisible]);
+            const viewportHeight = window.innerHeight;
+            let count = 0;
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting && !isSubheaderVisible) {
-                        setIsSubheaderVisible(true);
-                        observer.disconnect();
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: '0px' }
-        );
+            for (let i = 0; i < cards.length; i++) {
+                const rect = cards[i].getBoundingClientRect();
+                if (rect.top < viewportHeight) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
 
-        if (subheaderRef.current) {
-            observer.observe(subheaderRef.current);
-        }
+            setInitialBatchCount(count);
+            setIsCalculated(true);
+        }, 100);
 
-        return () => observer.disconnect();
-    }, [isSubheaderVisible]);
-
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <BlogSection>
@@ -170,7 +162,6 @@ export const Blog = (props) => {
                             variants={fadeInUpVariants}
                         >
                             Coding, reflecting, evolving.
-
                         </motion.p>
                     </Col>
                 </Row>
@@ -181,20 +172,15 @@ export const Blog = (props) => {
                                 <AnimatedBlogEntry
                                     key={id}
                                     index={index}
-                                    initialBatchCount={initialBatchCount}
+                                    isInitialBatch={isCalculated && index < initialBatchCount}
+                                    shouldDelayForHeader={shouldDelayForHeader}
+                                    isCalculated={isCalculated}
                                     isLast={index === data.allMdx.nodes.length - 1}
                                 >
                                     <Link to={fields.slug}>
-                                        {/* TODO: Implement proper cover image handling - cover is currently a string path */}
-                                        {/* {frontmatter.cover ? (
-                                        <Image
-                                            image={frontmatter.cover.childImageSharp.gatsbyImageData}
-                                            className='mx-auto'
-                                        />
-                                    ) : null} */}
                                         <h1>{frontmatter.title}</h1>
                                         <p>{frontmatter.date}</p>
-                                        <p className="excerpt">{excerpt}</p>
+                                        <p className="excerpt">{excerpt?.trim() || fields?.preview}</p>
                                     </Link>
                                 </AnimatedBlogEntry>
                             )
@@ -205,4 +191,3 @@ export const Blog = (props) => {
         </BlogSection>
     );
 }
-

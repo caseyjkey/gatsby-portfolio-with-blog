@@ -17,12 +17,17 @@ interface UseInViewAnimationOptions {
   once?: boolean;
   /** Force mobile mode */
   forceMobile?: boolean;
+  /** Skip animation for elements above viewport (default: true) */
+  skipAboveViewport?: boolean;
 }
+
+type ElementPosition = 'above' | 'in' | 'below' | 'unknown';
 
 interface UseInViewAnimationReturn {
   ref: (node: HTMLElement | null) => void;
   isInView: boolean;
   hasAnimated: boolean;
+  position: ElementPosition;
 }
 
 export function useInViewAnimation(
@@ -33,12 +38,14 @@ export function useInViewAnimation(
     threshold,
     once = true,
     forceMobile = false,
+    skipAboveViewport = true,
   } = options;
 
   const ref = useRef<HTMLElement | null>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [isReady, setIsReady] = useState(false); // Track when ref has a value
+  const [position, setPosition] = useState<ElementPosition>('unknown');
 
   const isMobile = forceMobile || (typeof window !== 'undefined' && window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint);
 
@@ -52,19 +59,50 @@ export function useInViewAnimation(
     return 0; // Use 0 threshold by default for consistent behavior
   }, [threshold]);
 
+  /**
+   * Detect element position relative to viewport
+   */
+  const detectInitialPosition = useCallback((element: HTMLElement): ElementPosition => {
+    const rect = element.getBoundingClientRect();
+    if (rect.bottom < 0) return 'above';  // Completely above viewport
+    if (rect.top < window.innerHeight) return 'in';  // Partially or fully in viewport
+    return 'below';  // Completely below viewport
+  }, []);
+
   // Set up observer when ref is ready
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-
 
     // Check for reduced motion preference
     const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       setIsInView(true);
       setHasAnimated(true);
+      setPosition('in');
       return;
     }
+
+    // Delay position detection to account for browser scroll restoration
+    const timeoutId = setTimeout(() => {
+      const initialPosition = detectInitialPosition(node);
+      setPosition(initialPosition);
+
+      // Handle elements above viewport
+      if (skipAboveViewport && initialPosition === 'above') {
+        setIsInView(true);
+        setHasAnimated(true);
+        return;
+      }
+
+      // Handle elements in viewport
+      if (initialPosition === 'in') {
+        setIsInView(true);
+        if (once) {
+          setHasAnimated(true);
+        }
+      }
+    }, 50);
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -88,9 +126,10 @@ export function useInViewAnimation(
     observer.observe(node);
 
     return () => {
+      clearTimeout(timeoutId);
       observer.disconnect();
     };
-  }, [once, isReady, getRootMargin, getThreshold, hasAnimated]);
+  }, [once, isReady, getRootMargin, getThreshold, hasAnimated, detectInitialPosition, skipAboveViewport]);
 
   const setRef = useCallback((node: HTMLElement | null) => {
     ref.current = node;
@@ -101,5 +140,6 @@ export function useInViewAnimation(
     ref: setRef,
     isInView: once ? hasAnimated : isInView,
     hasAnimated,
+    position,
   };
 }

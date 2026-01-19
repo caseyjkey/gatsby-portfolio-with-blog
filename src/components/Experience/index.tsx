@@ -8,6 +8,7 @@ import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../../animations'
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
 import { ANIMATION_CONFIG, TIMING, TIMELINE, EASING, SECONDARY_DELAYS } from '../../animations/config'
+import { isSectionHeaderVisible } from '../../animations/utils/headerVisibility'
 
 const ExperienceSection = styled.section`
   position: relative;
@@ -292,20 +293,30 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
   const isSecond = index === 1;
 
   // Calculate delay: first item has delay, second item has stagger if triggered by button
+  // Header-aware: if header is not visible (scrolled past), start immediately
   const getYearDelay = () => {
-    if (isFirst) return TIMELINE.year.firstDelay;
+    if (isFirst) {
+      const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('Experience');
+      return headerVisible ? TIMELINE.year.firstDelay : 0;
+    }
     if (isSecond && triggeredScroll) return TIMELINE.year.firstDelay + 0.5; // 0.5s stagger after first
     return TIMELINE.year.delay;
   };
 
   const getDotDelay = () => {
-    if (isFirst) return TIMELINE.dot.firstDelay;
+    if (isFirst) {
+      const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('Experience');
+      return headerVisible ? TIMELINE.dot.firstDelay : 0;
+    }
     if (isSecond && triggeredScroll) return TIMELINE.dot.firstDelay + 0.5;
     return TIMELINE.dot.delay;
   };
 
   const getEntryDelay = () => {
-    if (isFirst) return TIMELINE.entry.firstDelay;
+    if (isFirst) {
+      const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('Experience');
+      return headerVisible ? TIMELINE.entry.firstDelay : 0;
+    }
     if (isSecond && triggeredScroll) return TIMELINE.entry.firstDelay + TIMELINE.entry.delay;
     return TIMELINE.entry.delay;
   };

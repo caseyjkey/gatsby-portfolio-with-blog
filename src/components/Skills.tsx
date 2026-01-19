@@ -10,6 +10,7 @@ import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
+import { isSectionHeaderVisible } from '../animations/utils/headerVisibility'
 
 export default function Skills() {
     // Use the optimized hook for each section's viewport detection
@@ -186,7 +187,11 @@ export default function Skills() {
                                     ref={fullStackRef}
                                     initial="hidden"
                                     animate={isFullStackVisible ? "visible" : "hidden"}
-                                    custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+                                    custom={{
+                                        // Header-aware delay: if header is visible, wait for it; otherwise start immediately
+                                        delay: (typeof window !== 'undefined' && isSectionHeaderVisible('Skills')) ? 0.3 : 0,
+                                        distance: TIMING.sectionHeader.distance
+                                    }}
                                     variants={fadeInUpVariants}
                                 >
                                     <MediumHeading className="mb-4">Full Stack Development</MediumHeading>

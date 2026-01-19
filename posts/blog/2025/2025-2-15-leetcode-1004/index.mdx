@@ -6,7 +6,7 @@ published: true
 
 I completed the LeetCode 150! Since then, I haven't stopped practicing.
 I want to master common algorithms and feel confident for future interviews.
-
+___
 For this problem, I started with this greedy solution. We always flip a zero if 
 we haven't done so `k` times. Each step, we check if our count is a new maximum.
 If we reach a zero and used all our flips, we reset our count and flips.
@@ -40,7 +40,7 @@ two strings of ones.
 
 > Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
 >> Output: 9 (incorrect, expected 10.)
-
+___
 To fix this, we will have to alter our algorithm to 
 conditionally flip a zero. My idea is to apply our previous algorithm at each step.
 ```python
@@ -70,7 +70,7 @@ class Solution:
 ```
 Unfortunately, this is inefficient, but it works. It has a quadratic time complexity of
 O(n) = (N^2 + n) / 2, also known as the nth triangle number.
-
+___
 Rather we should make this algorithm into a sliding-window algorithm.
 When we reach the end of a series of ones, we want to slide our window by moving our start to the
 second flip we made by removing our first flip along with any tail attached to it.

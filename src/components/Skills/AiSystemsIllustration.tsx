@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { motion } from 'motion/react'
-import { ICON } from '../../animations/config'
+import { ILLUSTRATION } from '../../animations/config'
 
 interface AiSystemsIllustrationProps {
     personVisible?: boolean
@@ -25,7 +25,7 @@ export function AiSystemsIllustration({ personVisible = false, codeBlocksVisible
         <motion.div
             initial={{ opacity: 0, x: 20, y: 30 }}
             animate={personVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: 20, y: 30 }}
-            transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+            transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
         >
             <Svg id="1dff4cb4-53bd-4ffc-acc1-5e8a2ceb72de" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 864.81 658.45" className="sc-dIfARi jcozdZ">
                 <defs>
@@ -46,7 +46,7 @@ export function AiSystemsIllustration({ personVisible = false, codeBlocksVisible
                 <motion.g
                     initial={{ opacity: 0, y: 15 }}
                     animate={personVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                    transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+                    transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
                 >
                 <rect y="625.16" width="645.61" height="21.88" className="darkColor"></rect>
                 <rect x="27.36" y="647.05" width="590.89" height="8.95" className="darkColor"></rect>
@@ -73,7 +73,7 @@ export function AiSystemsIllustration({ personVisible = false, codeBlocksVisible
                 <motion.g
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={codeBlocksVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-                    transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+                    transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
                 >
                 <g opacity="0.7">
                     <rect x="218.04" y="461" width="182.77" height="162" rx="21.34" ry="21.34" fill="url(#2394db48-9094-48a1-80b4-38413320a0c3)"></rect>
@@ -86,7 +86,7 @@ export function AiSystemsIllustration({ personVisible = false, codeBlocksVisible
                 <motion.g
                     initial={{ opacity: 0, y: -10 }}
                     animate={awsLogoVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-                    transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+                    transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
                 >
                 <path d="M999.21,614c-15.76,11.64-38.65,17.82-58.33,17.82a105.53,105.53,0,0,1-71.22-27.16c-1.48-1.34-.14-3.16,1.63-2.11a141.44,141.44,0,0,0,125.62,7.81c2.63-1.2,4.89,1.72,2.3,3.64Z" transform="translate(-167.6 -120.78)" fill="#f90"></path>
                 <path d="M1005.77,606.55c-2-2.59-13.31-1.25-18.44-.62-1.53.19-1.77-1.15-.38-2.16,9-6.32,23.8-4.5,25.53-2.39s-.48,17-8.91,24c-1.29,1.1-2.54.53-2-.91C1003.52,619.76,1007.78,609.08,1005.77,606.55Z" transform="translate(-167.6 -120.78)" fill="#f90"></path>

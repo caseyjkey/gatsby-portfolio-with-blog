@@ -2,7 +2,9 @@ import React, { useRef, useEffect, forwardRef } from 'react'
 import { AccordionBody } from 'reactstrap'
 import styled from 'styled-components'
 import { motion } from 'motion/react'
-import { ANIMATION_CONFIG, ACCORDION, EASING } from '../../animations/config'
+import { ACCORDION } from '../../animations/config'
+import { fadeInUpVariants } from '../../animations'
+import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
 
 interface AnimatedAccordionBodyProps {
   accordionId: string
@@ -22,13 +24,6 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
     const containerRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = React.useState(false);
     const [animationKey, setAnimationKey] = React.useState(0);
-    const [shouldAnimate, setShouldAnimate] = React.useState(false);
-
-    // Check if mobile
-    const isMobile = () => {
-      if (typeof window === 'undefined') return false;
-      return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
-    };
 
     useEffect(() => {
       const checkState = () => {
@@ -40,12 +35,10 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
           if (hasShowClass && !isOpen) {
             // Accordion just opened
             setIsOpen(true);
-            setShouldAnimate(true);
             setAnimationKey(prev => prev + 1);
           } else if (!hasShowClass && isOpen) {
             // Accordion just closed
             setIsOpen(false);
-            setShouldAnimate(false);
           }
         }
       };
@@ -75,25 +68,49 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
       <StyledAccordionBody accordionId={accordionId}>
         <div ref={ref || containerRef}>
           {React.Children.map(children, (child, index) => (
-            <motion.div
+            <AccordionAnimatedChild
               key={`${animationKey}-${index}`}
-              initial={{ opacity: 0, y: ACCORDION.contentLift }}
-              animate={{
-                opacity: shouldAnimate ? 1 : 0,
-                y: shouldAnimate ? 0 : ACCORDION.contentLift,
-              }}
-              transition={{
-                duration: ACCORDION.duration,
-                delay: shouldAnimate ? index * ACCORDION.staggerDelay : 0,
-                ease: EASING.standard,
-              }}
-              style={index === 0 ? { marginTop: '10px' } : undefined}
+              index={index}
+              isOpen={isOpen}
             >
               {child}
-            </motion.div>
+            </AccordionAnimatedChild>
           ))}
         </div>
       </StyledAccordionBody>
     )
   }
 )
+
+const AccordionAnimatedChild = ({
+  children,
+  index,
+  isOpen,
+}: {
+  children: React.ReactNode;
+  index: number;
+  isOpen: boolean;
+}) => {
+  const { ref, isInView, position } = useInViewAnimation({
+    skipAboveViewport: true,
+    once: true,
+  });
+
+  const shouldShow = isOpen && (position === 'above' || isInView);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={position === 'above' ? false : 'hidden'}
+      animate={shouldShow ? 'visible' : 'hidden'}
+      custom={{
+        delay: index * ACCORDION.staggerDelay,
+        distance: ACCORDION.contentLift,
+      }}
+      variants={fadeInUpVariants}
+      style={index === 0 ? { marginTop: '10px' } : undefined}
+    >
+      {children}
+    </motion.div>
+  );
+};

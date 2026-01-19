@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { motion } from 'motion/react'
-import { ICON } from '../../animations/config'
+import { ILLUSTRATION } from '../../animations/config'
 
 interface FullStackIllustrationProps {
     personVisible?: boolean
@@ -26,14 +26,14 @@ export function FullStackIllustration({ personVisible = false, computerVisible =
         <motion.div
             initial={{ opacity: 0, x: -20, y: 30 }}
             animate={personVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -20, y: 30 }}
-            transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+            transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
         >
             <Svg id="ade8c9af-7e2e-4eda-b5c8-b06129257226" width="100%" height="100%" viewBox="0 0 1076.06371 755.2279">
             {/* Decorative leaves - bottom right */}
             <motion.g
                 initial={{ opacity: 0 }}
                 animate={personVisible ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay + 0.1 }}
+                transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay + 0.1 }}
             >
             <path d="M926.11393,774.80937c-6.98452,26.59789-31.459,43.21966-31.459,43.21966s-13.15033-26.50193-6.16581-53.09982,31.459-43.21966,31.459-43.21966S933.09845,748.21148,926.11393,774.80937Z" transform="translate(-61.96814 -72.38605)" fill="#3f3d56"></path>
             <path d="M915.52,769.18266c-19.56251,19.32716-21.75117,48.83128-21.75117,48.83128s29.52845-1.83141,49.091-21.15858,21.75116-48.83129,21.75116-48.83129S935.08248,749.85549,915.52,769.18266Z" transform="translate(-61.96814 -72.38605)" className="primaryColor"></path>
@@ -42,7 +42,7 @@ export function FullStackIllustration({ personVisible = false, computerVisible =
             <motion.g
                 initial={{ opacity: 0, y: 15 }}
                 animate={personVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+                transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
             >
             <path d="M206.70221,674.19438h36.8414l90.78774-35.52564s64.47245-26.31528,59.20939,23.68376-14.47341,117.103-14.47341,117.103-28.94681-13.15764-44.736-9.21035-5.26306-80.26162-5.26306-80.26162-128.9449,61.84092-140.78678,53.94634-14.4734-63.15669-14.4734-63.15669Z" transform="translate(-61.96814 -72.38605)" className="darkColor"></path>
             <path d="M206.70221,674.19438h36.8414l90.78774-35.52564s64.47245-26.31528,59.20939,23.68376-14.47341,117.103-14.47341,117.103-28.94681-13.15764-44.736-9.21035-5.26306-80.26162-5.26306-80.26162-128.9449,61.84092-140.78678,53.94634-14.4734-63.15669-14.4734-63.15669Z" transform="translate(-61.96814 -72.38605)" opacity="0.1"></path>
@@ -69,7 +69,7 @@ export function FullStackIllustration({ personVisible = false, computerVisible =
             <motion.g
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={badgeVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+                transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
             >
             <circle cx="498.06371" cy="237.45791" r="65" className="primaryColor"></circle>
             </motion.g>
@@ -77,7 +77,7 @@ export function FullStackIllustration({ personVisible = false, computerVisible =
             <motion.g
                 initial={{ opacity: 0, x: 20 }}
                 animate={computerVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+                transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
             >            <path d="M1096.8978,225.42666H732.64912V149.20722H1096.8978ZM734.25374,223.822h361.03944v-73.0102H734.25374Z" transform="translate(-61.96814 -72.38605)" fill="#3f3d56"></path>
             <rect x="645.80936" y="92.06506" width="362.64407" height="74.61482" className="primaryColor"></rect>
             <circle cx="416.56486" cy="15.24386" r="5.61624" className="primaryColor"></circle>

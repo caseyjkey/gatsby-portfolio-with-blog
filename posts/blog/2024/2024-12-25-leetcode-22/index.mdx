@@ -7,6 +7,8 @@ published: true
 Here's another backtracking problem. For this post, I'd like to discuss the differences between
 my solution and another submitted solution.
 
+___
+
 # My Solution
 ```python
 class Solution:
@@ -31,6 +33,9 @@ class Solution:
         return results
 ```
 The time complexity is O(2n * Catalan(n)) since for each solution (there are Catalan(n))  of the recursion stack, we work on N-i subproblems, where i is from 0 to k. The space complexity is O(k * n choose k) since each result requires k space. 
+
+___
+
 # niits' Solution
 ```python
 class Solution:

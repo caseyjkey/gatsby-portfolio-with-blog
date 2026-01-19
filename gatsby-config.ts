@@ -32,18 +32,24 @@ module.exports = {
       }
     },
     {
-	    resolve: `gatsby-plugin-mdx`,
-	    options: {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
         extensions: [`.mdx`, `.md`],
+        mdxOptions: {
+          remarkPlugins: [
+            require('./src/utils/remark-split-sections'),
+          ],
+        },
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 590,
             },
-          }
+          },
         ],
-	    },
+
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,

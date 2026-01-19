@@ -1,5 +1,6 @@
 const { createFilePath } = require(`gatsby-source-filesystem`)
 const path = require(`path`)
+const fs = require('fs')
 
 exports.createPages = ({ actions, graphql }) => {
     const { createPage } = actions
@@ -65,12 +66,32 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
             node,
             value,
         })
+
+        const parent = getNode(node.parent)
+        const absolutePath = parent && parent.absolutePath
+        if (absolutePath && typeof absolutePath === 'string') {
+            try {
+                const raw = fs.readFileSync(absolutePath, 'utf8')
+                const preview = extractPreview(raw, 250)
+                createNodeField({
+                    name: 'preview',
+                    node,
+                    value: preview,
+                })
+            } catch (e) {
+                // ignore preview extraction failures
+            }
+        }
     }
 }
 
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
   createTypes(`
+    type MdxFields {
+      preview: String
+    }
+
     type Project implements Node {
       start: Date @dateformat
       end: EndDate
@@ -82,3 +103,32 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `);
 };
+
+function extractPreview(rawMdx, maxLen) {
+    if (!rawMdx) return ''
+
+    const withoutFrontmatter = rawMdx.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '')
+    const withoutCodeBlocks = withoutFrontmatter.replace(/```[\s\S]*?```/g, '')
+    const withoutJsx = withoutCodeBlocks.replace(/<[^>]+>/g, ' ')
+
+    const paragraphs = withoutJsx
+        .split(/\n\s*\n/)
+        .map((p) => p.trim())
+        .filter(Boolean)
+
+    const firstMeaningful =
+        paragraphs.find((p) => !/^#{1,6}\s/.test(p) && !/^[-*_]{3,}$/.test(p)) ||
+        ''
+
+    const text = firstMeaningful
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, '$1')
+        .replace(/\s+/g, ' ')
+        .trim()
+
+    if (text.length <= maxLen) return text
+    const clipped = text.slice(0, maxLen)
+    return clipped.replace(/\s+\S*$/, '').trim() + '…'
+}

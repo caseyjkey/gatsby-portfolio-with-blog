@@ -9,6 +9,7 @@ import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation'
 import { ANIMATION_CONFIG, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../../animations/config'
 import { theme } from '../style'
 import Project from '../Projects/Project'
+import { isSectionHeaderVisible } from '../../animations/utils/headerVisibility'
 
 interface FeaturedProject {
   node: {
@@ -141,7 +142,12 @@ const FeaturedWork = () => {
   }
 
   // Calculate delay for project cards
+  // Header-aware: first card waits for header if visible, otherwise starts immediately
   const getProjectDelay = (index: number) => {
+    if (index === 0) {
+      const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('FeaturedWork');
+      return headerVisible ? 0.3 : 0;
+    }
     return index * PROGRESSIVE_STAGGER.cards.staggerIncrement; // Simple sequential stagger
   };
 
@@ -154,7 +160,7 @@ const FeaturedWork = () => {
   const cardVisibility = [isCard1Visible, isCard2Visible, isCard3Visible];
 
   return (
-    <FeaturedSection ref={sectionRef}>
+    <FeaturedSection ref={sectionRef} id="FeaturedWork">
       <Container>
         <Row className="g-0 justify-content-center pb-5">
           <Col md={12} className="heading-section text-center">

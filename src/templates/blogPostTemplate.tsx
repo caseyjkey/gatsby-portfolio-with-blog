@@ -9,6 +9,11 @@ import { lighten } from 'polished'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import { Container } from 'reactstrap'
+import { motion } from 'motion/react'
+import { fadeInUpVariants } from '../animations'
+import { ANIMATION_CONFIG, TIMING, STAGGER, SECONDARY_DELAYS } from '../animations/config'
+import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
+
 
 export const BlogPost = styled.div`
     margin-top: 6em;
@@ -27,18 +32,16 @@ export const BlogPost = styled.div`
 `;
 
 export default function BlogPostTemplate({ data, pageContext, children }) {
-
-
-    /*
-    return (
-        <>
-            <Dump query={query.mdx} />
-            <Dump data={data} />
-            <Dump pageContext={pageContext} />
-        </>
-    ); */
-    const { frontmatter } = data.mdx; // data is from the exported graphql query below
+    const { frontmatter } = data.mdx;
     const { previous, next, post } = pageContext;
+
+    // Header animations
+    const { ref: headerRef, isInView: isHeaderVisible } = useInViewAnimation({ once: true });
+    const { ref: subheaderRef, isInView: isSubheaderVisible } = useInViewAnimation({ once: true });
+
+    // Navigation links animation
+    const { ref: navLinksRef, isInView: isNavLinksVisible } = useInViewAnimation({ once: true });
+
     return (
         <Layout>
             <ThemeProvider theme={theme}>
@@ -46,31 +49,53 @@ export default function BlogPostTemplate({ data, pageContext, children }) {
                     <Navigation />
                     <Container className="mt-5">
                         <BlogPost>
-                            <div className="mb-5">
+                            {/* Header with animation */}
+                            <motion.div
+                                ref={headerRef}
+                                initial="hidden"
+                                animate={isHeaderVisible ? "visible" : "hidden"}
+                                custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+                                variants={fadeInUpVariants}
+                                className="mb-5"
+                            >
                                 <Heading className="text-center mb-4">
                                     {frontmatter.title}
                                 </Heading>
-                                <p className="text-center subheading">{post.frontmatter.date}</p>
-                            </div>
+                            </motion.div>
+                            <motion.p
+                                ref={subheaderRef}
+                                initial="hidden"
+                                animate={isSubheaderVisible ? 'visible' : 'hidden'}
+                                custom={{ delay: SECONDARY_DELAYS.default }}
+                                variants={fadeInUpVariants}
+                                className="text-center subheading"
+                            >
+                                {post.frontmatter.date}
+                            </motion.p>
+
+                            {/* Content - sections are created by remark plugin, we just provide the queue context */}
                             {children}
-                            {previous && (
-                                <>
-                                    {previous && (
-                                        <Link to={previous.fields.slug}>
-                                            <p>{previous.frontmatter.title}</p>
-                                        </Link>
-                                    )}
-                                </>
-                            )}
-                            {next && (
-                                <>
-                                    {next && (
-                                        <Link to={next.fields.slug}>
-                                            <p>{next.frontmatter.title}</p>
-                                        </Link>
-                                    )}
-                                </>
-                            )}
+
+                            {/* Navigation links - animate when scrolled into view */}
+                            <motion.div
+                                ref={navLinksRef}
+                                initial="hidden"
+                                animate={isNavLinksVisible ? "visible" : "hidden"}
+                                custom={{ delay: 0, distance: TIMING.primaryUnit.distance }}
+                                variants={fadeInUpVariants}
+                                className="mt-5"
+                            >
+                                {previous && (
+                                    <Link to={previous.fields.slug}>
+                                        <p>← {previous.frontmatter.title}</p>
+                                    </Link>
+                                )}
+                                {next && (
+                                    <Link to={next.fields.slug}>
+                                        <p>{next.frontmatter.title} →</p>
+                                    </Link>
+                                )}
+                            </motion.div>
                         </BlogPost>
                     </Container>
                     <Footer />
@@ -81,11 +106,11 @@ export default function BlogPostTemplate({ data, pageContext, children }) {
 }
 
 export const query = graphql`
-        query PostsBySlug($slug: String) {
-            mdx(fields: { slug: { eq: $slug } }) {
-                frontmatter {
-                    title
-                }
+    query PostsBySlug($slug: String) {
+        mdx(fields: { slug: { eq: $slug } }) {
+            frontmatter {
+                title
             }
         }
-    `;
+    }
+`;

@@ -68,12 +68,6 @@ export const TIMING = {
     duration: 700,
     distance: 20,
   },
-  illustration: {
-    delay: 300,
-    duration: 1000,
-    scaleFrom: 0.98,
-    scaleTo: 1.0,
-  },
 } as const;
 
 /**
@@ -195,10 +189,11 @@ export const TIMELINE = {
 } as const;
 
 /**
- * Icon/SVG animations
+ * Illustration element animations
+ * Used for individual parts within illustrations (SVG groups, images, etc.)
  */
-export const ICON = {
-  fade: {
+export const ILLUSTRATION = {
+  element: {
     duration: 0.6, // seconds
     delay: 0.15, // seconds
   },

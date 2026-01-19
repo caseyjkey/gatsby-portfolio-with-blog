@@ -29,8 +29,9 @@ import Activity from './About/Activity'
 import { graphql, useStaticQuery } from 'gatsby'
 import { motion } from 'motion/react'
 import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
-import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER, ICON } from '../animations/config'
+import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER, ILLUSTRATION, TIMELINE } from '../animations/config'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
+import { isSectionHeaderVisible } from '../animations/utils/headerVisibility'
 
 export default function About(props) {
   // Use the optimized hook for header viewport detection
@@ -138,7 +139,11 @@ export default function About(props) {
             ref={bioRef}
             initial="hidden"
             animate={isBioVisible ? "visible" : "hidden"}
-            custom={{ delay: SECONDARY_DELAYS.extended, distance: TIMING.primaryUnit.distance }}
+            custom={{
+              // Header-aware delay: if header is visible, wait for it; otherwise start immediately
+              delay: (typeof window !== 'undefined' && isSectionHeaderVisible('about-section')) ? 0.5 : 0,
+              distance: TIMING.primaryUnit.distance
+            }}
             variants={fadeInUpVariants}
             style={{ width: "100%" }}
           >
@@ -155,7 +160,7 @@ export default function About(props) {
                 initial="hidden"
                 animate={isContentVisible ? "visible" : "hidden"}
                 variants={fadeInUpVariants}
-                custom={{ delay: 0, distance: TIMING.primaryUnit.distance }}
+                custom={{ delay: 0.7, distance: TIMING.primaryUnit.distance }}
                 style={{ width: "100%" }}
               >
                 <Col className="col-md-12 heading-section">
@@ -167,13 +172,17 @@ export default function About(props) {
                           initial="hidden"
                           animate={isContentVisible ? "visible" : "hidden"}
                           custom={{
-                            delay: PROGRESSIVE_STAGGER.about.baseDelay + (index * PROGRESSIVE_STAGGER.about.staggerIncrement)
+                            delay: 0.1, // All animate at 0.7s + 0.1s = 0.8s total
+                            distance: TIMING.primaryUnit.distance
                           }}
                           variants={fadeInUpVariants}
                         >
-                          <Activity description={activity.activity.description}
+                          <Activity
+                            description={activity.activity.description}
                             Icon={loadIcon(activity.activity.icon)}
                             icon={activity.activity.icon}
+                            isVisible={isContentVisible}
+                            delay={0.1} // All icons animate at 0.7s + 0.1s = 0.8s total
                           />
                         </motion.li>
                       );
@@ -186,13 +195,21 @@ export default function About(props) {
           <Col lg="6" md="6" className="d-flex justify-content-center">
             <motion.div
               ref={headshotRef}
-              initial={{ opacity: 0, x: 20, y: 30 }}
-              animate={isHeadshotVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: 20, y: 30 }}
-              transition={{ duration: ICON.fade.duration, delay: ICON.fade.delay }}
+              initial="hidden"
+              animate={isHeadshotVisible ? "visible" : "hidden"}
+              variants={fadeInUpVariants}
+              custom={{ delay: 0.7, distance: TIMING.primaryUnit.distance }}
+              style={{ width: "100%" }}
             >
-              <AboutImage>
-                <img src="/about.webp" alt="Casey Key in a suit" />
-              </AboutImage>
+              <motion.div
+                initial={{ opacity: 0, x: 20, y: 30 }}
+                animate={isHeadshotVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: 20, y: 30 }}
+                transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
+              >
+                <AboutImage>
+                  <img src="/about.webp" alt="Casey Key in a suit" />
+                </AboutImage>
+              </motion.div>
             </motion.div>
           </Col>
         </Row>
@@ -202,7 +219,7 @@ export default function About(props) {
               ref={consultantRef}
               initial="hidden"
               animate={isConsultantVisible ? "visible" : "hidden"}
-              custom={{ delay: SECONDARY_DELAYS.default, distance: TIMING.primaryUnit.distance }}
+              custom={{ delay: 1.0, distance: TIMING.primaryUnit.distance }}
               variants={fadeInUpVariants}
               style={{ width: "100%" }}
             >
@@ -215,35 +232,28 @@ export default function About(props) {
                 <motion.h3
                   initial="hidden"
                   animate={isConsultantVisible ? "visible" : "hidden"}
-                  custom={{ delay: SECONDARY_DELAYS.medium }}
+                  custom={{ delay: 0.2, distance: TIMING.primaryUnit.distance }}
                   variants={fadeInUpVariants}
                 >
                   Consultant Approach
                 </motion.h3>
-                <motion.p
-                  initial="hidden"
-                  animate={isConsultantVisible ? "visible" : "hidden"}
-                  custom={{ delay: SECONDARY_DELAYS.long }}
-                  variants={fadeInUpVariants}
-                >
-                  <strong>Problem-Solving:</strong> I tackle complex technical challenges by combining deep technical expertise with a strategic, business-first mindset.
-                </motion.p>
-                <motion.p
-                  initial="hidden"
-                  animate={isConsultantVisible ? "visible" : "hidden"}
-                  custom={{ delay: SECONDARY_DELAYS.extended }}
-                  variants={fadeInUpVariants}
-                >
-                  <strong>Technical Leadership:</strong> I guide teams through architectural decisions, mentor developers, and ensure scalable, maintainable solutions.
-                </motion.p>
-                <motion.p
-                  initial="hidden"
-                  animate={isConsultantVisible ? "visible" : "hidden"}
-                  custom={{ delay: SECONDARY_DELAYS.extended + 0.1 }}
-                  variants={fadeInUpVariants}
-                >
-                  <strong>Client Partnership:</strong> I bridge the gap between technical requirements and business goals, communicating complex concepts to stakeholders at all levels.
-                </motion.p>
+                {[
+                  '<strong>Problem-Solving:</strong> I tackle complex technical challenges by combining deep technical expertise with a strategic, business-first mindset.',
+                  '<strong>Technical Leadership:</strong> I guide teams through architectural decisions, mentor developers, and ensure scalable, maintainable solutions.',
+                  '<strong>Client Partnership:</strong> I bridge the gap between technical requirements and business goals, communicating complex concepts to stakeholders at all levels.',
+                ].map((bullet, index) => (
+                  <motion.p
+                    key={index}
+                    initial="hidden"
+                    animate={isConsultantVisible ? "visible" : "hidden"}
+                    custom={{
+                      delay: 0.8 + (index * TIMELINE.bullet.staggerIncrement), // Added 0.4s to previous 0.4, 0.5, 0.6
+                      distance: TIMING.primaryUnit.distance
+                    }}
+                    variants={fadeInUpVariants}
+                    dangerouslySetInnerHTML={{ __html: bullet }}
+                  />
+                ))}
               </ConsultantIdentity>
             </motion.div>
           </Col>
