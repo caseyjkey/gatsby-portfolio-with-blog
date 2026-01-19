@@ -19,7 +19,7 @@ export const ProjectWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 0;
   background-color: ${props => props.theme.white};
-  border-radius: 8px;
+  border-radius: 0.5rem;
   overflow: hidden;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
