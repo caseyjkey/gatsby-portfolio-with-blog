@@ -62,7 +62,6 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const [lightboxOpen, setLightbox] = useState(false);
   const indicatorContainerRef = useRef<HTMLDivElement>(null);
   const indicatorRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const lastScrolledIndexRef = useRef<number>(-1);
 
   // Detect which images are full-bleed (16:9) vs floating
   const fullBleedIndices = useMemo(() => {
@@ -155,27 +154,20 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   useEffect(() => {
     if (!indicatorContainerRef.current) return;
 
-    // Skip if already scrolled to this index (prevents duplicate scrolls from rapid clicks)
-    if (lastScrolledIndexRef.current === photoIndex) return;
-
     const activeIndicator = indicatorRefs.current[photoIndex];
     if (!activeIndicator) return;
 
-    lastScrolledIndexRef.current = photoIndex;
+    const container = indicatorContainerRef.current;
 
-    activeIndicator.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
+    // Calculate scroll position to center the active indicator
+    const containerWidth = container.clientWidth;
+    const indicatorLeft = activeIndicator.offsetLeft;
+    const indicatorWidth = activeIndicator.offsetWidth;
+    const scrollLeft = indicatorLeft - (containerWidth / 2) + (indicatorWidth / 2);
+
+    // Scroll instantly (no smooth) to keep up with rapid clicks
+    container.scrollLeft = scrollLeft;
   }, [photoIndex]);
-
-  // Reset scroll tracker when modal closes
-  useEffect(() => {
-    if (!modal) {
-      lastScrolledIndexRef.current = -1;
-    }
-  }, [modal]);
 
   // Ensure publicURL exists, otherwise fallback to empty string (will be handled by lightbox)
   let images = galleryImages.map((dict, idx) => {
@@ -398,7 +390,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         overflowX: 'auto',
                         overflowY: 'hidden',
                         pointerEvents: 'none',
-                        scrollBehavior: 'smooth',
+                        scrollbarWidth: 'none', // Firefox
+                        msOverflowStyle: 'none', // IE/Edge
                       }}
                     >
                       {galleryImages.map((_, index) => (
