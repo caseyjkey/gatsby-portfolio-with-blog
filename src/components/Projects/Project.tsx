@@ -2,7 +2,7 @@ import React, { Suspense, useState, ReactNode, forwardRef, useMemo, useEffect, u
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalBackdrop, ModalImageContainer, ModalImage, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles } from './style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -173,9 +173,6 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     }
   };
 
-  // Check if current image is full-bleed for backdrop visibility
-  const isCurrentFullBleed = fullBleedIndices[photoIndex] ?? false;
-
   // Helper to render the current carousel image inline with fresh state
   const renderCurrentImage = () => {
     const dict = galleryImages[photoIndex];
@@ -242,9 +239,6 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
           <ModalBody>
             {/* Backdrop + Image Container */}
             <ModalImageContainer ref={modalImageContainerRef}>
-              {/* Backdrop uses current carousel image - hidden for full-bleed images */}
-              <ModalBackdrop $backdropImage={images[photoIndex]} $hidden={isCurrentFullBleed} />
-
               {/* Custom Framer Motion Carousel */}
               <div className="project-modal-carousel" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <AnimatePresence mode="sync" initial={false}>
@@ -255,10 +249,26 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, ease: "easeInOut" }}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}
                     onClick={() => toggleLightbox()}
                   >
-                    <div className={fullBleedIndices[photoIndex] ? 'full-bleed' : ''} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {/* Backdrop - fades with slide, hidden for full-bleed */}
+                    {!fullBleedIndices[photoIndex] && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          backgroundImage: `url(${images[photoIndex]})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          filter: 'blur(2px)',
+                          zIndex: 0,
+                        }}
+                      />
+                    )}
+
+                    {/* Foreground image */}
+                    <div className={fullBleedIndices[photoIndex] ? 'full-bleed' : ''} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
                       {renderCurrentImage()}
                     </div>
                   </motion.div>
