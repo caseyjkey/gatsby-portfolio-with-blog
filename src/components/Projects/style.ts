@@ -120,7 +120,7 @@ export const CarouselGlobalStyles = createGlobalStyle`
   /* Floating image container: enhanced shadow for depth */
   .project-modal-carousel .floating-image-container {
     box-shadow: 0 35px 35px rgba(0, 0, 0, 0.6) !important;
-    border-radius: 8px !important;
+    border-radius: 0.5rem !important;
     overflow: hidden !important;
   }
 
