@@ -245,9 +245,9 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                   <motion.div
                     key={photoIndex}
                     className="slide"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    initial={{ opacity: 0, zIndex: 0 }}
+                    animate={{ opacity: 1, zIndex: 1 }}
+                    exit={{ opacity: 0, zIndex: 0 }}
                     transition={{ duration: 0.5, ease: "easeInOut" }}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}
                     onClick={() => toggleLightbox()}
