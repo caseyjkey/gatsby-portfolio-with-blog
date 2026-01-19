@@ -19,6 +19,8 @@ interface UseInViewAnimationOptions {
   forceMobile?: boolean;
   /** Skip animation for elements above viewport (default: true) */
   skipAboveViewport?: boolean;
+  /** Whether the hook should be enabled and observe (default: true) */
+  enabled?: boolean;
 }
 
 type ElementPosition = 'above' | 'in' | 'below' | 'unknown';
@@ -39,6 +41,7 @@ export function useInViewAnimation(
     once = true,
     forceMobile = false,
     skipAboveViewport = true,
+    enabled = true, // New option
   } = options;
 
   const ref = useRef<HTMLElement | null>(null);
@@ -69,8 +72,16 @@ export function useInViewAnimation(
     return 'below';  // Completely below viewport
   }, []);
 
-  // Set up observer when ref is ready
+  // Set up observer when ref is ready and enabled
   useEffect(() => {
+    if (!enabled) {
+      // If disabled, reset states and do not observe
+      setIsInView(false);
+      setHasAnimated(false);
+      setPosition('unknown');
+      return;
+    }
+
     const node = ref.current;
     if (!node) return;
 
@@ -129,7 +140,7 @@ export function useInViewAnimation(
       clearTimeout(timeoutId);
       observer.disconnect();
     };
-  }, [once, isReady, getRootMargin, getThreshold, hasAnimated, detectInitialPosition, skipAboveViewport]);
+  }, [enabled, once, isReady, getRootMargin, getThreshold, hasAnimated, detectInitialPosition, skipAboveViewport]);
 
   const setRef = useCallback((node: HTMLElement | null) => {
     ref.current = node;

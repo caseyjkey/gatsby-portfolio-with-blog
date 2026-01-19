@@ -5,6 +5,6 @@
  */
 import { wrapRootElement as wrap } from './root-wrapper'
 require('typeface-poppins');
-import './src/components/global.css';
+
 
 export const wrapRootElement = wrap;
