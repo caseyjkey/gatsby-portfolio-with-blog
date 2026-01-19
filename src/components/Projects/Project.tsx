@@ -240,7 +240,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
             {/* Backdrop + Image Container */}
             <ModalImageContainer ref={modalImageContainerRef}>
               {/* Custom Framer Motion Carousel with cross-fade transition */}
-              <div className="project-modal-carousel" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="project-modal-carousel">
                 {/* mode="sync": Both entering and exiting slides animate simultaneously, creating a smooth cross-fade.
                     mode="wait" (default) would make exit complete before enter starts, causing a flash. */}
                 <AnimatePresence mode="sync" initial={false}>
@@ -278,77 +278,71 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                 {/* Navigation Arrows */}
                 {galleryImages.length > 1 && (
                   <>
-                    <motion.button
-                      initial={{ opacity: 0 }}
-                      animate={{
-                        opacity: 1,
-                        scale: keyboardActive === 'left' ? 0.95 : 1,
-                      }}
-                      transition={{ delay: 0.1 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        goToPrevious();
-                      }}
-                      style={{
-                        position: 'absolute',
-                        left: 8,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        width: 40,
-                        height: 40,
-                        borderRadius: '50%',
-                        border: 'none',
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                        zIndex: 10,
-                        transformOrigin: 'center center',
-                      }}
-                      whileHover={{ scale: 1.1, transition: { duration: 0.15 } }}
-                      whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-                      aria-label="Previous image"
-                    >
-                      <FaChevronLeft size={18} color="#333" />
-                    </motion.button>
+                    <div style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}>
+                      <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: 1,
+                          scale: keyboardActive === 'left' ? 0.95 : 1,
+                        }}
+                        transition={{ delay: 0.1 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          goToPrevious();
+                        }}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: '50%',
+                          border: 'none',
+                          background: 'rgba(255, 255, 255, 0.9)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                          transformOrigin: 'center center',
+                        }}
+                        whileHover={{ scale: 1.1, transition: { duration: 0.15 } }}
+                        whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                        aria-label="Previous image"
+                      >
+                        <FaChevronLeft size={18} color="#333" />
+                      </motion.button>
+                    </div>
 
-                    <motion.button
-                      initial={{ opacity: 0 }}
-                      animate={{
-                        opacity: 1,
-                        scale: keyboardActive === 'right' ? 0.95 : 1,
-                      }}
-                      transition={{ delay: 0.1 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        goToNext();
-                      }}
-                      style={{
-                        position: 'absolute',
-                        right: 8,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        width: 40,
-                        height: 40,
-                        borderRadius: '50%',
-                        border: 'none',
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                        zIndex: 10,
-                        transformOrigin: 'center center',
-                      }}
-                      whileHover={{ scale: 1.1, transition: { duration: 0.15 } }}
-                      whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-                      aria-label="Next image"
-                    >
-                      <FaChevronRight size={18} color="#333" />
-                    </motion.button>
+                    <div style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}>
+                      <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: 1,
+                          scale: keyboardActive === 'right' ? 0.95 : 1,
+                        }}
+                        transition={{ delay: 0.1 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          goToNext();
+                        }}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: '50%',
+                          border: 'none',
+                          background: 'rgba(255, 255, 255, 0.9)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                          transformOrigin: 'center center',
+                        }}
+                        whileHover={{ scale: 1.1, transition: { duration: 0.15 } }}
+                        whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                        aria-label="Next image"
+                      >
+                        <FaChevronRight size={18} color="#333" />
+                      </motion.button>
+                    </div>
 
                     {/* Indicators with better contrast - dark background with semi-transparent overlay */}
                     <div style={{
