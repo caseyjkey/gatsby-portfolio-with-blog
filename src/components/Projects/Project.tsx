@@ -183,7 +183,11 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     if (imageData) {
       if (isFullBleed) {
-        return <GatsbyImage image={imageData} alt="project" />;
+        return (
+          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <GatsbyImage image={imageData} alt="project" style={{ width: '100%', height: '100%' }} />
+          </div>
+        );
       } else {
         const aspectRatio = imageData.width / imageData.height;
         const carouselAspect = 16 / 9;
@@ -358,6 +362,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                       background: 'rgba(0, 0, 0, 0.5)',
                       backdropFilter: 'blur(4px)',
                       zIndex: 10,
+                      maxWidth: 'calc(100% - 24px)',
                     }}>
                       {galleryImages.map((_, index) => (
                         <motion.button

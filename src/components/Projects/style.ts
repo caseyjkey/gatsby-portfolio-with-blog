@@ -120,6 +120,15 @@ export const CarouselGlobalStyles = createGlobalStyle`
   /* Floating image container: enhanced shadow for depth */
   .project-modal-carousel .floating-image-container {
     box-shadow: 0 35px 35px rgba(0, 0, 0, 0.6) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+
+  /* Full-bleed images: fill container */
+  .project-modal-carousel .slide > div > .gatsby-image-wrapper,
+  .project-modal-carousel .slide > .gatsby-image-wrapper {
+    width: 100% !important;
+    height: 100% !important;
   }
 `;
 
