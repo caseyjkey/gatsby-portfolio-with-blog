@@ -12,7 +12,6 @@ module.exports = function remarkSplitSections() {
     });
 
     if (hrIndices.length === 0) {
-      // If no <hr />, wrap the entire content in a single AnimatedSection
       const children = tree.children;
       tree.children = [
         {
@@ -52,8 +51,13 @@ module.exports = function remarkSplitSections() {
         });
         sectionIndex++;
       }
-      // Add the thematicBreak (<hr>) element back into the tree
-      newChildren.push(tree.children[hrIndex]);
+      // Explicitly create and add an <hr /> JSX element.
+      newChildren.push({
+        type: 'mdxJsxFlowElement',
+        name: 'hr',
+        attributes: [],
+        children: [],
+      });
       startIndex = hrIndex + 1;
     });
 
