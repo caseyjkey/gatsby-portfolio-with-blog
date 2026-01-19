@@ -266,15 +266,12 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           backgroundSize: 'cover',
                           backgroundPosition: 'center',
                           filter: 'blur(2px)',
-                          zIndex: 0,
                         }}
                       />
                     )}
 
                     {/* Foreground image */}
-                    <div className={fullBleedIndices[photoIndex] ? 'full-bleed' : ''} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
-                      {renderCurrentImage()}
-                    </div>
+                    {renderCurrentImage()}
                   </motion.div>
                 </AnimatePresence>
 
