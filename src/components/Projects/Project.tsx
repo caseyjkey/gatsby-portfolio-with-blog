@@ -239,20 +239,24 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
           <ModalBody>
             {/* Backdrop + Image Container */}
             <ModalImageContainer ref={modalImageContainerRef}>
-              {/* Custom Framer Motion Carousel */}
+              {/* Custom Framer Motion Carousel with cross-fade transition */}
               <div className="project-modal-carousel" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* mode="sync": Both entering and exiting slides animate simultaneously, creating a smooth cross-fade.
+                    mode="wait" (default) would make exit complete before enter starts, causing a flash. */}
                 <AnimatePresence mode="sync" initial={false}>
                   <motion.div
                     key={photoIndex}
                     className="slide"
-                    initial={{ opacity: 0, zIndex: 0 }}
-                    animate={{ opacity: 1, zIndex: 1 }}
-                    exit={{ opacity: 0, zIndex: 0 }}
+                    initial={{ opacity: 0, zIndex: 0 }}  // Start invisible and below exiting slide
+                    animate={{ opacity: 1, zIndex: 1 }}  // Fade in and rise to top layer
+                    exit={{ opacity: 0, zIndex: 0 }}     // Fade out and drop behind entering slide
                     transition={{ duration: 0.5, ease: "easeInOut" }}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}
                     onClick={() => toggleLightbox()}
                   >
-                    {/* Backdrop - fades with slide, hidden for full-bleed */}
+                    {/* Backdrop rendered INSIDE motion.div so it fades in/out with its slide.
+                        This prevents backdrop flashes during navigation since AnimatePresence
+                        manages the backdrop as part of the slide's transition lifecycle. */}
                     {!fullBleedIndices[photoIndex] && (
                       <div
                         style={{
