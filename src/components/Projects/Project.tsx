@@ -62,6 +62,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const [lightboxOpen, setLightbox] = useState(false);
   const indicatorContainerRef = useRef<HTMLDivElement>(null);
   const indicatorRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const isAnimatingRef = useRef(false);
 
   // Detect which images are full-bleed (16:9) vs floating
   const fullBleedIndices = useMemo(() => {
@@ -112,16 +113,19 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
   // Navigation handlers with direction tracking
   const goToPrevious = () => {
+    if (isAnimatingRef.current) return; // Ignore clicks during animation
     setNavigationDirection('left');
     setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
+    if (isAnimatingRef.current) return; // Ignore clicks during animation
     setNavigationDirection('right');
     setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
   };
 
   const goToSlide = (index: number) => {
+    if (isAnimatingRef.current) return; // Ignore clicks during animation
     setNavigationDirection(index > photoIndex ? 'right' : 'left');
     setPhotoIndex(index);
   };
@@ -168,6 +172,13 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     // Scroll instantly (no smooth) to keep up with rapid clicks
     container.scrollLeft = scrollLeft;
   }, [photoIndex]);
+
+  // Reset animation flag when modal closes
+  useEffect(() => {
+    if (!modal) {
+      isAnimatingRef.current = false;
+    }
+  }, [modal]);
 
   // Ensure publicURL exists, otherwise fallback to empty string (will be handled by lightbox)
   let images = galleryImages.map((dict, idx) => {
@@ -279,6 +290,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                     transition={{ duration: 0.5, ease: "easeInOut" }}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     onClick={() => toggleLightbox()}
+                    onAnimationStart={() => { isAnimatingRef.current = true; }}
+                    onAnimationComplete={() => { isAnimatingRef.current = false; }}
                   >
                     {/* Backdrop rendered INSIDE motion.div so it fades in/out with its slide.
                         This prevents backdrop flashes during navigation since AnimatePresence
