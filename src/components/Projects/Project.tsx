@@ -62,6 +62,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const [lightboxOpen, setLightbox] = useState(false);
   const indicatorContainerRef = useRef<HTMLDivElement>(null);
   const indicatorRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const lastScrolledIndexRef = useRef<number>(-1);
 
   // Detect which images are full-bleed (16:9) vs floating
   const fullBleedIndices = useMemo(() => {
@@ -154,8 +155,13 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   useEffect(() => {
     if (!indicatorContainerRef.current) return;
 
+    // Skip if already scrolled to this index (prevents duplicate scrolls from rapid clicks)
+    if (lastScrolledIndexRef.current === photoIndex) return;
+
     const activeIndicator = indicatorRefs.current[photoIndex];
     if (!activeIndicator) return;
+
+    lastScrolledIndexRef.current = photoIndex;
 
     activeIndicator.scrollIntoView({
       behavior: 'smooth',
@@ -163,6 +169,13 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
       inline: 'nearest',
     });
   }, [photoIndex]);
+
+  // Reset scroll tracker when modal closes
+  useEffect(() => {
+    if (!modal) {
+      lastScrolledIndexRef.current = -1;
+    }
+  }, [modal]);
 
   // Ensure publicURL exists, otherwise fallback to empty string (will be handled by lightbox)
   let images = galleryImages.map((dict, idx) => {
