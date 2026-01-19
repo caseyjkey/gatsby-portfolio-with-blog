@@ -2,7 +2,7 @@ import React, { Suspense, useState, ReactNode, forwardRef, useMemo, useEffect, u
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles } from './style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles, ModalGlobalStyles } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -256,6 +256,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
       }
     }} className="shadow" {...props}>
       <CarouselGlobalStyles />
+      <ModalGlobalStyles />
       <GalleryFrame>
         <GatsbyImage image={image} alt={title} />
       </GalleryFrame>

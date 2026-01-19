@@ -132,6 +132,28 @@ export const CarouselGlobalStyles = createGlobalStyle`
   }
 `;
 
+// Global styles for modal content styling
+export const ModalGlobalStyles = createGlobalStyle`
+  /* Modal content padding */
+  .modal-content {
+    padding: 0 0.5rem;
+  }
+
+  /* Base list styling (Amazon-style cards) */
+  .modal-body ul,
+  .modal-body ol {
+    padding-left: 0.1rem;
+    list-style-position: outside;
+  }
+
+  /* Follow-up rule (Curriculum-style cards) */
+  .modal-body p + ul,
+  .modal-body p + ol {
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+  }
+`;
+
 // Modal backdrop - blurred version of current carousel image
 export const ModalBackdrop = styled.div<{ $backdropImage?: string; $hidden?: boolean }>`
   position: absolute;
