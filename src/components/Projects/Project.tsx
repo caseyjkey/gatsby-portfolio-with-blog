@@ -62,7 +62,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const [lightboxOpen, setLightbox] = useState(false);
   const indicatorContainerRef = useRef<HTMLDivElement>(null);
   const indicatorRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const isAnimatingRef = useRef(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Detect which images are full-bleed (16:9) vs floating
   const fullBleedIndices = useMemo(() => {
@@ -113,19 +113,19 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
   // Navigation handlers with direction tracking
   const goToPrevious = () => {
-    if (isAnimatingRef.current) return; // Ignore clicks during animation
+    if (isAnimating) return; // Ignore clicks during animation
     setNavigationDirection('left');
     setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
-    if (isAnimatingRef.current) return; // Ignore clicks during animation
+    if (isAnimating) return; // Ignore clicks during animation
     setNavigationDirection('right');
     setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
   };
 
   const goToSlide = (index: number) => {
-    if (isAnimatingRef.current) return; // Ignore clicks during animation
+    if (isAnimating) return; // Ignore clicks during animation
     setNavigationDirection(index > photoIndex ? 'right' : 'left');
     setPhotoIndex(index);
   };
@@ -154,7 +154,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [modal, galleryImages.length]);
 
-  // Auto-scroll indicator container to keep active dot in view
+  // Auto-scroll indicator container to keep active dot in view (but don't force-center)
   useEffect(() => {
     if (!indicatorContainerRef.current) return;
 
@@ -163,20 +163,33 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     const container = indicatorContainerRef.current;
 
-    // Calculate scroll position to center the active indicator
-    const containerWidth = container.clientWidth;
+    // Get positions
+    const containerLeft = container.scrollLeft;
+    const containerRight = containerLeft + container.clientWidth;
     const indicatorLeft = activeIndicator.offsetLeft;
-    const indicatorWidth = activeIndicator.offsetWidth;
-    const scrollLeft = indicatorLeft - (containerWidth / 2) + (indicatorWidth / 2);
+    const indicatorRight = indicatorLeft + activeIndicator.offsetWidth;
 
-    // Scroll instantly (no smooth) to keep up with rapid clicks
-    container.scrollLeft = scrollLeft;
+    // Only scroll if the active indicator is not fully visible
+    let newScrollLeft = containerLeft;
+
+    if (indicatorLeft < containerLeft) {
+      // Indicator is to the left of visible area - scroll left to show it
+      newScrollLeft = indicatorLeft;
+    } else if (indicatorRight > containerRight) {
+      // Indicator is to the right of visible area - scroll right to show it
+      newScrollLeft = indicatorRight - container.clientWidth;
+    }
+
+    // Only update if we need to scroll
+    if (newScrollLeft !== containerLeft) {
+      container.scrollLeft = newScrollLeft;
+    }
   }, [photoIndex]);
 
   // Reset animation flag when modal closes
   useEffect(() => {
     if (!modal) {
-      isAnimatingRef.current = false;
+      setIsAnimating(false);
     }
   }, [modal]);
 
@@ -290,8 +303,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                     transition={{ duration: 0.5, ease: "easeInOut" }}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     onClick={() => toggleLightbox()}
-                    onAnimationStart={() => { isAnimatingRef.current = true; }}
-                    onAnimationComplete={() => { isAnimatingRef.current = false; }}
+                    onAnimationStart={() => { setIsAnimating(true); }}
+                    onAnimationComplete={() => { setIsAnimating(false); }}
                   >
                     {/* Backdrop rendered INSIDE motion.div so it fades in/out with its slide.
                         This prevents backdrop flashes during navigation since AnimatePresence
@@ -322,7 +335,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                       <motion.button
                         initial={{ opacity: 0 }}
                         animate={{
-                          opacity: 1,
+                          opacity: isAnimating ? 0.5 : 1,
                           scale: keyboardActive === 'left' ? 0.95 : 1,
                         }}
                         transition={{
@@ -333,24 +346,26 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           e.stopPropagation();
                           goToPrevious();
                         }}
+                        disabled={isAnimating}
                         style={{
                           width: 40,
                           height: 40,
                           borderRadius: '50%',
                           border: 'none',
                           background: 'rgba(255, 255, 255, 0.9)',
-                          cursor: 'pointer',
+                          cursor: isAnimating ? 'not-allowed' : 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                           transformOrigin: 'center center',
+                          opacity: isAnimating ? 0.5 : 1,
                         }}
-                        whileHover={{ scale: 1.1, transition: { duration: 0.15 } }}
-                        whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                        whileHover={isAnimating ? {} : { scale: 1.1, transition: { duration: 0.15 } }}
+                        whileTap={isAnimating ? {} : { scale: 0.95, transition: { duration: 0.1 } }}
                         aria-label="Previous image"
                       >
-                        <FaChevronLeft size={18} color="#333" />
+                        <FaChevronLeft size={18} color={isAnimating ? '#999' : '#333'} />
                       </motion.button>
                     </div>
 
@@ -358,7 +373,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                       <motion.button
                         initial={{ opacity: 0 }}
                         animate={{
-                          opacity: 1,
+                          opacity: isAnimating ? 0.5 : 1,
                           scale: keyboardActive === 'right' ? 0.95 : 1,
                         }}
                         transition={{
@@ -369,24 +384,26 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           e.stopPropagation();
                           goToNext();
                         }}
+                        disabled={isAnimating}
                         style={{
                           width: 40,
                           height: 40,
                           borderRadius: '50%',
                           border: 'none',
                           background: 'rgba(255, 255, 255, 0.9)',
-                          cursor: 'pointer',
+                          cursor: isAnimating ? 'not-allowed' : 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                           transformOrigin: 'center center',
+                          opacity: isAnimating ? 0.5 : 1,
                         }}
-                        whileHover={{ scale: 1.1, transition: { duration: 0.15 } }}
-                        whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                        whileHover={isAnimating ? {} : { scale: 1.1, transition: { duration: 0.15 } }}
+                        whileTap={isAnimating ? {} : { scale: 0.95, transition: { duration: 0.1 } }}
                         aria-label="Next image"
                       >
-                        <FaChevronRight size={18} color="#333" />
+                        <FaChevronRight size={18} color={isAnimating ? '#999' : '#333'} />
                       </motion.button>
                     </div>
 
