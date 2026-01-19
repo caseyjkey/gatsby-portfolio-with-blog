@@ -2,7 +2,7 @@ import React, { Suspense, useState, ReactNode, forwardRef, useMemo, useEffect, u
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalBackdrop, ModalImageContainer, ModalImage, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider } from './style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalBackdrop, ModalImageContainer, ModalImage, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -214,7 +214,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         );
       }
     } else {
-      return <img src={dict.image.publicURL} alt="project" />;
+      return <img src={dict.image.publicURL} alt="project" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />;
     }
   };
 
@@ -225,6 +225,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         toggleModal();
       }
     }} className="shadow" {...props}>
+      <CarouselGlobalStyles />
       <GalleryFrame>
         <GatsbyImage image={image} alt={title} />
       </GalleryFrame>
@@ -246,15 +247,15 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
               {/* Custom Framer Motion Carousel */}
               <div className="project-modal-carousel" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="sync" initial={false}>
                   <motion.div
                     key={photoIndex}
                     className="slide"
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.02 }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     onClick={() => toggleLightbox()}
                   >
                     <div className={fullBleedIndices[photoIndex] ? 'full-bleed' : ''} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -294,8 +295,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         zIndex: 10,
                         transformOrigin: 'center center',
                       }}
-                      whileHover={{ scale: 1.1, y: '-50%', transition: { duration: 0.15 } }}
-                      whileTap={{ scale: 0.95, y: '-50%', transition: { duration: 0.1 } }}
+                      whileHover={{ scale: 1.1, transition: { duration: 0.15 } }}
+                      whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
                       aria-label="Previous image"
                     >
                       <FaChevronLeft size={18} color="#333" />
@@ -329,8 +330,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         zIndex: 10,
                         transformOrigin: 'center center',
                       }}
-                      whileHover={{ scale: 1.1, y: '-50%', transition: { duration: 0.15 } }}
-                      whileTap={{ scale: 0.95, y: '-50%', transition: { duration: 0.1 } }}
+                      whileHover={{ scale: 1.1, transition: { duration: 0.15 } }}
+                      whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
                       aria-label="Next image"
                     >
                       <FaChevronRight size={18} color="#333" />
