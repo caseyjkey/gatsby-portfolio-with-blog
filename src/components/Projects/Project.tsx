@@ -148,7 +148,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [modal, galleryImages.length, photoIndex]);
+  }, [modal, galleryImages.length]);
 
   // Auto-scroll indicator container to keep active dot in view
   useEffect(() => {
@@ -312,7 +312,10 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           opacity: 1,
                           scale: keyboardActive === 'left' ? 0.95 : 1,
                         }}
-                        transition={{ delay: 0.1 }}
+                        transition={{
+                          opacity: { delay: 0.1 },
+                          scale: { duration: 0.1 }
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           goToPrevious();
@@ -345,7 +348,10 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           opacity: 1,
                           scale: keyboardActive === 'right' ? 0.95 : 1,
                         }}
-                        transition={{ delay: 0.1 }}
+                        transition={{
+                          opacity: { delay: 0.1 },
+                          scale: { duration: 0.1 }
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           goToNext();
