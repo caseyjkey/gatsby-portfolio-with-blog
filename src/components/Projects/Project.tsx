@@ -162,6 +162,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     if (!activeIndicator) return;
 
     const container = indicatorContainerRef.current;
+    const paddingBuffer = 20; // Match container's horizontal padding
 
     // Get positions
     const containerLeft = container.scrollLeft;
@@ -169,15 +170,15 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     const indicatorLeft = activeIndicator.offsetLeft;
     const indicatorRight = indicatorLeft + activeIndicator.offsetWidth;
 
-    // Only scroll if the active indicator is not fully visible
+    // Only scroll if the active indicator is not fully visible (with padding buffer)
     let newScrollLeft = containerLeft;
 
-    if (indicatorLeft < containerLeft) {
-      // Indicator is to the left of visible area - scroll left to show it
-      newScrollLeft = indicatorLeft;
-    } else if (indicatorRight > containerRight) {
-      // Indicator is to the right of visible area - scroll right to show it
-      newScrollLeft = indicatorRight - container.clientWidth;
+    if (indicatorLeft < containerLeft + paddingBuffer) {
+      // Indicator is to the left of visible area - scroll left to show it with buffer
+      newScrollLeft = Math.max(0, indicatorLeft - paddingBuffer);
+    } else if (indicatorRight > containerRight - paddingBuffer) {
+      // Indicator is to the right of visible area - scroll right to show it with buffer
+      newScrollLeft = indicatorRight - container.clientWidth + paddingBuffer;
     }
 
     // Only update if we need to scroll
