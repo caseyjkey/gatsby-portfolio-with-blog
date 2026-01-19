@@ -155,13 +155,13 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     if (!indicatorContainerRef.current) return;
 
     const activeIndicator = indicatorRefs.current[photoIndex];
-    if (activeIndicator) {
-      activeIndicator.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      });
-    }
+    if (!activeIndicator) return;
+
+    activeIndicator.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
   }, [photoIndex]);
 
   // Ensure publicURL exists, otherwise fallback to empty string (will be handled by lightbox)
@@ -383,6 +383,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         maxWidth: 'calc(100% - 40px)',
                         overflowX: 'auto',
                         overflowY: 'hidden',
+                        pointerEvents: 'none',
                         scrollBehavior: 'smooth',
                       }}
                     >
@@ -409,6 +410,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                             border: 'none',
                             cursor: 'pointer',
                             flexShrink: 0,
+                            pointerEvents: 'auto',
                           }}
                           aria-label={`Go to image ${index + 1}`}
                         />

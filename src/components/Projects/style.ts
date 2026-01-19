@@ -130,16 +130,6 @@ export const CarouselGlobalStyles = createGlobalStyle`
     width: 100% !important;
     height: 100% !important;
   }
-
-  /* Hide scrollbar for indicator dots */
-  .project-modal-carousel > div > div[style*="overflowX: auto"] {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-  }
-
-  .project-modal-carousel > div > div[style*="overflowX: auto"]::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-  }
 `;
 
 // Modal backdrop - blurred version of current carousel image
