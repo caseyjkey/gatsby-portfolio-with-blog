@@ -362,7 +362,9 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                       background: 'rgba(0, 0, 0, 0.5)',
                       backdropFilter: 'blur(4px)',
                       zIndex: 10,
-                      maxWidth: 'calc(100% - 24px)',
+                      maxWidth: 'calc(100% - 40px)',
+                      overflowX: 'auto',
+                      overflowY: 'hidden',
                     }}>
                       {galleryImages.map((_, index) => (
                         <motion.button
@@ -385,6 +387,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                             borderRadius: 4,
                             border: 'none',
                             cursor: 'pointer',
+                            flexShrink: 0,
                           }}
                           aria-label={`Go to image ${index + 1}`}
                         />
