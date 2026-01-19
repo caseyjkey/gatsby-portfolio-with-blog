@@ -117,17 +117,9 @@ export const CarouselGlobalStyles = createGlobalStyle`
     height: 100% !important;
   }
 
-  /* Floating image container: aspect-ratio set by JS, constrained by max dimensions */
+  /* Floating image container: enhanced shadow for depth */
   .project-modal-carousel .floating-image-container {
-    display: block !important;
-    /* Constrain to fit within carousel bounds */
-    max-width: 100% !important;
-    max-height: 100% !important;
-    /* Effects applied to container which matches visible image dimensions exactly */
-    box-shadow: 0 35px 35px rgba(0, 0, 0, 0.6);
-    border-radius: 0.75rem;
-    overflow: hidden !important;
-    position: relative !important;
+    box-shadow: 0 35px 35px rgba(0, 0, 0, 0.6) !important;
   }
 `;
 
