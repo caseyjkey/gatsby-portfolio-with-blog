@@ -341,7 +341,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: isAnimating ? 0 : 0.2, // Instant when dimming, 200ms when restoring
+                            duration: 0.5,
+                            ease: "easeInOut", // Match carousel crossfade
                           },
                           scale: { duration: 0.1 },
                         }}
@@ -380,7 +381,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: isAnimating ? 0 : 0.2, // Instant when dimming, 200ms when restoring
+                            duration: 0.5,
+                            ease: "easeInOut", // Match carousel crossfade
                           },
                           scale: { duration: 0.1 },
                         }}
