@@ -219,7 +219,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [modal, galleryImages.length]);
 
-  // Auto-scroll indicator container to keep active dot in view (but don't force-center)
+  // Auto-scroll indicator container to keep active dot in view with sliding window
   useEffect(() => {
     if (!indicatorContainerRef.current) return;
 
@@ -228,6 +228,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     const container = indicatorContainerRef.current;
     const paddingBuffer = 20; // Match container's horizontal padding
+    const visibleWindow = 3; // Number of indicators to keep visible before active one
 
     // Get positions
     const containerLeft = container.scrollLeft;
@@ -235,15 +236,22 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     const indicatorLeft = activeIndicator.offsetLeft;
     const indicatorRight = indicatorLeft + activeIndicator.offsetWidth;
 
-    // Only scroll if the active indicator is not fully visible (with padding buffer)
+    // Calculate desired scroll position to maintain sliding window
+    // Keep the active indicator at ~40% from left edge (shows movement)
     let newScrollLeft = containerLeft;
 
-    if (indicatorLeft < containerLeft + paddingBuffer) {
-      // Indicator is to the left of visible area - scroll left to show it with buffer
-      newScrollLeft = Math.max(0, indicatorLeft - paddingBuffer);
+    // Calculate target position: active indicator at 40% of container width
+    const targetScrollLeft = indicatorLeft - (container.clientWidth * 0.4);
+
+    // Only scroll if we're past the initial items and it would improve positioning
+    if (photoIndex >= visibleWindow) {
+      newScrollLeft = targetScrollLeft;
     } else if (indicatorRight > containerRight - paddingBuffer) {
-      // Indicator is to the right of visible area - scroll right to show it with buffer
+      // Near the end: scroll to show remaining indicators
       newScrollLeft = indicatorRight - container.clientWidth + paddingBuffer;
+    } else if (indicatorLeft < containerLeft + paddingBuffer) {
+      // Near the start: scroll left to show beginning indicators
+      newScrollLeft = Math.max(0, indicatorLeft - paddingBuffer);
     }
 
     // Only update if we need to scroll
