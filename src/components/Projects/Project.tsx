@@ -128,13 +128,10 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     // Start slide animation
     setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
 
-    // Set isAnimating to false in next frame, allowing dim to show before return
-    requestAnimationFrame(() => {
-      setIsAnimating(false);
-    });
-
-    // Keep pointer-events disabled for 500ms (slide duration)
+    // Restore button opacity when slide completes (500ms)
+    // This synchronizes button return animation with slide cross-fade completion
     pointerEventsTimeoutRef.current = setTimeout(() => {
+      setIsAnimating(false);
       setPointerEventsDisabled(false);
     }, 500);
   };
@@ -153,13 +150,10 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     // Start slide animation
     setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
 
-    // Set isAnimating to false in next frame, allowing dim to show before return
-    requestAnimationFrame(() => {
-      setIsAnimating(false);
-    });
-
-    // Keep pointer-events disabled for 500ms (slide duration)
+    // Restore button opacity when slide completes (500ms)
+    // This synchronizes button return animation with slide cross-fade completion
     pointerEventsTimeoutRef.current = setTimeout(() => {
+      setIsAnimating(false);
       setPointerEventsDisabled(false);
     }, 500);
   };
@@ -178,13 +172,10 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     // Start slide animation
     setPhotoIndex(index);
 
-    // Set isAnimating to false in next frame, allowing dim to show before return
-    requestAnimationFrame(() => {
-      setIsAnimating(false);
-    });
-
-    // Keep pointer-events disabled for 500ms (slide duration)
+    // Restore button opacity when slide completes (500ms)
+    // This synchronizes button return animation with slide cross-fade completion
     pointerEventsTimeoutRef.current = setTimeout(() => {
+      setIsAnimating(false);
       setPointerEventsDisabled(false);
     }, 500);
   };
