@@ -63,6 +63,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   const indicatorContainerRef = useRef<HTMLDivElement>(null);
   const indicatorRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [pointerEventsDisabled, setPointerEventsDisabled] = useState(false);
+  const pointerEventsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Detect which images are full-bleed (16:9) vs floating
   const fullBleedIndices = useMemo(() => {
@@ -113,20 +115,65 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
   // Navigation handlers with direction tracking
   const goToPrevious = () => {
-    if (isAnimating) return; // Ignore clicks during animation
+    if (isAnimating || pointerEventsDisabled) return; // Ignore clicks during animation
+
+    // Clear any existing timeout
+    if (pointerEventsTimeoutRef.current) {
+      clearTimeout(pointerEventsTimeoutRef.current);
+    }
+
     setNavigationDirection('left');
+    setPointerEventsDisabled(true); // Disable pointer events immediately
+    setIsAnimating(true); // Start animation state
+
+    // Exact 500ms timing for pointer events restoration
+    pointerEventsTimeoutRef.current = setTimeout(() => {
+      setPointerEventsDisabled(false);
+      setIsAnimating(false);
+    }, 500);
+
     setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
-    if (isAnimating) return; // Ignore clicks during animation
+    if (isAnimating || pointerEventsDisabled) return; // Ignore clicks during animation
+
+    // Clear any existing timeout
+    if (pointerEventsTimeoutRef.current) {
+      clearTimeout(pointerEventsTimeoutRef.current);
+    }
+
     setNavigationDirection('right');
+    setPointerEventsDisabled(true); // Disable pointer events immediately
+    setIsAnimating(true); // Start animation state
+
+    // Exact 500ms timing for pointer events restoration
+    pointerEventsTimeoutRef.current = setTimeout(() => {
+      setPointerEventsDisabled(false);
+      setIsAnimating(false);
+    }, 500);
+
     setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
   };
 
   const goToSlide = (index: number) => {
-    if (isAnimating) return; // Ignore clicks during animation
+    if (isAnimating || pointerEventsDisabled) return; // Ignore clicks during animation
+
+    // Clear any existing timeout
+    if (pointerEventsTimeoutRef.current) {
+      clearTimeout(pointerEventsTimeoutRef.current);
+    }
+
     setNavigationDirection(index > photoIndex ? 'right' : 'left');
+    setPointerEventsDisabled(true); // Disable pointer events immediately
+    setIsAnimating(true); // Start animation state
+
+    // Exact 500ms timing for pointer events restoration
+    pointerEventsTimeoutRef.current = setTimeout(() => {
+      setPointerEventsDisabled(false);
+      setIsAnimating(false);
+    }, 500);
+
     setPhotoIndex(index);
   };
 
@@ -191,6 +238,12 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   useEffect(() => {
     if (!modal) {
       setIsAnimating(false);
+      setPointerEventsDisabled(false);
+      // Clear any pending timeout
+      if (pointerEventsTimeoutRef.current) {
+        clearTimeout(pointerEventsTimeoutRef.current);
+        pointerEventsTimeoutRef.current = null;
+      }
     }
   }, [modal]);
 
@@ -243,9 +296,9 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         const floatingStyle = floatingSize
           ? { width: floatingSize.width, height: floatingSize.height, flexShrink: 0 }
           : {
-              aspectRatio: `${imageData.width} / ${imageData.height}`,
-              ...(isWide ? { width: '100%' } : { height: '100%' }),
-            };
+            aspectRatio: `${imageData.width} / ${imageData.height}`,
+            ...(isWide ? { width: '100%' } : { height: '100%' }),
+          };
 
         return (
           <div
@@ -304,8 +357,6 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                     transition={{ duration: 0.5, ease: "easeInOut" }}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     onClick={() => toggleLightbox()}
-                    onAnimationStart={() => { setIsAnimating(true); }}
-                    onAnimationComplete={() => { setIsAnimating(false); }}
                   >
                     {/* Backdrop rendered INSIDE motion.div so it fades in/out with its slide.
                         This prevents backdrop flashes during navigation since AnimatePresence
@@ -341,8 +392,9 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: 0.5,
-                            ease: "easeInOut", // Match carousel crossfade
+                            duration: 0.3, // 300ms
+                            ease: "easeOut", // More natural than easeInOut
+                            delay: isAnimating ? 0 : 0.2, // 200ms delay only on return
                           },
                           scale: { duration: 0.1 },
                         }}
@@ -350,22 +402,29 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           e.stopPropagation();
                           goToPrevious();
                         }}
-                        disabled={isAnimating}
+                        disabled={isAnimating || pointerEventsDisabled}
                         style={{
                           width: 40,
                           height: 40,
                           borderRadius: '50%',
                           border: 'none',
                           background: 'rgba(255, 255, 255, 0.9)',
-                          cursor: isAnimating ? 'default' : 'pointer',
+                          cursor: isAnimating || pointerEventsDisabled ? 'default' : 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                           transformOrigin: 'center center',
+                          pointerEvents: pointerEventsDisabled ? 'none' : 'auto', // JS-controlled pointer events
+                          // Hardware acceleration
+                          willChange: isAnimating ? 'opacity' : 'auto',
+                          transform: 'translateZ(0)',
+                          // Disable backdrop-filter during animation to free resources
+                          backdropFilter: isAnimating ? 'none' : 'blur(4px)',
+                          WebkitBackdropFilter: isAnimating ? 'none' : 'blur(4px)',
                         }}
-                        whileHover={isAnimating ? {} : { scale: 1.1, transition: { duration: 0.15 } }}
-                        whileTap={isAnimating ? {} : { scale: 0.95, transition: { duration: 0.1 } }}
+                        whileHover={isAnimating || pointerEventsDisabled ? {} : { scale: 1.1, transition: { duration: 0.15 } }}
+                        whileTap={isAnimating || pointerEventsDisabled ? {} : { scale: 0.95, transition: { duration: 0.1 } }}
                         aria-label="Previous image"
                       >
                         <FaChevronLeft size={18} color={isAnimating ? '#999' : '#333'} />
@@ -381,8 +440,9 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: 0.5,
-                            ease: "easeInOut", // Match carousel crossfade
+                            duration: 0.3, // 300ms
+                            ease: "easeOut", // More natural than easeInOut
+                            delay: isAnimating ? 0 : 0.2, // 200ms delay only on return
                           },
                           scale: { duration: 0.1 },
                         }}
@@ -390,22 +450,29 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           e.stopPropagation();
                           goToNext();
                         }}
-                        disabled={isAnimating}
+                        disabled={isAnimating || pointerEventsDisabled}
                         style={{
                           width: 40,
                           height: 40,
                           borderRadius: '50%',
                           border: 'none',
                           background: 'rgba(255, 255, 255, 0.9)',
-                          cursor: isAnimating ? 'default' : 'pointer',
+                          cursor: isAnimating || pointerEventsDisabled ? 'default' : 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                           transformOrigin: 'center center',
+                          pointerEvents: pointerEventsDisabled ? 'none' : 'auto', // JS-controlled pointer events
+                          // Hardware acceleration
+                          willChange: isAnimating ? 'opacity' : 'auto',
+                          transform: 'translateZ(0)',
+                          // Disable backdrop-filter during animation to free resources
+                          backdropFilter: isAnimating ? 'none' : 'blur(4px)',
+                          WebkitBackdropFilter: isAnimating ? 'none' : 'blur(4px)',
                         }}
-                        whileHover={isAnimating ? {} : { scale: 1.1, transition: { duration: 0.15 } }}
-                        whileTap={isAnimating ? {} : { scale: 0.95, transition: { duration: 0.1 } }}
+                        whileHover={isAnimating || pointerEventsDisabled ? {} : { scale: 1.1, transition: { duration: 0.15 } }}
+                        whileTap={isAnimating || pointerEventsDisabled ? {} : { scale: 0.95, transition: { duration: 0.1 } }}
                         aria-label="Next image"
                       >
                         <FaChevronRight size={18} color={isAnimating ? '#999' : '#333'} />
@@ -508,7 +575,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                 <MetaDate>{date}</MetaDate>
               </MetaTitleRow>
               <MetaIcons>
-                {icons.map((Icon, i) => <li key={i}><Icon size={21} /></li>)}
+                {icons.map((Icon, i) => <li key={i}><Icon size={20} /></li>)}
               </MetaIcons>
             </ModalMetaHeader>
 
