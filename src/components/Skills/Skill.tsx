@@ -32,21 +32,6 @@ function ClientTooltip({ target, content }: { target: string; content: string })
   );
 }
 
-// Client-only wrapper for icons
-function ClientOnlyIcon({ Icon, ...props }: { Icon: React.ComponentType<any>; [key: string]: any }) {
-  const [isClient, setIsClient] = useState(false);
-
-  React.useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return <span style={{ fontSize: '1.5rem' }}>⏳</span>;
-  }
-
-  return <Icon {...props} />;
-}
-
 export function Skill({ skill, Icon, ...props }: SkillProps) {
   const [isMounted, setIsMounted] = useState(false);
   const targetRef = useRef<HTMLSpanElement>(null);
@@ -63,7 +48,7 @@ export function Skill({ skill, Icon, ...props }: SkillProps) {
   return (
     <SkillContainer>
       <span id={id} ref={targetRef} {...props} style={{ cursor: 'pointer' }}>
-        <ClientOnlyIcon Icon={Icon} size={'1.5rem'} />
+        <Icon size={'1.5rem'} />
       </span>
       {isMounted && targetRef.current && (
         <ClientTooltip target={id} content={skill} />

@@ -1,13 +1,9 @@
-import React from 'react'
-import { XIcon } from './XIcon'
-
-// SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
-const FaLinkedinIn = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>in</span>;
-const FaInstagram = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>📷</span>;
-const FaGithub = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🐙</span>;
+import React, { useEffect, useState, useRef } from 'react'
+import { FaLinkedinIn, FaFacebookF, FaInstagram, FaGithub } from 'react-icons/fa'
+import { FaXTwitter } from 'react-icons/fa6'
 import { motion } from 'motion/react'
-import { fadeInUpVariants } from '../animations'
-import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
+import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
+import { ANIMATION_CONFIG } from '../animations/config'
 
 /* This is a generic component for placing social links anywhere
    TODO: Use props for social links */
@@ -15,7 +11,7 @@ export default function Socials(props) {
   return (
     <ul className="ftco-footer-social list-unstyled ">
       <li>
-        <Social Icon={XIcon}
+        <Social Icon={FaXTwitter}
                 link="https://x.com/thecaseykey"
         />
       </li>
@@ -39,15 +35,42 @@ export default function Socials(props) {
 }
 
 function Social({link, Icon}) {
-  const { ref, isInView } = useInViewAnimation({
-    once: true,
-  });
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const isMobile = () => {
+      if (typeof window === 'undefined') return false;
+      return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: isMobile() ? getThreshold(true) : 0,
+        rootMargin: getRootMargin(isMobile()),
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <motion.div
       ref={ref}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      animate={visible ? "visible" : "hidden"}
       variants={fadeInUpVariants}
     >
       <a href={link} target="_blank"><Icon /></a>
