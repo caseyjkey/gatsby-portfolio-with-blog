@@ -8,6 +8,11 @@ export const BlogSection = styled.section`
 export const BlogEntry = styled.div<{ isLast?: boolean }>`
     padding-bottom: ${props => props.isLast ? '1.5rem' : '2em'};
     width: 75% !important;
+
+    @media (max-width: 767.98px) {
+        width: 100% !important;
+    }
+
     img {
         width: 100%;
     }
