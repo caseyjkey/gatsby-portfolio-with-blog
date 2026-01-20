@@ -122,18 +122,18 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
       clearTimeout(pointerEventsTimeoutRef.current);
     }
 
-    setNavigationDirection('left');
+    setNavigationDirection('right');
     setPointerEventsDisabled(true); // Disable pointer events immediately
+    setIsAnimating(true); // Buttons dim instantly
 
     // Start slide animation (triggers 500ms crossfade)
     setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
 
-    // After changing photoIndex, immediately set isAnimating to false
-    // This triggers button return: 200ms delay + 300ms animation = 500ms total
-    // Both slide and buttons will finish at 500ms
-    requestAnimationFrame(() => {
+    // Set isAnimating to false at 200ms, triggering return animation:
+    // 200ms delay + 300ms animation = 500ms total (syncs with slide)
+    setTimeout(() => {
       setIsAnimating(false);
-    });
+    }, 200);
 
     // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
@@ -151,16 +151,16 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     setNavigationDirection('right');
     setPointerEventsDisabled(true); // Disable pointer events immediately
+    setIsAnimating(true); // Buttons dim instantly
 
     // Start slide animation (triggers 500ms crossfade)
     setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
 
-    // After changing photoIndex, immediately set isAnimating to false
-    // This triggers button return: 200ms delay + 300ms animation = 500ms total
-    // Both slide and buttons will finish at 500ms
-    requestAnimationFrame(() => {
+    // Set isAnimating to false at 200ms, triggering return animation:
+    // 200ms delay + 300ms animation = 500ms total (syncs with slide)
+    setTimeout(() => {
       setIsAnimating(false);
-    });
+    }, 200);
 
     // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
@@ -178,16 +178,16 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     setNavigationDirection(index > photoIndex ? 'right' : 'left');
     setPointerEventsDisabled(true); // Disable pointer events immediately
+    setIsAnimating(true); // Buttons dim instantly
 
     // Start slide animation (triggers 500ms crossfade)
     setPhotoIndex(index);
 
-    // After changing photoIndex, immediately set isAnimating to false
-    // This triggers button return: 200ms delay + 300ms animation = 500ms total
-    // Both slide and buttons will finish at 500ms
-    requestAnimationFrame(() => {
+    // Set isAnimating to false at 200ms, triggering return animation:
+    // 200ms delay + 300ms animation = 500ms total (syncs with slide)
+    setTimeout(() => {
       setIsAnimating(false);
-    });
+    }, 200);
 
     // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
@@ -219,7 +219,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [modal, galleryImages.length]);
 
-  // Auto-scroll indicator container to keep active dot in view with sliding window
+  // Auto-scroll indicator container to keep active dot centered
   useEffect(() => {
     if (!indicatorContainerRef.current) return;
 
@@ -228,36 +228,25 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     const container = indicatorContainerRef.current;
     const paddingBuffer = 20; // Match container's horizontal padding
-    const visibleWindow = 3; // Number of indicators to keep visible before active one
 
-    // Get positions
-    const containerLeft = container.scrollLeft;
-    const containerRight = containerLeft + container.clientWidth;
+    // Center the active indicator in the container
+    const containerWidth = container.clientWidth;
     const indicatorLeft = activeIndicator.offsetLeft;
-    const indicatorRight = indicatorLeft + activeIndicator.offsetWidth;
+    const indicatorWidth = activeIndicator.offsetWidth;
+    const indicatorCenter = indicatorLeft + (indicatorWidth / 2);
 
-    // Calculate desired scroll position to maintain sliding window
-    // Keep the active indicator at ~40% from left edge (shows movement)
-    let newScrollLeft = containerLeft;
+    // Calculate scroll position to center indicator (with padding buffer considered)
+    const targetScrollLeft = indicatorCenter - (containerWidth / 2);
 
-    // Calculate target position: active indicator at 40% of container width
-    const targetScrollLeft = indicatorLeft - (container.clientWidth * 0.4);
+    // Clamp to valid scroll range (accounting for padding at edges)
+    const maxScroll = container.scrollWidth - containerWidth;
+    const clampedScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScroll));
 
-    // Only scroll if we're past the initial items and it would improve positioning
-    if (photoIndex >= visibleWindow) {
-      newScrollLeft = targetScrollLeft;
-    } else if (indicatorRight > containerRight - paddingBuffer) {
-      // Near the end: scroll to show remaining indicators
-      newScrollLeft = indicatorRight - container.clientWidth + paddingBuffer;
-    } else if (indicatorLeft < containerLeft + paddingBuffer) {
-      // Near the start: scroll left to show beginning indicators
-      newScrollLeft = Math.max(0, indicatorLeft - paddingBuffer);
-    }
-
-    // Only update if we need to scroll
-    if (newScrollLeft !== containerLeft) {
-      container.scrollLeft = newScrollLeft;
-    }
+    // Smooth scroll to center position
+    container.scrollTo({
+      left: clampedScrollLeft,
+      behavior: 'smooth'
+    });
   }, [photoIndex]);
 
   // Reset animation flag when modal closes
