@@ -392,8 +392,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: 0.5, // 500ms to match slide exactly
-                            ease: "easeOut",
+                            duration: 0, // Instant change at 0ms and 500ms
                           },
                           scale: { duration: 0.1 },
                         }}
@@ -437,8 +436,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: 0.5, // 500ms to match slide exactly
-                            ease: "easeOut",
+                            duration: 0, // Instant change at 0ms and 500ms
                           },
                           scale: { duration: 0.1 },
                         }}
