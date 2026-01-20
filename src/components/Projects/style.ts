@@ -149,6 +149,12 @@ export const ModalGlobalStyles = createGlobalStyle`
     padding: 0 0.5rem !important;
   }
 
+  /* Modal body text - industry standard for readability */
+  .modal-body {
+    font-size: 1rem !important; /* 16px */
+    line-height: 1.625 !important; /* leading-relaxed */
+  }
+
   /* Base list styling (Amazon-style cards) */
   .modal-body ul,
   .modal-body ol {
