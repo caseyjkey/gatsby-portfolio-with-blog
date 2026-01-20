@@ -42,6 +42,7 @@
     "react-icons": "^4.12.0",
     "react-live": "^4.1.7",
     "react-scripts": "5.0.1",
+    "react-scroll": "^1.9.3",
     "react-visibility-sensor": "^5.1.1",
     "reactstrap": "^9.1.6",
     "sass": "^1.56.2",

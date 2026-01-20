@@ -69,15 +69,36 @@ export default function ProjectsPage({ data }) {
   function loadIcons(iconMap) {
     let Icons = [];
     const React = require('react');
+    const { lazy } = React;
 
-    // SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
     for (let type of Object.keys(iconMap || {})) {
       if (iconMap[type]) {
         iconMap[type].map(Icon => {
-          // Return a simple emoji component
-          Icons.push(({ size }: { size?: number }) => (
-            <span style={{ fontSize: size || '1rem' }}>•</span>
-          ));
+          if (type === "fa") {
+            Icons.push(lazy(() =>
+              import('react-icons/fa').then(module => ({ default: module[Icon] }))
+            ));
+          }
+          else if (type === "io") {
+            Icons.push(lazy(() =>
+              import('react-icons/io').then(module => ({ default: module[Icon] }))
+            ));
+          }
+          else if (type === "di") {
+            Icons.push(lazy(() =>
+              import('react-icons/di').then(module => ({ default: module[Icon] }))
+            ));
+          }
+          else if (type === "gr") {
+            Icons.push(lazy(() =>
+              import('react-icons/gr').then(module => ({ default: module[Icon] }))
+            ));
+          }
+          else if (type === "si") {
+            Icons.push(lazy(() =>
+              import('react-icons/si').then(module => ({ default: module[Icon] }))
+            ));
+          }
         })
       }
     }

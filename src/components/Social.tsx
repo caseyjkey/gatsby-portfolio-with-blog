@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { FaLinkedinIn, FaFacebookF, FaInstagram, FaGithub } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import { motion } from 'motion/react'
-import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
+import { fadeInUpVariants } from '../animations'
 import { ANIMATION_CONFIG } from '../animations/config'
 
 /* This is a generic component for placing social links anywhere
@@ -12,29 +12,29 @@ export default function Socials(props) {
     <ul className="ftco-footer-social list-unstyled ">
       <li>
         <Social Icon={FaXTwitter}
-                link="https://x.com/thecaseykey"
+          link="https://x.com/thecaseykey"
         />
       </li>
       <li>
         <Social Icon={FaLinkedinIn}
-                link="https://linkedin.com/in/keycasey"
+          link="https://linkedin.com/in/keycasey"
         />
       </li>
       <li>
         <Social Icon={FaInstagram}
-                link="https://instagram.com/caseyjgkey"
+          link="https://instagram.com/caseyjgkey"
         />
       </li>
       <li>
         <Social Icon={FaGithub}
-                link="https://github.com/caseyjkey"
+          link="https://github.com/caseyjkey"
         />
       </li>
     </ul>
   );
 }
 
-function Social({link, Icon}) {
+function Social({ link, Icon }) {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -54,8 +54,8 @@ function Social({link, Icon}) {
         });
       },
       {
-        threshold: isMobile() ? getThreshold(true) : 0,
-        rootMargin: getRootMargin(isMobile()),
+        threshold: 0,
+        rootMargin: ANIMATION_CONFIG.rootMargin,
       }
     );
 

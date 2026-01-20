@@ -1,14 +1,11 @@
 import React, { useEffect, useRef } from 'react'
-import style from 'styled-components'
-import { Heading } from './style.ts'
+import styled from 'styled-components'
+import { Heading } from './style'
 import { Container, Row, Col, Button } from 'reactstrap'
-import { ServicesSection } from './Services/style.ts'
+import { ServicesSection } from './Services/style'
 import Service from './Services/Service'
-
-// SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
-const FaChalkboardTeacher = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>👨‍🏫</span>;
-const MdWeb = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🌐</span>;
-const MdAndroid = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🤖</span>;
+import { FaChalkboardTeacher } from 'react-icons/fa'
+import { MdWeb, MdAndroid } from 'react-icons/md'
 import { motion } from 'motion/react'
 import { TIMING, EASING, fadeInUpVariants } from '../animations'
 import { PROGRESSIVE_STAGGER } from '../animations/config'

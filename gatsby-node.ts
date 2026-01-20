@@ -101,6 +101,14 @@ exports.createSchemaCustomization = ({ actions }) => {
       date: Date @dateformat
       present: Boolean
     }
+
+    type ProjectIcons {
+      di: [String]
+      fa: [String]
+      io: [String]
+      si: [String]
+      gr: [String]
+    }
   `);
 };
 

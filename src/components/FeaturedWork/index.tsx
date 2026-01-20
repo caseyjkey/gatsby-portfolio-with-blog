@@ -34,6 +34,7 @@ interface FeaturedProject {
       di?: string[];
       fa?: string[];
       io?: string[];
+      gr?: string[];
       si?: string[];
     };
     start: string;
@@ -100,19 +101,39 @@ const FeaturedWork = () => {
     }`
   );
 
-  // Get components for icons specified in projects.json - using SSR-safe emoji fallbacks
+  // Get components for icons specified in projects.json
   function loadIcons(iconMap: FeaturedProject['node']['icons'] = {}) {
     let Icons = [];
     if (!iconMap) return Icons;
 
-    // Simple emoji fallback for all icons
     for (let type of Object.keys(iconMap)) {
       if (iconMap[type]) {
         iconMap[type].map((Icon: string) => {
-          // Return a simple emoji component
-          Icons.push(({ size }: { size?: number }) => (
-            <span style={{ fontSize: size || '1rem' }}>•</span>
-          ));
+          if (type === "fa") {
+            Icons.push(lazy(() =>
+              import('react-icons/fa').then(module => ({ default: module[Icon] }))
+            ));
+          }
+          else if (type === "io") {
+            Icons.push(lazy(() =>
+              import('react-icons/io').then(module => ({ default: module[Icon] }))
+            ));
+          }
+          else if (type === "di") {
+            Icons.push(lazy(() =>
+              import('react-icons/di').then(module => ({ default: module[Icon] }))
+            ));
+          }
+          else if (type === "gr") {
+            Icons.push(lazy(() =>
+              import('react-icons/gr').then(module => ({ default: module[Icon] }))
+            ));
+          }
+          else if (type === "si") {
+            Icons.push(lazy(() =>
+              import('react-icons/si').then(module => ({ default: module[Icon] }))
+            ));
+          }
         })
       }
     }

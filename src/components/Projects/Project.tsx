@@ -7,12 +7,8 @@ import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 import ReadMore from '../ReadMore'
-
-// SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
-const FaGithub = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🐙</span>;
-const FaChevronLeft = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>‹</span>;
-const FaChevronRight = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>›</span>;
-const FaSearchPlus = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🔍</span>;
+import { IconType } from 'react-icons'
+import { FaGithub, FaChevronLeft, FaChevronRight, FaSearchPlus } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'motion/react'
 
 // Helper: Check if image is approximately 16:9 aspect ratio (within 5% tolerance)
