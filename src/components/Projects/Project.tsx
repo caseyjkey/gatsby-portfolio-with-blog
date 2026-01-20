@@ -124,15 +124,21 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     setNavigationDirection('left');
     setPointerEventsDisabled(true); // Disable pointer events immediately
-    setIsAnimating(true); // Start animation state
 
-    // Exact 500ms timing for pointer events restoration
+    // Start slide animation (triggers 500ms crossfade)
+    setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+
+    // After changing photoIndex, immediately set isAnimating to false
+    // This triggers button return: 200ms delay + 300ms animation = 500ms total
+    // Both slide and buttons will finish at 500ms
+    requestAnimationFrame(() => {
+      setIsAnimating(false);
+    });
+
+    // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
       setPointerEventsDisabled(false);
-      setIsAnimating(false);
     }, 500);
-
-    setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
@@ -145,15 +151,21 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     setNavigationDirection('right');
     setPointerEventsDisabled(true); // Disable pointer events immediately
-    setIsAnimating(true); // Start animation state
 
-    // Exact 500ms timing for pointer events restoration
+    // Start slide animation (triggers 500ms crossfade)
+    setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
+
+    // After changing photoIndex, immediately set isAnimating to false
+    // This triggers button return: 200ms delay + 300ms animation = 500ms total
+    // Both slide and buttons will finish at 500ms
+    requestAnimationFrame(() => {
+      setIsAnimating(false);
+    });
+
+    // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
       setPointerEventsDisabled(false);
-      setIsAnimating(false);
     }, 500);
-
-    setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
   };
 
   const goToSlide = (index: number) => {
@@ -166,15 +178,21 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
     setNavigationDirection(index > photoIndex ? 'right' : 'left');
     setPointerEventsDisabled(true); // Disable pointer events immediately
-    setIsAnimating(true); // Start animation state
 
-    // Exact 500ms timing for pointer events restoration
+    // Start slide animation (triggers 500ms crossfade)
+    setPhotoIndex(index);
+
+    // After changing photoIndex, immediately set isAnimating to false
+    // This triggers button return: 200ms delay + 300ms animation = 500ms total
+    // Both slide and buttons will finish at 500ms
+    requestAnimationFrame(() => {
+      setIsAnimating(false);
+    });
+
+    // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
       setPointerEventsDisabled(false);
-      setIsAnimating(false);
     }, 500);
-
-    setPhotoIndex(index);
   };
 
   // Keyboard navigation for carousel
