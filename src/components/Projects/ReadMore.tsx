@@ -48,7 +48,6 @@ export default function ReadMore({
         style={{
           background: 'none',
           border: 'none',
-          color: 'inherit',
           cursor: 'pointer',
           padding: 0,
           marginLeft: '4px',

@@ -6,7 +6,7 @@ import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalImageCon
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
-import ReadMore from '../ReadMore'
+import ReadMore from './ReadMore'
 import { IconType } from 'react-icons'
 import { FaGithub, FaChevronLeft, FaChevronRight, FaSearchPlus } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'motion/react'

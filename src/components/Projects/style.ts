@@ -105,6 +105,10 @@ export const ReadMoreColor = styled.div`
 	.react-read-more-read-less {
 		color: ${props => props.theme.primaryColor};
 	}
+
+	.read-more-toggle {
+		color: ${props => props.theme.primaryColor};
+	}
 `;
 
 // Global styles for project modal carousel images

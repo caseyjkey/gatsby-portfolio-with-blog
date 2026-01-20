@@ -12,12 +12,8 @@ export default function HireMe({status}) {
     once: true,
   });
 
-  const handleHireMeClick = () => {
-    const element = document.getElementById('Contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const Scroll = require('react-scroll');
+  const scroller = Scroll.scroller;
 
   return (
     <motion.div
@@ -34,7 +30,7 @@ export default function HireMe({status}) {
               <Col md={7} className="text-center">
                 <h2>I'm <span>{status}</span> for freelancing</h2>
                 {status && <p>Let's get in contact! I can turn your concept into reality.</p>}
-                {status && <p className="mb-0"><PrimaryButton className="py-3 px-5" onClick={handleHireMeClick}>Hire me</PrimaryButton></p>}
+                {status && <p className="mb-0"><PrimaryButton className="py-3 px-5" onClick={() => scroller.scrollTo('Contact', { smooth: true })}>Hire me</PrimaryButton></p>}
               </Col>
           </Row>
         </Container>

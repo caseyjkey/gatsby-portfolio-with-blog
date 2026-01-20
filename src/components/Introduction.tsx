@@ -224,11 +224,8 @@ export default function Introduction(props) {
                   e.preventDefault();
                   // Fire custom event to signal Experience section to use staggered timing
                   window.dispatchEvent(new CustomEvent('experience-scroll-trigger'));
-                  const element = document.getElementById('Experience');
-                  if (element) {
-                    const offsetPosition = element.getBoundingClientRect().top + window.pageYOffset - 40;
-                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                  }
+                  const Scroll = require('react-scroll');
+                  Scroll.scroller.scrollTo('Experience', { smooth: true, offset: 40, delay: 0 });
                 }}
               >
                 View Experience
