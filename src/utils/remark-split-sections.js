@@ -1,6 +1,9 @@
 /**
  * Remark plugin to split MDX content at thematicBreak nodes (horizontal rules)
  * and wrap each section in an AnimatedSection component for individual animation.
+ *
+ * Note: Does NOT wrap in AnimatedSectionContainer - that's handled by page templates
+ * to ensure AnimationContext is always available.
  */
 module.exports = function remarkSplitSections() {
   return function transformer(tree) {
@@ -77,14 +80,9 @@ module.exports = function remarkSplitSections() {
       });
     }
 
-    tree.children = [
-      {
-        type: 'mdxJsxFlowElement',
-        name: 'AnimatedSectionContainer',
-        attributes: [],
-        children: newChildren,
-      },
-    ];
+    // Return sections directly - no AnimatedSectionContainer wrapper
+    // Page templates are responsible for wrapping with the container
+    tree.children = newChildren;
 
     return tree;
   };

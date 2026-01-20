@@ -13,6 +13,7 @@ import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
 import { ANIMATION_CONFIG, TIMING, STAGGER, SECONDARY_DELAYS } from '../animations/config'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
+import AnimatedSectionContainer from '../components/AnimatedSectionContainer'
 
 
 export const BlogPost = styled.div`
@@ -73,8 +74,10 @@ export default function BlogPostTemplate({ data, pageContext, children }) {
                                 {post.frontmatter.date}
                             </motion.p>
 
-                            {/* Content - sections are created by remark plugin, we just provide the queue context */}
-                            {children}
+                            {/* Content - sections are created by remark plugin, wrapped in provider for context */}
+                            <AnimatedSectionContainer>
+                                {children}
+                            </AnimatedSectionContainer>
 
                             {/* Navigation links - animate when scrolled into view */}
                             <motion.div
