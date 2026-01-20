@@ -392,7 +392,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: 0, // Instant change at 0ms and 500ms
+                            duration: isAnimating ? 0 : 0.5, // 0 when dimming, 0.5 when restoring
+                            ease: "easeOut",
                           },
                           scale: { duration: 0.1 },
                         }}
@@ -436,7 +437,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: 0, // Instant change at 0ms and 500ms
+                            duration: isAnimating ? 0 : 0.5, // 0 when dimming, 0.5 when restoring
+                            ease: "easeOut",
                           },
                           scale: { duration: 0.1 },
                         }}
