@@ -128,10 +128,12 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     // Start slide animation
     setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
 
-    // Restore button opacity when slide completes (500ms)
-    // This synchronizes button return animation with slide cross-fade completion
-    pointerEventsTimeoutRef.current = setTimeout(() => {
+    // Immediately trigger button restoration animation (completes at 500ms with slide)
+    // Keep pointer-events disabled for 500ms to prevent double-clicks
+    requestAnimationFrame(() => {
       setIsAnimating(false);
+    });
+    pointerEventsTimeoutRef.current = setTimeout(() => {
       setPointerEventsDisabled(false);
     }, 500);
   };
@@ -150,10 +152,12 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     // Start slide animation
     setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
 
-    // Restore button opacity when slide completes (500ms)
-    // This synchronizes button return animation with slide cross-fade completion
-    pointerEventsTimeoutRef.current = setTimeout(() => {
+    // Immediately trigger button restoration animation (completes at 500ms with slide)
+    // Keep pointer-events disabled for 500ms to prevent double-clicks
+    requestAnimationFrame(() => {
       setIsAnimating(false);
+    });
+    pointerEventsTimeoutRef.current = setTimeout(() => {
       setPointerEventsDisabled(false);
     }, 500);
   };
@@ -172,10 +176,12 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
     // Start slide animation
     setPhotoIndex(index);
 
-    // Restore button opacity when slide completes (500ms)
-    // This synchronizes button return animation with slide cross-fade completion
-    pointerEventsTimeoutRef.current = setTimeout(() => {
+    // Immediately trigger button restoration animation (completes at 500ms with slide)
+    // Keep pointer-events disabled for 500ms to prevent double-clicks
+    requestAnimationFrame(() => {
       setIsAnimating(false);
+    });
+    pointerEventsTimeoutRef.current = setTimeout(() => {
       setPointerEventsDisabled(false);
     }, 500);
   };
