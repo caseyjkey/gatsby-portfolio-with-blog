@@ -115,25 +115,23 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
   // Navigation handlers with direction tracking
   const goToPrevious = () => {
-    if (isAnimating || pointerEventsDisabled) return; // Ignore clicks during animation
+    if (isAnimating || pointerEventsDisabled) return;
 
-    // Clear any existing timeout
     if (pointerEventsTimeoutRef.current) {
       clearTimeout(pointerEventsTimeoutRef.current);
     }
 
-    setNavigationDirection('right');
-    setPointerEventsDisabled(true); // Disable pointer events immediately
-    setIsAnimating(true); // Buttons dim instantly
+    setNavigationDirection('left');
+    setPointerEventsDisabled(true);
+    setIsAnimating(true);
 
-    // Start slide animation (triggers 500ms crossfade)
+    // Start slide animation
     setPhotoIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
 
-    // Set isAnimating to false at 200ms, triggering return animation:
-    // 200ms delay + 300ms animation = 500ms total (syncs with slide)
-    setTimeout(() => {
+    // Set isAnimating to false in next frame, allowing dim to show before return
+    requestAnimationFrame(() => {
       setIsAnimating(false);
-    }, 200);
+    });
 
     // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
@@ -142,25 +140,23 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   };
 
   const goToNext = () => {
-    if (isAnimating || pointerEventsDisabled) return; // Ignore clicks during animation
+    if (isAnimating || pointerEventsDisabled) return;
 
-    // Clear any existing timeout
     if (pointerEventsTimeoutRef.current) {
       clearTimeout(pointerEventsTimeoutRef.current);
     }
 
     setNavigationDirection('right');
-    setPointerEventsDisabled(true); // Disable pointer events immediately
-    setIsAnimating(true); // Buttons dim instantly
+    setPointerEventsDisabled(true);
+    setIsAnimating(true);
 
-    // Start slide animation (triggers 500ms crossfade)
+    // Start slide animation
     setPhotoIndex((prev) => (prev + 1) % galleryImages.length);
 
-    // Set isAnimating to false at 200ms, triggering return animation:
-    // 200ms delay + 300ms animation = 500ms total (syncs with slide)
-    setTimeout(() => {
+    // Set isAnimating to false in next frame, allowing dim to show before return
+    requestAnimationFrame(() => {
       setIsAnimating(false);
-    }, 200);
+    });
 
     // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
@@ -169,25 +165,23 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   };
 
   const goToSlide = (index: number) => {
-    if (isAnimating || pointerEventsDisabled) return; // Ignore clicks during animation
+    if (isAnimating || pointerEventsDisabled) return;
 
-    // Clear any existing timeout
     if (pointerEventsTimeoutRef.current) {
       clearTimeout(pointerEventsTimeoutRef.current);
     }
 
     setNavigationDirection(index > photoIndex ? 'right' : 'left');
-    setPointerEventsDisabled(true); // Disable pointer events immediately
-    setIsAnimating(true); // Buttons dim instantly
+    setPointerEventsDisabled(true);
+    setIsAnimating(true);
 
-    // Start slide animation (triggers 500ms crossfade)
+    // Start slide animation
     setPhotoIndex(index);
 
-    // Set isAnimating to false at 200ms, triggering return animation:
-    // 200ms delay + 300ms animation = 500ms total (syncs with slide)
-    setTimeout(() => {
+    // Set isAnimating to false in next frame, allowing dim to show before return
+    requestAnimationFrame(() => {
       setIsAnimating(false);
-    }, 200);
+    });
 
     // Keep pointer-events disabled for 500ms (slide duration)
     pointerEventsTimeoutRef.current = setTimeout(() => {
@@ -407,9 +401,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: 0.3, // 300ms
-                            ease: "easeOut", // More natural than easeInOut
-                            delay: isAnimating ? 0 : 0.2, // 200ms delay only on return
+                            duration: 0.5, // 500ms to match slide exactly
+                            ease: "easeOut",
                           },
                           scale: { duration: 0.1 },
                         }}
@@ -430,11 +423,9 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           justifyContent: 'center',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                           transformOrigin: 'center center',
-                          pointerEvents: pointerEventsDisabled ? 'none' : 'auto', // JS-controlled pointer events
-                          // Hardware acceleration
+                          pointerEvents: pointerEventsDisabled ? 'none' : 'auto',
                           willChange: isAnimating ? 'opacity' : 'auto',
                           transform: 'translateZ(0)',
-                          // Disable backdrop-filter during animation to free resources
                           backdropFilter: isAnimating ? 'none' : 'blur(4px)',
                           WebkitBackdropFilter: isAnimating ? 'none' : 'blur(4px)',
                         }}
@@ -455,9 +446,8 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                         }}
                         transition={{
                           opacity: {
-                            duration: 0.3, // 300ms
-                            ease: "easeOut", // More natural than easeInOut
-                            delay: isAnimating ? 0 : 0.2, // 200ms delay only on return
+                            duration: 0.5, // 500ms to match slide exactly
+                            ease: "easeOut",
                           },
                           scale: { duration: 0.1 },
                         }}
@@ -478,11 +468,9 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
                           justifyContent: 'center',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                           transformOrigin: 'center center',
-                          pointerEvents: pointerEventsDisabled ? 'none' : 'auto', // JS-controlled pointer events
-                          // Hardware acceleration
+                          pointerEvents: pointerEventsDisabled ? 'none' : 'auto',
                           willChange: isAnimating ? 'opacity' : 'auto',
                           transform: 'translateZ(0)',
-                          // Disable backdrop-filter during animation to free resources
                           backdropFilter: isAnimating ? 'none' : 'blur(4px)',
                           WebkitBackdropFilter: isAnimating ? 'none' : 'blur(4px)',
                         }}
