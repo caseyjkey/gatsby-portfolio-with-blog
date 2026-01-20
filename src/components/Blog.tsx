@@ -166,23 +166,24 @@ export const Blog = (props) => {
                     </Col>
                 </Row>
                 <div ref={containerRef}>
-                    <Row>
+                    <Row className="g-0 justify-content-center">
                         {data.allMdx.nodes.map(
                             ({ id, excerpt, frontmatter, fields }, index) => (
-                                <AnimatedBlogEntry
-                                    key={id}
-                                    index={index}
-                                    isInitialBatch={isCalculated && index < initialBatchCount}
-                                    shouldDelayForHeader={shouldDelayForHeader}
-                                    isCalculated={isCalculated}
-                                    isLast={index === data.allMdx.nodes.length - 1}
-                                >
-                                    <Link to={fields.slug}>
-                                        <h1>{frontmatter.title}</h1>
-                                        <p>{frontmatter.date}</p>
-                                        <p className="excerpt">{excerpt?.trim() || fields?.preview}</p>
-                                    </Link>
-                                </AnimatedBlogEntry>
+                                <Col key={id} xs={12} className="pb-4">
+                                    <AnimatedBlogEntry
+                                        index={index}
+                                        isInitialBatch={isCalculated && index < initialBatchCount}
+                                        shouldDelayForHeader={shouldDelayForHeader}
+                                        isCalculated={isCalculated}
+                                        isLast={index === data.allMdx.nodes.length - 1}
+                                    >
+                                        <Link to={fields.slug}>
+                                            <h1>{frontmatter.title}</h1>
+                                            <p>{frontmatter.date}</p>
+                                            <p className="excerpt">{excerpt?.trim() || fields?.preview}</p>
+                                        </Link>
+                                    </AnimatedBlogEntry>
+                                </Col>
                             )
                         )}
                     </Row>
