@@ -29,5 +29,5 @@
     "date": "2022-12"
   },
   "image": "images/web0.png",
-  "description": "Find the best restaurants near you! This iOS app and website fetches business data from Yelp, autodetects location using an IPInfo API, and provides address search via Google's geocoding API. Challenges during development were learning Swift, SwiftUI, and Google Cloud's App Engine and Cloud Functions. My favorite features to develop were realtime search suggestions, interface design, and developing the API with Python."
+  "description": "Find the best restaurants near you! This iOS app and website fetches business data from Yelp, autodetects location using an IPInfo API, and provides address search via Google's geocoding API.<br /><br />Challenges during development were learning Swift, SwiftUI, and Google Cloud's App Engine and Cloud Functions. My favorite features to develop were realtime search suggestions, interface design, and developing the API with Python."
 }

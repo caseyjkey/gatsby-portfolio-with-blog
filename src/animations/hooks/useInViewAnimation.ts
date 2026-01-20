@@ -64,13 +64,27 @@ export function useInViewAnimation(
 
   /**
    * Detect element position relative to viewport
+   * Respects rootMargin for determining the effective intersection zone
    */
   const detectInitialPosition = useCallback((element: HTMLElement): ElementPosition => {
     const rect = element.getBoundingClientRect();
     if (rect.bottom < 0) return 'above';  // Completely above viewport
-    if (rect.top < window.innerHeight) return 'in';  // Partially or fully in viewport
-    return 'below';  // Completely below viewport
-  }, []);
+
+    // Parse rootMargin to calculate effective intersection bottom
+    // rootMargin format: 'top right bottom left' (e.g., '0px 0px -15% 0px')
+    const marginParts = getRootMargin().split(' ');
+    const bottomMargin = marginParts[2] || '0px'; // Default to 0 if not specified
+
+    let effectiveBottom = window.innerHeight;
+    if (bottomMargin.endsWith('%')) {
+      // Negative margin shrinks the intersection zone from the bottom
+      const percentage = parseFloat(bottomMargin) / 100;
+      effectiveBottom = window.innerHeight * (1 + percentage);
+    }
+
+    if (rect.top < effectiveBottom) return 'in';  // In effective intersection zone
+    return 'below';  // Completely below effective intersection zone
+  }, [getRootMargin]);
 
   // Set up observer when ref is ready and enabled
   useEffect(() => {

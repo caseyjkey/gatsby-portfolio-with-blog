@@ -1,5 +1,4 @@
-import React, { Suspense, useState, useRef, useMemo } from 'react'
-import { UncontrolledTooltip } from 'reactstrap'
+import React, { useState, useRef, useMemo } from 'react'
 import { SkillContainer } from './style'
 import { TOOLTIP } from '../../animations/config'
 
@@ -7,6 +6,45 @@ interface SkillProps {
   skill: string;
   Icon: React.ComponentType<{ size?: string | number; style?: React.CSSProperties }>;
   [key: string]: any;
+}
+
+// Client-only tooltip component to avoid SSR issues
+function ClientTooltip({ target, content }: { target: string; content: string }) {
+  const [Tooltip, setTooltip] = useState<React.ComponentType<any> | null>(null);
+
+  React.useEffect(() => {
+    // Only import tooltip on client side
+    import('reactstrap').then(module => {
+      setTooltip(() => module.UncontrolledTooltip);
+    });
+  }, []);
+
+  if (!Tooltip) return null;
+
+  return (
+    <Tooltip
+      placement="top"
+      target={target}
+      delay={{ show: TOOLTIP.show, hide: TOOLTIP.hide }}
+    >
+      {content}
+    </Tooltip>
+  );
+}
+
+// Client-only wrapper for icons
+function ClientOnlyIcon({ Icon, ...props }: { Icon: React.ComponentType<any>; [key: string]: any }) {
+  const [isClient, setIsClient] = useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <span style={{ fontSize: '1.5rem' }}>⏳</span>;
+  }
+
+  return <Icon {...props} />;
 }
 
 export function Skill({ skill, Icon, ...props }: SkillProps) {
@@ -24,20 +62,12 @@ export function Skill({ skill, Icon, ...props }: SkillProps) {
 
   return (
     <SkillContainer>
-      <Suspense fallback={<span style={{ fontSize: '2rem' }}>⏳</span>}>
-        <span id={id} ref={targetRef} {...props} style={{ cursor: 'pointer' }}>
-          <Icon size={'1.5rem'} />
-        </span>
-        {isMounted && targetRef.current && (
-          <UncontrolledTooltip
-            placement="top"
-            target={id}
-            delay={{ show: TOOLTIP.show, hide: TOOLTIP.hide }}
-          >
-            {skill}
-          </UncontrolledTooltip>
-        )}
-      </Suspense>
+      <span id={id} ref={targetRef} {...props} style={{ cursor: 'pointer' }}>
+        <ClientOnlyIcon Icon={Icon} size={'1.5rem'} />
+      </span>
+      {isMounted && targetRef.current && (
+        <ClientTooltip target={id} content={skill} />
+      )}
     </SkillContainer>
   );
 }

@@ -6,9 +6,13 @@ import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalImageCon
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
-import ReactReadMoreReadLess from '@caseykey/react-read-more-read-less'
-import { IconType } from 'react-icons'
-import { FaGithub, FaChevronLeft, FaChevronRight, FaSearchPlus } from 'react-icons/fa'
+import ReadMore from '../ReadMore'
+
+// SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
+const FaGithub = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🐙</span>;
+const FaChevronLeft = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>‹</span>;
+const FaChevronRight = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>›</span>;
+const FaSearchPlus = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🔍</span>;
 import { motion, AnimatePresence } from 'motion/react'
 
 // Helper: Check if image is approximately 16:9 aspect ratio (within 5% tolerance)
@@ -581,14 +585,15 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
 
             {/* Description with read-more */}
             <ReadMoreColor>
-              <ReactReadMoreReadLess charLimit={200}
-                readMoreText={"Read More ▼"}
-                readLessText={"Read Less ▲"}
+              <ReadMore
+                charLimit={200}
+                readMoreText="Read More ▼"
+                readLessText="Read Less ▲"
                 readMoreClassname="read-more-less--more"
                 readLessClassname="read-more-less--less"
               >
                 {children.props.dangerouslySetInnerHTML.__html}
-              </ReactReadMoreReadLess>
+              </ReadMore>
             </ReadMoreColor>
 
             <Lightbox

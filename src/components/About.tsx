@@ -81,32 +81,23 @@ export default function About(props) {
 }`
   );
 
-  // Lazyload the an icon component
-  // [param] icon {name: String, type: String}
-  // [return] Component
+  // SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
   function loadIcon(icon) {
-    let moduleName = 'react-icons/' + icon.type;
-    if (icon.type === 'gi') {
-      return lazy(() =>
-        import('react-icons/gi').then(module =>
-          ({ default: module[icon.name] })
-        )
-      );
-    }
-    else if (icon.type === 'fi') {
-      return lazy(() =>
-        import('react-icons/fi').then(module =>
-          ({ default: module[icon.name] })
-        )
-      );
-    }
-    else if (icon.type === 'fa') {
-      return lazy(() =>
-        import('react-icons/fa').then(module =>
-          ({ default: module[icon.name] })
-        )
-      );
-    }
+    // Return a simple emoji/text component based on the icon name
+    const iconMap: Record<string, string> = {
+      'GiGraduateCap': '🎓',
+      'FiMail': '📧',
+      'FaPhone': '📞',
+      'FaMapMarkerAlt': '📍',
+      // Add more mappings as needed
+    };
+
+    const key = icon.type + icon.name;
+    const emoji = iconMap[key] || '•';
+
+    return ({ size }: { size?: number }) => (
+      <span style={{ fontSize: size || '1.5rem' }}>{emoji}</span>
+    );
   }
 
   return (

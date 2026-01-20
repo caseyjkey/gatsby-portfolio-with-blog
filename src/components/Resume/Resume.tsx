@@ -13,14 +13,15 @@ import { Heading, PrimaryButton } from '../style'
 import { ResumeSection, Page, SectionTitle, SubsectionTitle } from './style'
 import ResumeFile from '../Introduction/resume.pdf'
 import Entry from './Entry'
-import { Skill } from './Skill'
 import { AnimatedAccordionBody } from './AnimatedAccordionBody'
-import { GiGraduateCap } from 'react-icons/gi'
-import { AiOutlineTeam } from 'react-icons/ai'
-import { TbCertificate } from 'react-icons/tb'
-import { GoStar } from 'react-icons/go'
-import { MdWork } from 'react-icons/md'
-import { BsSave } from 'react-icons/bs'
+
+// SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
+const GiGraduateCap = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🎓</span>;
+const AiOutlineTeam = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>👥</span>;
+const TbCertificate = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>📜</span>;
+const GoStar = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>⭐</span>;
+const MdWork = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>💼</span>;
+const BsSave = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>💾</span>;
 import { experienceData } from '../../data/experience'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../../animations'

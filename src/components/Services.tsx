@@ -4,8 +4,11 @@ import { Heading } from './style.ts'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { ServicesSection } from './Services/style.ts'
 import Service from './Services/Service'
-import { FaChalkboardTeacher } from 'react-icons/fa'
-import { MdWeb, MdAndroid } from 'react-icons/md'
+
+// SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
+const FaChalkboardTeacher = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>👨‍🏫</span>;
+const MdWeb = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🌐</span>;
+const MdAndroid = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🤖</span>;
 import { motion } from 'motion/react'
 import { TIMING, EASING, fadeInUpVariants } from '../animations'
 import { PROGRESSIVE_STAGGER } from '../animations/config'

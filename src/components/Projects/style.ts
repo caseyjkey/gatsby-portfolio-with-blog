@@ -39,6 +39,32 @@ export const ProjectWrapper = styled.div`
   }
 `;
 
+// Wrapper for card preview images - sized to match image aspect ratio
+// This allows border-radius to apply to visible image dimensions (not 16:9 frame)
+export const CardImageWrapper = styled.div<{ $width?: number; $height?: number }>`
+  ${({ $width, $height }) => $width && $height ? `
+    width: ${$width}px;
+    height: ${$height}px;
+    flex-shrink: 0;
+  ` : `
+    max-width: 100%;
+    max-height: 100%;
+  `}
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  .gatsby-image-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .gatsby-image-wrapper img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+`;
+
 export const GalleryFrame = styled.div`
   background-color: #f8fafc;
   border: 1px solid #f1f5f9; /* border-slate-100 equivalent */
@@ -49,28 +75,6 @@ export const GalleryFrame = styled.div`
   justify-content: center;
   padding: 2rem;
   overflow: hidden;
-
-  .gatsby-image-wrapper {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  /* Disable GatsbyImage's aspect ratio padding hack */
-  .gatsby-image-wrapper > div[aria-hidden="true"] {
-    display: none !important;
-  }
-
-  .gatsby-image-wrapper picture,
-  .gatsby-image-wrapper img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-  }
-
-  .gatsby-image-wrapper img {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-  }
 `;
 
 export const ProjectInfo = styled.div`
@@ -220,7 +224,7 @@ export const ModalMetaHeader = styled.div`
   flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 
   /* Desktop (>= 640px): Horizontal row with title and date */
   @media (min-width: 640px) {

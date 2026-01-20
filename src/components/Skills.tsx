@@ -1,16 +1,16 @@
-import React, { lazy, useRef } from 'react'
+import React, { lazy } from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style'
-import { SkillsSection, SubsectionTitle, MediumHeading, SectionSubheader, TopIllustrationCol, BottomIllustrationCol } from './Skills/style'
+import { SkillsSection, MediumHeading, TopIllustrationCol, BottomIllustrationCol } from './Skills/style'
 import { Skill } from './Skills/Skill'
 import { FullStackIllustration } from './Skills/FullStackIllustration'
 import { AiSystemsIllustration } from './Skills/AiSystemsIllustration'
+import { InfrastructureIllustration } from './Skills/InfrastructureIllustration'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
-import { isSectionHeaderVisible } from '../animations/utils/headerVisibility'
 
 export default function Skills() {
     // Use the optimized hook for each section's viewport detection
@@ -22,7 +22,7 @@ export default function Skills() {
         once: true,
     });
 
-    // Full Stack illustration - independent element triggers
+    // Full Stack section - independent element triggers
     const { ref: fullStackRef, isInView: isFullStackVisible } = useInViewAnimation({
         once: true,
     });
@@ -36,7 +36,7 @@ export default function Skills() {
         once: true,
     });
 
-    // AI Systems illustration - independent element triggers
+    // AI Systems section - independent element triggers
     const { ref: aiSystemsRef, isInView: isAiSystemsVisible } = useInViewAnimation({
         once: true,
     });
@@ -50,7 +50,18 @@ export default function Skills() {
         once: true,
     });
 
-    // Lazyload the an icon component
+    // Infrastructure section - independent element triggers
+    const { ref: infrastructureRef, isInView: isInfrastructureVisible } = useInViewAnimation({
+        once: true,
+    });
+    const { ref: infrastructurePersonRef, isInView: isInfrastructurePersonVisible } = useInViewAnimation({
+        once: true,
+    });
+    const { ref: infrastructureNotebookRef, isInView: isInfrastructureNotebookVisible } = useInViewAnimation({
+        once: true,
+    });
+
+    // Lazyload an icon component
     // [param] icon {String}
     // [return] Component
     function loadIcon(Icon) {
@@ -139,7 +150,7 @@ export default function Skills() {
 
     // Calculate delay for skill icons - simple sequential stagger
     const getSkillDelay = (index: number) => {
-        return index * PROGRESSIVE_STAGGER.skills.staggerIncrement; // Each icon animates 100ms after the previous one
+        return index * PROGRESSIVE_STAGGER.skills.staggerIncrement;
     };
 
     return (
@@ -168,10 +179,11 @@ export default function Skills() {
                         </motion.div>
                     </Col>
                 </Row>
+
+                {/* Full Stack Section - Illustration on LEFT */}
                 <div>
                     <Row xs={1} md={2} className='pb-4'>
                         <TopIllustrationCol className='order-lg-1 order-md-1 order-2'>
-                            {/* Ref anchors for independent triggers */}
                             <span ref={fullStackPersonRef} style={{ position: 'absolute', top: '0' }}></span>
                             <span ref={fullStackComputerRef} style={{ position: 'absolute', top: '30%' }}></span>
                             <span ref={fullStackBadgeRef} style={{ position: 'absolute', top: '50%' }}></span>
@@ -187,11 +199,7 @@ export default function Skills() {
                                     ref={fullStackRef}
                                     initial="hidden"
                                     animate={isFullStackVisible ? "visible" : "hidden"}
-                                    custom={{
-                                        // Header-aware delay: if header is visible, wait for it; otherwise start immediately
-                                        delay: (typeof window !== 'undefined' && isSectionHeaderVisible('Skills')) ? 0.3 : 0,
-                                        distance: TIMING.sectionHeader.distance
-                                    }}
+                                    custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
                                     variants={fadeInUpVariants}
                                 >
                                     <MediumHeading className="mb-4">Full Stack Development</MediumHeading>
@@ -256,6 +264,8 @@ export default function Skills() {
                         </Col>
                     </Row>
                 </div>
+
+                {/* AI & Systems Section - Illustration on RIGHT */}
                 <div>
                     <Row xs={1} md={2} className="pt-4">
                         <Col lg={6} className="animate-box">
@@ -312,12 +322,11 @@ export default function Skills() {
                                 >
                                     {text}
                                 </motion.li>
-                            ))}
+                            )) }
                             </motion.ul>
                             </div>
                         </Col>
                         <BottomIllustrationCol>
-                            {/* Ref anchors for independent triggers */}
                             <span ref={aiSystemsPersonRef} style={{ position: 'absolute', top: '0' }}></span>
                             <span ref={aiSystemsCodeRef} style={{ position: 'absolute', top: '30%' }}></span>
                             <span ref={aiSystemsAwsRef} style={{ position: 'absolute', top: '60%' }}></span>
@@ -329,6 +338,81 @@ export default function Skills() {
                         </BottomIllustrationCol>
                     </Row>
                 </div>
+
+                {/* Infrastructure Section - Illustration on LEFT (alternating pattern) */}
+                <div>
+                    <Row xs={1} md={2} className="pt-4">
+                        <TopIllustrationCol className='order-lg-1 order-md-1 order-2'>
+                            <span ref={infrastructurePersonRef} style={{ position: 'absolute', top: '0' }}></span>
+                            <span ref={infrastructureNotebookRef} style={{ position: 'absolute', top: '30%' }}></span>
+                            <InfrastructureIllustration
+                                personVisible={isInfrastructurePersonVisible}
+                                notebookVisible={isInfrastructureNotebookVisible}
+                            />
+                        </TopIllustrationCol>
+                        <Col lg={6} className="order-lg-2 order-1">
+                            <div>
+                                <motion.div
+                                    ref={infrastructureRef}
+                                    initial="hidden"
+                                    animate={isInfrastructureVisible ? "visible" : "hidden"}
+                                    custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+                                    variants={fadeInUpVariants}
+                                >
+                                    <MediumHeading className="mb-4">Infrastructure & DevOps</MediumHeading>
+                                </motion.div>
+                                <div style={{ marginLeft: '-0.45rem' }}>
+                                {[
+                                    { skill: 'AWS', icon: 'FaAws', idx: 0 },
+                                    { skill: 'Google Cloud', icon: 'SiGooglecloud', idx: 1 },
+                                    { skill: 'GitHub Actions', icon: 'SiGithubactions', idx: 2 },
+                                    { skill: 'Bash', icon: 'DiTerminal', idx: 3 },
+                                    { skill: 'Heroku', icon: 'SiHeroku', idx: 4 },
+                                    { skill: 'Oracle', icon: 'SiOracle', idx: 5 },
+                                    { skill: 'Docker', icon: 'FaDocker', idx: 6 },
+                                    { skill: 'Kubernetes', icon: 'SiKubernetes', idx: 7 },
+                                ].map(({ skill, icon, idx }) => (
+                                    <motion.div
+                                        key={idx}
+                                        initial="hidden"
+                                        animate={isInfrastructureVisible ? "visible" : "hidden"}
+                                        custom={{ delay: getSkillDelay(idx) }}
+                                        variants={fadeInUpVariants}
+                                        style={{ display: 'inline-block' }}
+                                    >
+                                        <Skill skill={skill} Icon={loadIcon(icon)} />
+                                    </motion.div>
+                                ))}
+                            </div>
+                            <motion.ul
+                                initial="hidden"
+                                animate={isInfrastructureVisible ? "visible" : "hidden"}
+                                style={{ listStyle: 'none', padding: 0, marginLeft: '-1.4rem' }}
+                            >
+                            {[
+                                'Architect scalable cloud infrastructure on AWS and Google Cloud Platform',
+                                'Implement CI/CD pipelines with GitHub Actions for automated deployment',
+                                'Containerize applications with Docker and orchestrate with Kubernetes',
+                                'Manage database systems including PostgreSQL, Oracle, and Redis',
+                                'Automate infrastructure provisioning and configuration management',
+                            ].map((text, idx) => (
+                                <motion.li
+                                    key={idx}
+                                    className="skillListItem"
+                                    initial="hidden"
+                                    animate={isInfrastructureVisible ? "visible" : "hidden"}
+                                    custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
+                                    variants={fadeInUpVariants}
+                                >
+                                    {text}
+                                </motion.li>
+                            )) }
+                            </motion.ul>
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+
             </Container>
         </SkillsSection>
     );

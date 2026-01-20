@@ -5,7 +5,8 @@ import { theme } from '../style.ts'
 import { motion } from 'motion/react'
 import { HERO_TIMING, EASING } from '../../animations'
 
-import { IoMdArrowRoundDown } from 'react-icons/io'
+// SSR-safe icon replacement - using emoji/text fallback instead of react-icons
+const IoMdArrowRoundDown = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>↓</span>;
 
 const Container = styled.span`
   width: 70px;
@@ -60,27 +61,19 @@ const Mouse = styled.div`
 
 
 export default function FallingArrow(props) {
-  let Scroll = require('react-scroll');
-  let scroller = Scroll.scroller;
-
   const handleScroll = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // Calculate offset to position "Core Expertise" header with small margin below nav
-    // SkillsSection has 96px (6em) top padding on mobile
-    // Row with "Core Expertise" has additional pt-5 (48px) = 144px from section top
-    // We want header at ~102px from viewport top (70px nav + 32px margin)
-    // Mobile: 96px section padding - 70px nav + small buffer = ~-40 to -50
-    // Desktop: similar calculation, accounting for section structure
-    const offset = window.innerWidth < 768 ? -45 : -100;
-
-    scroller.scrollTo('Skills', {
-      smooth: true,
-      offset: offset,
-      delay: 0,
-      duration: 800
-    });
+    const element = document.getElementById('Skills');
+    if (element) {
+      // Calculate offset to position "Core Expertise" header with small margin below nav
+      // Mobile: -45, Desktop: -100
+      const offset = window.innerWidth < 768 ? -45 : -100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset + offset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
   };
 
   return (

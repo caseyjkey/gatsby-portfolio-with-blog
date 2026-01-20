@@ -26,12 +26,6 @@ export const ANIMATION_CONFIG = {
   // i.e., element bottom between 33% and 50% from bottom (or 66% to 50% from top)
   rootMargin: '0px 0px -15% 0px',
 
-  // Desktop trigger: 0% (at viewport bottom) - triggers when element touches viewport edge
-  desktopRootMargin: '0px',
-
-  // Mobile trigger: 0% - same as desktop for consistency
-  mobileRootMargin: '0px',
-
   // Mobile threshold: 5% (mobile users scroll faster)
   mobileThreshold: 0.05,
 

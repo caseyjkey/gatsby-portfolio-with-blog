@@ -9,6 +9,13 @@ export default function Service(props) {
   const link = props.link;
   const button = props.button;
 
+  const handleContactClick = () => {
+    const element = document.getElementById('Contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <ServiceContainer className="shadow" {...props}>
       <Icon className="icon" />
@@ -17,10 +24,7 @@ export default function Service(props) {
         <p>{description}</p>
       </div>
       {link && <PrimaryButton href={link} target="_blank">{button || "More info"}</PrimaryButton>}
-      {!link && <PrimaryButton onClick={() => {
-        const Scroll = require('react-scroll');
-        Scroll.scroller.scrollTo('Contact', {smooth: true});
-      }}>{button || "Contact me"}</PrimaryButton>}
+      {!link && <PrimaryButton onClick={handleContactClick}>{button || "Contact me"}</PrimaryButton>}
     </ServiceContainer>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Container, NavbarToggler, Collapse } from 'reactstrap'
-import { Link as ScrollLink } from 'react-scroll'
 import Button from './Hamburger'
 import { Link } from 'gatsby'
 import { useLocation } from '@reach/router'
@@ -153,10 +152,11 @@ export function Scroll({ to, children, offset, isHomePage, atTop, currentPath, o
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     if (onNavClick !== undefined && navIndex !== undefined) {
-      // For mobile: pass a callback that manually scrolls after delay
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 992;
 
       if (isMobile) {
+        // For mobile: prevent default and manually scroll after delay
+        e.preventDefault();
         onNavClick(e, navIndex, () => {
           const element = document.getElementById(to);
           if (element) {
@@ -170,23 +170,31 @@ export function Scroll({ to, children, offset, isHomePage, atTop, currentPath, o
           }
         });
       } else {
+        // For desktop: smooth scroll to element
+        e.preventDefault();
+        const element = document.getElementById(to);
+        if (element) {
+          const offsetValue = offset ?? -80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset + offsetValue;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
         onNavClick(e, navIndex);
       }
     }
   };
 
   const linkContent = (
-    <ScrollLink
-      to={to}
-      activeClass="react-scroll-active" // Use custom class instead of "active"
-      spy={isDesktop} // Only use spy on desktop
-      smooth={true}
-      offset={offset}
-      className={`nav-link ${isActive ? 'manual-active' : ''}`}
+    <a
+      href={`#${to}`}
+      className={`nav-link ${isActive ? 'react-scroll-active manual-active' : ''}`}
       onClick={handleClick}
     >
       <span>{children}</span>
-    </ScrollLink>
+    </a>
   );
 
   return isMobile ? (

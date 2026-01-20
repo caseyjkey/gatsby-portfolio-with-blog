@@ -3,8 +3,16 @@ import { Link } from 'gatsby'
 import styled from 'styled-components'
 import { lighten, darken } from 'polished'
 import { Container, Row, Col } from 'reactstrap'
-import { FaLinkedinIn, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAltRight, FaGithub } from 'react-icons/fa'
-import { FaXTwitter } from 'react-icons/fa6'
+import { XIcon } from './XIcon'
+
+// SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
+const FaLinkedinIn = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>in</span>;
+const FaFacebookF = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>f</span>;
+const FaInstagram = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>📷</span>;
+const FaPhone = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>📞</span>;
+const FaSign = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>✍️</span>;
+const FaLongArrowAltRight = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>→</span>;
+const FaGithub = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>🐙</span>;
 
 import { Section } from './style'
 
@@ -20,7 +28,7 @@ export default function Footer(props) {
               <p>Casey J. Key is a software engineer with a focus on finance, education, and security.</p>
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft">
                 <li>
-                  <Social Icon={FaXTwitter}
+                  <Social Icon={XIcon}
                     link="https://x.com/thecaseykey"
                   />
                 </li>

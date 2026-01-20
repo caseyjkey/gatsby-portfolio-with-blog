@@ -15,7 +15,6 @@ import Contact from '../components/Contact'
 import Footer from '../components/Footer'
 import { ThemeProvider } from 'styled-components'
 import { theme, Body } from '../components/style.ts'
-import { initPage } from '../components/main'
 import { SEO } from '../components/SEO'
 
 const IndexPage = ({ data }) => {
@@ -24,7 +23,6 @@ const IndexPage = ({ data }) => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
-    initPage();
   }, []);
 
   return (

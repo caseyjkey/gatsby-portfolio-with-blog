@@ -18,8 +18,6 @@ export {
   shouldDisableLateral,
   useIsMobile,
   useShouldDisableLateral,
-  getRootMargin,
-  getThreshold,
 } from './utils/breakpoint';
 
 export { EASING, easingOptions, createEasing } from './utils/easing';

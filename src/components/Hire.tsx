@@ -1,53 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
 import { Section, Image, PrimaryButton } from './style.ts'
 import bg from '../images/bg_1.jpg'
 import { motion } from 'motion/react'
-import { fadeInUpVariants, getRootMargin, getThreshold } from '../animations'
-import { ANIMATION_CONFIG } from '../animations/config'
+import { fadeInUpVariants } from '../animations'
+import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 
 export default function HireMe({status}) {
-  const [visible, setVisible] = useState(false);
+  const { ref, isInView } = useInViewAnimation({
+    once: true,
+  });
 
-  // Check if mobile
-  const isMobile = () => {
-    if (typeof window === 'undefined') return false;
-    return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        threshold: isMobile() ? getThreshold(true) : 0,
-        rootMargin: getRootMargin(isMobile()),
-      }
-    );
-
-    const hireSection = document.getElementById('hire-section');
-    if (hireSection) {
-      observer.observe(hireSection);
+  const handleHireMeClick = () => {
+    const element = document.getElementById('Contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
-
-    return () => observer.disconnect();
-  }, []);
-
-  var Scroll = require('react-scroll');
-  var scroller = Scroll.scroller;
+  };
 
   return (
     <motion.div
+      ref={ref}
       id="hire-section"
       initial="hidden"
-      animate={visible ? "visible" : "hidden"}
+      animate={isInView ? "visible" : "hidden"}
       variants={fadeInUpVariants}
     >
       <HireMeWrapper className="ftco-hireme" style={{backgroundImage: "url(" + bg + ")"}}>
@@ -57,7 +34,7 @@ export default function HireMe({status}) {
               <Col md={7} className="text-center">
                 <h2>I'm <span>{status}</span> for freelancing</h2>
                 {status && <p>Let's get in contact! I can turn your concept into reality.</p>}
-                {status && <p className="mb-0"><PrimaryButton className="py-3 px-5" onClick={() => scroller.scrollTo('Contact', {smooth: true})}>Hire me</PrimaryButton></p>}
+                {status && <p className="mb-0"><PrimaryButton className="py-3 px-5" onClick={handleHireMeClick}>Hire me</PrimaryButton></p>}
               </Col>
           </Row>
         </Container>

@@ -42,17 +42,3 @@ export function useShouldDisableLateral(element: HTMLElement | null): boolean {
     return shouldDisableLateral(element);
   }, [element]);
 }
-
-/**
- * Get mobile-specific root margin
- */
-export function getRootMargin(forMobile: boolean): string {
-  return forMobile ? ANIMATION_CONFIG.mobileRootMargin : ANIMATION_CONFIG.desktopRootMargin;
-}
-
-/**
- * Get mobile-specific threshold
- */
-export function getThreshold(forMobile: boolean): number {
-  return forMobile ? ANIMATION_CONFIG.mobileThreshold : 0;
-}

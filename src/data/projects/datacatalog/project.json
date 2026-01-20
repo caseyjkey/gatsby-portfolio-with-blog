@@ -25,11 +25,9 @@
       "FaGit",
       "FaApple"
     ],
-    "gr": [
-      "GrGraphQl"
-    ],
     "si": [
-      "SiRedux"
+      "SiRedux",
+      "SiGraphql"
     ]
   },
   "end": {

@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
-import Info from './Contact/Info'
 import { Section, NoPaddingBottom, PrimaryButton } from './style'
 import { Heading } from './style'
-import { FaSign, FaPhone } from 'react-icons/fa'
-import { MdEmail } from 'react-icons/md'
 import Headshot from './About/images/about.png'
+
+// SSR-safe icon replacements - using emoji/text fallbacks instead of react-icons
+const FaSign = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>✍️</span>;
+const FaPhone = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>📞</span>;
+const MdEmail = ({ size }: { size?: number }) => <span style={{ fontSize: size }}>📧</span>;
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
 import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
