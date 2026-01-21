@@ -42,8 +42,60 @@ function Resume(props) {
   });
 
   const [open, setOpen] = useState<string | null>('1');
+  const [isScrolling, setIsScrolling] = useState(false);
+
   const handleToggle = (id: string) => {
-    setOpen(open === id ? null : id);
+    const openId = open;
+    const isOpening = openId !== id; // Will this action open the accordion?
+    setOpen(openId === id ? null : id);
+
+    // Only scroll when opening an accordion, not when closing
+    if (!isOpening) return;
+
+    // Map accordion IDs to header IDs for scrolling
+    const headerIdMap: Record<string, string> = {
+      '1': 'accordion-education',
+      '2': 'accordion-experience',
+      '3': 'accordion-awards',
+      '4': 'accordion-leadership'
+    };
+
+    // Set scrolling state to pause animations during scroll
+    setIsScrolling(true);
+
+    // Wait for accordion animation to complete before scrolling
+    // Using config value ACCORDION.expansionDelay to ensure content is fully expanded
+    setTimeout(() => {
+      const headerId = headerIdMap[id];
+      if (headerId) {
+        // Use react-scroll for consistent smooth scrolling with proper easing
+        const Scroll = require('react-scroll');
+        const scroller = Scroll.scroller;
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 992;
+        const offset = isMobile ? -80 : -85;
+
+        // Fallback timeout to ensure isScrolling never gets stuck
+        // This prevents a deadlock if scroll onComplete doesn't fire
+        const fallbackTimeout = setTimeout(() => {
+          setIsScrolling(false);
+        }, ACCORDION.scrollDuration + ACCORDION.scrollSettleTime + 100);
+
+        scroller.scrollTo(headerId, {
+          smooth: true,
+          offset: offset,
+          delay: 0,
+          duration: ACCORDION.scrollDuration,
+          onComplete: () => {
+            // Clear fallback and set scrolling state to false
+            clearTimeout(fallbackTimeout);
+            setIsScrolling(false);
+          }
+        });
+      } else {
+        // No header to scroll to, clear scrolling state
+        setIsScrolling(false);
+      }
+    }, ACCORDION.expansionDelay);
   };
 
   return (
@@ -122,7 +174,7 @@ function Resume(props) {
                 <AccordionHeader targetId='1' id='accordion-education'>
                   <SectionTitle>Education</SectionTitle>
                 </AccordionHeader>
-                <AnimatedAccordionBody accordionId='1' isOpen={open === '1'}>
+                <AnimatedAccordionBody accordionId='1' isOpen={open === '1'} isScrolling={isScrolling}>
                   <Entry icon={GiGraduateCap}
                     style={{ marginTop: "10px" }}
                     title={"University of Southern California"}
@@ -152,7 +204,7 @@ function Resume(props) {
                 <AccordionHeader targetId='2' id='accordion-experience'>
                   <SectionTitle>Experience</SectionTitle>
                 </AccordionHeader>
-                <AnimatedAccordionBody accordionId='2' isOpen={open === '2'}>
+                <AnimatedAccordionBody accordionId='2' isOpen={open === '2'} isScrolling={isScrolling}>
                   {experienceData.map((entry, index) => (
                     <Entry
                       key={index}
@@ -184,7 +236,7 @@ function Resume(props) {
                 <AccordionHeader targetId='3' id='accordion-awards'>
                   <SectionTitle>Awards</SectionTitle>
                 </AccordionHeader>
-                <AnimatedAccordionBody accordionId='3' isOpen={open === '3'}>
+                <AnimatedAccordionBody accordionId='3' isOpen={open === '3'} isScrolling={isScrolling}>
                   <Entry icon={GoStar}
                     style={{ marginTop: "10px" }}
                     date={"July 2022"}
@@ -243,7 +295,7 @@ function Resume(props) {
                 <AccordionHeader targetId='4' id='accordion-leadership'>
                   <SectionTitle>Leadership</SectionTitle>
                 </AccordionHeader>
-                <AnimatedAccordionBody accordionId='4' isOpen={open === '4'}>
+                <AnimatedAccordionBody accordionId='4' isOpen={open === '4'} isScrolling={isScrolling}>
                   <Entry icon={AiOutlineTeam}
                     style={{ marginTop: "10px" }}
                     date={"September 2020 - May 2021"}

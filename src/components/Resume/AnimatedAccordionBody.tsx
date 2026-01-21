@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { ACCORDION, ANIMATION_CONFIG } from '../../animations/config';
 import { fadeInUpVariants } from '../../animations';
-import { useInView } from 'react-intersection-observer';
+import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation';
 
 interface AnimatedAccordionBodyProps {
   accordionId: string;
@@ -73,40 +73,11 @@ const AccordionAnimatedChild = ({
   hasAnimated: boolean;
   onAnimationComplete: () => void;
 }) => {
-  const { ref, inView, entry } = useInView({
-    threshold: 0.1,
-    rootMargin: ANIMATION_CONFIG.rootMargin,
-    triggerOnce: true,
+  const { ref, isInView, position } = useInViewAnimation({
+    enabled: isOpen && !isScrolling && !hasAnimated,
   });
 
-  const [wasVisible, setWasVisible] = useState(false);
-  const [position, setPosition] = useState<'above' | 'in' | 'below'>('below');
-
-  useEffect(() => {
-    if (isOpen && !isScrolling && !hasAnimated) {
-      const timer = setTimeout(() => {
-        if (entry) {
-          const rect = entry.boundingClientRect;
-          if (rect.bottom < 0) {
-            setPosition('above');
-          } else if (rect.top < window.innerHeight) {
-            setPosition('in');
-          } else {
-            setPosition('below');
-          }
-        }
-      }, ACCORDION.scrollSettleTime);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, isScrolling, hasAnimated, entry]);
-
-  useEffect(() => {
-    if (inView && !wasVisible) {
-      setWasVisible(true);
-    }
-  }, [inView, wasVisible]);
-
-  const shouldAnimate = isOpen && !isScrolling && !hasAnimated && wasVisible;
+  const shouldAnimate = isInView && !hasAnimated;
   const initial = (hasAnimated || position === 'above') ? 'visible' : 'hidden';
   const animate = shouldAnimate ? 'visible' : initial;
   
