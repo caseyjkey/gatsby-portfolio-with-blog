@@ -16,10 +16,7 @@ const SvgWrapper = styled.div`
     justify-content: center;
     max-height: 420px;
 
-    @media (min-width: 992px) {
-        margin-top: -3.25rem;
-    }
-    @media (max-width: 991.98px) {
+    @media (max-width: 767.98px) {
         margin-top: -1.5rem;
     }
 `;

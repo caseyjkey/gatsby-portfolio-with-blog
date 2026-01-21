@@ -168,57 +168,57 @@ export default function Skills() {
                                     ref={coreStackRef}
                                     initial="hidden"
                                     animate={isCoreStackVisible ? "visible" : "hidden"}
-                                    custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
+                                    custom={{ delay: 0.5, distance: TIMING.sectionHeader.distance }}
                                     variants={fadeInUpVariants}
                                 >
                                     <MediumHeading className="mb-4">Full Stack Engineering</MediumHeading>
                                 </motion.div>
                                 <div style={{ marginLeft: '-0.45rem' }}>
-                                {[
-                                    { skill: 'TypeScript', icon: 'SiTypescript', idx: 0 },
-                                    { skill: 'React', icon: 'SiReact', idx: 1 },
-                                    { skill: 'Node.js', icon: 'SiNodedotjs', idx: 2 },
-                                    { skill: 'Python', icon: 'SiPython', idx: 3 },
-                                    { skill: 'Git', icon: 'SiGit', idx: 4 },
-                                    { skill: 'Swift', icon: 'SiSwift', idx: 5 },
-                                    { skill: 'Django', icon: 'SiDjango', idx: 6 },
-                                ].map(({ skill, icon, idx }) => (
-                                    <motion.div
-                                        key={idx}
-                                        initial="hidden"
-                                        animate={isCoreStackVisible ? "visible" : "hidden"}
-                                        custom={{ delay: getSkillDelay(idx) }}
-                                        variants={fadeInUpVariants}
-                                        style={{ display: 'inline-block' }}
-                                    >
-                                        <Skill skill={skill} Icon={createIconComponent(icon)} />
-                                    </motion.div>
-                                ))}
-                            </div>
-                            <SkillList
-                                as={motion.ul}
-                                initial="hidden"
-                                animate={isCoreStackVisible ? "visible" : "hidden"}
-                            >
-                            {[
-                                'Build modern web applications with TypeScript and React',
-                                'Design scalable RESTful APIs and GraphQL services with Node.js',
-                                'Develop production backends with Django and Python',
-                                'Build native iOS applications with Swift',
-                                'Implement version control and collaborative workflows with Git',
-                            ].map((text, idx) => (
-                                <motion.li
-                                    key={idx}
-                                    className="skillListItem"
+                                    {[
+                                        { skill: 'TypeScript', icon: 'SiTypescript', idx: 0 },
+                                        { skill: 'React', icon: 'SiReact', idx: 1 },
+                                        { skill: 'Node.js', icon: 'SiNodedotjs', idx: 2 },
+                                        { skill: 'Python', icon: 'SiPython', idx: 3 },
+                                        { skill: 'Git', icon: 'SiGit', idx: 4 },
+                                        { skill: 'Swift', icon: 'SiSwift', idx: 5 },
+                                        { skill: 'Django', icon: 'SiDjango', idx: 6 },
+                                    ].map(({ skill, icon, idx }) => (
+                                        <motion.div
+                                            key={idx}
+                                            initial="hidden"
+                                            animate={isCoreStackVisible ? "visible" : "hidden"}
+                                            custom={{ delay: 0.5 + getSkillDelay(idx) }}
+                                            variants={fadeInUpVariants}
+                                            style={{ display: 'inline-block' }}
+                                        >
+                                            <Skill skill={skill} Icon={createIconComponent(icon)} />
+                                        </motion.div>
+                                    ))}
+                                </div>
+                                <SkillList
+                                    as={motion.ul}
                                     initial="hidden"
                                     animate={isCoreStackVisible ? "visible" : "hidden"}
-                                    custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
-                                    variants={fadeInUpVariants}
                                 >
-                                    {text}
-                                </motion.li>
-                            ))}
-                            </SkillList>
+                                    {[
+                                        'Build modern web applications with TypeScript and React',
+                                        'Design scalable RESTful APIs and GraphQL services with Node.js',
+                                        'Develop production backends with Django and Python',
+                                        'Build native iOS applications with Swift',
+                                        'Implement version control and collaborative workflows with Git',
+                                    ].map((text, idx) => (
+                                        <motion.li
+                                            key={idx}
+                                            className="skillListItem"
+                                            initial="hidden"
+                                            animate={isCoreStackVisible ? "visible" : "hidden"}
+                                            custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
+                                            variants={fadeInUpVariants}
+                                        >
+                                            {text}
+                                        </motion.li>
+                                    ))}
+                                </SkillList>
                             </div>
                         </Col>
                     </Row>
@@ -226,7 +226,14 @@ export default function Skills() {
 
                 {/* Machine Learning Engineering Section - Illustration on RIGHT */}
                 <div>
-                    <Row xs={1} md={2} className="pt-2 align-items-lg-start">
+                    <style>{`
+                        @media (min-width: 768px) {
+                            .ml-row {
+                                margin-top: 2rem !important;
+                            }
+                        }
+                    `}</style>
+                    <Row xs={1} md={2} className="pt-2 align-items-lg-start ml-row">
                         <Col lg={6} className="animate-box">
                             <div>
                                 <motion.div
@@ -239,46 +246,46 @@ export default function Skills() {
                                     <MediumHeading className="mb-4">Machine Learning Engineering</MediumHeading>
                                 </motion.div>
                                 <div style={{ marginLeft: '-0.45rem' }}>
-                                {[
-                                    { skill: 'PyTorch', icon: 'SiPytorch', idx: 0 },
-                                    { skill: 'TensorFlow', icon: 'SiTensorflow', idx: 1 },
-                                    { skill: 'scikit-learn', icon: 'SiScikitlearn', idx: 2 },
-                                    { skill: 'FastAPI', icon: 'SiFastapi', idx: 3 },
-                                ].map(({ skill, icon, idx }) => (
-                                    <motion.div
-                                        key={idx}
-                                        initial="hidden"
-                                        animate={isAiDataVisible ? "visible" : "hidden"}
-                                        custom={{ delay: getSkillDelay(idx) }}
-                                        variants={fadeInUpVariants}
-                                        style={{ display: 'inline-block' }}
-                                    >
-                                        <Skill skill={skill} Icon={createIconComponent(icon)} />
-                                    </motion.div>
-                                ))}
-                            </div>
-                            <SkillList
-                                as={motion.ul}
-                                initial="hidden"
-                                animate={isAiDataVisible ? "visible" : "hidden"}
-                            >
-                            {[
-                                'Build and train production ML models with PyTorch and TensorFlow',
-                                'Implement end-to-end ML pipelines with scikit-learn',
-                                'Deploy ML services with FastAPI and Docker',
-                            ].map((text, idx) => (
-                                <motion.li
-                                    key={idx}
-                                    className="skillListItem"
+                                    {[
+                                        { skill: 'PyTorch', icon: 'SiPytorch', idx: 0 },
+                                        { skill: 'TensorFlow', icon: 'SiTensorflow', idx: 1 },
+                                        { skill: 'scikit-learn', icon: 'SiScikitlearn', idx: 2 },
+                                        { skill: 'FastAPI', icon: 'SiFastapi', idx: 3 },
+                                    ].map(({ skill, icon, idx }) => (
+                                        <motion.div
+                                            key={idx}
+                                            initial="hidden"
+                                            animate={isAiDataVisible ? "visible" : "hidden"}
+                                            custom={{ delay: getSkillDelay(idx) }}
+                                            variants={fadeInUpVariants}
+                                            style={{ display: 'inline-block' }}
+                                        >
+                                            <Skill skill={skill} Icon={createIconComponent(icon)} />
+                                        </motion.div>
+                                    ))}
+                                </div>
+                                <SkillList
+                                    as={motion.ul}
                                     initial="hidden"
                                     animate={isAiDataVisible ? "visible" : "hidden"}
-                                    custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
-                                    variants={fadeInUpVariants}
                                 >
-                                    {text}
-                                </motion.li>
-                            )) }
-                            </SkillList>
+                                    {[
+                                        'Build and train production ML models with PyTorch and TensorFlow',
+                                        'Implement end-to-end ML pipelines with scikit-learn',
+                                        'Deploy ML services with FastAPI and Docker',
+                                    ].map((text, idx) => (
+                                        <motion.li
+                                            key={idx}
+                                            className="skillListItem"
+                                            initial="hidden"
+                                            animate={isAiDataVisible ? "visible" : "hidden"}
+                                            custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
+                                            variants={fadeInUpVariants}
+                                        >
+                                            {text}
+                                        </motion.li>
+                                    ))}
+                                </SkillList>
                             </div>
                         </Col>
                         <BottomIllustrationCol>
@@ -295,7 +302,14 @@ export default function Skills() {
 
                 {/* Cloud & DevOps Section - Illustration on LEFT (alternating pattern) */}
                 <div>
-                    <TightRowMobile xs={1} md={2} className="pt-2 pt-md-4 align-items-lg-start">
+                    <style>{`
+                        @media (min-width: 768px) {
+                            .cloud-row {
+                                margin-top: -6.25rem !important;
+                            }
+                        }
+                    `}</style>
+                    <TightRowMobile xs={1} md={2} className="pt-2 pt-md-4 align-items-lg-start cloud-row">
                         <TopIllustrationCol className='order-lg-1 order-md-1 order-2'>
                             <span ref={infrastructurePersonRef} style={{ position: 'absolute', top: '0' }}></span>
                             <span ref={infrastructureNotebookRef} style={{ position: 'absolute', top: '30%' }}></span>
@@ -318,49 +332,49 @@ export default function Skills() {
                                     <MediumHeading className="mb-4">Cloud & DevOps</MediumHeading>
                                 </motion.div>
                                 <div style={{ marginLeft: '-0.45rem' }}>
-                                {[
-                                    { skill: 'AWS', icon: 'SiAmazonaws', idx: 0 },
-                                    { skill: 'Google Cloud', icon: 'SiGooglecloud', idx: 1 },
-                                    { skill: 'GitHub Actions', icon: 'SiGithubactions', idx: 2 },
-                                    { skill: 'Bash', icon: 'SiGnubash', idx: 3 },
-                                    { skill: 'Docker', icon: 'SiDocker', idx: 4 },
-                                    { skill: 'Kubernetes', icon: 'SiKubernetes', idx: 5 },
-                                ].map(({ skill, icon, idx }) => (
-                                    <motion.div
-                                        key={idx}
-                                        initial="hidden"
-                                        animate={isInfrastructureVisible ? "visible" : "hidden"}
-                                        custom={{ delay: getSkillDelay(idx) }}
-                                        variants={fadeInUpVariants}
-                                        style={{ display: 'inline-block' }}
-                                    >
-                                        <Skill skill={skill} Icon={createIconComponent(icon)} />
-                                    </motion.div>
-                                ))}
-                            </div>
-                            <SkillList
-                                as={motion.ul}
-                                initial="hidden"
-                                animate={isInfrastructureVisible ? "visible" : "hidden"}
-                            >
-                            {[
-                                'Architect cloud-native infrastructure on AWS and GCP',
-                                'Build CI/CD pipelines with GitHub Actions',
-                                'Containerize and orchestrate applications with Docker and Kubernetes',
-                                'Automate infrastructure and systems with Bash scripting',
-                            ].map((text, idx) => (
-                                <motion.li
-                                    key={idx}
-                                    className="skillListItem"
+                                    {[
+                                        { skill: 'AWS', icon: 'SiAmazonaws', idx: 0 },
+                                        { skill: 'Google Cloud', icon: 'SiGooglecloud', idx: 1 },
+                                        { skill: 'GitHub Actions', icon: 'SiGithubactions', idx: 2 },
+                                        { skill: 'Bash', icon: 'SiGnubash', idx: 3 },
+                                        { skill: 'Docker', icon: 'SiDocker', idx: 4 },
+                                        { skill: 'Kubernetes', icon: 'SiKubernetes', idx: 5 },
+                                    ].map(({ skill, icon, idx }) => (
+                                        <motion.div
+                                            key={idx}
+                                            initial="hidden"
+                                            animate={isInfrastructureVisible ? "visible" : "hidden"}
+                                            custom={{ delay: getSkillDelay(idx) }}
+                                            variants={fadeInUpVariants}
+                                            style={{ display: 'inline-block' }}
+                                        >
+                                            <Skill skill={skill} Icon={createIconComponent(icon)} />
+                                        </motion.div>
+                                    ))}
+                                </div>
+                                <SkillList
+                                    as={motion.ul}
                                     initial="hidden"
                                     animate={isInfrastructureVisible ? "visible" : "hidden"}
-                                    custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
-                                    variants={fadeInUpVariants}
                                 >
-                                    {text}
-                                </motion.li>
-                            )) }
-                            </SkillList>
+                                    {[
+                                        'Architect cloud-native infrastructure on AWS and GCP',
+                                        'Build CI/CD pipelines with GitHub Actions',
+                                        'Containerize and orchestrate applications with Docker and Kubernetes',
+                                        'Automate infrastructure and systems with Bash scripting',
+                                    ].map((text, idx) => (
+                                        <motion.li
+                                            key={idx}
+                                            className="skillListItem"
+                                            initial="hidden"
+                                            animate={isInfrastructureVisible ? "visible" : "hidden"}
+                                            custom={{ delay: PROGRESSIVE_STAGGER.skills.baseDelay + (idx * PROGRESSIVE_STAGGER.skills.staggerIncrement) }}
+                                            variants={fadeInUpVariants}
+                                        >
+                                            {text}
+                                        </motion.li>
+                                    ))}
+                                </SkillList>
                             </div>
                         </Col>
                     </TightRowMobile>

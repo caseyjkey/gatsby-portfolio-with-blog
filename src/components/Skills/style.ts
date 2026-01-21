@@ -101,10 +101,10 @@ export const SectionSubheader = styled.p`
 
 export const TopIllustrationCol = styled(Col)`
   position: relative;
-  @media (min-width: 992px) {
+  @media (min-width: 768px) {
     padding-right: 3rem;
   }
-  @media (max-width: 991.98px) {
+  @media (max-width: 767.98px) {
     padding-left: 0;
     padding-right: 0;
     display: flex;
@@ -114,10 +114,10 @@ export const TopIllustrationCol = styled(Col)`
 
 export const BottomIllustrationCol = styled(Col)`
   position: relative;
-  @media (min-width: 992px) {
+  @media (min-width: 768px) {
     padding-right: 1rem;
   }
-  @media (max-width: 991.98px) {
+  @media (max-width: 767.98px) {
     padding-left: 0;
     padding-right: 0;
     display: flex;

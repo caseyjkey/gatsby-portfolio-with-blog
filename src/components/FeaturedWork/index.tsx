@@ -141,22 +141,36 @@ const FeaturedWork = () => {
   }
 
   // Calculate delay for project cards
-  // Header-aware: first card waits for header if visible, otherwise starts immediately
+  // Header-aware: cards wait for header if visible, otherwise start immediately
   const getProjectDelay = (index: number) => {
-    if (index === 0) {
-      const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('FeaturedWork');
-      return headerVisible ? 0.3 : 0;
-    }
-    return index * PROGRESSIVE_STAGGER.cards.staggerIncrement; // Simple sequential stagger
+    // Calculate base delay (header awareness)
+    const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('FeaturedWork');
+    const baseDelay = headerVisible ? 0.3 : 0;
+
+    // Add stagger increment for this card
+    return baseDelay + (index * PROGRESSIVE_STAGGER.cards.staggerIncrement);
   };
 
   // Individual viewport detection for each card
-  const { ref: card1Ref, isInView: isCard1Visible } = useInViewAnimation({ once: true });
-  const { ref: card2Ref, isInView: isCard2Visible } = useInViewAnimation({ once: true });
-  const { ref: card3Ref, isInView: isCard3Visible } = useInViewAnimation({ once: true });
+  const { ref: card1Ref, isInView: isCard1InView } = useInViewAnimation({ once: true });
+  const { ref: card2Ref, isInView: isCard2InView } = useInViewAnimation({ once: true });
+  const { ref: card3Ref, isInView: isCard3InView } = useInViewAnimation({ once: true });
 
   const cardRefs = [card1Ref, card2Ref, card3Ref];
-  const cardVisibility = [isCard1Visible, isCard2Visible, isCard3Visible];
+  const cardVisibility = [isCard1InView, isCard2InView, isCard3InView];
+
+  // On desktop, use first card's visibility as the trigger for all cards (they enter viewport together)
+  // On mobile, each card uses its own visibility (they enter viewport at different times)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const getAnimateState = (index: number) => {
+    if (isMobile) {
+      // Mobile: each card animates when it enters viewport
+      return cardVisibility[index] ? "visible" : "hidden";
+    } else {
+      // Desktop: all cards animate when first card enters viewport
+      return isCard1InView ? "visible" : "hidden";
+    }
+  };
 
   return (
     <FeaturedSection ref={sectionRef} id="FeaturedWork">
@@ -203,7 +217,7 @@ const FeaturedWork = () => {
                 <motion.div
                   ref={cardRefs[index]}
                   initial="hidden"
-                  animate={cardVisibility[index] ? "visible" : "hidden"}
+                  animate={getAnimateState(index)}
                   custom={{ delay: getProjectDelay(index) }}
                   variants={fadeInUpVariants}
                   className="h-100 d-flex flex-column"
