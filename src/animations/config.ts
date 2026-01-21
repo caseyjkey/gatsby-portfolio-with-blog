@@ -150,6 +150,13 @@ export const ACCORDION = {
   repeat: true, // Always animate on open
   duration: 0.5, // seconds
   staggerDelay: 0.1, // seconds per child item
+  // Time to wait for accordion expansion before scrolling (ms)
+  // Should be longer than the Bootstrap accordion animation (~350ms)
+  expansionDelay: 700, // ms
+  // Scroll animation duration when switching accordion sections (ms)
+  scrollDuration: 500, // ms
+  // Time to wait after scroll completes for viewport to settle before checking positions (ms)
+  scrollSettleTime: 100, // ms
 } as const;
 
 /**
