@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, forwardRef, useState } from 'react';
+import React, { useRef, forwardRef } from 'react';
 import { AccordionBody } from 'reactstrap';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { ACCORDION, ANIMATION_CONFIG } from '../../animations/config';
+import { ACCORDION } from '../../animations/config';
 import { fadeInUpVariants } from '../../animations';
 import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation';
 
@@ -11,6 +11,8 @@ interface AnimatedAccordionBodyProps {
   children: React.ReactNode;
   isOpen: boolean;
   isScrolling: boolean;
+  animatedEntries: Set<number>;
+  updateAnimatedEntries: (accordionId: string, entryIndex: number) => void;
 }
 
 const StyledAccordionBody = styled(AccordionBody)`
@@ -22,18 +24,8 @@ const StyledAccordionBody = styled(AccordionBody)`
 `;
 
 export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordionBodyProps>(
-  ({ accordionId, children, isOpen, isScrolling }, ref) => {
+  ({ accordionId, children, isOpen, isScrolling, animatedEntries, updateAnimatedEntries }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [animatedEntries, setAnimatedEntries] = useState(new Set<number>());
-
-    useEffect(() => {
-      if (!isOpen) {
-        const timer = setTimeout(() => {
-          setAnimatedEntries(new Set<number>());
-        }, ACCORDION.expansionDelay);
-        return () => clearTimeout(timer);
-      }
-    }, [isOpen]);
 
     return (
       <StyledAccordionBody accordionId={accordionId}>
@@ -41,12 +33,13 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
           {React.Children.map(children, (child, index) => (
             <AccordionAnimatedChild
               key={`${accordionId}-${index}`}
+              accordionId={accordionId}
               index={index}
               isOpen={isOpen}
               isScrolling={isScrolling}
               hasAnimated={animatedEntries.has(index)}
               onAnimationComplete={() => {
-                setAnimatedEntries(prev => new Set(prev).add(index));
+                updateAnimatedEntries(accordionId, index);
               }}
             >
               {child}
@@ -60,6 +53,7 @@ export const AnimatedAccordionBody = forwardRef<HTMLDivElement, AnimatedAccordio
 
 const AccordionAnimatedChild = ({
   children,
+  accordionId,
   index,
   isOpen,
   isScrolling,
@@ -67,6 +61,7 @@ const AccordionAnimatedChild = ({
   onAnimationComplete,
 }: {
   children: React.ReactNode;
+  accordionId: string;
   index: number;
   isOpen: boolean;
   isScrolling: boolean;
@@ -80,7 +75,7 @@ const AccordionAnimatedChild = ({
   const shouldAnimate = isInView && !hasAnimated;
   const initial = (hasAnimated || position === 'above') ? 'visible' : 'hidden';
   const animate = shouldAnimate ? 'visible' : initial;
-  
+
   return (
     <motion.div
       ref={ref}
