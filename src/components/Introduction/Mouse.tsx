@@ -67,13 +67,12 @@ export default function FallingArrow(props) {
     e.preventDefault();
     e.stopPropagation();
 
-    // Calculate offset to position "Core Expertise" header with small margin below nav
-    // SkillsSection has 96px (6em) top padding on mobile
-    // Row with "Core Expertise" has additional pt-5 (48px) = 144px from section top
-    // We want header at ~102px from viewport top (70px nav + 32px margin)
-    // Mobile: 96px section padding - 70px nav + small buffer = ~-40 to -50
-    // Desktop: similar calculation, accounting for section structure
-    const offset = window.innerWidth < 768 ? -45 : -100;
+    // Calculate offset to position "Core Expertise" header just below navbar
+    // Navbar is ~80px tall, mobile header is ~85px
+    // Negative offset in react-scroll means "stop before target" (scroll less)
+    // offset -80 = element top will be 80px from viewport top
+    const isMobile = window.innerWidth < 992; // Match navbar breakpoint
+    const offset = isMobile ? -80 : -85;
 
     scroller.scrollTo('Skills', {
       smooth: true,

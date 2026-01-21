@@ -65,10 +65,18 @@ function Resume(props) {
     setTimeout(() => {
       const headerId = headerIdMap[id];
       if (headerId) {
-        const element = document.getElementById(headerId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        // Use react-scroll for consistent smooth scrolling with proper easing
+        const Scroll = require('react-scroll');
+        const scroller = Scroll.scroller;
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 992;
+        const offset = isMobile ? -80 : -85;
+
+        scroller.scrollTo(headerId, {
+          smooth: true,
+          offset: offset,
+          delay: 0,
+          duration: 500
+        });
       }
     }, 700);
   };

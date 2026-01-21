@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'reactstrap'
 import { Heading } from './style'
-import { SkillsSection, MediumHeading, TopIllustrationCol, BottomIllustrationCol } from './Skills/style'
+import { SkillsSection, MediumHeading, TopIllustrationCol, BottomIllustrationCol, SkillList } from './Skills/style'
 import { Skill } from './Skills/Skill'
 import { FullStackIllustration } from './Skills/FullStackIllustration'
 import { AiSystemsIllustration } from './Skills/AiSystemsIllustration'
@@ -11,24 +11,29 @@ import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
 import { useInViewAnimation } from '../animations/hooks/useInViewAnimation'
 import { ANIMATION_CONFIG, TIMING, SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../animations/config'
+
+const TightRowMobile = styled(Row)`
+    @media (max-width: 767.98px) {
+        margin-top: -3rem !important;
+    }
+`;
 // Direct react-icons imports
 import {
     SiTypescript,
     SiReact,
     SiNodedotjs,
     SiPython,
-    SiMysql,
     SiGit,
+    SiSwift,
+    SiDjango,
     SiPytorch,
-    SiJupyter,
-    SiRedis,
-    SiPostgresql,
+    SiScikitlearn,
+    SiTensorflow,
+    SiFastapi,
     SiAmazonaws,
     SiGooglecloud,
     SiGithubactions,
     SiGnubash,
-    SiHeroku,
-    SiOracle,
     SiDocker,
     SiKubernetes,
 } from 'react-icons/si'
@@ -39,18 +44,17 @@ const iconMap: Record<string, React.ComponentType<{ size?: string | number }>> =
     SiReact,
     SiNodedotjs,
     SiPython,
-    SiMysql,
     SiGit,
+    SiSwift,
+    SiDjango,
     SiPytorch,
-    SiJupyter,
-    SiRedis,
-    SiPostgresql,
+    SiScikitlearn,
+    SiTensorflow,
+    SiFastapi,
     SiAmazonaws,
     SiGooglecloud,
     SiGithubactions,
     SiGnubash,
-    SiHeroku,
-    SiOracle,
     SiDocker,
     SiKubernetes,
 };
@@ -145,9 +149,9 @@ export default function Skills() {
                     </Col>
                 </Row>
 
-                {/* Core Stack Section - Illustration on LEFT */}
+                {/* Full Stack Engineering Section - Illustration on LEFT */}
                 <div>
-                    <Row xs={1} md={2} className='pb-4'>
+                    <Row xs={1} md={2} className='align-items-lg-start'>
                         <TopIllustrationCol className='order-lg-1 order-md-1 order-2'>
                             <span ref={coreStackPersonRef} style={{ position: 'absolute', top: '0' }}></span>
                             <span ref={coreStackComputerRef} style={{ position: 'absolute', top: '30%' }}></span>
@@ -167,7 +171,7 @@ export default function Skills() {
                                     custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
                                     variants={fadeInUpVariants}
                                 >
-                                    <MediumHeading className="mb-4">Core Stack</MediumHeading>
+                                    <MediumHeading className="mb-4">Full Stack Engineering</MediumHeading>
                                 </motion.div>
                                 <div style={{ marginLeft: '-0.45rem' }}>
                                 {[
@@ -175,8 +179,9 @@ export default function Skills() {
                                     { skill: 'React', icon: 'SiReact', idx: 1 },
                                     { skill: 'Node.js', icon: 'SiNodedotjs', idx: 2 },
                                     { skill: 'Python', icon: 'SiPython', idx: 3 },
-                                    { skill: 'SQL', icon: 'SiMysql', idx: 4 },
-                                    { skill: 'Git', icon: 'SiGit', idx: 5 },
+                                    { skill: 'Git', icon: 'SiGit', idx: 4 },
+                                    { skill: 'Swift', icon: 'SiSwift', idx: 5 },
+                                    { skill: 'Django', icon: 'SiDjango', idx: 6 },
                                 ].map(({ skill, icon, idx }) => (
                                     <motion.div
                                         key={idx}
@@ -190,15 +195,16 @@ export default function Skills() {
                                     </motion.div>
                                 ))}
                             </div>
-                            <motion.ul
+                            <SkillList
+                                as={motion.ul}
                                 initial="hidden"
                                 animate={isCoreStackVisible ? "visible" : "hidden"}
-                                style={{ listStyle: 'none', padding: 0, marginLeft: '-1.4rem' }}
                             >
                             {[
                                 'Build modern web applications with TypeScript and React',
                                 'Design scalable RESTful APIs and GraphQL services with Node.js',
-                                'Develop data-driven solutions with Python and SQL databases',
+                                'Develop production backends with Django and Python',
+                                'Build native iOS applications with Swift',
                                 'Implement version control and collaborative workflows with Git',
                             ].map((text, idx) => (
                                 <motion.li
@@ -212,15 +218,15 @@ export default function Skills() {
                                     {text}
                                 </motion.li>
                             ))}
-                            </motion.ul>
+                            </SkillList>
                             </div>
                         </Col>
                     </Row>
                 </div>
 
-                {/* AI & Data Section - Illustration on RIGHT */}
+                {/* Machine Learning Engineering Section - Illustration on RIGHT */}
                 <div>
-                    <Row xs={1} md={2} className="pt-4">
+                    <Row xs={1} md={2} className="pt-2 align-items-lg-start">
                         <Col lg={6} className="animate-box">
                             <div>
                                 <motion.div
@@ -230,14 +236,14 @@ export default function Skills() {
                                     custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
                                     variants={fadeInUpVariants}
                                 >
-                                    <MediumHeading className="mb-4">AI & Data</MediumHeading>
+                                    <MediumHeading className="mb-4">Machine Learning Engineering</MediumHeading>
                                 </motion.div>
                                 <div style={{ marginLeft: '-0.45rem' }}>
                                 {[
                                     { skill: 'PyTorch', icon: 'SiPytorch', idx: 0 },
-                                    { skill: 'Jupyter', icon: 'SiJupyter', idx: 1 },
-                                    { skill: 'Redis', icon: 'SiRedis', idx: 2 },
-                                    { skill: 'PostgreSQL', icon: 'SiPostgresql', idx: 3 },
+                                    { skill: 'TensorFlow', icon: 'SiTensorflow', idx: 1 },
+                                    { skill: 'scikit-learn', icon: 'SiScikitlearn', idx: 2 },
+                                    { skill: 'FastAPI', icon: 'SiFastapi', idx: 3 },
                                 ].map(({ skill, icon, idx }) => (
                                     <motion.div
                                         key={idx}
@@ -251,16 +257,15 @@ export default function Skills() {
                                     </motion.div>
                                 ))}
                             </div>
-                            <motion.ul
+                            <SkillList
+                                as={motion.ul}
                                 initial="hidden"
                                 animate={isAiDataVisible ? "visible" : "hidden"}
-                                style={{ listStyle: 'none', padding: 0, marginLeft: '-1.4rem' }}
                             >
                             {[
-                                'Build and train machine learning models with PyTorch',
-                                'Perform data analysis and visualization in Jupyter notebooks',
-                                'Implement high-performance caching with Redis',
-                                'Design and manage relational databases with PostgreSQL',
+                                'Build and train production ML models with PyTorch and TensorFlow',
+                                'Implement end-to-end ML pipelines with scikit-learn',
+                                'Deploy ML services with FastAPI and Docker',
                             ].map((text, idx) => (
                                 <motion.li
                                     key={idx}
@@ -273,7 +278,7 @@ export default function Skills() {
                                     {text}
                                 </motion.li>
                             )) }
-                            </motion.ul>
+                            </SkillList>
                             </div>
                         </Col>
                         <BottomIllustrationCol>
@@ -288,16 +293,17 @@ export default function Skills() {
                     </Row>
                 </div>
 
-                {/* Infrastructure Section - Illustration on LEFT (alternating pattern) */}
+                {/* Cloud & DevOps Section - Illustration on LEFT (alternating pattern) */}
                 <div>
-                    <Row xs={1} md={2} className="pt-4">
+                    <TightRowMobile xs={1} md={2} className="pt-2 pt-md-4 align-items-lg-start">
                         <TopIllustrationCol className='order-lg-1 order-md-1 order-2'>
                             <span ref={infrastructurePersonRef} style={{ position: 'absolute', top: '0' }}></span>
                             <span ref={infrastructureNotebookRef} style={{ position: 'absolute', top: '30%' }}></span>
                             <AiSystemsIllustration
                                 personVisible={isInfrastructurePersonVisible}
                                 codeBlocksVisible={isInfrastructureNotebookVisible}
-                                awsLogoVisible={false}
+                                awsLogoVisible={true}
+                                dockerLogoVisible={true}
                             />
                         </TopIllustrationCol>
                         <Col lg={6} className="order-lg-2 order-1">
@@ -309,7 +315,7 @@ export default function Skills() {
                                     custom={{ delay: 0, distance: TIMING.sectionHeader.distance }}
                                     variants={fadeInUpVariants}
                                 >
-                                    <MediumHeading className="mb-4">Infrastructure</MediumHeading>
+                                    <MediumHeading className="mb-4">Cloud & DevOps</MediumHeading>
                                 </motion.div>
                                 <div style={{ marginLeft: '-0.45rem' }}>
                                 {[
@@ -317,10 +323,8 @@ export default function Skills() {
                                     { skill: 'Google Cloud', icon: 'SiGooglecloud', idx: 1 },
                                     { skill: 'GitHub Actions', icon: 'SiGithubactions', idx: 2 },
                                     { skill: 'Bash', icon: 'SiGnubash', idx: 3 },
-                                    { skill: 'Heroku', icon: 'SiHeroku', idx: 4 },
-                                    { skill: 'Oracle', icon: 'SiOracle', idx: 5 },
-                                    { skill: 'Docker', icon: 'SiDocker', idx: 6 },
-                                    { skill: 'Kubernetes', icon: 'SiKubernetes', idx: 7 },
+                                    { skill: 'Docker', icon: 'SiDocker', idx: 4 },
+                                    { skill: 'Kubernetes', icon: 'SiKubernetes', idx: 5 },
                                 ].map(({ skill, icon, idx }) => (
                                     <motion.div
                                         key={idx}
@@ -334,18 +338,16 @@ export default function Skills() {
                                     </motion.div>
                                 ))}
                             </div>
-                            <motion.ul
+                            <SkillList
+                                as={motion.ul}
                                 initial="hidden"
                                 animate={isInfrastructureVisible ? "visible" : "hidden"}
-                                style={{ listStyle: 'none', padding: 0, marginLeft: '-1.4rem' }}
                             >
                             {[
-                                'Architect and deploy scalable cloud infrastructure on AWS and GCP',
-                                'Implement CI/CD pipelines with GitHub Actions for automated testing and deployment',
-                                'Automate system administration tasks with Bash scripting',
-                                'Deploy and manage applications on container platforms',
-                                'Design and manage database systems including PostgreSQL and Oracle',
-                                'Containerize applications with Docker and orchestrate with Kubernetes',
+                                'Architect cloud-native infrastructure on AWS and GCP',
+                                'Build CI/CD pipelines with GitHub Actions',
+                                'Containerize and orchestrate applications with Docker and Kubernetes',
+                                'Automate infrastructure and systems with Bash scripting',
                             ].map((text, idx) => (
                                 <motion.li
                                     key={idx}
@@ -358,10 +360,10 @@ export default function Skills() {
                                     {text}
                                 </motion.li>
                             )) }
-                            </motion.ul>
+                            </SkillList>
                             </div>
                         </Col>
-                    </Row>
+                    </TightRowMobile>
                 </div>
 
             </Container>

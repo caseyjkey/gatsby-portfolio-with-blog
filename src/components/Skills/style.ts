@@ -84,9 +84,6 @@ export const MediumHeading = styled.h3`
   span{
     font-weight: 400;
   }
-  @media (max-width: 767.98px) {
-    font-size: 38px;
-  }
 `;
 
 export const SectionSubheader = styled.p`
@@ -107,11 +104,33 @@ export const TopIllustrationCol = styled(Col)`
   @media (min-width: 992px) {
     padding-right: 3rem;
   }
+  @media (max-width: 991.98px) {
+    padding-left: 0;
+    padding-right: 0;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 export const BottomIllustrationCol = styled(Col)`
   position: relative;
   @media (min-width: 992px) {
     padding-right: 1rem;
+  }
+  @media (max-width: 991.98px) {
+    padding-left: 0;
+    padding-right: 0;
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+export const SkillList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin-left: -1.4rem;
+
+  @media (max-width: 767.98px) {
+    margin-left: -0.35rem;
   }
 `;

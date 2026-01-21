@@ -8,9 +8,31 @@ interface InfrastructureIllustrationProps {
   personVisible?: boolean
 }
 
+const SvgWrapper = styled.div`
+    overflow: visible;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    max-height: 420px;
+
+    @media (min-width: 992px) {
+        margin-top: -3.25rem;
+    }
+    @media (max-width: 991.98px) {
+        margin-top: -1.5rem;
+    }
+`;
+
 const Svg = styled.svg`
-  padding-right: 3rem;
-  padding-top: 0.5rem;
+  width: 100%;
+  height: auto;
+  overflow: visible !important;
+
+  /* Scale down entire SVG by 30% */
+  transform: scale(0.7);
+  transform-origin: top center;
+
   .primaryColor {
     fill: ${props => props.theme.primaryColor};
   }
@@ -28,11 +50,12 @@ export function InfrastructureIllustration({
       animate={personVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
       transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
     >
-      <Svg
-        id="sitting-illustration"
-        viewBox="-100 0 460 440"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <SvgWrapper>
+        <Svg
+          id="sitting-illustration"
+          viewBox="-150 -50 560 520"
+          xmlns="http://www.w3.org/2000/svg"
+        >
         {/* Background blob */}
         <motion.path
           initial={{ opacity: 0 }}
@@ -43,7 +66,15 @@ export function InfrastructureIllustration({
         />
 
         {/* Person body */}
-        <g id="body">
+        <motion.g
+          id="body"
+          animate={{ y: [0, -10, 0] }}
+          transition={{
+            repeat: Infinity,
+            duration: 3,
+            ease: "easeInOut"
+          }}
+        >
           {/* Head */}
           <g id="head">
             {/* Neck connector */}
@@ -135,13 +166,14 @@ export function InfrastructureIllustration({
             {/* Other shoe */}
             <path d="M150.9,347c-0.7-0.5,12.3-10.4,13.4-10.2c1.1,0.2,11.6,9.4,12.8,9.4c1.1,0,27.8,8.5,25.2,16.4l-25.5-0.6l-19.9-1.1C156.8,360.9,155.3,350.7,150.9,347z" fill="#2B2B2B"></path>
           </g>
-        </g>
+        </motion.g>
 
         {/* Shadow */}
         <g opacity="0.2">
           <path d="M1.5,406.1c0-1.2,1.9-1.8,5.4-2.8c6.2-1.8,17.3-4,32-5.3c22.5-2,53.4-2,87.4-3.3c19.6-0.7,41.2,1,58.8,1.9c39.1,1.9,65.9,5.2,65.9,9.6c0,4.4-26.9,8.2-66.4,10.1c-7.3,0.4-16.1-0.5-24.2-0.3c-11.1,0.3-21.9,1.6-34.1,1.6c-4.2,0-8.4,0-12.6-0.1c-9.2-0.1-18.1-0.3-26.6-0.5C37.3,415.4,1.5,411.1,1.5,406.1z" fill="#0A0A0A"></path>
         </g>
-      </Svg>
+        </Svg>
+      </SvgWrapper>
     </motion.div>
   )
 }

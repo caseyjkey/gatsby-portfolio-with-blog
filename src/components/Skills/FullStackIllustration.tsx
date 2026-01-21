@@ -10,9 +10,27 @@ interface FullStackIllustrationProps {
     badgeVisible?: boolean
 }
 
+const SvgWrapper = styled.div`
+    overflow: visible;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    max-height: 550px;
+
+    @media (min-width: 992px) {
+        padding-top: 1rem;
+    }
+`;
+
 const Svg = styled.svg`
-    padding-right: 3rem;
-    padding-top: 0.5rem;
+    width: 100%;
+    height: auto;
+
+    /* Scale down entire SVG by 30% */
+    transform: scale(0.7);
+    transform-origin: top center;
+
     .primaryColor {
         fill: ${props => props.theme.primaryColor};
     }
@@ -28,7 +46,8 @@ export function FullStackIllustration({ personVisible = false, computerVisible =
             animate={personVisible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -20, y: 30 }}
             transition={{ duration: ILLUSTRATION.element.duration, delay: ILLUSTRATION.element.delay }}
         >
-            <Svg id="ade8c9af-7e2e-4eda-b5c8-b06129257226" width="100%" height="100%" viewBox="0 0 1076.06371 755.2279">
+            <SvgWrapper>
+                <Svg id="ade8c9af-7e2e-4eda-b5c8-b06129257226" width="100%" height="100%" viewBox="0 0 1076.06371 755.2279">
             {/* Decorative leaves - bottom right */}
             <motion.g
                 initial={{ opacity: 0 }}
@@ -101,6 +120,7 @@ export function FullStackIllustration({ personVisible = false, computerVisible =
             <rect x="748.06371" y="744.45791" width="283" height="2" fill="#3f3d56"></rect>
             </motion.g>
             </Svg>
+        </SvgWrapper>
         </motion.div>
     )
 }

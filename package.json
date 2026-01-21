@@ -55,7 +55,11 @@
     "yet-another-react-lightbox": "^3.28.0"
   },
   "scripts": {
-    "dev": "NODE_OPTIONS='--max-old-space-size=6144' GATSBY_CPU_COUNT=4 yes Y | gatsby develop -H 0.0.0.0 --port 8001",
+    "dev": "NODE_OPTIONS='--max-old-space-size=6144' GATSBY_CPU_COUNT=4 yes Y | gatsby develop -H 0.0.0.0 --port 8001 2>&1 | tee /tmp/gatsby-dev.log",
+    "dev:no-logs": "NODE_OPTIONS='--max-old-space-size=6144' GATSBY_CPU_COUNT=4 yes Y | gatsby develop -H 0.0.0.0 --port 8001",
+    "dev:status": "bash scripts/dev-status.sh",
+    "dev:logs": "tail -100 /tmp/gatsby-dev.log 2>/dev/null || echo 'No log file found. Start dev server first'",
+    "dev:errors": "grep -i 'error' /tmp/gatsby-dev.log 2>/dev/null | tail -20 || echo 'No log file found. Start dev server first'",
     "start": "gatsby develop -H 0.0.0.0",
     "build": "gatsby build",
     "serve": "gatsby serve",
