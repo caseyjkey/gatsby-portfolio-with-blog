@@ -35,21 +35,22 @@ const ResumeWrap = styled.div`
 		font-weight: 700;
 		font-size: 16px;
     color: ${(props) => props.theme.primaryColor};
-    white-space: nowrap;
 
-    // Mobile: date in its own row above h2, spans columns 3-4
+    // Mobile: date in its own row above h2, spans columns 3-4, allow wrapping
     @media (max-width: 767.98px) {
       grid-column: 3 / 5;
       grid-row: 1;
       margin-bottom: 0.25rem;
+      white-space: normal;
     }
 
-    // Desktop: date in column 4, same row as h2
+    // Desktop: date in column 4, same row as h2, no wrapping
     @media (min-width: 768px) {
       grid-column: 4;
       grid-row: 2;
       align-self: center;
       margin-left: 1rem;
+      white-space: nowrap;
     }
   }
 
@@ -107,12 +108,24 @@ const Description = styled.div`
 export default function Entry({ icon, date, title, subtitle, graduationDate, children, style }) {
   let Icon = icon;
 
+  // Split date by ", " to keep date ranges together on mobile
+  const dateParts = date ? date.split(', ') : [];
+
   return (
     <ResumeWrap style={style}>
       <div className="icon d-flex align-items-center justify-content-center">
         <span><Icon /></span>
       </div>
-      {date && <span className="date">{date}</span>}
+      {date && (
+        <span className="date">
+          {dateParts.map((part, i) => (
+            <React.Fragment key={i}>
+              {i > 0 && <>, </>}
+              <span style={{ display: 'inline-block' }}>{part}</span>
+            </React.Fragment>
+          ))}
+        </span>
+      )}
       <h2>{title}</h2>
       {graduationDate && <span className="gpa">{graduationDate}</span>}
       <span className="subtitle">{subtitle}</span>
