@@ -7,6 +7,7 @@ import { FaLinkedinIn, FaFacebookF, FaInstagram, FaPhone, FaSign, FaLongArrowAlt
 import { FaXTwitter } from 'react-icons/fa6'
 
 import { Section } from './style'
+import { Social } from './Social'
 
 
 export default function Footer(props) {
@@ -66,13 +67,6 @@ export default function Footer(props) {
     </FooterSection>
   );
 };
-
-function Social({ link, Icon }) {
-  // Simple link without animation for footer
-  return (
-    <a href={link} target="_blank"><Icon /></a>
-  );
-}
 
 const FooterSection = styled.footer`
   padding: 3em 0;

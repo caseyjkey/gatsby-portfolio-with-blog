@@ -15,9 +15,12 @@ const SvgWrapper = styled.div`
     align-items: flex-start;
     justify-content: center;
     max-height: 420px;
+    margin-top: -3rem;
+    margin-bottom: 8rem;
 
     @media (max-width: 767.98px) {
         margin-top: -1.5rem;
+        margin-bottom: 0;
     }
 `;
 

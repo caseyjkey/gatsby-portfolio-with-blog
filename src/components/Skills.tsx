@@ -36,6 +36,7 @@ import {
     SiGnubash,
     SiDocker,
     SiKubernetes,
+    SiTerraform,
 } from 'react-icons/si'
 
 // Icon mapping
@@ -57,6 +58,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: string | number }>> =
     SiGnubash,
     SiDocker,
     SiKubernetes,
+    SiTerraform,
 };
 
 export default function Skills() {
@@ -273,6 +275,8 @@ export default function Skills() {
                                         'Build and train production ML models with PyTorch and TensorFlow',
                                         'Implement end-to-end ML pipelines with scikit-learn',
                                         'Deploy ML services with FastAPI and Docker',
+                                        'Architect agentic workflows for full-cycle development from PRD to production',
+                                        'Build multi-modal AI with fine-tuned LLMs, LoRA, and RAG',
                                     ].map((text, idx) => (
                                         <motion.li
                                             key={idx}
@@ -336,9 +340,10 @@ export default function Skills() {
                                         { skill: 'AWS', icon: 'SiAmazonaws', idx: 0 },
                                         { skill: 'Google Cloud', icon: 'SiGooglecloud', idx: 1 },
                                         { skill: 'GitHub Actions', icon: 'SiGithubactions', idx: 2 },
-                                        { skill: 'Bash', icon: 'SiGnubash', idx: 3 },
-                                        { skill: 'Docker', icon: 'SiDocker', idx: 4 },
-                                        { skill: 'Kubernetes', icon: 'SiKubernetes', idx: 5 },
+                                        { skill: 'Terraform', icon: 'SiTerraform', idx: 3 },
+                                        { skill: 'Bash', icon: 'SiGnubash', idx: 4 },
+                                        { skill: 'Docker', icon: 'SiDocker', idx: 5 },
+                                        { skill: 'Kubernetes', icon: 'SiKubernetes', idx: 6 },
                                     ].map(({ skill, icon, idx }) => (
                                         <motion.div
                                             key={idx}
@@ -361,7 +366,8 @@ export default function Skills() {
                                         'Architect cloud-native infrastructure on AWS and GCP',
                                         'Build CI/CD pipelines with GitHub Actions',
                                         'Containerize and orchestrate applications with Docker and Kubernetes',
-                                        'Automate infrastructure and systems with Bash scripting',
+                                        'Maintain high availability with monitoring dashboards and rapid incident response',
+                                        'Automate infrastructure and systems with Terraform and Bash scripting',
                                     ].map((text, idx) => (
                                         <motion.li
                                             key={idx}

@@ -73,7 +73,9 @@ function Social({ link, Icon }) {
       animate={visible ? "visible" : "hidden"}
       variants={fadeInUpVariants}
     >
-      <a href={link} target="_blank"><Icon /></a>
+      <a href={link} target="_blank" rel="noopener noreferrer"><Icon /></a>
     </motion.div>
   );
 }
+
+export { Social };
