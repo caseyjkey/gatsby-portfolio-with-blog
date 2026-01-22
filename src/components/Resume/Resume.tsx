@@ -89,7 +89,24 @@ function Resume(props) {
       if (headerId) {
         const element = document.getElementById(headerId);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Determine scroll direction based on current vs target position
+          const currentScrollY = window.pageYOffset;
+          const elementPosition = element.getBoundingClientRect().top;
+          const targetY = elementPosition + currentScrollY;
+          const isScrollingUp = targetY < currentScrollY;
+
+          if (isScrollingUp) {
+            // Scrolling up - header will be visible, account for it
+            const headerOffset = 80;
+            const offsetPosition = targetY - headerOffset;
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          } else {
+            // Scrolling down - header will hide, scroll to top
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }
         // Fallback timeout to ensure isScrolling never gets stuck
         // This prevents a deadlock if scroll onComplete doesn't fire
