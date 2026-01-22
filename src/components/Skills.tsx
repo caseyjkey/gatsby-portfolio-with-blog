@@ -203,11 +203,11 @@ export default function Skills() {
                                     animate={isCoreStackVisible ? "visible" : "hidden"}
                                 >
                                     {[
-                                        'Build modern web applications with TypeScript and React',
-                                        'Design scalable RESTful APIs and GraphQL services with Node.js',
-                                        'Develop production backends with Django and Python',
-                                        'Build native iOS applications with Swift',
-                                        'Implement version control and collaborative workflows with Git',
+                                        'Build modern web applications with TypeScript and React.',
+                                        'Design scalable RESTful APIs and GraphQL services with Node.js.',
+                                        'Develop production backends with Django and Python.',
+                                        'Build native iOS applications with Swift.',
+                                        'Implement version control and collaborative workflows with Git.',
                                     ].map((text, idx) => (
                                         <motion.li
                                             key={idx}
@@ -272,11 +272,11 @@ export default function Skills() {
                                     animate={isAiDataVisible ? "visible" : "hidden"}
                                 >
                                     {[
-                                        'Build and train production ML models with PyTorch and TensorFlow',
-                                        'Implement end-to-end ML pipelines with scikit-learn',
-                                        'Deploy ML services with FastAPI and Docker',
-                                        'Architect agentic workflows for full-cycle development from PRD to production',
-                                        'Build multi-modal AI with fine-tuned LLMs, LoRA, and RAG',
+                                        'Build and train production ML models with PyTorch and TensorFlow.',
+                                        'Implement end-to-end ML pipelines with scikit-learn.',
+                                        'Deploy ML services with FastAPI and Docker.',
+                                        'Architect agentic workflows for full-cycle development from PRD to production.',
+                                        'Build multi-modal AI with fine-tuned LLMs, LoRA, and RAG.',
                                     ].map((text, idx) => (
                                         <motion.li
                                             key={idx}
@@ -363,11 +363,11 @@ export default function Skills() {
                                     animate={isInfrastructureVisible ? "visible" : "hidden"}
                                 >
                                     {[
-                                        'Architect cloud-native infrastructure on AWS and GCP',
-                                        'Build CI/CD pipelines with GitHub Actions',
-                                        'Containerize and orchestrate applications with Docker and Kubernetes',
-                                        'Maintain high availability with monitoring dashboards and rapid incident response',
-                                        'Automate infrastructure and systems with Terraform and Bash scripting',
+                                        'Architect cloud-native infrastructure on AWS and GCP.',
+                                        'Build CI/CD pipelines with GitHub Actions.',
+                                        'Containerize and orchestrate applications with Docker and Kubernetes.',
+                                        'Scaling reliability through automated observability and SLA-driven response.',
+                                        'Automate infrastructure and systems with Terraform and Bash scripting.',
                                     ].map((text, idx) => (
                                         <motion.li
                                             key={idx}
