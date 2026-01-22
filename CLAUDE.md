@@ -45,6 +45,23 @@ bun run dev:errors   # Show only errors from dev output
 
 **Note:** `bun run dev` now logs to `/tmp/gatsby-dev.log` by default. Use `bun run dev:no-logs` if you don't want logging.
 
+## Git Worktrees
+
+**For experimental work or parallel branches, use worktrees in `./worktrees/`:**
+
+```bash
+# Create a new worktree
+git worktree add ./worktrees/branch-name source -b branch-name
+
+# List all worktrees
+git worktree list
+
+# Remove a worktree when done
+git worktree remove ./worktrees/branch-name
+```
+
+**Worktree location:** All worktrees must be created in the `./worktrees/` subdirectory within the project.
+
 ## Project Quick Reference
 
 ### Tech Stack
