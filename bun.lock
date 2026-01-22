@@ -40,7 +40,7 @@
         "react-countup": "^6.4.0",
         "react-dom": "^18.2.0",
         "react-helmet": "^6.1.0",
-        "react-icons": "^4.12.0",
+        "react-icons": "5",
         "react-live": "^4.1.7",
         "react-scripts": "5.0.1",
         "react-scroll": "^1.9.3",
@@ -3428,7 +3428,7 @@
 
     "react-hot-loader": ["react-hot-loader@4.13.1", "", { "dependencies": { "fast-levenshtein": "^2.0.6", "global": "^4.3.0", "hoist-non-react-statics": "^3.3.0", "loader-utils": "^2.0.3", "prop-types": "^15.6.1", "react-lifecycles-compat": "^3.0.4", "shallowequal": "^1.1.0", "source-map": "^0.7.3" }, "peerDependencies": { "@types/react": "^15.0.0 || ^16.0.0 || ^17.0.0", "react": "^15.0.0 || ^16.0.0 || ^17.0.0", "react-dom": "^15.0.0 || ^16.0.0 || ^17.0.0" }, "optionalPeers": ["@types/react"] }, "sha512-ZlqCfVRqDJmMXTulUGic4lN7Ic1SXgHAFw7y/Jb7t25GBgTR0fYAJ8uY4mrpxjRyWGWmqw77qJQGnYbzCvBU7g=="],
 
-    "react-icons": ["react-icons@4.12.0", "", { "peerDependencies": { "react": "*" } }, "sha512-IBaDuHiShdZqmfc/TwHu6+d6k2ltNCf3AszxNmjJc1KUfXdEeRJOKyNvLmAHaarhzGmTSVygNdyu8/opXv2gaw=="],
+    "react-icons": ["react-icons@5.5.0", "", { "peerDependencies": { "react": "*" } }, "sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw=="],
 
     "react-immutable-proptypes": ["react-immutable-proptypes@2.2.0", "", { "dependencies": { "invariant": "^2.2.2" }, "peerDependencies": { "immutable": ">=3.6.2" } }, "sha512-Vf4gBsePlwdGvSZoLSBfd4HAP93HDauMY4fDjXhreg/vg6F3Fj/MXDNyTbltPC/xZKmZc+cjLu3598DdYK6sgQ=="],
 
