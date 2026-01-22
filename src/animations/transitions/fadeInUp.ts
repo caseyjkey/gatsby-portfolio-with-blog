@@ -42,14 +42,19 @@ export function fadeInUpOptions(options: FadeInUpOptions = {}) {
  * Framer Motion variants for fadeInUp
  */
 export const fadeInUpVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: {
+    opacity: 0,
+    y: 30,
+    willChange: 'opacity, transform',
+  },
   visible: (custom?: { delay?: number; distance?: number }) => ({
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.8,
+      duration: 0.6,
       delay: custom?.delay || 0,
-      ease: ANIMATION_CONFIG.easing,
+      ease: [0.25, 0.1, 0.25, 1], // Optimized easing for smoother opacity
+      willChange: 'auto',
     },
   }),
 };

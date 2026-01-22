@@ -2,7 +2,7 @@ import React, { Suspense, useState, ReactNode, forwardRef, useMemo, useEffect, u
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles, ModalGlobalStyles } from './style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, StatusBadge, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles, ModalGlobalStyles } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -37,6 +37,7 @@ interface ProjectProps {
   link?: string;
   postLink?: string;
   sourceLink?: string;  // Optional: GitHub repository URL
+  status?: string;      // Optional: Project status (live, launched, completed, in-progress)
   date: string;
   [key: string]: any; // Allow data attributes
 }
@@ -51,6 +52,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
   link,
   postLink,
   sourceLink,
+  status,
   date,
   ...props
 }, ref) => {
@@ -337,6 +339,7 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         <GatsbyImage image={image} alt={title} />
       </GalleryFrame>
       <ProjectInfo>
+        {status && <StatusBadge $status={status}>{status === 'in-progress' ? 'In Progress' : status}</StatusBadge>}
         <h3>{title}</h3>
         <span>{subtitle}</span>
       </ProjectInfo>

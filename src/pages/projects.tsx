@@ -56,6 +56,8 @@ export const query = graphql`
             present
           }
           link
+          sourceLink
+          status
         }
       }
     }
@@ -196,6 +198,8 @@ export default function ProjectsPage({ data }) {
                             icons={loadIcons(project.node.icons)}
                             date={formattedStart + ' - ' + formattedEnd}
                             link={project.node.link}
+                            sourceLink={project.node.sourceLink}
+                            status={project.node.status}
                             postLink={postLink}
                           >
                             <div dangerouslySetInnerHTML={{ __html: project.node.description }} />

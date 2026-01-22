@@ -262,6 +262,6 @@ export const CSS_TRANSITIONS = {
  * Tooltip delays
  */
 export const TOOLTIP = {
-  show: 100, // ms
+  show: 0, // ms - instant show for better UX
   hide: 0, // ms
 } as const;

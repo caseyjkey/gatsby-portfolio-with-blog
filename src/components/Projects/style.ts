@@ -84,6 +84,7 @@ export const ProjectInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  position: relative;
 
   h3 {
     color: ${props => props.theme.black};
@@ -99,6 +100,52 @@ export const ProjectInfo = styled.div`
     font-size: 11px;
     font-weight: 600;
   }
+`;
+
+// Status badge - pill-shaped, professional, using site colors
+export const StatusBadge = styled.div<{ $status: string }>`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  /* Status-specific colors using site palette */
+  ${props => {
+    switch (props.$status) {
+      case 'live':
+        return `
+          background-color: #eff6ff;
+          color: #1e40af;
+          border: 1px solid #dbeafe;
+        `;
+      case 'launched':
+        return `
+          background-color: #f0fdf4;
+          color: #166534;
+          border: 1px solid #dcfce7;
+        `;
+      case 'in-progress':
+        return `
+          background-color: #fefce8;
+          color: #a16207;
+          border: 1px solid #fef3c7;
+        `;
+      case 'completed':
+      default:
+        return `
+          background-color: #f1f5f9;
+          color: #475569;
+          border: 1px solid #e2e8f0;
+        `;
+    }
+  }}
 `;
 
 export const ReadMoreColor = styled.div`
