@@ -30,7 +30,8 @@ import {
     SiScikitlearn,
     SiTensorflow,
     SiFastapi,
-    SiAmazonaws,
+    SiClaude,
+    SiAmazon,
     SiGooglecloud,
     SiGithubactions,
     SiGnubash,
@@ -52,7 +53,8 @@ const iconMap: Record<string, React.ComponentType<{ size?: string | number }>> =
     SiScikitlearn,
     SiTensorflow,
     SiFastapi,
-    SiAmazonaws,
+    SiClaude,
+    SiAmazon,
     SiGooglecloud,
     SiGithubactions,
     SiGnubash,
@@ -253,6 +255,7 @@ export default function Skills() {
                                         { skill: 'TensorFlow', icon: 'SiTensorflow', idx: 1 },
                                         { skill: 'scikit-learn', icon: 'SiScikitlearn', idx: 2 },
                                         { skill: 'FastAPI', icon: 'SiFastapi', idx: 3 },
+                                        { skill: 'Claude', icon: 'SiClaude', idx: 4 },
                                     ].map(({ skill, icon, idx }) => (
                                         <motion.div
                                             key={idx}
@@ -337,7 +340,7 @@ export default function Skills() {
                                 </motion.div>
                                 <div style={{ marginLeft: '-0.45rem' }}>
                                     {[
-                                        { skill: 'AWS', icon: 'SiAmazonaws', idx: 0 },
+                                        { skill: 'AWS', icon: 'SiAmazon', idx: 0 },
                                         { skill: 'Google Cloud', icon: 'SiGooglecloud', idx: 1 },
                                         { skill: 'GitHub Actions', icon: 'SiGithubactions', idx: 2 },
                                         { skill: 'Terraform', icon: 'SiTerraform', idx: 3 },
