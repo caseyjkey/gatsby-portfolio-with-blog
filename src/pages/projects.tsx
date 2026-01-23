@@ -66,6 +66,13 @@ export const query = graphql`
 
 export default function ProjectsPage({ data }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [animatedRows, setAnimatedRows] = useState<Set<number>>(new Set());
+  const [isClient, setIsClient] = useState(false);
+
+  // Detect mobile on client side
+  useLayoutEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Get components for icons specified in projects.json
   function loadIcons(iconMap) {
@@ -178,8 +185,31 @@ export default function ProjectsPage({ data }) {
                     const month = format(startDate, 'MM');
                     const postLink = `/projects/${year}-${month}-${project.node.project}/`;
 
-                    const delay = PROGRESSIVE_STAGGER.cards.baseDelay + (index * PROGRESSIVE_STAGGER.cards.staggerIncrement);
+                    // Row-based batching for animation
+                    const rowIndex = Math.floor(index / 3); // 3 cards per row on desktop
+                    const cardIndexInRow = index % 3;
                     const { ref, isInView } = useInViewAnimation();
+
+                    // Track when rows enter viewport
+                    React.useEffect(() => {
+                      if (isInView && !animatedRows.has(rowIndex)) {
+                        setAnimatedRows(prev => new Set([...prev, rowIndex]));
+                      }
+                    }, [isInView, rowIndex]);
+
+                    // Calculate delay based on viewport behavior
+                    const isMobile = isClient && window.innerWidth < 768;
+                    let delay;
+                    if (isMobile) {
+                      // Mobile: no delays, animate immediately
+                      delay = 0;
+                    } else if (animatedRows.has(rowIndex)) {
+                      // Desktop: this row has entered viewport, use card's position in row
+                      delay = cardIndexInRow * PROGRESSIVE_STAGGER.cards.staggerIncrement;
+                    } else {
+                      // Desktop: initially visible cards use index-based delay
+                      delay = PROGRESSIVE_STAGGER.cards.baseDelay + (index * PROGRESSIVE_STAGGER.cards.staggerIncrement);
+                    }
 
                     return (
                       <Col key={index} md={4} className="project-card-wrapper pb-4 d-flex align-items-stretch">
