@@ -50,7 +50,8 @@ export default function ReadMore({
           border: 'none',
           cursor: 'pointer',
           padding: 0,
-          marginLeft: '4px',
+          marginTop: '0.5rem',
+          display: 'block',
           textDecoration: 'underline',
         }}
       >

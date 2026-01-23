@@ -337,6 +337,16 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
       <ModalGlobalStyles />
       <GalleryFrame>
         {(() => {
+          const isFullBleed = is16by9(image.width, image.height);
+          if (isFullBleed) {
+            // 16:9 images fill the frame directly (no aspect-ratio wrapper needed)
+            return (
+              <div style={{ width: '100%', height: '100%', borderRadius: '0.5rem', overflow: 'hidden' }}>
+                <GatsbyImage image={image} alt={title} style={{ width: '100%', height: '100%' }} />
+              </div>
+            );
+          }
+          // Non-16:9 images get aspect-ratio wrapper to fit within padded frame
           const aspectRatio = image.width / image.height;
           const isWide = aspectRatio > (16 / 9);
           return (

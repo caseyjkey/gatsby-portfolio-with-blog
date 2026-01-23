@@ -16,7 +16,8 @@
   "end": {
     "present": true
   },
-  "link": "https://github.com/caseyjkey/gatsby-portfolio-with-blog",
-  "status": "in-progress",
+  "link": "https://keycasey.com",
+  "sourceLink": "https://github.com/caseyjkey/gatsby-portfolio-with-blog",
+  "status": "beta",
   "project": "portfolio"
 }

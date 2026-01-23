@@ -43,6 +43,7 @@ interface FeaturedProject {
       present: boolean;
     };
     link?: string;
+    sourceLink?: string;
   };
 }
 
@@ -63,7 +64,7 @@ const FeaturedWork = () => {
 
   const data = useStaticQuery(
     graphql`{
-      allProject(filter: {project: {in: ["datacatalog", "farmx", "yelp"]}}) {
+      allProject(sort: {start: DESC}, filter: {project: {in: ["spiritbeads", "farmx", "datacatalog"]}}) {
         edges {
           node {
             project
@@ -95,6 +96,8 @@ const FeaturedWork = () => {
               present
             }
             link
+            sourceLink
+            status
           }
         }
       }
@@ -232,6 +235,8 @@ const FeaturedWork = () => {
                     date={formattedStart + ' - ' + formattedEnd}
                     link={project.node.link}
                     postLink={postLink}
+                    sourceLink={project.node.sourceLink}
+                    status={project.node.status}
                   >
                     <div dangerouslySetInnerHTML={{ __html: project.node.description }} />
                   </Project>
