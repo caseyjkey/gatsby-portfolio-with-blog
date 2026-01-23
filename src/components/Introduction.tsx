@@ -287,7 +287,7 @@ export default function Introduction(props) {
                   >
                     {/* THIS LAYER IS VISIBLE FIRST */}
                     <div className="view-layer tech-view">
-                      <h2 className="subheader">Driving impact as...</h2>
+                      <h2 className="subheader">Focused on...</h2>
                       <h2 id="typewriter1" className="subheader"></h2>
                       <h2 id="typewriter2" className="subheader"></h2>
                     </div>

@@ -2,24 +2,24 @@
   "section": "introduction",
   "greeting": "Hello,",
   "name": "Casey Key",
-  "role": "Lead Software Engineer",
+  "role": "Founding Engineer & Systems Architect",
   "descriptions": [
     {
       "description": {
-        "header": "a systems architect.",
-        "subheader": "Cloud infrastructure, DevOps automation, and scalable backend systems."
+        "header": "building for reliability.",
+        "subheader": "SLA-driven cloud infrastructure and automated CI/CD observability."
       }
     },
     {
       "description": {
-        "header": "an innovator.",
-        "subheader": "AI-powered tools, performance optimization, and cross-platform solutions."
+        "header": "engineering at scale.",
+        "subheader": "High-performance backend systems and distributed ML pipelines."
       }
     },
     {
       "description": {
-        "header": "a technical leader.",
-        "subheader": "Team mentorship, architectural guidance, and developer advocacy."
+        "header": "driving product strategy.",
+        "subheader": "Bridging technical architecture with business-critical outcomes."
       }
     }
   ]
