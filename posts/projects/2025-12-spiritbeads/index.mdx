@@ -1,5 +1,5 @@
 ---
-title: Spirit Beads: Engineering a Boutique E-Commerce Platform
+title: 'Spirit Beads: Engineering a Boutique E-Commerce Platform'
 date: 2025-12-25
 published: true
 ---
@@ -8,7 +8,7 @@ published: true
 
 ## Overview
 
-When my mom—a Native American artisan living in a small rural mountain town in Wyoming—showed me her collection of handcrafted beaded lighter cases, I saw an opportunity. She had already shared them with friends and family, but I wanted to help her reach a wider audience and earn additional income from her craft.
+When my mom - a Native American artisan living in a small rural mountain town in Wyoming - showed me her collection of handcrafted beaded lighter cases, I saw an opportunity. She had already shared them with friends and family, but I wanted to help her reach a wider audience and earn additional income from her craft.
 
 I built **Spirit Beads** ([thebeadedcase.com](https://thebeadedcase.com)), a full-featured e-commerce platform designed to provide a boutique shopping experience while keeping running costs significantly lower than hosted solutions like Shopify. This project allowed me to apply enterprise architecture patterns I learned at Oracle and Salesforce to help my mom scale her business.
 
@@ -41,7 +41,11 @@ My solution was a sophisticated image processing pipeline:
 - **Stage**: Apply professional staging with consistent backgrounds
 - **Remove Backgrounds**: Use high-quality background removal from Hugging Face models
 
-The GAN upscaling was crucial—it let me take photos with whatever I had available and enhance them to consistent, professional quality. Most background removal solutions don't preserve fine details, so I had to find one that maintained the intricate beadwork.
+The GAN upscaling was crucial - it let me take photos with whatever I had available and enhance them to consistent, professional quality. Most background removal solutions don't preserve fine details, so I had to find one that maintained the intricate beadwork.
+
+**AI-Powered Product Categorization**
+
+With hundreds of unique lighter cases, manually categorizing them would have been tedious and inconsistent. I leveraged Google's Gemini API to automate the entire categorization process. The script analyzed each product image to identify visual similarities, grouping them into four distinct categories based on design patterns: Infinite Path, Earth's Hue, Ancestral Motifs, and Traditional Rhythms. For each product, Gemini also generated a descriptive name based on its appearance and assigned category. The script ensured no duplicate names were created, maintaining a unique identity for every handcrafted item in the catalog.
 
 **4. Mobile-First Responsive Design**
 

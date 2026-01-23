@@ -64,8 +64,7 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "predeploy": "gatsby build",
-    "deploy": "gh-pages -d public -b master"
+    "deploy": "bun run build && gh-pages -d public -b master"
   },
   "eslintConfig": {
     "extends": "react-app"
