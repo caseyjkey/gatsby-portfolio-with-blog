@@ -21,8 +21,11 @@ const ExperienceSection = styled.section`
 
 const TimelineContainer = styled.div`
   max-width: 900px;
-  margin-left: -3.6rem;
   position: relative;
+
+  @media (min-width: 768px) {
+    margin-left: -3.6rem;
+  }
 `
 
 const VerticalLine = styled.div`

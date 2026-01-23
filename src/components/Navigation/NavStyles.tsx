@@ -6,8 +6,6 @@ const PRIMARY_COLOR = '#3e64ff';
 
 // Consolidated navbar styles - all in one place
 export const StyledNav = styled.nav<{ $isVisible: boolean; $scrolled: boolean; $menuOpen: boolean }>`
-  padding-left: 2rem;
-  padding-right: 2rem;
   position: fixed;
   left: 0;
   right: 0;
