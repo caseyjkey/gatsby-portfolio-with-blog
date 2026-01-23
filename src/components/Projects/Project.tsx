@@ -2,7 +2,7 @@ import React, { Suspense, useState, ReactNode, forwardRef, useMemo, useEffect, u
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, ProjectInfo, StatusBadge, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles, ModalGlobalStyles } from './style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, CardImageWrapper, ProjectInfo, StatusBadge, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles, ModalGlobalStyles } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -336,7 +336,15 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
       <CarouselGlobalStyles />
       <ModalGlobalStyles />
       <GalleryFrame>
-        <GatsbyImage image={image} alt={title} />
+        {(() => {
+          const aspectRatio = image.width / image.height;
+          const isWide = aspectRatio > (16 / 9);
+          return (
+            <CardImageWrapper $aspectRatio={`${image.width} / ${image.height}`} $isWide={isWide}>
+              <GatsbyImage image={image} alt={title} />
+            </CardImageWrapper>
+          );
+        })()}
       </GalleryFrame>
       <ProjectInfo>
         {status && <StatusBadge $status={status}>{status === 'in-progress' ? 'In Progress' : status}</StatusBadge>}

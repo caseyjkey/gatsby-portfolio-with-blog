@@ -1,0 +1,155 @@
+---
+title: Spirit Beads - E-Commerce for Native American Artisans
+date: 2025-12-25
+published: true
+---
+
+**E-Commerce Development** | December 2025 - Present
+
+## Overview
+
+When my mom—a Native American artisan living in a small rural mountain town in Wyoming—showed me her collection of handcrafted beaded lighter cases, I saw an opportunity. She had already shared them with friends and family, but I wanted to help her reach a wider audience and earn additional income from her craft.
+
+I built **Spirit Beads** ([thebeadedcase.com](https://thebeadedcase.com)), a full-featured e-commerce platform designed to provide a boutique shopping experience while keeping running costs significantly lower than hosted solutions like Shopify. This project allowed me to apply enterprise architecture patterns I learned at Oracle and Salesforce to help my mom scale her business.
+
+## The Challenge: Building Professional E-Commerce on a Budget
+
+The goal was clear: create a polished, professional online store that could compete with big platforms but at a fraction of the cost. Beyond just the website, I needed to solve the entire product pipeline—from photography to inventory management to payment processing.
+
+### The Big Technical Challenges
+
+**1. AI-Generated UI Integration**
+
+I used [Lovable](https://lovable.dev/) to generate the initial UI components and email templates. However, Lovable's default output is designed for SaaS apps with stats and analytics dashboards—not product photography. I had to creatively adapt and integrate these components to showcase my mom's beaded lighter cases as the heroes of the site, transforming generic stats displays into elegant product showcases.
+
+**2. Infinite Scroll with Section Links and Filters**
+
+One of the most complex challenges was implementing infinite scroll that works seamlessly with:
+- Direct section links (when users click "Products" from navigation)
+- Category filters (showcasing different design categories)
+- Bulk initial inventory loading (hundreds of products at once)
+
+Getting all three to play nicely together required careful state management and scroll position tracking. The infinite scroll needed to detect when users arrived via section links versus when they were actively browsing, and the filters needed to reset the scroll state without losing user context.
+
+**3. Inventory Processing Pipeline**
+
+The biggest operational challenge was the initial bulk inventory upload. I had only one trip home to Wyoming to take photos, then I had to return to Silicon Valley for work. This meant I couldn't reshoot products—I had to make the photos I had work perfectly.
+
+My solution was a sophisticated image processing pipeline:
+- **Extract**: Use OpenCV to detect and extract individual lighter cases from group photos (3×3 grids per picture)
+- **Enhance**: Upscale images using GANs (Generative Adversarial Networks) to normalize quality across all products
+- **Stage**: Apply professional staging with consistent backgrounds
+- **Remove Backgrounds**: Use high-quality background removal from Hugging Face models
+
+The GAN upscaling was crucial—it let me take photos with whatever I had available and enhance them to consistent, professional quality. Most background removal solutions don't preserve fine details, so I had to find one that maintained the intricate beadwork.
+
+**4. Mobile-First Responsive Design**
+
+My mom's customers are primarily mobile users, so I optimized the entire experience for high-resolution mobile devices while ensuring full support for tablets and desktop PCs. The site uses React 18 with a mobile-first Tailwind CSS approach, ensuring every feature works flawlessly on phones.
+
+## Technical Architecture
+
+### Frontend Stack
+
+- **React 18** with TypeScript for type safety
+- **Vite** for lightning-fast builds
+- **Tailwind CSS** for utility-first styling
+- **shadcn/ui** component library for consistent, accessible UI
+- **React Router** for navigation
+- **Custom hooks** (`useCart`, `useCheckout`) for optimized state management without external libraries
+
+### Backend Stack
+
+- **Python** with Django 6.0
+- **Django REST Framework** for clean REST API architecture
+- **PostgreSQL** (production) / SQLite (development)
+- **Stripe API** for secure payment processing
+- **Mailgun** for transactional emails
+- **Django Admin** for intuitive inventory and order management
+
+### Image Processing Pipeline
+
+- **OpenCV** for contour detection and lighter extraction
+- **GAN upscaling** to normalize photo quality
+- **Hugging Face** models for high-quality background removal
+- Custom Python pipeline for automated inventory processing
+
+### Infrastructure
+
+- **Cloudflare** for domain and DNS management
+- **Docker** and **PM2** for production deployment
+- **Stripe Webhooks** for secure payment confirmation
+- **IPInfo API** for location-based services
+
+## Key Features
+
+### Product Catalog & Filtering
+
+Dynamic product grid with category-based filtering, allowing customers to browse by design style (Infinite Path, Earth's Hue, Ancestral Motifs, Traditional Rhythms).
+
+### Shopping Cart & Checkout
+
+Persistent shopping cart that survives page refreshes, with a streamlined checkout flow powered by Stripe's secure payment processing.
+
+### Custom Order Workflow
+
+For unique requests, I built a sophisticated custom order system:
+1. Customer submits custom order request
+2. Admin reviews and sets quoted price via Django Admin
+3. System generates unique Stripe payment link
+4. Customer completes payment
+5. Order transitions to standard fulfillment pipeline
+
+### Stripe Synchronization
+
+Products and prices automatically sync with Stripe, keeping the local database as the single source of truth while leveraging Stripe's robust infrastructure for transactions.
+
+### Automated Order Orchestration
+
+When orders are marked as "paid" (via Stripe webhook), inventory automatically updates—ensuring accurate stock levels without manual intervention.
+
+## What I Learned
+
+Building Spirit Beads was an incredible learning experience that let me apply enterprise patterns to a real small business:
+
+**From Oracle:** I learned how to structure APIs for scalability and reliability. The Django REST Framework backend follows clean separation of concerns with modular apps for products, orders, payments, and custom orders.
+
+**From Salesforce:** I learned the importance of user experience and intuitive admin interfaces. The Django Admin integration makes inventory management simple for non-technical users.
+
+**On My Own:** I solved problems I'd never encountered before—computer vision for product photography, GAN upscaling for image quality, and the complex dance of infinite scroll with filters and section links.
+
+## Cost Savings vs. Shopify
+
+By building a custom solution instead of using Shopify, we achieved:
+- **No monthly platform fees** (Shopify starts at $29/month)
+- **No transaction fees** beyond Stripe's standard 2.9%
+- **Full control** over the user experience
+- **Custom features** tailored to our specific needs
+- **Scalability** without tier-based pricing
+
+The only costs are hosting and Stripe fees—a tiny fraction of what a hosted platform would charge.
+
+## Live Site
+
+Visit **[thebeadedcase.com](https://thebeadedcase.com)** to see the store in action.
+
+Each lighter case is unique—handcrafted with care by a Native American artisan in the mountains of Wyoming.
+
+## Technologies Used
+
+- React 18 & TypeScript
+- Django 6.0 & Django REST Framework
+- PostgreSQL
+- Stripe API & Webhooks
+- Mailgun
+- Tailwind CSS & shadcn/ui
+- Vite
+- OpenCV
+- GAN (Generative Adversarial Networks)
+- Hugging Face (background removal)
+- Cloudflare
+- Docker & PM2
+
+## Links
+
+[View Live Site](https://thebeadedcase.com) | [GitHub (Frontend)](https://github.com/caseyjkey/spirit-beads-ui) | [GitHub (Backend)](https://github.com/caseyjkey/spirit-beads-service)

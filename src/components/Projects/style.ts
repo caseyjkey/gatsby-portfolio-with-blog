@@ -39,19 +39,17 @@ export const ProjectWrapper = styled.div`
   }
 `;
 
-// Wrapper for card preview images - sized to match image aspect ratio
-// This allows border-radius to apply to visible image dimensions (not 16:9 frame)
-export const CardImageWrapper = styled.div<{ $width?: number; $height?: number }>`
-  ${({ $width, $height }) => $width && $height ? `
-    width: ${$width}px;
-    height: ${$height}px;
-    flex-shrink: 0;
-  ` : `
-    max-width: 100%;
-    max-height: 100%;
-  `}
+// Wrapper for card preview images - uses aspect-ratio CSS for proper sizing
+// $aspectRatio should be "width / height" format (e.g., "4 / 3", "1 / 1")
+// $isWide indicates if image is wider than 16:9 (determines whether to constrain by width or height)
+export const CardImageWrapper = styled.div<{ $aspectRatio: string; $isWide: boolean }>`
+  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
+  ${({ $isWide }) => $isWide ? 'width: 100%;' : 'height: 100%;'}
+  max-width: 100%;
+  max-height: 100%;
   border-radius: 0.5rem;
   overflow: hidden;
+  flex-shrink: 0;
 
   .gatsby-image-wrapper {
     width: 100% !important;

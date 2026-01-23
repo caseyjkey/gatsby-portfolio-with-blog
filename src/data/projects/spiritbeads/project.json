@@ -1,5 +1,5 @@
 {
-  "image": "images/spiritbeads.png",
+  "image": "images/desktop-products.webp",
   "title": "Spirit Beads",
   "subtitle": "E-Commerce",
   "description": "My mom is a Native American artisan in a small rural mountain town in Wyoming. She loves making beaded lighter cases and we've already shared them with all our friends, so I decided to help her spread her work and earn more income by building a web store for her.<br /><br />\n\nMy goals were to create a boutique experience with her products at the center in a beautiful experience on both desktop and mobile, while keeping running costs low compared to using Shopify.<br /><br />\n\nFor inventory management, I used OpenCV to extract individual lighters from group photos (3×3 grids per picture), upscaled them using a GAN, and removed backgrounds using a model from Hugging Face. This automated the initial product image processing workflow.<br /><br />\n\nThe result is a fully functional e-commerce platform with Stripe payments, email notifications via Mailgun, and an intuitive Django admin console for managing products and orders—all at a fraction of the cost of hosted solutions.",
@@ -16,6 +16,38 @@
     ]
   },
   "start": "2025-12",
+  "galleryImages": [
+    {
+      "image": "images/mobile-home.webp"
+    },
+    {
+      "image": "images/desktop-products.webp"
+    },
+    {
+      "image": "images/mobile-products.webp"
+    },
+    {
+      "image": "images/mobile-custom-orders.webp"
+    },
+    {
+      "image": "images/mobile-cart.webp"
+    },
+    {
+      "image": "images/mobile-checkout.webp"
+    },
+    {
+      "image": "images/admin-products.webp"
+    },
+    {
+      "image": "images/admin-orders.webp"
+    },
+    {
+      "image": "images/email-confirmation.webp"
+    },
+    {
+      "image": "images/spiritbeads.webp"
+    }
+  ],
   "end": {
     "present": true
   },
