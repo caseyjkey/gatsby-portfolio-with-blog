@@ -1,4 +1,4 @@
-import styled, { css, createGlobalStyle } from 'styled-components'
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components'
 import { Section, Image } from '../style.ts'
 
 export const ProjectSection = styled.section`
@@ -91,6 +91,14 @@ export const ProjectInfo = styled.div`
     margin: 0 0 0.5rem 0;
   }
 
+  /* Metadata row: category (subtitle) and status badge */
+  > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
   span {
     color: ${props => props.theme.primaryColor};
     text-transform: uppercase;
@@ -100,50 +108,101 @@ export const ProjectInfo = styled.div`
   }
 `;
 
-// Status badge - pill-shaped, professional, using site colors
+// Status badge - executive ghost-style with monochrome-adjacent palette
 export const StatusBadge = styled.div<{ $status: string }>`
   display: inline-flex;
   align-items: center;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.025em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  border: 1px solid;
+  background-color: transparent;
 
-  /* Status-specific colors using site palette */
+  /* Status-specific colors using monochrome-adjacent palette */
   ${props => {
     switch (props.$status) {
       case 'live':
         return `
-          background-color: #eff6ff;
-          color: #1e40af;
-          border: 1px solid #dbeafe;
+          color: #2563eb;
+          border-color: #2563eb;
         `;
       case 'launched':
         return `
-          background-color: #f0fdf4;
-          color: #166534;
-          border: 1px solid #dcfce7;
+          color: #475569;
+          border-color: #475569;
         `;
+      case 'beta':
       case 'in-progress':
         return `
-          background-color: #fefce8;
-          color: #a16207;
-          border: 1px solid #fef3c7;
+          color: #b45309;
+          border-color: #d97706;
         `;
       case 'completed':
       default:
         return `
-          background-color: #f1f5f9;
-          color: #475569;
-          border: 1px solid #e2e8f0;
+          color: #94a3b8;
+          border-color: #94a3b8;
         `;
     }
   }}
+`;
+
+// Pulse animation for Live status - heartbeat effect
+const pulseAnimation = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+`;
+
+// Pulse dot for Live status - heartbeat animation
+export const StatusDotLive = styled.span`
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.375rem;
+  position: relative;
+
+  /* Solid center dot - positioned using margin for centering */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #2563eb;
+    z-index: 2;
+  }
+
+  /* Pulse animation - centered with transform-origin */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #2563eb;
+    transform-origin: center center;
+    animation: ${pulseAnimation} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    z-index: 1;
+  }
+
+  /* Responsive: ensure vertical centering with text */
+  @media (max-width: 767.98px) {
+    margin-right: 0.375rem;
+  }
 `;
 
 export const ReadMoreColor = styled.div`

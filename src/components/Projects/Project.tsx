@@ -2,7 +2,7 @@ import React, { Suspense, useState, ReactNode, forwardRef, useMemo, useEffect, u
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import { theme, PrimaryButton, GhostButton, TextIconButton } from '../style'
-import { ProjectWrapper, ReadMoreColor, GalleryFrame, CardImageWrapper, ProjectInfo, StatusBadge, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles, ModalGlobalStyles } from './style'
+import { ProjectWrapper, ReadMoreColor, GalleryFrame, CardImageWrapper, ProjectInfo, StatusBadge, StatusDotLive, ModalImageContainer, ModalImage, ModalBackdrop, ModalMetaHeader, MetaTitleRow, MetaTitle, MetaDate, MetaIcons, ModalFooterDivider, CarouselGlobalStyles, ModalGlobalStyles } from './style'
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -347,9 +347,16 @@ const Project = forwardRef<HTMLDivElement, ProjectProps>(({
         })()}
       </GalleryFrame>
       <ProjectInfo>
-        {status && <StatusBadge $status={status}>{status === 'in-progress' ? 'In Progress' : status}</StatusBadge>}
         <h3>{title}</h3>
-        <span>{subtitle}</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>{subtitle}</span>
+          {status && (
+            <StatusBadge $status={status}>
+              {status === 'live' && <StatusDotLive />}
+              {status === 'in-progress' ? 'In Progress' : status === 'beta' ? 'Beta' : status}
+            </StatusBadge>
+          )}
+        </div>
       </ProjectInfo>
 
       <Modal isOpen={modal} toggle={handleModalToggle} centered>
