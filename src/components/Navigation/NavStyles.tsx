@@ -135,6 +135,11 @@ export const StyledNav = styled.nav<{ $isVisible: boolean; $scrolled: boolean; $
           transform: scaleX(1) !important;
         }
       }
+
+      /* Last nav item - no right padding */
+      &:last-child {
+        padding-right: 0 !important;
+      }
     }
   }
 
