@@ -1,46 +1,64 @@
-import React, { useRef } from 'react';
+import { useRef, useState, useEffect, type ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { fadeInUpVariants } from '../animations';
-import { ANIMATION_CONFIG, TIMING, STAGGER } from '../animations/config';
-import { useInViewAnimation } from '../animations/hooks/useInViewAnimation';
-import { useAnimationContext } from './AnimationContext';
+import { ANIMATION_CONFIG, SECONDARY_DELAYS } from '../animations/config';
+import { fadeInUpVariants } from '../animations/transitions/fadeInUp';
 
-interface AnimatedSectionProps {
-  children: React.ReactNode;
-  index: number;
-}
+type Props = {
+  children: ReactNode;
+  delay?: number;       // in seconds, default 0
+  duration?: number;    // in ms, default from ANIMATION_CONFIG
+  once?: boolean;       // default true
+  className?: string;
+  rootMargin?: string;  // default from ANIMATION_CONFIG
+};
 
-const AnimatedSection: React.FC<AnimatedSectionProps> = ({ children, index }) => {
-  const { isCalculated, shouldDelayForHeader, initialBatchCount } = useAnimationContext();
-  
-  const { ref, isInView, position } = useInViewAnimation({
-    rootMargin: ANIMATION_CONFIG.rootMargin,
-    skipAboveViewport: true,
-  });
+export default function AnimatedSection({
+  children,
+  delay = 0,
+  duration = ANIMATION_CONFIG.defaultDuration,
+  once = true,
+  className,
+  rootMargin = ANIMATION_CONFIG.rootMargin,
+}: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
 
-  const isInitialBatch = isCalculated && index < initialBatchCount;
-  
-  let delay = 0;
-  if (isInitialBatch) {
-    const baseDelay = shouldDelayForHeader ? 0.5 : 0;
-    const staggerDelay = index * (STAGGER / 1000);
-    delay = baseDelay + staggerDelay;
-  }
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
 
-  const animateState = isCalculated && isInView ? 'visible' : 'hidden';
+    // Respect prefers-reduced-motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          if (once) observer.unobserve(el);
+        } else if (!once) {
+          setIsInView(false);
+        }
+      },
+      { rootMargin, threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [once, rootMargin]);
 
   return (
     <motion.div
       ref={ref}
-      className="animated-section"
-      initial={position === 'above' ? false : 'hidden'}
-      animate={animateState}
-      custom={{ delay, distance: TIMING.primaryUnit.distance }}
       variants={fadeInUpVariants}
+      initial="hidden"
+      animate={isInView ? 'visible' : 'hidden'}
+      custom={{ delay }}
+      className={className}
     >
       {children}
     </motion.div>
   );
-};
-
-export default AnimatedSection;
+}
