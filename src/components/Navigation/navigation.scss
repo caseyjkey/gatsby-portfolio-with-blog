@@ -1,0 +1,355 @@
+@use '../../styles/theme' as *;
+
+// === Constants ===
+$glass-opacity: 0.7;
+$nav-z-index: 100;
+$mobile-breakpoint: 992px;
+$nav-height: 85px;
+
+// === Main Navbar ===
+.navbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: $nav-z-index;
+  transition: top 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.3s ease,
+              backdrop-filter 0.3s ease,
+              border-color 0.3s ease;
+
+  // Visibility states (controlled via data attributes)
+  &[data-visible="false"] {
+    top: -100px;
+  }
+
+  &[data-visible="true"] {
+    top: 0;
+  }
+
+  // Default: transparent background
+  background-color: transparent;
+
+  // Glass morphism when scrolled or menu is open
+  &[data-scrolled="true"],
+  &[data-menu-open="true"] {
+    background-color: rgba(255, 255, 255, $glass-opacity);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  &[data-menu-open="true"] {
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+  }
+
+  &[data-visible="false"] {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  // Bottom border
+  border-bottom: 1px solid rgba(241, 245, 249, 0.5);
+  box-shadow: none;
+
+  // Navbar brand
+  .navbar-brand {
+    color: $black;
+
+    span {
+      // First letter styling (the "C" in Casey)
+    }
+  }
+
+  // Nav link base color
+  .nav-link {
+    color: $black;
+  }
+
+  // === Desktop Layout ===
+  @include breakpoint-up(lg) {
+    display: flex;
+    align-items: center;
+
+    > .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: $container-max;
+      margin: 0 auto;
+      padding: 0 $container-padding;
+    }
+
+    // Hide hamburger on desktop
+    .hamburger-toggle {
+      display: none;
+    }
+
+    .navbar-collapse {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .navbar-nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      margin-left: auto;
+      margin-right: 0;
+      list-style: none;
+      padding: 0;
+
+      > .nav-item > .nav-link {
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+
+        // Underline pseudo-element
+        > span {
+          position: relative;
+          text-underline-offset: 4px;
+          display: inline-block;
+
+          &::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 4px;
+            left: 0;
+            background: $primary;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease-in-out;
+          }
+        }
+
+        // Hover: growing blue underline (not for active pages)
+        &:hover:not(.active):not(.current-page):not(.react-scroll-active):not([aria-current="page"]) {
+          color: $primary;
+
+          > span::before {
+            transform: scaleX(1);
+          }
+        }
+
+        // Active page: static underline
+        &.active,
+        &.current-page,
+        &.react-scroll-active,
+        &[aria-current="page"] {
+          color: $primary;
+
+          > span::before {
+            transform: scaleX(1);
+          }
+        }
+
+        // Last nav item: no right padding
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+    }
+  }
+
+  // === Mobile Layout ===
+  @include breakpoint-down(lg) {
+    // Mobile: hide desktop underlines (mobile uses text-decoration)
+    .navbar-nav > .nav-item > .nav-link > span::before {
+      display: none;
+    }
+  }
+}
+
+// === Collapse / Drawer ===
+.navbar-collapse {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 0;
+  box-shadow: none;
+
+  // Desktop: always visible
+  @include breakpoint-up(lg) {
+    opacity: 1;
+    visibility: visible;
+    background-color: transparent;
+  }
+
+  // Mobile dropdown drawer
+  @include breakpoint-down(lg) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem 0 2rem 0;
+    flex: 1 1 auto;
+    min-height: calc(100vh - #{$nav-height});
+    min-height: calc(100dvh - #{$nav-height});
+    overflow-y: auto;
+    overflow-x: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+
+    &[data-open="true"] {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .navbar-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      gap: clamp(0.5rem, 2vh, 1.5rem);
+      margin: 0 auto;
+      padding: 1rem 0 2rem 0;
+      height: 100%;
+      flex: 1 0 auto;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      list-style: none;
+    }
+
+    .nav-item {
+      width: 280px;
+      min-width: 280px;
+      max-width: 280px;
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-link {
+      // Fixed dimensions - prevent size change on click/active
+      width: 280px;
+      min-width: 280px;
+      max-width: 280px;
+      height: 72px;
+      min-height: 72px;
+      max-height: 72px;
+      padding: 0 2rem;
+      margin: 0;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: $black;
+      position: relative;
+      border: none;
+      outline: none;
+      text-decoration: none;
+      flex-shrink: 0;
+      flex-grow: 0;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary;
+      }
+
+      &.active,
+      &.current-page,
+      &.react-scroll-active,
+      &[aria-current="page"] {
+        color: $primary;
+
+        > span {
+          text-decoration: underline;
+          text-underline-offset: 4px;
+          text-decoration-thickness: 2px;
+          text-decoration-color: $primary;
+        }
+      }
+
+      &.manual-active {
+        color: $primary;
+      }
+    }
+  }
+}
+
+// === Hamburger Button ===
+.hamburger-toggle {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  display: block;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+
+  // Icon wrapper
+  .hamburger-icon {
+    width: 30px;
+    height: 22px;
+    position: relative;
+    margin: 0;
+    transform: rotate(0deg);
+    transition: 0.5s ease-in-out;
+
+    &.open {
+      span:nth-child(1) {
+        top: 11px;
+        height: 3.5px;
+        transform: translateX(-50%) rotate(135deg);
+      }
+
+      span:nth-child(2) {
+        opacity: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      span:nth-child(3) {
+        top: 11px;
+        height: 3.5px;
+        transform: translateX(-50%) rotate(-135deg);
+      }
+    }
+
+    span {
+      display: block;
+      position: absolute;
+      height: 5px;
+      width: 100%;
+      background: $black;
+      border-radius: 2px;
+      opacity: 1;
+      left: 50%;
+      transform: translateX(-50%) rotate(0deg);
+      transition: 0.25s ease-in-out, height 0.25s ease-in-out;
+    }
+
+    span:nth-child(1) {
+      top: 0;
+    }
+
+    span:nth-child(2) {
+      top: 11px;
+    }
+
+    span:nth-child(3) {
+      top: 22px;
+    }
+  }
+}
