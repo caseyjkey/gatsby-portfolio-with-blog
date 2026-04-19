@@ -1,0 +1,159 @@
+@use 'sass:color';
+@use '../../styles/theme' as *;
+
+// === Color overrides (replaces polished darken/lighten on theme values) ===
+$footer-text: rgba($white, 0.7);       // darken(0.3, white) ~ rgba(255,255,255,0.7)
+$footer-text-hover: $white;             // hover: full white
+$social-icon-color: color.adjust($black, $lightness: 10%);  // lighten(0.1, black) ~ #1a1a1a
+$social-icon-bg: color.adjust($white, $lightness: -70%);    // darken(0.7, white) ~ #4d4d4d
+
+.footer {
+  padding: 3em 0;
+  flex-shrink: 0;
+  font-size: 16px;
+  background: $black;
+  z-index: 0;
+
+  @media (max-width: 767.98px) {
+    padding: 3em 0;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+
+    @include breakpoint-down(md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__widget {
+    h2 {
+      font-weight: 600;
+      color: $white;
+      font-size: 22px;
+      margin-bottom: 0.9rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        a {
+          color: $footer-text;
+          text-decoration: none;
+          transition: color 0.15s ease;
+
+          &:hover {
+            color: $footer-text-hover;
+          }
+        }
+
+        svg {
+          margin-right: 1em;
+        }
+      }
+    }
+  }
+
+  p {
+    color: $footer-text;
+  }
+
+  a {
+    color: $footer-text;
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: $footer-text-hover;
+    }
+  }
+
+  // Social icon links (circular buttons)
+  &__social-list {
+    display: flex;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li {
+      margin: 0 10px 0 0;
+    }
+
+    a {
+      height: 40px;
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $social-icon-color;
+      background: $social-icon-bg;
+      border-radius: 50%;
+      position: relative;
+      text-decoration: none;
+      transition: color 0.15s ease, background-color 0.15s ease;
+
+      svg {
+        font-size: 26px;
+      }
+
+      &:hover {
+        color: $white;
+        background: $black;
+      }
+    }
+  }
+
+  // Contact info block
+  &__contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0;
+
+      svg {
+        margin-right: 1em;
+        flex-shrink: 0;
+      }
+
+      .text {
+        color: $footer-text;
+      }
+    }
+  }
+
+  // Services list
+  &__services-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+
+    li a {
+      display: inline-flex;
+      align-items: center;
+      color: $footer-text;
+      text-decoration: none;
+      transition: color 0.15s ease;
+
+      svg {
+        margin-right: 0.75em;
+        flex-shrink: 0;
+      }
+
+      &:hover {
+        color: $footer-text-hover;
+      }
+    }
+  }
+}
