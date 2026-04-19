@@ -1,0 +1,237 @@
+@use '../../styles/theme' as *;
+
+// === Experience Section ===
+.experience-section {
+  position: relative;
+  padding: $section-padding;
+  background-color: $white;
+
+  // === Header Row (replaces Container > Row > Col) ===
+  &__header-row {
+    max-width: $container-max;
+    margin: 0 auto;
+    padding: 0 $container-padding;
+    text-align: center;
+    padding-bottom: 3rem;
+  }
+
+  &__heading {
+    color: $black;
+    position: relative;
+    font-size: 50px;
+    font-weight: 700;
+
+    span {
+      font-weight: 400;
+    }
+
+    @media (max-width: 767.98px) {
+      font-size: 38px;
+    }
+  }
+
+  &__subheader {
+    color: $text-muted;
+  }
+
+  // === Content Row ===
+  &__content-row {
+    max-width: $container-max;
+    margin: 0 auto;
+    padding: 0 $container-padding;
+  }
+}
+
+// === Timeline Container ===
+.timeline-container {
+  max-width: 900px;
+  position: relative;
+
+  @media (min-width: 768px) {
+    margin-left: -3.6rem;
+  }
+}
+
+// === Vertical Line ===
+.timeline-vertical-line {
+  // Map the height to the CSS variable
+  height: var(--line-height, 0px);
+  transition: height 0.15s linear;
+  will-change: height;
+  position: absolute;
+  left: 78px;
+  top: 1px;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    $primary 0%,
+    $primary calc(100% - 20px),
+    rgba($primary, 0) 100%
+  );
+
+  @media (max-width: 767.98px) {
+    left: 69px;
+  }
+}
+
+// === Timeline Row ===
+.timeline-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  position: relative;
+
+  &--last {
+    margin-bottom: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 76px;
+      top: calc(2.5rem + 5px);
+      bottom: -50px;
+      width: 8px;
+      background-color: $white;
+      z-index: 1;
+
+      @media (max-width: 767.98px) {
+        left: 57px;
+        top: calc(2rem + 4px);
+      }
+    }
+  }
+}
+
+// === Year ===
+.timeline-year {
+  min-width: 60px;
+  text-align: right;
+  padding-right: 0.5rem;
+  font-weight: 700;
+  color: $black;
+  font-size: 1.1rem;
+  margin-top: 5px;
+
+  @media (max-width: 767.98px) {
+    margin-top: 3px;
+    min-width: 50px;
+    padding-right: 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+// === Timeline Dot Wrapper ===
+.timeline-dot-wrapper {
+  position: absolute;
+  left: 77px;
+  top: 0;
+  transform: translateX(-50%);
+
+  @media (max-width: 767.98px) {
+    left: 68px;
+  }
+}
+
+// === Timeline Dot ===
+.timeline-dot {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: $primary;
+  left: -18px;
+  position: absolute;
+  z-index: 2;
+  flex-shrink: 0;
+
+  @media (max-width: 767.98px) {
+    left: -14px;
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+// === Entry Content ===
+.timeline-entry {
+  flex: 1;
+  padding-left: 3.5rem;
+  padding-top: 0.1rem;
+  min-width: 0;
+}
+
+// === Company Header ===
+.timeline-company-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 767.98px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.timeline-company {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  margin-right: 0.75rem;
+  color: $black;
+  display: inline;
+
+  @media (max-width: 767.98px) {
+    font-size: 1.25rem;
+  }
+}
+
+.timeline-location {
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: #4d4d4d; // lighten(0.3, black)
+  display: inline;
+
+  @media (max-width: 767.98px) {
+    display: block;
+    font-size: 1rem;
+  }
+}
+
+// === Title ===
+.timeline-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  color: #333333; // lighten(0.2, black)
+
+  @media (max-width: 767.98px) {
+    font-size: 1rem;
+  }
+}
+
+// === Bullet List ===
+.timeline-bullet-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+
+  li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: $black;
+    line-height: 1.6;
+
+    &::before {
+      content: '\2022';
+      position: absolute;
+      left: 0;
+      color: $primary;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
