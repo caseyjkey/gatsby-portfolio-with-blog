@@ -1,0 +1,103 @@
+@use 'theme' as *;
+
+@mixin press-effect {
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  &:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+  }
+  &:hover:not(:active) {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2) !important;
+  }
+}
+
+@mixin btn-base {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid transparent;
+  font-family: $font-primary;
+  @include press-effect;
+
+  &:disabled, &.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}
+
+.btn {
+  @include btn-base;
+  background: transparent;
+  color: $darken;
+}
+
+.btn-primary {
+  @include btn-base;
+  background-color: $primary;
+  border-color: $primary;
+  color: $white;
+
+  &:hover:not(:active) {
+    background-color: $primary-hover;
+    border-color: $primary-hover;
+    color: $white;
+  }
+  &:active {
+    background-color: $primary-active;
+    border-color: $primary-active;
+  }
+}
+
+.btn-secondary {
+  @include btn-base;
+  background-color: $darken;
+  border-color: $darken;
+  color: $white;
+
+  &:hover:not(:active) {
+    background-color: $darken-hover;
+    border-color: $darken-hover;
+    color: $white;
+  }
+  &:active {
+    background-color: $darken-active;
+    border-color: $darken-active;
+  }
+}
+
+.btn-ghost {
+  @include btn-base;
+  background-color: transparent;
+  border-color: $primary;
+  color: $primary;
+
+  &:hover:not(:active) {
+    background-color: $primary;
+    color: $white;
+  }
+  &:active {
+    background-color: $primary-hover;
+    color: $white;
+  }
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: $darken;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  transition: color 0.15s ease-out;
+
+  &:hover { color: $primary; text-decoration: underline; }
+  &:disabled, &.disabled { opacity: 0.65; cursor: not-allowed; }
+}

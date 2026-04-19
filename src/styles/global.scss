@@ -1,0 +1,36 @@
+@use 'theme' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --color-white: #{$white};
+  --color-black: #{$black};
+  --color-darken: #{$darken};
+  --color-primary: #{$primary};
+  --color-secondary: #{$secondary};
+  --text-muted: #{$text-muted};
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: $font-primary;
+  background: $white;
+  color: $text-body;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 400;
+}
+
+body.menu-show {
+  overflow: hidden;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+main { min-height: 100vh; }

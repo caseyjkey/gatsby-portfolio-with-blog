@@ -1,0 +1,46 @@
+@use 'theme' as *;
+
+.container {
+  max-width: $container-max;
+  margin: 0 auto;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+
+  &--2 { grid-template-columns: repeat(2, 1fr); }
+  &--3 { grid-template-columns: repeat(3, 1fr); }
+  &--4 { grid-template-columns: repeat(4, 1fr); }
+
+  @include breakpoint-down(lg) {
+    &--3, &--4 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @include breakpoint-down(sm) {
+    &--2, &--3, &--4 { grid-template-columns: 1fr; }
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+
+  @include breakpoint-down(lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint-down(md) {
+    grid-template-columns: 1fr;
+  }
+}

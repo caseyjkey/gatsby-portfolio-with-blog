@@ -1,0 +1,55 @@
+@use 'sass:color';
+@use 'sass:map';
+
+// === Fonts ===
+$font-primary: 'Poppins', sans-serif;
+$font-mono: 'JetBrains Mono', monospace;
+
+// === Colors ===
+$white: #ffffff;
+$black: #000000;
+$darken: #232931;
+$light-gray: #f8f9fa;
+$primary: #3e64ff;
+$secondary: #a0f669;
+
+// Derived colors (replaces polished.lighten)
+$primary-hover: color.adjust($primary, $lightness: -10%);
+$primary-active: color.adjust($primary, $lightness: -15%);
+$darken-hover: #393f47;
+$darken-active: #2d3238;
+$text-muted: rgba(0, 0, 0, 0.58);
+$text-body: color.adjust($black, $lightness: 60%);
+
+// === Breakpoints ===
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+);
+
+// === Mixins ===
+@mixin breakpoint-up($name) {
+  $min: map.get($breakpoints, $name);
+  @if $min != null {
+    @media (min-width: $min) { @content; }
+  } @else {
+    @content;
+  }
+}
+
+@mixin breakpoint-down($name) {
+  $max: map.get($breakpoints, $name);
+  @if $max != null {
+    @media (max-width: $max - 1px) { @content; }
+  } @else {
+    @content;
+  }
+}
+
+// === Spacing ===
+$section-padding: 6rem 0;
+$container-max: 1200px;
+$container-padding: 1.25rem;
