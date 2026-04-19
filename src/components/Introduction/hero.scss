@@ -92,6 +92,10 @@ $social-view-delay: 0.6s;
     grid-template-columns: 1fr;
   }
 
+  &__content {
+    text-align: center;
+  }
+
   &__spacer {
     // Empty right column on desktop
   }

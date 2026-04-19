@@ -309,3 +309,17 @@ export function TradLink({
     </li>
   )
 }
+
+// Default export: Nav with hardcoded navigation links (matches original Gatsby Navigation.tsx)
+export default function NavBar() {
+  return (
+    <Nav>
+      <TradLink to="/">Home</TradLink>
+      <TradLink to="/resume">Resume</TradLink>
+      <TradLink to="/blog">Blog</TradLink>
+      <TradLink to="/about">About</TradLink>
+      <TradLink to="/projects">Projects</TradLink>
+      <TradLink to="/contact">Contact</TradLink>
+    </Nav>
+  )
+}
