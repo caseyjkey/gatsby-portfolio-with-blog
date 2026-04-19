@@ -1,0 +1,233 @@
+@use '../../styles/theme' as *;
+
+// === Alignment System for About Page ===
+// Activity icons (35px desktop, 40px mobile) use CSS custom properties for responsive sizing.
+// Bio text and Consultant border left-align with icon left edge.
+$icon-size-desktop: 35px;
+$icon-size-mobile: 40px;
+$icon-gap: 16px;
+
+// === About Section ===
+.about-section {
+  margin-top: 6em;
+  padding-top: 0;
+  padding-bottom: 0;
+  flex: 1 0 auto;
+  position: relative;
+
+  // CSS custom properties for alignment
+  --icon-size: #{$icon-size-desktop};
+  --icon-gap: #{$icon-gap};
+  --content-indent: 0px;
+
+  @media (max-width: 767.98px) {
+    --icon-size: #{$icon-size-mobile};
+  }
+
+  // === Header ===
+  &__header {
+    text-align: center;
+    max-width: 58%;
+    margin: 0 auto 3rem;
+    padding-bottom: 3rem;
+
+    @media (max-width: 767.98px) {
+      max-width: 100%;
+    }
+  }
+
+  &__heading {
+    color: $black;
+    position: relative;
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+
+    @media (max-width: 767.98px) {
+      font-size: 38px;
+    }
+  }
+
+  &__subheader {
+    color: $text-muted;
+  }
+
+  // === Bio / Description ===
+  &__bio {
+    color: $black;
+    text-align: left;
+    margin-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  // === Activities Grid (two-column: activities left, headshot right) ===
+  &__content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 1rem;
+
+    @media (max-width: 767.98px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__activities-col {
+    padding-right: 0.5rem;
+    padding-bottom: 1rem;
+  }
+
+  &__headshot-col {
+    display: flex;
+    justify-content: center;
+  }
+
+  // === Activities List ===
+  &__activities {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    word-break: break-word;
+
+    li {
+      list-style: none;
+      margin-bottom: 16px;
+      color: $black;
+      display: flex;
+      align-items: center;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      span {
+        margin-left: 0;
+      }
+    }
+  }
+
+  // === Activity Icon Wrapper ===
+  &__activity-icon {
+    width: var(--icon-size);
+    min-width: var(--icon-size);
+    height: var(--icon-size);
+    margin-right: var(--icon-gap);
+    flex-shrink: 0;
+    background: $primary;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      color: $white;
+      font-size: calc(var(--icon-size) * 0.56);
+      margin: 0;
+    }
+
+    // Specific icon adjustments
+    &[data-icon-name*='Music'] svg,
+    &[data-icon-name*='music'] svg {
+      margin-right: 3px;
+    }
+
+    &[data-icon-name*='Book'] svg,
+    &[data-icon-name*='book'] svg {
+      margin-top: 3px;
+    }
+  }
+
+  // === Headshot Image ===
+  &__image {
+    display: none; // Hidden by default for screens < 767px
+    z-index: 0;
+    position: relative;
+    align-self: flex-start;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    @media (min-width: 767px) {
+      display: block;
+      width: 280px;
+      margin-top: -30px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (min-width: 767px) and (max-width: 1024px) {
+      max-width: 280px;
+    }
+
+    // Dual-layered background blur - Layer 1 (outer) - Sharper effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      background-color: rgba($primary, 0.15);
+      filter: blur(20px);
+      z-index: -1;
+    }
+
+    // Dual-layered background blur - Layer 2 (inner) - Sharper effect
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      background-color: rgba($primary, 0.1);
+      filter: blur(50px);
+      z-index: -1;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.18));
+    }
+  }
+
+  // === Consultant Identity ===
+  &__consultant {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 1.5rem;
+    background-color: $light-gray;
+    border-left: 4px solid $primary;
+    border-radius: 4px;
+    text-align: left;
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $primary;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    p {
+      color: $black;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    @media (max-width: 375px) {
+      padding: 1rem;
+    }
+  }
+
+  &__consultant-wrapper {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
