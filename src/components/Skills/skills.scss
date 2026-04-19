@@ -1,0 +1,293 @@
+@use 'sass:color';
+@use '../../styles/theme' as *;
+
+// === Derived Colors (replaces polished.lighten) ===
+$primary-light: color.adjust($primary, $lightness: 31%);
+$black-light: color.adjust($black, $lightness: 10%);
+
+// === Skills Section ===
+.skills-section {
+  position: relative;
+  margin-bottom: 0;
+  padding-left: 0;
+  padding-bottom: 6em;
+  list-style: none;
+
+  ul {
+    list-style: none;
+  }
+
+  @media (max-width: 767.98px) {
+    padding: 6em 0;
+  }
+
+  // === Skill List Items ===
+  .skill-list-item {
+    color: $black;
+    list-style: none;
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+
+    &::before {
+      content: '\26A1'; // lightning bolt
+      position: absolute;
+      left: 0;
+    }
+  }
+}
+
+// === Skill Container (icon + tooltip) ===
+.skill-container {
+  padding: 0 0.5rem;
+  display: inline-block;
+
+  h3 {
+    color: $black;
+    clear: none;
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  svg {
+    display: block;
+    color: $primary;
+    margin-left: 0;
+    margin-right: auto;
+    margin-bottom: 1.2rem;
+  }
+
+  span {
+    background-color: $black;
+  }
+}
+
+// === Section Titles ===
+.section-title {
+  font-weight: 800;
+  font-size: 30px;
+  margin-bottom: 30px;
+  color: $primary;
+}
+
+.subsection-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 0;
+  margin-top: 1.5rem;
+  color: $black;
+
+  @media (max-width: 767.98px) {
+    clear: both;
+  }
+}
+
+.medium-heading {
+  color: $black;
+  position: relative;
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  span {
+    font-weight: 400;
+  }
+}
+
+.section-subheader {
+  font-size: 18px;
+  color: $darken;
+  max-width: 700px;
+  margin: 1rem auto 0;
+  text-align: center;
+  line-height: 1.6;
+
+  @media (max-width: 767.98px) {
+    font-size: 16px;
+    padding: 0 1rem;
+  }
+}
+
+// === Heading (matches global Heading style) ===
+.skills-heading {
+  color: $black;
+  position: relative;
+  font-size: 50px;
+  font-weight: 700;
+
+  span {
+    font-weight: 400;
+  }
+
+  @media (max-width: 767.98px) {
+    font-size: 38px;
+  }
+}
+
+// === Skill List (bullet points) ===
+.skill-list {
+  list-style: none;
+  padding: 0;
+  margin-left: -1.4rem;
+
+  @media (max-width: 767.98px) {
+    margin-left: -0.35rem;
+  }
+}
+
+// === Two-Column Layout Rows ===
+.skills-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: flex-start;
+
+  @media (max-width: 767.98px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// === Illustration Columns ===
+.illustration-col {
+  position: relative;
+
+  &--top {
+    @media (min-width: 768px) {
+      padding-right: 3rem;
+    }
+
+    @media (max-width: 767.98px) {
+      padding-left: 0;
+      padding-right: 0;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  &--bottom {
+    @media (min-width: 768px) {
+      padding-right: 1rem;
+    }
+
+    @media (max-width: 767.98px) {
+      padding-left: 0;
+      padding-right: 0;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+// === Content Column ===
+.skills-content-col {
+  @media (min-width: 768px) {
+    padding-left: 1rem;
+  }
+}
+
+// === Header Row ===
+.skills-header-row {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0.5rem;
+  padding-top: 3rem;
+  margin: 0;
+
+  .heading-section {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 3rem;
+  }
+}
+
+// === Mobile tight row (negative margin on small screens) ===
+.tight-row-mobile {
+  @media (max-width: 767.98px) {
+    margin-top: -3rem !important;
+  }
+}
+
+// === ML Row spacing ===
+.ml-row {
+  @media (min-width: 768px) {
+    margin-top: 2rem !important;
+  }
+}
+
+// === Cloud Row spacing ===
+.cloud-row {
+  @media (min-width: 768px) {
+    margin-top: -6.25rem !important;
+  }
+}
+
+// === Skill Icons Row ===
+.skill-icons-row {
+  margin-left: -0.45rem;
+}
+
+// === SVG Illustration Wrappers ===
+.svg-wrapper {
+  overflow: visible;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  &--fullstack {
+    max-height: 550px;
+
+    @media (min-width: 992px) {
+      padding-top: 1rem;
+    }
+  }
+
+  &--ai-systems {
+    max-height: 500px;
+
+    @media (min-width: 992px) {
+      padding-top: 1rem;
+    }
+  }
+
+  &--infrastructure {
+    max-height: 420px;
+    margin-top: -3rem;
+    margin-bottom: 8rem;
+
+    @media (max-width: 767.98px) {
+      margin-top: -1.5rem;
+      margin-bottom: 0;
+    }
+  }
+}
+
+// === SVG Elements ===
+.illustration-svg {
+  width: 100%;
+  height: auto;
+  transform: scale(0.7);
+  transform-origin: top center;
+
+  &--overflow {
+    overflow: visible !important;
+  }
+
+  .primaryColor {
+    fill: $primary;
+  }
+
+  .darkColor {
+    fill: $black-light;
+  }
+}
+
+// === Viewport detection spans (invisible, used for IntersectionObserver) ===
+.viewport-detector {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
