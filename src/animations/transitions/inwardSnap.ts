@@ -10,6 +10,7 @@ export interface InwardSnapOptions {
   side: 'left' | 'right';
   delay?: number;
   duration?: number;
+  distance?: number;
 }
 
 /**
@@ -18,8 +19,10 @@ export interface InwardSnapOptions {
 export function inwardSnapKeyframes(options: InwardSnapOptions) {
   const { side, distance = 30 } = options;
 
-  const x = side === 'left' ? INWARD_SNAP.left.x : INWARD_SNAP.right.x;
-  const y = INWARD_SNAP.left.y;
+  const x = side === 'left'
+    ? distance === 30 ? INWARD_SNAP.left.x : -distance
+    : distance === 30 ? INWARD_SNAP.right.x : distance;
+  const y = distance === 30 ? INWARD_SNAP.left.y : Math.round(distance * 0.33);
 
   return [
     { opacity: 0, transform: `translate(${x}px, ${y}px)` },
@@ -30,7 +33,7 @@ export function inwardSnapKeyframes(options: InwardSnapOptions) {
 /**
  * Get Motion One animate options for inwardSnap
  */
-export function inwardSnapOptions(options: InwardSnapOptions = {}) {
+export function inwardSnapOptions(options: Partial<InwardSnapOptions> = {}) {
   const { delay = 0, duration = ANIMATION_CONFIG.defaultDuration } = options;
 
   return {

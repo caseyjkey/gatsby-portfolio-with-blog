@@ -5,6 +5,7 @@
  * Used for: Section headers, cards, content blocks
  */
 
+import type { Variants } from 'motion/react';
 import { ANIMATION_CONFIG, TIMING } from '../config';
 
 export interface FadeInUpOptions {
@@ -41,7 +42,9 @@ export function fadeInUpOptions(options: FadeInUpOptions = {}) {
 /**
  * Framer Motion variants for fadeInUp
  */
-export const fadeInUpVariants = {
+const FADE_IN_UP_EASE: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
+
+export const fadeInUpVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
@@ -50,11 +53,11 @@ export const fadeInUpVariants = {
   visible: (custom?: { delay?: number; distance?: number }) => ({
     opacity: 1,
     y: 0,
+    willChange: 'auto',
     transition: {
       duration: 0.6,
       delay: custom?.delay || 0,
-      ease: [0.25, 0.1, 0.25, 1], // Optimized easing for smoother opacity
-      willChange: 'auto',
+      ease: FADE_IN_UP_EASE,
     },
   }),
 };

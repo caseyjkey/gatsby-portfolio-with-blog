@@ -1,9 +1,5 @@
-// Import Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap.scss';
-// @import '~bootstrap/scss/mixins/_breakpoints.scss';
-// @import '~bootstrap/scss/_functions.scss';
-// @import '~bootstrap/scss/_variables.scss';
-
+@use 'sass:color';
+@use 'sass:map';
 // Import JetBrains Mono for code/terminal text
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
@@ -16,6 +12,38 @@ $darken: #232931;
 
 $primary: #3e64ff;
 $secondary: #a0f669;
+
+$breakpoints: (
+	xs: 0,
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+);
+
+@mixin media-breakpoint-down($name) {
+	$max-width: map.get($breakpoints, $name);
+
+	@if $max-width == null {
+		@content;
+	} @else {
+		@media (max-width: $max-width - 0.02px) {
+			@content;
+		}
+	}
+}
+
+@mixin media-breakpoint-up($name) {
+	$min-width: map.get($breakpoints, $name);
+
+	@if $min-width == null {
+		@content;
+	} @else {
+		@media (min-width: $min-width) {
+			@content;
+		}
+	}
+}
 
 
 
@@ -436,7 +464,7 @@ h5,
 .progress {
 	height: 10px;
 	box-shadow: none;
-	background: lighten($black, 90%);
+	background: color.adjust($black, $lightness: 90%);
 	overflow: visible;
 }
 
@@ -555,7 +583,7 @@ h5,
 
 // USEFUL CODE
 .aside-stretch {
-	background: lighten($primary, 10%);
+	background: color.adjust($primary, $lightness: 10%);
 
 	&:after {
 		position: absolute;
@@ -564,7 +592,7 @@ h5,
 		bottom: 0;
 		content: '';
 		width: 360%;
-		background: lighten($primary, 10%);
+		background: color.adjust($primary, $lightness: 10%);
 		// background: #333644;
 	}
 
@@ -999,7 +1027,7 @@ textarea.form-control {
 				height: 40px;
 				line-height: 40px;
 				border-radius: 50%;
-				border: 1px solid lighten($black, 80%);
+				border: 1px solid color.adjust($black, $lightness: 80%);
 			}
 
 			&.active {
@@ -1020,7 +1048,7 @@ textarea.form-control {
 	.contact-info {
 		p {
 			a {
-				color: lighten($black, 10%);
+				color: color.adjust($black, $lightness: 10%);
 			}
 
 			span {}
@@ -1139,7 +1167,7 @@ textarea.form-control {
 				margin-right: 5px;
 
 				a {
-					color: lighten($black, 30%);
+					color: color.adjust($black, $lightness: 30%);
 					font-size: 12px;
 					text-transform: uppercase;
 					letter-spacing: 1px;
@@ -1250,7 +1278,7 @@ textarea.form-control {
 
 				&:hover {
 					color: $white;
-					background: lighten($black, 0%);
+					background: color.adjust($black, $lightness: 0%);
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { motion } from 'motion/react';
 import AnimatedSection from '../AnimatedSection';
-import { fadeInUpVariants } from '../animations/transitions/fadeInUp';
+import { fadeInUpVariants } from '../../animations/transitions/fadeInUp';
 import {
   TIMING,
   SECONDARY_DELAYS,

@@ -18,22 +18,10 @@ export function useReducedMotion(): boolean {
       setPrefersReducedMotion(event.matches);
     };
 
-    // Safari < 14 doesn't support addEventListener on MediaQueryList
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', listener);
-      return () => {
-        mediaQuery.removeEventListener('change', listener);
-      };
-    } else {
-      // Fallback for older Safari
-      const legacyListener = () => {
-        setPrefersReducedMotion(mediaQuery.matches);
-      };
-      mediaQuery.addListener(legacyListener);
-      return () => {
-        mediaQuery.removeListener(legacyListener);
-      };
-    }
+    mediaQuery.addEventListener('change', listener);
+    return () => {
+      mediaQuery.removeEventListener('change', listener);
+    };
   }, []);
 
   return prefersReducedMotion;

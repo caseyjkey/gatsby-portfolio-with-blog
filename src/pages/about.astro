@@ -1,8 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/Navigation/NavBar';
 import AboutSection from '../components/About/AboutSection';
+import FooterSection from '../components/Footer/FooterSection';
 ---
 
 <BaseLayout pathname="/about" title="About | Casey Key">
+  <NavBar client:only="react" />
   <AboutSection client:only="react" />
+  <FooterSection client:only="react" />
 </BaseLayout>

@@ -1,8 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/Navigation/NavBar';
 import ContactForm from '../components/Contact/ContactForm';
+import FooterSection from '../components/Footer/FooterSection';
 ---
 
 <BaseLayout title="Contact | Casey Key">
+  <NavBar client:only="react" />
   <ContactForm client:only="react" />
+  <FooterSection client:only="react" />
 </BaseLayout>

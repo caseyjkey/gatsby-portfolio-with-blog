@@ -1,12 +1,12 @@
 #!/bin/bash
-# Check Gatsby dev server status and recent output
+# Check Astro dev server status and recent output
 
-echo "=== Gatsby Dev Server Status ==="
-if pgrep -f "gatsby develop" > /dev/null; then
+echo "=== Astro Dev Server Status ==="
+if pgrep -f "astro dev" > /dev/null; then
     echo "✓ Dev server is RUNNING"
     echo ""
     echo "=== Dev Server Processes ==="
-    ps aux | grep "gatsby develop" | grep -v grep
+    ps aux | grep "astro dev" | grep -v grep
     echo ""
     echo "=== Port 8001 Status ==="
     if command -v lsof &> /dev/null; then
@@ -15,7 +15,7 @@ if pgrep -f "gatsby develop" > /dev/null; then
         netstat -tlnp 2>/dev/null | grep :8001 || echo "Port 8001 status unknown"
     fi
     echo ""
-    if [ -f /tmp/gatsby-dev.log ]; then
+    if [ -f /tmp/astro-dev.log ]; then
         echo "=== Logging is ENABLED ==="
         echo "View logs: bun run dev:logs"
     else

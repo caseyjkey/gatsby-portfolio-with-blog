@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from 'astro:content';
+import { format } from 'date-fns';
+import SiteFooter from '../../components/SiteFooter.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.published);
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\/index$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const slugPath = post.id.replace(/\/index$/, '');
+const { Content } = await render(post);
+---
+
+<BaseLayout
+  pathname={`/blog/${slugPath}/`}
+  title={`${post.data.title} | Casey Key`}
+>
+  <SiteHeader />
+  <main class="post-page">
+    <article class="post">
+      <header class="post-header">
+        <h1>{post.data.title}</h1>
+        <p>{format(post.data.date, 'MMMM d, yyyy')}</p>
+      </header>
+      <Content />
+    </article>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .post-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 5rem;
+  }
+
+  .post {
+    color: #000;
+    line-height: 1.8;
+  }
+
+  .post-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .post-header h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .post-header p {
+    color: rgba(0, 0, 0, 0.55);
+  }
+</style>

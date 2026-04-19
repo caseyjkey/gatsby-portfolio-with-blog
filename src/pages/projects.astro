@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/Navigation/NavBar';
+import ProjectCards from '../components/Projects/ProjectCards';
+import FooterSection from '../components/Footer/FooterSection';
+import { getProjects } from '../lib/projects';
+
+const allProjects = getProjects();
+---
+
+<BaseLayout pathname="/projects" title="Projects | Casey Key">
+  <NavBar client:only="react" />
+  <ProjectCards
+    client:only="react"
+    projects={allProjects}
+    title="All Projects"
+    subtitle="A complete archive of builds and experiments."
+  />
+  <FooterSection client:only="react" />
+</BaseLayout>

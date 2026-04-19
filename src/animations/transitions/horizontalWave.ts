@@ -5,7 +5,7 @@
  * Calculates delay based on data-col and data-row attributes
  */
 
-import { ANIMATION_CONFIG, WAVE_STAGGER, MOBILE_VERTICAL_STACK } from '../config';
+import { ANIMATION_CONFIG, WAVE_STAGGER } from '../config';
 
 export interface HorizontalWaveOptions {
   delay?: number;

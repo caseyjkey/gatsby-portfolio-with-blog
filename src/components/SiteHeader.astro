@@ -1,0 +1,90 @@
+---
+const links = [
+  ['/', 'Home'],
+  ['/resume', 'Resume'],
+  ['/blog', 'Blog'],
+  ['/about', 'About'],
+  ['/projects', 'Projects'],
+  ['/contact', 'Contact'],
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="/"><span>C</span>asey Key</a>
+    <nav aria-label="Primary">
+      <ul>
+        {links.map(([href, label]) => (
+          <li>
+            <a href={href} class={currentPath === href ? 'active' : undefined}>{label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.78);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  }
+
+  .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #000;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .brand span {
+    color: var(--color-primary);
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.72);
+    font-weight: 500;
+  }
+
+  a.active,
+  a:hover {
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 720px) {
+    .inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    ul {
+      gap: 0.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import { format } from 'date-fns';
+import SiteFooter from '../../components/SiteFooter.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { extractPreview } from '../../lib/content';
+
+const posts = (await getCollection('blog', ({ data }) => data.published))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .map((post) => ({
+    ...post,
+    slug: post.id.replace(/\/index$/, ''),
+    preview: extractPreview(post.body ?? '', 240),
+  }));
+---
+
+<BaseLayout pathname="/blog" title="Blog | Casey Key">
+  <SiteHeader />
+  <main class="blog-page">
+    <section class="hero">
+      <h1>Blog</h1>
+      <p>Coding, reflecting, evolving.</p>
+    </section>
+    <section class="list">
+      {posts.map((post) => (
+        <article class="post-card">
+          <a href={`/blog/${post.slug}/`} class="post-link">
+            <h2>{post.data.title}</h2>
+            <p class="date">{format(post.data.date, 'yyyy MMMM do')}</p>
+            <p>{post.preview}</p>
+          </a>
+        </article>
+      ))}
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .blog-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 5rem;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .hero h1 {
+    color: #000;
+    font-size: clamp(2.6rem, 8vw, 4rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero p {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .post-card {
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+  }
+
+  .post-link {
+    display: block;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .post-link h2 {
+    color: #000;
+    margin-bottom: 0.35rem;
+  }
+
+  .date {
+    color: var(--color-primary);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+</style>

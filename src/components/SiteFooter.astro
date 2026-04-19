@@ -1,0 +1,71 @@
+<footer class="site-footer">
+  <div class="inner">
+    <div>
+      <h2>About</h2>
+      <p>Casey J. Key is a software engineer focused on finance, education, and security.</p>
+    </div>
+    <div>
+      <h2>Links</h2>
+      <ul>
+        <li><a href="https://x.com/thecaseykey">X</a></li>
+        <li><a href="https://linkedin.com/in/keycasey">LinkedIn</a></li>
+        <li><a href="https://github.com/caseyjkey">GitHub</a></li>
+        <li><a href="https://instagram.com/caseyjgkey">Instagram</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Questions?</h2>
+      <ul>
+        <li>San Francisco, CA, USA</li>
+        <li><a href="tel:13072242940">+1 (307) 224-2940</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: #000;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 3rem 1.25rem;
+  }
+
+  .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  h2 {
+    color: #fff;
+    font-size: 1.05rem;
+    margin-bottom: 0.9rem;
+  }
+
+  p,
+  li,
+  a {
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  a:hover {
+    color: #fff;
+  }
+
+  @media (max-width: 720px) {
+    .inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

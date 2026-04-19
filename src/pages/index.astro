@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/Navigation/NavBar';
+import HeroSection from '../components/Introduction/HeroSection';
+import SkillsSection from '../components/Skills/SkillsSection';
+import ExperienceTimeline from '../components/Experience/ExperienceTimeline';
+import ProjectCards from '../components/Projects/ProjectCards';
+import FooterSection from '../components/Footer/FooterSection';
+import { getFeaturedProjects } from '../lib/projects';
+
+const featuredProjects = getFeaturedProjects();
+---
+
+<BaseLayout>
+  <NavBar client:only="react" />
+  <HeroSection client:only="react" />
+  <SkillsSection client:only="react" />
+  <ExperienceTimeline client:only="react" />
+  <ProjectCards
+    client:only="react"
+    projects={featuredProjects}
+    title="Featured Work"
+    subtitle="Selected builds spanning product engineering, AI systems, and client delivery."
+  />
+  <FooterSection client:only="react" />
+</BaseLayout>

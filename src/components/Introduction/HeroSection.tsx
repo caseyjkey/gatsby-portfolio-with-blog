@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Container, Row, Col } from 'reactstrap';
-import { Button as BootstrapButton } from 'reactstrap';
 import { motion } from 'motion/react';
 import { IoMdArrowRoundDown } from 'react-icons/io';
 import Typewriter from 'typewriter-effect/dist/core';
@@ -31,46 +29,21 @@ const DesktopBlob = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// === Primary Button (inlined from style.ts, replaces styled PrimaryButton) ===
+// === Primary Button (native, replaces BootstrapButton) ===
 function PrimaryButton({ children, onClick, id }: {
   children: React.ReactNode;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   id?: string;
 }) {
   return (
-    <BootstrapButton
+    <button
       id={id}
       onClick={onClick}
-      className="btn"
-      style={{
-        cursor: 'pointer',
-        backgroundColor: '#3e64ff',
-        borderColor: '#3e64ff',
-        color: '#FFFFFF',
-        transition: 'transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out',
-      }}
-      onMouseDown={(e) => {
-        const target = e.currentTarget as HTMLElement;
-        target.style.transform = 'scale(0.97)';
-      }}
-      onMouseUp={(e) => {
-        const target = e.currentTarget as HTMLElement;
-        target.style.transform = '';
-      }}
-      onMouseLeave={(e) => {
-        const target = e.currentTarget as HTMLElement;
-        target.style.transform = '';
-        target.style.boxShadow = '';
-      }}
-      onMouseEnter={(e) => {
-        const target = e.currentTarget as HTMLElement;
-        target.style.backgroundColor = '#3350e0';
-        target.style.borderColor = '#3350e0';
-        target.style.boxShadow = '0 6px 14px rgba(0, 0, 0, 0.2)';
-      }}
+      className="btn btn-primary"
+      type="button"
     >
       {children}
-    </BootstrapButton>
+    </button>
   );
 }
 
@@ -267,9 +240,9 @@ export default function HeroSection() {
       </div>
 
       {/* Resume Button */}
-      <div className={`hero-resume-btn is-visible container position-absolute start-50 translate-middle-x resume-responsive-container`}>
-        <div className="row justify-content-center-mobile">
-          <div className="col-6-responsive d-flex justify-content-center">
+      <div className={`hero-resume-btn is-visible container`}>
+        <div className="hero-resume-btn__row">
+          <div className="hero-resume-btn__col">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -311,9 +284,9 @@ export default function HeroSection() {
 
       {/* Main Content */}
       <div className="hero-animated-content">
-        <Container>
-          <Row className="g-0 justify-content-center align-items-center" xs="1" md="2">
-            <Col md className="text-center">
+        <div className="container">
+          <div className="hero-grid">
+            <div className="hero-grid__content text-center">
               <div
                 ref={textRef}
                 className="hero-text"
@@ -364,11 +337,11 @@ export default function HeroSection() {
                   </motion.div>
                 </div>
               </div>
-            </Col>
+            </div>
             {/* Empty right column to maintain layout structure */}
-            <Col md className="d-none d-md-block"></Col>
-          </Row>
-        </Container>
+            <div className="hero-grid__spacer d-none d-md-block"></div>
+          </div>
+        </div>
       </div>
     </section>
   );

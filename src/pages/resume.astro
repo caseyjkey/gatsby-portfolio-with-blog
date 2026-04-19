@@ -1,8 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/Navigation/NavBar';
 import ResumeAccordion from '../components/Resume/ResumeAccordion';
+import FooterSection from '../components/Footer/FooterSection';
 ---
 
 <BaseLayout title="Resume | Casey Key">
+  <NavBar client:only="react" />
   <ResumeAccordion client:only="react" />
+  <FooterSection client:only="react" />
 </BaseLayout>

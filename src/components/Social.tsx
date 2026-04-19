@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { FaLinkedinIn, FaFacebookF, FaInstagram, FaGithub } from 'react-icons/fa'
+import type { ComponentType } from 'react';
+import { FaLinkedinIn, FaInstagram, FaGithub } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import { motion } from 'motion/react'
 import { fadeInUpVariants } from '../animations'
@@ -7,7 +8,7 @@ import { ANIMATION_CONFIG } from '../animations/config'
 
 /* This is a generic component for placing social links anywhere
    TODO: Use props for social links */
-export default function Socials(props) {
+export default function Socials() {
   return (
     <ul className="ftco-footer-social list-unstyled ">
       <li>
@@ -34,16 +35,11 @@ export default function Socials(props) {
   );
 }
 
-function Social({ link, Icon }) {
+function Social({ link, Icon }: { link: string; Icon: ComponentType }) {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const isMobile = () => {
-      if (typeof window === 'undefined') return false;
-      return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
-    };
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
