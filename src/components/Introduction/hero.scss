@@ -1,0 +1,555 @@
+@use '../../styles/theme' as *;
+
+// === Animation Config Values (mirrored from animations/config.ts) ===
+// These keep SCSS in sync with JS animation constants.
+// viewLayer.duration = 0.6s, viewLayer.delay = 0.3s, socialView.delay = 0.6s
+$view-layer-duration: 0.6s;
+$view-layer-delay: 0.3s;
+$social-view-delay: 0.6s;
+
+// === Hero Wrap ===
+.hero-wrap {
+  width: 100%;
+  z-index: 10;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+  overflow-y: visible;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  box-sizing: border-box;
+
+  // Desktop Default
+  .resume-responsive-container {
+    top: 65%;
+  }
+
+  .col-6-responsive {
+    width: 50%;
+  }
+
+  // Mobile Breakpoint
+  @media (max-width: 767.98px) {
+    .resume-responsive-container {
+      top: 57% !important;
+      transform: translateX(-50%) !important;
+    }
+
+    .col-6-responsive {
+      width: 100%;
+      flex: 0 0 100%;
+    }
+
+    #resume {
+      transform: none !important;
+    }
+
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: visible;
+    padding-top: 70px;
+  }
+}
+
+// === Overlay ===
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 65%;
+  opacity: 0.08;
+  background: $primary;
+
+  @media (max-width: 767.98px) {
+    height: 50%;
+  }
+}
+
+// === Text Container ===
+.hero-text {
+  @media (max-width: 767.98px) {
+    margin-top: 1em;
+  }
+
+  #resume {
+    margin-top: 0;
+  }
+
+  @media (max-width: 767.98px) {
+    #resume {
+      margin-top: 0;
+    }
+  }
+
+  width: 100%;
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+// === Subheader (greeting) ===
+.hero-subheader {
+  font-size: 36px;
+  font-weight: 900;
+  color: $primary;
+  letter-spacing: 4px;
+
+  @media (max-width: 767.98px) {
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
+
+  @media (max-height: 600px) {
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+}
+
+// === Slider (typewriter area) ===
+.hero-slider {
+  color: $darken;
+  font-weight: 500;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .subheader {
+    font-weight: 500;
+    font-size: 1.1em;
+    color: $darken;
+    margin: 0.2em 0;
+  }
+
+  #typewriter {
+    position: relative;
+    margin-bottom: 6rem;
+    transition-delay: $view-layer-delay;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  // View layers - stacked in the same physical spot
+  .view-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity $view-layer-duration ease-in-out;
+  }
+
+  .typewriter-cursor {
+    color: $primary;
+    animation: blink 1s step-end infinite;
+  }
+
+  // Tech view (visible first, fades out when finished)
+  .tech-view {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 2;
+    transition: opacity $view-layer-duration ease-out,
+                visibility 0s linear 0s;
+
+    .typewriter-cursor {
+      display: inline-block;
+    }
+
+    &.is-finished {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity $view-layer-duration ease-out,
+                  visibility 0s linear $view-layer-duration;
+
+      .typewriter-cursor {
+        display: none;
+      }
+    }
+  }
+
+  // Social view (hidden first, fades in when finished)
+  .social-view {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+    transition-delay: $social-view-delay;
+
+    &.is-finished {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      z-index: 2;
+    }
+  }
+
+  span#name {
+    color: $primary;
+    font-weight: 600;
+  }
+
+  #typewriter1 {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+    font-weight: 600;
+    color: $black;
+  }
+
+  #typewriter2 {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+    font-weight: 400;
+    font-size: 0.9em;
+    color: $darken;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @media (max-width: 767.98px) {
+    min-height: 120px;
+
+    #typewriter {
+      height: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .subheader {
+      font-size: 0.95em;
+    }
+  }
+}
+
+// === Desktop Arrow Wrapper ===
+.hero-desktop-arrow {
+  position: absolute;
+  top: 65%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+  transform: translateY(-50%);
+
+  @media (max-width: 767.98px) {
+    display: none;
+  }
+}
+
+// === Mobile Arrow Wrapper ===
+.hero-mobile-arrow {
+  display: none;
+
+  @media (max-width: 767.98px) {
+    position: absolute;
+    top: calc(50vh - 35px);
+    left: 0;
+    right: 0;
+    justify-content: center;
+    z-index: 20;
+    display: flex;
+  }
+}
+
+// === Mobile SVG Wrapper ===
+.hero-mobile-svg {
+  display: none;
+
+  @media (max-width: 767.98px) {
+    display: flex;
+    position: absolute;
+    bottom: 2vh;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    z-index: 5;
+    overflow: visible !important;
+  }
+}
+
+// === Animated Content ===
+.hero-animated-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto !important;
+  min-height: 0 !important;
+
+  .container {
+    height: auto !important;
+  }
+
+  @media (max-width: 767.98px) {
+    flex: 0 0 auto !important;
+    height: 42vh !important;
+    max-height: 42vh !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    padding-top: 0 !important;
+
+    .illustration-col {
+      display: none !important;
+    }
+  }
+}
+
+// === Desktop Illustration Positioner ===
+.hero-desktop-illustration {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+    position: absolute;
+    top: 54%;
+    left: 75%;
+    min-width: 337px;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: none;
+    transition: top 0.3s ease-in-out;
+  }
+
+  @media (min-width: 768px) and (max-width: 1580px) {
+    top: 58%;
+  }
+}
+
+// === Resume Button Wrapper ===
+.hero-resume-btn {
+  z-index: 100;
+  height: 0;
+  opacity: 0;
+  transition: opacity 400ms ease-out 800ms;
+
+  @media (min-width: 768px) {
+    #resume {
+      margin-top: 1rem;
+    }
+
+    margin-top: 1rem;
+  }
+
+  &.is-visible {
+    opacity: 1;
+  }
+}
+
+// === Mobile Headshot ===
+.hero-mobile-headshot-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  overflow: visible !important;
+  right: 17px;
+}
+
+.hero-mobile-blob {
+  position: absolute;
+  bottom: 28px;
+  left: 58%;
+  transform: translateX(-50%);
+  width: calc(68% + 3rem);
+  height: 71%;
+  z-index: 0;
+  overflow: visible !important;
+  display: block;
+}
+
+.hero-mobile-headshot-img {
+  position: relative;
+  z-index: 1;
+  width: 76%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 16px;
+
+  @media (max-height: 836px) {
+    width: 58%;
+  }
+}
+
+// === Desktop Headshot ===
+.hero-desktop-headshot-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  overflow: visible !important;
+  bottom: 35px;
+}
+
+.hero-desktop-blob {
+  position: absolute;
+  bottom: 62px;
+  left: 56%;
+  transform: translateX(-50%);
+  width: calc(100% + 4rem);
+  height: 89%;
+  z-index: 0;
+  overflow: visible !important;
+  display: block;
+}
+
+.hero-desktop-headshot-img {
+  position: relative;
+  z-index: 1;
+  width: 85%;
+  max-width: 450px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+// === Falling Arrow ===
+.hero-falling-arrow {
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.hero-falling-arrow__container {
+  width: 70px;
+  height: 70px;
+  background: transparent;
+  position: relative;
+  margin: 0 auto;
+  display: block;
+  overflow: visible;
+
+  @media (max-width: 767.98px) {
+    width: 100px;
+    height: 100px;
+  }
+
+  &::after {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    content: '';
+    width: 70px;
+    height: 38px;
+    background: $primary;
+    opacity: 0.08;
+    transform: translate(-50%, 0);
+    z-index: -1;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  }
+}
+
+.hero-falling-arrow__motion {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  position: relative;
+  color: $primary;
+  font-size: 24px;
+}
+
+// === Social Style (wrapper around Socials) ===
+.hero-social-style {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease-out 1.8s, transform 0.6s ease-out 1.8s;
+
+  &.is-finished {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ftco-footer-social {
+    li {
+      list-style: none;
+      margin: 0 10px;
+      display: inline-block;
+
+      a {
+        height: 40px;
+        width: 40px;
+        display: block;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        position: relative;
+        transition: background 0.3s ease;
+
+        svg {
+          position: absolute;
+          font-size: 24px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        &:hover {
+          color: $black;
+          background: rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+  }
+
+  // Responsive social icons
+  @media (max-width: 767.98px) {
+    .ftco-footer-social {
+      li {
+        margin: 0 6px;
+
+        a {
+          height: 32px;
+          width: 32px;
+
+          svg {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-height: 600px) {
+    .ftco-footer-social {
+      li {
+        margin: 0 4px;
+
+        a {
+          height: 28px;
+          width: 28px;
+
+          svg {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
