@@ -38,6 +38,7 @@ node_modules
 !.yarn/sdks
 !.yarn/versions
 .worktrees/
+worktrees/
 
 .claude
 .tldr
