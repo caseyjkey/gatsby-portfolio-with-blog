@@ -54,9 +54,16 @@ $nav-height: 85px;
   // Navbar brand
   .navbar-brand {
     color: $black;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
 
-    span {
-      // First letter styling (the "C" in Casey)
+    &::after {
+      display: none;
+    }
+
+    svg {
+      display: block;
     }
   }
 

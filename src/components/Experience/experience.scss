@@ -1,5 +1,30 @@
 @use '../../styles/theme' as *;
 
+@mixin bootstrap-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+
+  @media (max-width: 1199.98px) {
+    max-width: 960px;
+  }
+
+  @media (max-width: 991.98px) {
+    max-width: 720px;
+  }
+
+  @media (max-width: 767.98px) {
+    max-width: 540px;
+  }
+
+  @media (max-width: 575.98px) {
+    max-width: 100%;
+  }
+}
+
 // === Experience Section ===
 .experience-section {
   position: relative;
@@ -8,9 +33,7 @@
 
   // === Header Row (replaces Container > Row > Col) ===
   &__header-row {
-    max-width: $container-max;
-    margin: 0 auto;
-    padding: 0 $container-padding;
+    @include bootstrap-container;
     text-align: center;
     padding-bottom: 3rem;
   }
@@ -36,9 +59,7 @@
 
   // === Content Row ===
   &__content-row {
-    max-width: $container-max;
-    margin: 0 auto;
-    padding: 0 $container-padding;
+    @include bootstrap-container;
   }
 }
 
@@ -110,6 +131,7 @@
   font-weight: 700;
   color: $black;
   font-size: 1.1rem;
+  line-height: 1.5;
   margin-top: 5px;
 
   @media (max-width: 767.98px) {
@@ -173,6 +195,8 @@
 .timeline-company {
   font-weight: 700;
   font-size: 1.5rem;
+  line-height: 1.5;
+  margin-top: 0;
   margin-bottom: 0;
   margin-right: 0.75rem;
   color: $black;

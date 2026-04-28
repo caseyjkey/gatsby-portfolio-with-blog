@@ -209,6 +209,8 @@ $black-light: color.adjust($black, $lightness: 10%);
 
 // === ML Row spacing ===
 .ml-row {
+  padding-top: 0.5rem;
+
   @media (min-width: 768px) {
     margin-top: 2rem !important;
   }
@@ -216,13 +218,19 @@ $black-light: color.adjust($black, $lightness: 10%);
 
 // === Cloud Row spacing ===
 .cloud-row {
+  padding-top: 0.5rem;
+
   @media (min-width: 768px) {
+    padding-top: 1.5rem;
     margin-top: -6.25rem !important;
   }
 }
 
 // === Skill Icons Row ===
 .skill-icons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-left: -0.45rem;
 }
 

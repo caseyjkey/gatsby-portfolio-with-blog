@@ -99,7 +99,28 @@ export function Nav({ children }: NavProps) {
       data-menu-open={isMenuOpen ? 'true' : 'false'}
     >
       <div className="nav-container">
-        <a className="navbar-brand" href="/"><span>C</span>asey Key</a>
+        <a className="navbar-brand navbar-brand--svg" href="/" aria-label="Casey Key home">
+          <svg
+            viewBox="0 0 350 100"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ height: '60px', width: 'auto' }}
+            role="img"
+            aria-label="Casey Key"
+          >
+            <circle cx="45" cy="50" r="38" fill="#3e64ff" />
+
+            <text
+              x="45"
+              y="68"
+              fontFamily="Poppins, sans-serif"
+              fontSize="52"
+              fontWeight="900"
+            >
+              <tspan textAnchor="middle" fill="white">C</tspan>
+              <tspan x="78" fill="black">asey Key</tspan>
+            </text>
+          </svg>
+        </a>
         <button
           className="hamburger-toggle"
           onClick={toggleNavbar}

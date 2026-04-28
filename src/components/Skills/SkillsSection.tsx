@@ -465,11 +465,9 @@ function SkillSection({
   })();
 
   const illustrationColClass =
-    illustrationType === 'infrastructure'
+    illustrationSide === 'left'
       ? 'illustration-col illustration-col--top'
-      : illustrationType === 'fullstack'
-        ? 'illustration-col illustration-col--top'
-        : 'illustration-col illustration-col--bottom';
+      : 'illustration-col illustration-col--bottom';
 
   return (
     <div className={className}>
@@ -579,7 +577,7 @@ export default function SkillsSection() {
 
         {/* Machine Learning Engineering - Illustration on RIGHT */}
         <AnimatedSection>
-          <div className="ml-row" style={{ paddingTop: '0.5rem' }}>
+          <div className="ml-row">
             <SkillSection
               heading="Machine Learning Engineering"
               skills={[
@@ -597,7 +595,7 @@ export default function SkillsSection() {
                 'Build multi-modal AI with fine-tuned LLMs, LoRA, and RAG.',
               ]}
               illustrationSide="right"
-              illustrationType="ai-systems"
+              illustrationType="infrastructure"
               isVisible={true}
             />
           </div>
@@ -605,7 +603,7 @@ export default function SkillsSection() {
 
         {/* Cloud & DevOps - Illustration on LEFT */}
         <AnimatedSection>
-          <div className="tight-row-mobile cloud-row" style={{ paddingTop: '0.5rem' }}>
+          <div className="tight-row-mobile cloud-row">
             <SkillSection
               heading="Cloud & DevOps"
               skills={[
@@ -625,7 +623,7 @@ export default function SkillsSection() {
                 'Automate infrastructure and systems with Terraform and Bash scripting.',
               ]}
               illustrationSide="left"
-              illustrationType="infrastructure"
+              illustrationType="ai-systems"
               isVisible={true}
             />
           </div>
