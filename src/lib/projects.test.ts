@@ -19,6 +19,7 @@ describe('project helpers', () => {
         imageMap: {
           '../data/projects/demo/images/cover.png': '/assets/cover.png',
           '../data/projects/demo/images/alt.png': { src: '/assets/alt.png' },
+          '../data/projects/demo/images/third.png': { src: '/assets/third.png' },
         },
       },
       [
@@ -26,6 +27,10 @@ describe('project helpers', () => {
         {
           default: {
             image: 'images/cover.png',
+            galleryImages: [
+              { image: 'images/third.png' },
+              { image: 'images/alt.png' },
+            ],
             title: 'Demo',
             subtitle: 'Prototype',
             description: '<p>Test</p>',
@@ -39,7 +44,7 @@ describe('project helpers', () => {
     );
 
     expect(record.imageUrl).toBe('/assets/cover.png');
-    expect(record.galleryImageUrls).toEqual(['/assets/alt.png', '/assets/cover.png']);
+    expect(record.galleryImageUrls).toEqual(['/assets/third.png', '/assets/alt.png']);
     expect(record.postSlug).toBe('/projects/2024-04-demo/');
     expect(record.end?.date).toBe('2024-09');
   });

@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import { format } from 'date-fns';
+import NavBar from '../../components/Navigation/NavBar';
 import SiteFooter from '../../components/SiteFooter.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { extractPreview } from '../../lib/content';
 
@@ -16,7 +16,7 @@ const posts = (await getCollection('blog', ({ data }) => data.published))
 ---
 
 <BaseLayout pathname="/blog" title="Blog | Casey Key">
-  <SiteHeader />
+  <NavBar client:only="react" />
   <main class="blog-page">
     <section class="hero">
       <h1>Blog</h1>
@@ -41,7 +41,7 @@ const posts = (await getCollection('blog', ({ data }) => data.published))
   .blog-page {
     max-width: 860px;
     margin: 0 auto;
-    padding: 3rem 1.25rem 5rem;
+    padding: 7.5rem 1.25rem 5rem;
   }
 
   .hero {

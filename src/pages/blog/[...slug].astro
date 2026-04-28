@@ -1,8 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import { format } from 'date-fns';
+import NavBar from '../../components/Navigation/NavBar';
 import SiteFooter from '../../components/SiteFooter.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
@@ -13,23 +13,40 @@ export async function getStaticPaths() {
   }));
 }
 
+const blogImageModules = import.meta.glob('../../../posts/blog/**/*.{png,jpg,jpeg,webp,gif,avif}', {
+  eager: true,
+  import: 'default',
+});
+
+const getAssetUrl = (asset: string | { src: string } | undefined) => {
+  if (!asset) return undefined;
+  return typeof asset === 'string' ? asset : asset.src;
+};
+
 const { post } = Astro.props;
 const slugPath = post.id.replace(/\/index$/, '');
+const coverPath = post.data.cover?.replace(/^\.\//, '');
+const coverKey = coverPath ? `../../../posts/blog/${slugPath}/${coverPath}` : undefined;
+const coverUrl = coverKey ? getAssetUrl(blogImageModules[coverKey] as string | { src: string } | undefined) : undefined;
 const { Content } = await render(post);
 ---
 
 <BaseLayout
   pathname={`/blog/${slugPath}/`}
   title={`${post.data.title} | Casey Key`}
+  image={coverUrl}
 >
-  <SiteHeader />
+  <NavBar client:only="react" />
   <main class="post-page">
     <article class="post">
       <header class="post-header">
         <h1>{post.data.title}</h1>
         <p>{format(post.data.date, 'MMMM d, yyyy')}</p>
+        {coverUrl ? <img src={coverUrl} alt={post.data.title} class="post-hero" /> : null}
       </header>
-      <Content />
+      <div class="post-content">
+        <Content />
+      </div>
     </article>
   </main>
   <SiteFooter />
@@ -37,14 +54,14 @@ const { Content } = await render(post);
 
 <style>
   .post-page {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 3rem 1.25rem 5rem;
+    padding: 7.5rem 1.25rem 5rem;
   }
 
   .post {
     color: #000;
     line-height: 1.8;
+    max-width: 900px;
+    margin: 0 auto;
   }
 
   .post-header {
@@ -54,10 +71,145 @@ const { Content } = await render(post);
 
   .post-header h1 {
     font-size: clamp(2.5rem, 7vw, 4.5rem);
-    margin-bottom: 0.75rem;
+    margin: 0 0 0.75rem;
   }
 
   .post-header p {
     color: rgba(0, 0, 0, 0.55);
+    margin: 0;
+  }
+
+  .post-hero {
+    width: 100%;
+    margin-top: 2rem;
+    border-radius: 24px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+  }
+
+  .post-content :global(:first-child) {
+    margin-top: 0;
+  }
+
+  .post-content :global(pre.astro-code) {
+    position: relative;
+    text-align: left;
+    margin: 1em 0;
+    padding: 0.75em 0.5em 0.75em 0;
+    overflow-x: auto;
+    border-radius: 3px;
+    -webkit-overflow-scrolling: touch;
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+  }
+
+  .post-content :global(pre.astro-code code) {
+    display: block;
+    min-width: fit-content;
+  }
+
+  .post-content :global(pre.astro-code .line) {
+    line-height: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-content :global(pre.astro-code .line span) {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5em;
+  }
+
+  .post-content :global(pre.astro-code[data-line-numbers='true']) {
+    counter-reset: line;
+  }
+
+  .post-content :global(pre.astro-code[data-line-numbers='true'] .line::before) {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 2em;
+    user-select: none;
+    opacity: 0.6;
+    margin-right: 1em;
+    text-align: right;
+  }
+
+  .post-content :global(.code-copy-button) {
+    position: absolute;
+    top: 0.25em;
+    right: 0.25em;
+    border: 0;
+    border-radius: 3px;
+    margin: 0.25em;
+    padding: 0.35rem 0.55rem;
+    opacity: 0.3;
+    cursor: pointer;
+    background: rgba(15, 23, 42, 0.85);
+    color: #fff;
+    font-size: 0.8rem;
+    transition: opacity 0.15s ease-out;
+  }
+
+  .post-content :global(.code-copy-button:hover) {
+    opacity: 1;
+  }
+
+  @media (max-width: 767.98px) {
+    .post-content :global(pre.astro-code) {
+      max-width: calc(100vw - 40px);
+    }
   }
 </style>
+
+<script is:inline>
+  const enhanceCodeBlocks = () => {
+    const blocks = document.querySelectorAll('.post-content pre.astro-code');
+
+    blocks.forEach((block) => {
+      if (!(block instanceof HTMLElement)) return;
+
+      const lines = block.querySelectorAll('.line');
+      if (lines.length > 0) {
+        block.dataset.lineNumbers = 'true';
+      }
+
+      if (block.querySelector('.code-copy-button')) return;
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'code-copy-button';
+      button.textContent = 'Copy';
+      button.setAttribute('aria-label', 'Copy code to clipboard');
+
+      button.addEventListener('click', async () => {
+        const code = block.querySelector('code');
+        const text = code?.textContent?.replace(/\n$/, '') ?? '';
+        if (!text) return;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          button.textContent = 'Copied';
+          window.setTimeout(() => {
+            button.textContent = 'Copy';
+          }, 1200);
+        } catch {
+          button.textContent = 'Error';
+          window.setTimeout(() => {
+            button.textContent = 'Copy';
+          }, 1200);
+        }
+      });
+
+      block.appendChild(button);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', enhanceCodeBlocks, { once: true });
+  } else {
+    enhanceCodeBlocks();
+  }
+
+  document.addEventListener('astro:after-swap', enhanceCodeBlocks);
+</script>

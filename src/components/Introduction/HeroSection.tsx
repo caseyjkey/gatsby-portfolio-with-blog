@@ -239,31 +239,6 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Resume Button */}
-      <div className={`hero-resume-btn is-visible container`}>
-        <div className="hero-resume-btn__row">
-          <div className="hero-resume-btn__col">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
-              variants={fadeInUpVariants}
-            >
-              <PrimaryButton
-                id="resume"
-                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                  e.preventDefault();
-                  window.dispatchEvent(new CustomEvent('experience-scroll-trigger'));
-                  scrollToId('Experience', 40);
-                }}
-              >
-                View Experience
-              </PrimaryButton>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-
       {/* Desktop Illustration */}
       <div className="hero-desktop-illustration">
         <motion.div
@@ -331,9 +306,29 @@ export default function HeroSection() {
                     <div className={`view-layer social-view${headerEnd ? ' is-finished' : ''}`}>
                       <h2 id="typewriter3" className="subheader"></h2>
                       <div className={`hero-social-style${headerEnd ? ' is-finished' : ''}`}>
-                        <Socials />
+                        <Socials className="hero-social-list" />
                       </div>
                     </div>
+                  </motion.div>
+                </div>
+
+                <div className="hero-resume-btn is-visible">
+                  <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
+                    variants={fadeInUpVariants}
+                  >
+                    <PrimaryButton
+                      id="resume"
+                      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                        window.dispatchEvent(new CustomEvent('experience-scroll-trigger'));
+                        scrollToId('Experience', 40);
+                      }}
+                    >
+                      View Experience
+                    </PrimaryButton>
                   </motion.div>
                 </div>
               </div>

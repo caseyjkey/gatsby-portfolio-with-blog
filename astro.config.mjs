@@ -7,7 +7,7 @@ export default defineConfig({
   integrations: [react(), mdx()],
   markdown: {
     shikiConfig: {
-      theme: 'dracula',
+      theme: 'night-owl',
     },
   },
 });

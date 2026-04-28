@@ -2,6 +2,9 @@ type ProjectIconMap = Partial<Record<'di' | 'fa' | 'io' | 'si' | 'gr', string[]>
 
 type RawProject = {
   image: string;
+  galleryImages?: Array<{
+    image: string;
+  }>;
   title: string;
   subtitle: string;
   description: string;
@@ -23,6 +26,12 @@ export type ProjectRecord = RawProject & {
   galleryImageUrls: string[];
   postSlug: string;
 };
+
+export function formatProjectStatusLabel(status: string) {
+  if (status === 'in-progress') return 'In Progress';
+  if (status === 'beta') return 'Beta';
+  return status;
+}
 
 const hasImportGlob = typeof import.meta.glob === 'function';
 const projectModules = hasImportGlob
@@ -67,10 +76,9 @@ const toProjectRecord = (
   const slug = raw.project;
   const folderPrefix = `../data/projects/${slug}/`;
   const imageUrl = getAssetUrl(options.imageMap[`${folderPrefix}${raw.image}`]);
-  const galleryImageUrls = Object.entries(options.imageMap)
-    .filter(([assetPath]) => assetPath.startsWith(folderPrefix))
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([, url]) => getAssetUrl(url));
+  const galleryImageUrls = (raw.galleryImages ?? [])
+    .map(({ image }) => getAssetUrl(options.imageMap[`${folderPrefix}${image}`]))
+    .filter(Boolean);
 
   return {
     ...raw,
@@ -106,6 +114,7 @@ export function getProjectBySlug(slug: string) {
 }
 
 export const __test__ = {
+  formatProjectStatusLabel,
   normalizeMonth,
   buildPostSlug,
   toProjectRecord,

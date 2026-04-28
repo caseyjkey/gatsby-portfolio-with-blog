@@ -1,10 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
 import { format } from 'date-fns';
+import NavBar from '../../components/Navigation/NavBar';
 import SiteFooter from '../../components/SiteFooter.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getProjectBySlug } from '../../lib/projects';
+import { formatProjectStatusLabel, getProjectBySlug } from '../../lib/projects';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', ({ data }) => data.published);
@@ -18,9 +18,7 @@ const { project } = Astro.props;
 const slug = project.id.replace(/\/index$/, '');
 const record = getProjectBySlug(slug.split('-').slice(2).join('-'));
 const { Content } = await render(project);
-const description = record?.subtitle
-  ? `${record.title} | ${record.subtitle}`
-  : `${project.data.title} project case study`;
+const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : project.data.title;
 ---
 
 <BaseLayout
@@ -29,26 +27,27 @@ const description = record?.subtitle
   description={description}
   image={record?.imageUrl}
 >
-  <SiteHeader />
+  <NavBar client:only="react" />
   <main class="project-page">
     <article class="project">
       <header class="project-header">
-        <p class="eyebrow">Project Case Study</p>
         <h1>{project.data.title}</h1>
         {record ? (
           <p class="meta">
             <span>{record.subtitle}</span>
             <span>{format(new Date(`${record.start}-01`), 'MMMM yyyy')}</span>
-            {record.status ? <span>{record.status}</span> : null}
+            {record.status ? <span>{formatProjectStatusLabel(record.status)}</span> : null}
           </p>
         ) : null}
         {record?.imageUrl ? <img src={record.imageUrl} alt={record.title} class="hero" /> : null}
       </header>
-      <Content />
+      <div class="project-content">
+        <Content />
+      </div>
       {record ? (
         <section class="links">
-          {record.link ? <a href={record.link}>Visit project</a> : null}
-          {record.sourceLink ? <a href={record.sourceLink}>Source code</a> : null}
+          {record.sourceLink ? <a href={record.sourceLink}>Source</a> : null}
+          {record.link ? <a href={record.link}>View Project</a> : null}
         </section>
       ) : null}
     </article>
@@ -58,31 +57,23 @@ const description = record?.subtitle
 
 <style>
   .project-page {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 3rem 1.25rem 5rem;
+    padding: 7.5rem 1.25rem 5rem;
   }
 
   .project {
     color: #000;
     line-height: 1.8;
+    max-width: 900px;
+    margin: 0 auto;
   }
 
   .project-header {
     margin-bottom: 3rem;
   }
 
-  .eyebrow {
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--color-primary);
-    font-size: 0.82rem;
-    font-weight: 700;
-  }
-
   h1 {
     font-size: clamp(2.4rem, 7vw, 4.5rem);
-    margin-bottom: 0.75rem;
+    margin: 0 0 0.75rem;
   }
 
   .meta {
@@ -90,6 +81,7 @@ const description = record?.subtitle
     flex-wrap: wrap;
     gap: 0.75rem;
     color: rgba(0, 0, 0, 0.58);
+    margin: 0;
   }
 
   .hero {
@@ -98,6 +90,10 @@ const description = record?.subtitle
     border-radius: 24px;
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+  }
+
+  .project-content :global(:first-child) {
+    margin-top: 0;
   }
 
   .links {

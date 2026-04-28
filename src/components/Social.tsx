@@ -8,9 +8,9 @@ import { ANIMATION_CONFIG } from '../animations/config'
 
 /* This is a generic component for placing social links anywhere
    TODO: Use props for social links */
-export default function Socials() {
+export default function Socials({ className = 'social-list' }: { className?: string }) {
   return (
-    <ul className="ftco-footer-social list-unstyled ">
+    <ul className={className}>
       <li>
         <Social Icon={FaXTwitter}
           link="https://x.com/thecaseykey"
@@ -63,14 +63,18 @@ function Social({ link, Icon }: { link: string; Icon: ComponentType }) {
   }, []);
 
   return (
-    <motion.div
+    <motion.a
       ref={ref}
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
       initial="hidden"
       animate={visible ? "visible" : "hidden"}
       variants={fadeInUpVariants}
+      aria-label="Social link"
     >
-      <a href={link} target="_blank" rel="noopener noreferrer"><Icon /></a>
-    </motion.div>
+      <Icon />
+    </motion.a>
   );
 }
 

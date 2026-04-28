@@ -27,18 +27,24 @@ $social-view-delay: 0.6s;
   // Desktop Default
   .hero-resume-btn {
     position: absolute;
-    left: 50%;
+    left: 0;
+    right: 0;
     top: 65%;
-    transform: translateX(-50%);
+    box-sizing: border-box;
   }
 
   .hero-resume-btn__row {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: $container-max;
+    margin: 0 auto;
+    padding-left: $container-padding;
+    padding-right: $container-padding;
+    box-sizing: border-box;
   }
 
   .hero-resume-btn__col {
-    width: 50%;
     display: flex;
     justify-content: center;
   }
@@ -51,6 +57,7 @@ $social-view-delay: 0.6s;
 
     .hero-resume-btn__col {
       width: 100%;
+      grid-column: 1 / -1;
     }
 
     #resume {
@@ -360,17 +367,20 @@ $social-view-delay: 0.6s;
 
 // === Resume Button Wrapper ===
 .hero-resume-btn {
-  z-index: 100;
-  height: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0;
   opacity: 0;
   transition: opacity 400ms ease-out 800ms;
+  z-index: 30;
 
-  @media (min-width: 768px) {
-    #resume {
-      margin-top: 1rem;
-    }
-
-    margin-top: 1rem;
+  #resume {
+    padding: 0.7rem 18px;
+    border-radius: 5px;
+    font-weight: 400;
+    line-height: 1.5;
+    white-space: nowrap;
   }
 
   &.is-visible {
@@ -508,33 +518,45 @@ $social-view-delay: 0.6s;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.6s ease-out 1.8s, transform 0.6s ease-out 1.8s;
+  position: relative;
+  z-index: 30;
 
   &.is-finished {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .ftco-footer-social {
+  .hero-social-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
     li {
-      list-style: none;
       margin: 0 10px;
       display: inline-block;
 
       a {
         height: 40px;
         width: 40px;
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background: rgba(255, 255, 255, 0.1);
         border-radius: 50%;
         position: relative;
-        transition: background 0.3s ease;
+        transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+        color: $darken;
+        text-decoration: none;
+        cursor: pointer;
+        pointer-events: auto;
 
         svg {
-          position: absolute;
           font-size: 24px;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+          display: block;
         }
 
         &:hover {
@@ -547,7 +569,7 @@ $social-view-delay: 0.6s;
 
   // Responsive social icons
   @media (max-width: 767.98px) {
-    .ftco-footer-social {
+    .hero-social-list {
       li {
         margin: 0 6px;
 
@@ -564,7 +586,7 @@ $social-view-delay: 0.6s;
   }
 
   @media (max-height: 600px) {
-    .ftco-footer-social {
+    .hero-social-list {
       li {
         margin: 0 4px;
 

@@ -29,6 +29,10 @@ yarn-error.log*
 public
 node_modules
 
+# Astro build
+.astro
+dist
+
 # Yarn w/ Zero-Installs
 .yarn/*
 !.yarn/cache
