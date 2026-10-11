@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { format } from 'date-fns';
 import NavBar from '../../components/Navigation/NavBar';
-import SiteFooter from '../../components/SiteFooter.astro';
+import FooterSection from '../../components/Footer/FooterSection';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
@@ -49,7 +49,7 @@ const { Content } = await render(post);
       </div>
     </article>
   </main>
-  <SiteFooter />
+  <FooterSection client:only="react" />
 </BaseLayout>
 
 <style>

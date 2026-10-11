@@ -33,11 +33,11 @@ export function formatProjectStatusLabel(status: string) {
   return status;
 }
 
-const hasImportGlob = typeof import.meta.glob === 'function';
-const projectModules = hasImportGlob
-  ? import.meta.glob('../data/projects/*/project.json', { eager: true })
+const isViteRuntime = import.meta.env?.DEV === true || import.meta.env?.PROD === true;
+const projectModules = isViteRuntime
+  ? import.meta.glob('../data/projects/*/*.json', { eager: true })
   : {};
-const imageModules = hasImportGlob
+const imageModules = isViteRuntime
   ? import.meta.glob('../data/projects/**/*.{png,jpg,jpeg,webp,gif}', {
       eager: true,
       import: 'default',

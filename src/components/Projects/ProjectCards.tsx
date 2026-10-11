@@ -170,7 +170,7 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
   }, [activeImageIndex]);
 
   return (
-    <section className="projects">
+    <section className={`projects${title === 'Featured Work' ? ' projects--featured' : ''}`}>
       <div className="container">
         <div className="projects__intro">
           <h2>{title}</h2>

@@ -31,6 +31,11 @@
   padding: $section-padding;
   background-color: $white;
 
+  @media (max-width: 767.98px) {
+    padding-top: 60px;
+    padding-bottom: 0;
+  }
+
   // === Header Row (replaces Container > Row > Col) ===
   &__header-row {
     @include bootstrap-container;
@@ -43,6 +48,7 @@
     position: relative;
     font-size: 50px;
     font-weight: 700;
+    margin: 0 0 0.5rem;
 
     span {
       font-weight: 400;
@@ -55,6 +61,7 @@
 
   &__subheader {
     color: $text-muted;
+    margin: 0 0 1rem;
   }
 
   // === Content Row ===

@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { format } from 'date-fns';
 import NavBar from '../../components/Navigation/NavBar';
-import SiteFooter from '../../components/SiteFooter.astro';
+import FooterSection from '../../components/Footer/FooterSection';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatProjectStatusLabel, getProjectBySlug } from '../../lib/projects';
 
@@ -52,7 +52,7 @@ const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : 
       ) : null}
     </article>
   </main>
-  <SiteFooter />
+  <FooterSection client:only="react" />
 </BaseLayout>
 
 <style>

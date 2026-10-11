@@ -33,7 +33,7 @@ $social-icon-bg: color.adjust($white, $lightness: -70%);    // darken(0.7, white
       font-weight: 600;
       color: $white;
       font-size: 22px;
-      margin-bottom: 0.9rem;
+      margin: 0 0 0.9rem;
     }
 
     ul {
@@ -61,6 +61,7 @@ $social-icon-bg: color.adjust($white, $lightness: -70%);    // darken(0.7, white
 
   p {
     color: $footer-text;
+    margin: 0 0 1rem;
   }
 
   a {

@@ -10,7 +10,7 @@ $icon-gap: 16px;
 // === About Section ===
 .about-section {
   margin-top: 6em;
-  padding-top: 0;
+  padding-top: 3rem;
   padding-bottom: 0;
   flex: 1 0 auto;
   position: relative;
@@ -22,14 +22,21 @@ $icon-gap: 16px;
 
   @media (max-width: 767.98px) {
     --icon-size: #{$icon-size-mobile};
+    padding-bottom: 34px;
+  }
+
+  @media (min-width: 768px) {
+    padding-bottom: 8px;
   }
 
   // === Header ===
   &__header {
     text-align: center;
-    max-width: 58%;
+    width: 100%;
+    max-width: 770px;
+    box-sizing: border-box;
     margin: 0 auto 3rem;
-    padding-bottom: 3rem;
+    padding: 0 0.75rem 1rem;
 
     @media (max-width: 767.98px) {
       max-width: 100%;
@@ -41,7 +48,7 @@ $icon-gap: 16px;
     position: relative;
     font-size: 50px;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin: 0 0 1.5rem;
 
     @media (max-width: 767.98px) {
       font-size: 38px;
@@ -50,6 +57,7 @@ $icon-gap: 16px;
 
   &__subheader {
     color: $text-muted;
+    margin: 0 0 1rem;
   }
 
   // === Bio / Description ===
@@ -65,7 +73,7 @@ $icon-gap: 16px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
-    margin-top: 1rem;
+    margin-top: 2.5rem;
 
     @media (max-width: 767.98px) {
       grid-template-columns: 1fr;
@@ -89,9 +97,13 @@ $icon-gap: 16px;
     list-style: none;
     word-break: break-word;
 
+    > div:not(:last-child) {
+      margin-bottom: 16px;
+    }
+
     li {
       list-style: none;
-      margin-bottom: 16px;
+      margin-bottom: 0;
       color: $black;
       display: flex;
       align-items: center;
@@ -209,13 +221,13 @@ $icon-gap: 16px;
       font-size: 1.2rem;
       font-weight: 600;
       color: $primary;
-      margin-bottom: 1rem;
+      margin: 0 0 1rem;
       text-align: left;
     }
 
     p {
       color: $black;
-      margin-bottom: 0.5rem;
+      margin: 0 0 0.5rem;
       font-size: 0.95rem;
       line-height: 1.6;
       text-align: left;

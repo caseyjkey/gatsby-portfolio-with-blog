@@ -67,7 +67,7 @@ export default function ContactForm() {
 
               <AnimatedSection delay={fieldDelay(5)}>
                 <div className="field-group">
-                  <textarea placeholder="Your Message" name="message" rows={7} />
+                  <textarea placeholder="" name="message" rows={7} />
                 </div>
               </AnimatedSection>
 

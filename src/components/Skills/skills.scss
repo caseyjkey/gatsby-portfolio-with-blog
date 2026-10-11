@@ -19,6 +19,11 @@ $black-light: color.adjust($black, $lightness: 10%);
 
   @media (max-width: 767.98px) {
     padding: 6em 0;
+    padding-bottom: calc(6em - 12px);
+  }
+
+  @media (min-width: 768px) {
+    padding-bottom: calc(6em - 17px);
   }
 
   // === Skill List Items ===
@@ -88,6 +93,7 @@ $black-light: color.adjust($black, $lightness: 10%);
   position: relative;
   font-size: 1.5rem;
   font-weight: 700;
+  margin: 0 0 1.5rem;
 
   span {
     font-weight: 400;
@@ -114,6 +120,7 @@ $black-light: color.adjust($black, $lightness: 10%);
   position: relative;
   font-size: 50px;
   font-weight: 700;
+  margin: 0 0 0.5rem;
 
   span {
     font-weight: 400;
@@ -139,7 +146,9 @@ $black-light: color.adjust($black, $lightness: 10%);
 .skills-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 0;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
   align-items: flex-start;
 
   @media (max-width: 767.98px) {
@@ -181,7 +190,8 @@ $black-light: color.adjust($black, $lightness: 10%);
 // === Content Column ===
 .skills-content-col {
   @media (min-width: 768px) {
-    padding-left: 1rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 
@@ -196,8 +206,12 @@ $black-light: color.adjust($black, $lightness: 10%);
   .heading-section {
     text-align: center;
     width: 100%;
-    padding-bottom: 3rem;
+    padding-bottom: 0;
   }
+}
+
+.skills-header-row p {
+  margin: 0 0 1rem;
 }
 
 // === Mobile tight row (negative margin on small screens) ===

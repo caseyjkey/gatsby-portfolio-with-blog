@@ -105,7 +105,7 @@ const rawExperienceData: ExperienceEntry[] = [
     ]
   },
   {
-    year: "April 2024 – Present",
+    year: "April 2024 – September 2025",
     company: "Oracle",
     location: "Redwood Shores, CA",
     title: "Applications Developer",
@@ -115,6 +115,19 @@ const rawExperienceData: ExperienceEntry[] = [
       "Implemented AI‑powered automation to optimize DevOps workflows and artifact management.",
       "Led onboarding and support for users, resolving bugs, gathering feedback, and refining key features.",
       "Efficiently ingested data sources with Python, DRF, and Celery for asynchronous data processing."
+    ]
+  },
+  {
+    year: "September 2024 – Present",
+    company: "Salesforce",
+    location: "San Francisco, CA",
+    title: "Full Stack Software Engineer",
+    bullets: [
+      "Architect pixel-perfect, animated AI interfaces for Agentforce to simplify marketplace metadata.",
+      "Engineered high-trust integration gates and Stripe services to secure complex financial workflows.",
+      "Manage scalable design systems and Storybook in coordination with UX to deliver UI components.",
+      "Authored Claude Skills to streamline internal code reviews and bug reporting within repositories.",
+      "Own E2E testing architecture: optimize infrastructure, document coverage, and verify UX flows."
     ]
   }
 ];

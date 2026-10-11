@@ -4,12 +4,16 @@
 
 .resume {
   margin-top: 6em;
-  padding: $section-padding;
+  padding-top: 48px;
+  padding-bottom: 24px;
   position: relative;
   flex: 1 0 auto;
+  margin-bottom: 1.5rem;
 
   @media (max-width: 767.98px) {
     margin-top: 0;
+    padding-top: 6em;
+    padding-bottom: calc(6em + 69px);
   }
 
   &__header {
@@ -20,20 +24,22 @@
       font-size: 50px;
       font-weight: 700;
       color: $black;
-      margin-bottom: 0.5rem;
+      margin: 0 0 1.5rem;
       @include breakpoint-down(sm) { font-size: 38px; }
     }
 
     p {
       color: $text-muted;
+      margin: 0;
     }
   }
 
   &__download {
     display: block;
     width: 100%;
-    padding: 1rem;
-    margin: 1.5rem 0;
+    box-sizing: border-box;
+    padding: 24px 12px;
+    margin: 72px 0 24px;
     font-weight: 800;
     font-size: 1.875rem;
     line-height: 1;
@@ -56,9 +62,10 @@
   }
 
   &__accordion-item {
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 0.75rem;
-    margin-bottom: 0.75rem;
+    border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0;
+    margin-bottom: 0;
     overflow: hidden;
     background: $white;
   }
@@ -68,7 +75,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.25rem;
+    min-height: 107px;
+    padding: 16px 20px;
     background: none;
     border: none;
     cursor: pointer;
@@ -79,6 +87,10 @@
     transition: background 0.15s ease;
 
     &:hover { background: rgba(0, 0, 0, 0.02); }
+
+    &[aria-expanded="true"] {
+      background: #cfe2ff;
+    }
 
     .chevron {
       transition: transform 0.3s ease;
@@ -91,13 +103,13 @@
   }
 
   &__accordion-body {
-    padding: 0 1.25rem;
+    padding: 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease, padding 0.4s ease;
 
     &.open {
-      padding: 0 1.25rem 1.25rem;
+      padding: 1rem 0 0;
     }
   }
 
@@ -196,10 +208,11 @@
   // First/last entry adjustments
   .entry-first {
     margin-top: 10px;
+    margin-bottom: 60px;
   }
 
   .entry-last {
-    margin-bottom: 0;
+    margin-bottom: -14px;
     padding-bottom: 0;
     border-bottom: none;
   }
