@@ -37,7 +37,7 @@ export default function Socials({ className = 'social-list' }: { className?: str
 
 function Social({ link, Icon }: { link: string; Icon: ComponentType }) {
   const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

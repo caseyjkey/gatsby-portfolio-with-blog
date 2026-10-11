@@ -485,12 +485,12 @@ function SkillSection({
             <h3 className="medium-heading mb-4">{heading}</h3>
           </AnimatedSection>
           <div className="skill-icons-row">
-            {skills.map(({ skill, icon, idx }) => (
-              <AnimatedSection key={idx} delay={0.5 + getSkillDelay(idx!)}>
+            {skills.map(({ skill, icon }, idx) => (
+              <AnimatedSection key={idx} delay={0.5 + getSkillDelay(idx)}>
                 <motion.div
                   initial="hidden"
                   animate={isVisible ? 'visible' : 'hidden'}
-                  custom={{ delay: 0.5 + getSkillDelay(idx!) }}
+                  custom={{ delay: 0.5 + getSkillDelay(idx) }}
                   variants={fadeInUpVariants}
                   style={{ display: 'inline-block' }}
                 >

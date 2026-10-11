@@ -103,7 +103,7 @@ export function Nav({ children }: NavProps) {
           <svg
             viewBox="0 0 350 100"
             xmlns="http://www.w3.org/2000/svg"
-            style={{ height: '60px', width: 'auto' }}
+            style={{ height: '50px', width: 'auto' }}
             role="img"
             aria-label="Casey Key"
           >
@@ -117,7 +117,7 @@ export function Nav({ children }: NavProps) {
               fontWeight="900"
             >
               <tspan textAnchor="middle" fill="white">C</tspan>
-              <tspan x="78" fill="black">asey Key</tspan>
+              <tspan x="55" fill="black">asey Key</tspan>
             </text>
           </svg>
         </a>
@@ -278,7 +278,7 @@ export function TradLink({
 
   // Normalize paths for comparison (handle trailing slashes)
   const normalizePath = (path: string) => path.replace(/\/$/, '') || '/'
-  const isPathActive = normalizePath(currentPath) === normalizePath(to)
+  const isPathActive = normalizePath(currentPath ?? '/') === normalizePath(to)
   const isClickActive = !isDesktop && activeNavIndex === navIndex
 
   // Build class list

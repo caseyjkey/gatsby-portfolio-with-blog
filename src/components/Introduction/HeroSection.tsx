@@ -257,6 +257,30 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
+      <div className="hero-resume-btn is-visible">
+        <div className="hero-resume-btn__row">
+          <div className="hero-resume-btn__col">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
+              variants={fadeInUpVariants}
+            >
+              <PrimaryButton
+                id="resume"
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  e.preventDefault();
+                  window.dispatchEvent(new CustomEvent('experience-scroll-trigger'));
+                  scrollToId('Experience', 40);
+                }}
+              >
+                View Experience
+              </PrimaryButton>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
       {/* Main Content */}
       <div className="hero-animated-content">
         <div className="container">
@@ -312,25 +336,6 @@ export default function HeroSection() {
                   </motion.div>
                 </div>
 
-                <div className="hero-resume-btn is-visible">
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
-                    variants={fadeInUpVariants}
-                  >
-                    <PrimaryButton
-                      id="resume"
-                      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.preventDefault();
-                        window.dispatchEvent(new CustomEvent('experience-scroll-trigger'));
-                        scrollToId('Experience', 40);
-                      }}
-                    >
-                      View Experience
-                    </PrimaryButton>
-                  </motion.div>
-                </div>
               </div>
             </div>
             {/* Empty right column to maintain layout structure */}

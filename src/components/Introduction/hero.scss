@@ -37,10 +37,10 @@ $social-view-delay: 0.6s;
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
-    max-width: $container-max;
+    max-width: 1320px;
     margin: 0 auto;
-    padding-left: $container-padding;
-    padding-right: $container-padding;
+    padding-left: 0;
+    padding-right: 0;
     box-sizing: border-box;
   }
 
@@ -134,6 +134,7 @@ $social-view-delay: 0.6s;
   font-weight: 900;
   color: $primary;
   letter-spacing: 4px;
+  margin: 0 0 0.5rem;
 
   @media (max-width: 767.98px) {
     font-size: 28px;
@@ -327,6 +328,12 @@ $social-view-delay: 0.6s;
   min-height: 0 !important;
 
   .container {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
     height: auto !important;
   }
 
@@ -372,19 +379,35 @@ $social-view-delay: 0.6s;
   width: 100%;
   margin-top: 0;
   opacity: 0;
+  height: 0;
   transition: opacity 400ms ease-out 800ms;
-  z-index: 30;
+  z-index: 100;
 
   #resume {
-    padding: 0.7rem 18px;
-    border-radius: 5px;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
     font-weight: 400;
     line-height: 1.5;
     white-space: nowrap;
   }
 
+  @media (min-width: 768px) {
+    margin-top: 1rem;
+
+    #resume {
+      margin-top: 1rem;
+    }
+  }
+
   &.is-visible {
     opacity: 1;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1399.98px) {
+  .hero-animated-content .container,
+  .hero-resume-btn__row {
+    max-width: 1140px;
   }
 }
 

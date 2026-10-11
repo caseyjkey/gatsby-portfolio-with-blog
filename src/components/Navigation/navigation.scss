@@ -57,6 +57,7 @@ $nav-height: 85px;
     display: inline-flex;
     align-items: center;
     text-decoration: none;
+    transform: translate(-2px, 6px);
 
     &::after {
       display: none;
@@ -82,9 +83,10 @@ $nav-height: 85px;
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      max-width: $container-max;
+      max-width: 1320px;
       margin: 0 auto;
-      padding: 0 $container-padding;
+      padding: 0 0.75rem;
+      box-sizing: border-box;
     }
 
     // Hide hamburger on desktop
@@ -109,8 +111,9 @@ $nav-height: 85px;
       padding: 0;
 
       > .nav-item > .nav-link {
+        font-size: 21px;
         font-weight: 500;
-        padding: 0.5rem 1rem;
+        padding: 0.7rem 20px;
 
         // Underline pseudo-element
         > span {
@@ -163,6 +166,20 @@ $nav-height: 85px;
 
   // === Mobile Layout ===
   @include breakpoint-down(lg) {
+    > .nav-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.7rem 0.75rem;
+      box-sizing: border-box;
+    }
+
+    .hamburger-toggle {
+      transform: translateY(7px);
+    }
+
     // Mobile: hide desktop underlines (mobile uses text-decoration)
     .navbar-nav > .nav-item > .nav-link > span::before {
       display: none;

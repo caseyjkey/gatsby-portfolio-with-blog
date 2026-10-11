@@ -4,6 +4,7 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://keycasey.com',
+  publicDir: './static',
   integrations: [react(), mdx()],
   markdown: {
     shikiConfig: {
