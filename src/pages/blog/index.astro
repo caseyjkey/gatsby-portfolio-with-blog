@@ -18,7 +18,7 @@ const posts = [...blogPosts, ...projectPosts]
 ---
 
 <BaseLayout pathname="/blog" title="Blog | Casey Key">
-  <NavBar client:only="react" />
+  <NavBar client:load />
   <main class="blog-page">
     <div class="container">
       <section class="hero">
@@ -38,7 +38,7 @@ const posts = [...blogPosts, ...projectPosts]
       </section>
     </div>
   </main>
-  <FooterSection client:only="react" />
+  <FooterSection client:load />
 </BaseLayout>
 
 <style>

@@ -12,15 +12,15 @@ const featuredProjects = getFeaturedProjects();
 ---
 
 <BaseLayout>
-  <NavBar client:only="react" />
-  <HeroSection client:only="react" />
-  <SkillsSection client:only="react" />
-  <ExperienceTimeline client:only="react" />
+  <NavBar client:load />
+  <HeroSection client:load />
+  <SkillsSection client:load />
+  <ExperienceTimeline client:load />
   <ProjectCards
-    client:only="react"
+    client:load
     projects={featuredProjects}
     title="Featured Work"
     subtitle="Highlighted projects from my portfolio."
   />
-  <FooterSection client:only="react" />
+  <FooterSection client:load />
 </BaseLayout>

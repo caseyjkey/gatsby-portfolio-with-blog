@@ -9,12 +9,12 @@ const allProjects = getProjects();
 ---
 
 <BaseLayout pathname="/projects" title="Projects | Casey Key">
-  <NavBar client:only="react" />
+  <NavBar client:load />
   <ProjectCards
-    client:only="react"
+    client:load
     projects={allProjects}
     title="Projects"
     subtitle="A mix of client work, late nights, and bold ideas."
   />
-  <FooterSection client:only="react" />
+  <FooterSection client:load />
 </BaseLayout>

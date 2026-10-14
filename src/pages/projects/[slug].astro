@@ -27,7 +27,7 @@ const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : 
   description={description}
   image={record?.imageUrl}
 >
-  <NavBar client:only="react" />
+  <NavBar client:load />
   <main class="project-page">
     <article class="project">
       <header class="project-header">
@@ -52,7 +52,7 @@ const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : 
       ) : null}
     </article>
   </main>
-  <FooterSection client:only="react" />
+  <FooterSection client:load />
 </BaseLayout>
 
 <style>

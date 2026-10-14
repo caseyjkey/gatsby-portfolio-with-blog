@@ -138,7 +138,7 @@ $black-light: color.adjust($black, $lightness: 10%);
   margin-left: -1.4rem;
 
   @media (max-width: 767.98px) {
-    margin-left: -0.35rem;
+    margin-left: 0;
   }
 }
 
@@ -153,6 +153,8 @@ $black-light: color.adjust($black, $lightness: 10%);
 
   @media (max-width: 767.98px) {
     grid-template-columns: 1fr;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 

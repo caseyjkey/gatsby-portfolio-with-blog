@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useScrollDirection } from '../../hooks/useScrollDirection'
 import { fadeInUpVariants, MOBILE_VERTICAL_STACK, useIsMobile } from '../../animations'
 import { motion } from 'motion/react'
+import { navigate } from 'astro:transitions/client'
 import './navigation.scss'
 
 // === Nav Container ===
@@ -292,7 +293,7 @@ export function TradLink({
 
       if (isMobileView) {
         onNavClick(e, navIndex, () => {
-          window.location.href = to
+          void navigate(to)
         })
       } else {
         onNavClick(e, navIndex)

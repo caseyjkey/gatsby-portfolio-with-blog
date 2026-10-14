@@ -36,7 +36,7 @@ const { Content } = await render(post);
   title={`${post.data.title} | Casey Key`}
   image={coverUrl}
 >
-  <NavBar client:only="react" />
+  <NavBar client:load />
   <main class="post-page">
     <article class="post">
       <header class="post-header">
@@ -49,7 +49,7 @@ const { Content } = await render(post);
       </div>
     </article>
   </main>
-  <FooterSection client:only="react" />
+  <FooterSection client:load />
 </BaseLayout>
 
 <style>

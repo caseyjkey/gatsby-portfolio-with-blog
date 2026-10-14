@@ -6,7 +6,7 @@ import FooterSection from '../components/Footer/FooterSection';
 ---
 
 <BaseLayout pathname="/about" title="About | Casey Key">
-  <NavBar client:only="react" />
-  <AboutSection client:only="react" />
-  <FooterSection client:only="react" />
+  <NavBar client:load />
+  <AboutSection client:load />
+  <FooterSection client:load />
 </BaseLayout>

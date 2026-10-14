@@ -26,7 +26,7 @@ const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteM
 
 <!doctype html>
 <html lang="en">
-  <head transition:animate="fade">
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
@@ -55,7 +55,7 @@ const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteM
     </script>
     <ClientRouter />
   </head>
-  <body>
+  <body transition:animate="fade">
     <slot />
     <script is:inline>
       document.addEventListener('astro:after-swap', () => {
