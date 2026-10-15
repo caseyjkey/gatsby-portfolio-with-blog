@@ -222,8 +222,8 @@ export default function HeroSection() {
           <div className="hero-mobile-headshot-container">
             <MobileBlob className="hero-mobile-blob" />
             <picture>
-              <source media="(max-width: 991.98px)" srcSet="/mobile-headshot.webp" />
-              <img className="hero-mobile-headshot-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Casey Key" width="1728" height="2368" fetchPriority="high" />
+              <source media="(max-width: 991.98px)" srcSet="/mobile-headshot.webp" width="1728" height="2368" />
+              <img className="hero-mobile-headshot-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1728' height='2368'%3E%3C/svg%3E" alt="Casey Key" width="1728" height="2368" fetchPriority="high" />
             </picture>
           </div>
         </div>
@@ -235,8 +235,8 @@ export default function HeroSection() {
           <div className="hero-desktop-headshot-container">
             <DesktopBlob className="hero-desktop-blob" />
             <picture>
-              <source media="(min-width: 992px)" srcSet="/headshot.webp" />
-              <img className="hero-desktop-headshot-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Casey Key" width="1728" height="2368" fetchPriority="high" />
+              <source media="(min-width: 992px)" srcSet="/headshot.webp" width="1728" height="2368" />
+              <img className="hero-desktop-headshot-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1728' height='2368'%3E%3C/svg%3E" alt="Casey Key" width="1728" height="2368" fetchPriority="high" />
             </picture>
           </div>
         </div>

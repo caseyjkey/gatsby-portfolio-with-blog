@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "https://caseyjkey.github.io/",
   "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
     "date-fns": "^4.1.0",
     "gh-pages": "^4.0.0",
     "motion": "^12.25.0",

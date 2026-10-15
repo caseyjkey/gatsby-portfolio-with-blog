@@ -1,5 +1,12 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import '@fontsource/poppins/latin-400.css';
+import '@fontsource/poppins/latin-500.css';
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource/poppins/latin-700.css';
+import '@fontsource/poppins/latin-800.css';
+import '@fontsource/poppins/latin-900.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
 import { siteMetadata } from '../config/site';
 import '../components/Layout/style.scss';
 import '../styles/_layout.scss';
@@ -34,14 +41,6 @@ const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteM
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
-    </noscript>
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

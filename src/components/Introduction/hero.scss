@@ -240,13 +240,13 @@ $social-view-delay: 0.6s;
   }
 
   #typewriter1 {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+    font-family: 'JetBrains Mono Variable', 'Fira Code', 'Source Code Pro', monospace;
     font-weight: 600;
     color: $black;
   }
 
   #typewriter2 {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+    font-family: 'JetBrains Mono Variable', 'Fira Code', 'Source Code Pro', monospace;
     font-weight: 400;
     font-size: 0.9em;
     color: $darken;
@@ -306,6 +306,11 @@ $social-view-delay: 0.6s;
 .hero-mobile-svg {
   display: none;
 
+  > div {
+    width: 100%;
+    max-width: 400px;
+  }
+
   @media (max-width: 767.98px) {
     display: flex;
     position: absolute;
@@ -354,6 +359,10 @@ $social-view-delay: 0.6s;
 // === Desktop Illustration Positioner ===
 .hero-desktop-illustration {
   display: none;
+
+  > div {
+    width: 100%;
+  }
 
   @media (min-width: 768px) {
     display: flex;
@@ -446,6 +455,7 @@ $social-view-delay: 0.6s;
   z-index: 1;
   width: 76%;
   height: auto;
+  aspect-ratio: 1728 / 2368;
   object-fit: cover;
   border-radius: 16px;
 
@@ -490,6 +500,7 @@ $social-view-delay: 0.6s;
   width: 85%;
   max-width: 450px;
   height: auto;
+  aspect-ratio: 1728 / 2368;
   object-fit: cover;
   border-radius: 24px;
 }
