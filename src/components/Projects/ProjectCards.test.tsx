@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
-import { __test__ } from './ProjectCards';
+import { renderToStaticMarkup } from 'react-dom/server';
+import ProjectCards, { __test__ } from './ProjectCards';
 import type { ProjectRecord } from '../../lib/projects';
 
 const liveProject: ProjectRecord = {
@@ -20,8 +21,11 @@ const liveProject: ProjectRecord = {
 };
 
 describe('ProjectCards', () => {
+  const renderCardsMarkup = (projects: ProjectRecord[]) =>
+    renderToStaticMarkup(<ProjectCards projects={projects} title="Projects" subtitle="Test" />);
+
   test('renders cards without action buttons', () => {
-    const markup = __test__.renderCardsMarkup([liveProject]);
+    const markup = renderCardsMarkup([liveProject]);
 
     expect(markup).not.toContain('Open Details');
     expect(markup).not.toContain('Live Site');
@@ -29,7 +33,7 @@ describe('ProjectCards', () => {
   });
 
   test('formats live badges like the Gatsby card metadata row', () => {
-    const markup = __test__.renderCardsMarkup([liveProject]);
+    const markup = renderCardsMarkup([liveProject]);
 
     expect(markup).toContain('project-card__badge');
     expect(markup).toContain('project-card__badge-dot');

@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { motion } from 'motion/react';
 import { IoMdArrowRoundDown } from 'react-icons/io';
 import Typewriter from 'typewriter-effect/dist/core';
-import { HERO_TIMING, EASING, fadeInUpVariants } from '../../animations';
-import { CSS_TRANSITIONS } from '../../animations/config';
 import introductionData from '../../data/introduction.json';
 import Socials from '../Social';
 import './hero.scss';
@@ -66,21 +63,9 @@ function FallingArrow() {
   return (
     <div className="hero-falling-arrow" onClick={handleScroll}>
       <div className="hero-falling-arrow__container">
-        <motion.div
-          className="hero-falling-arrow__motion"
-          animate={{
-            y: [-10, 17],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: 1.6,
-            times: [0, 0.3, 1],
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        >
+        <div className="hero-falling-arrow__motion">
           <IoMdArrowRoundDown color="#3e64ff" fontSize="25px" />
-        </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -135,8 +120,9 @@ export default function HeroSection() {
 
   // Trigger entrance animations and typewriter
   useEffect(() => {
-    let header = document.getElementById('typewriter1');
-    let subheader = document.getElementById('typewriter2');
+    const header = document.getElementById('typewriter1');
+    const subheader = document.getElementById('typewriter2');
+    if (!header || !subheader) return;
     let typewriter1 = new Typewriter(header, {
       loop: false,
       delay: typingSpeed,
@@ -180,6 +166,11 @@ export default function HeroSection() {
     typewriter1
       .callFunction(endHeader)
       .start();
+
+    return () => {
+      (typewriter1 as unknown as { stop: () => void }).stop();
+      (typewriter2 as unknown as { stop: () => void }).stop();
+    };
   }, []);
 
   // Handle the transition to the final text
@@ -196,6 +187,10 @@ export default function HeroSection() {
         .pauseFor(850)
         .typeString("Find me on social media.")
         .start();
+
+      return () => {
+        (typewriter3 as unknown as { stop: () => void }).stop();
+      };
     }
   }, [headerEnd]);
 
@@ -223,49 +218,34 @@ export default function HeroSection() {
 
       {/* Mobile SVG (headshot + blob) */}
       <div className="hero-mobile-svg">
-        <motion.div
-          initial={{ opacity: 0, scale: HERO_TIMING.portrait.scaleFrom }}
-          animate={{ opacity: 1, scale: HERO_TIMING.portrait.scaleTo }}
-          transition={{
-            duration: HERO_TIMING.portrait.duration / 1000,
-            delay: HERO_TIMING.portrait.delay / 1000,
-            ease: EASING,
-          }}
-        >
+        <div>
           <div className="hero-mobile-headshot-container">
             <MobileBlob className="hero-mobile-blob" />
-            <img className="hero-mobile-headshot-img" src="/mobile-headshot.webp" alt="Casey Key" />
+            <picture>
+              <source media="(max-width: 991.98px)" srcSet="/mobile-headshot.webp" />
+              <img className="hero-mobile-headshot-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Casey Key" width="1728" height="2368" fetchPriority="high" />
+            </picture>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Desktop Illustration */}
       <div className="hero-desktop-illustration">
-        <motion.div
-          initial={{ opacity: 0, scale: HERO_TIMING.portrait.scaleFrom }}
-          animate={{ opacity: 1, scale: HERO_TIMING.portrait.scaleTo }}
-          transition={{
-            duration: HERO_TIMING.portrait.duration / 1000,
-            delay: HERO_TIMING.portrait.delay / 1000,
-            ease: EASING,
-          }}
-        >
+        <div>
           <div className="hero-desktop-headshot-container">
             <DesktopBlob className="hero-desktop-blob" />
-            <img className="hero-desktop-headshot-img" src="/headshot.webp" alt="Casey Key" />
+            <picture>
+              <source media="(min-width: 992px)" srcSet="/headshot.webp" />
+              <img className="hero-desktop-headshot-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Casey Key" width="1728" height="2368" fetchPriority="high" />
+            </picture>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <div className="hero-resume-btn is-visible">
         <div className="hero-resume-btn__row">
           <div className="hero-resume-btn__col">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              custom={{ delay: HERO_TIMING.cta.delay / 1000 }}
-              variants={fadeInUpVariants}
-            >
+            <div>
               <PrimaryButton
                 id="resume"
                 onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -276,7 +256,7 @@ export default function HeroSection() {
               >
                 View Experience
               </PrimaryButton>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -291,32 +271,17 @@ export default function HeroSection() {
                 className="hero-text"
                 style={{ transform: `scale(${textScale})`, transformOrigin: 'top center' }}
               >
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  custom={{ delay: HERO_TIMING.hello.delay / 1000 }}
-                  variants={fadeInUpVariants}
-                >
+                <div>
                   <h3 className="hero-subheader">{introductionData.greeting}</h3>
-                </motion.div>
+                </div>
 
                 <div className="hero-slider">
-                  <motion.h2
-                    className="subheader"
-                    initial="hidden"
-                    animate="visible"
-                    custom={{ delay: HERO_TIMING.intro.delay / 1000 }}
-                    variants={fadeInUpVariants}
-                  >
+                  <h2 className="subheader">
                     I'm <span id="name">{introductionData.name}</span>, the {introductionData.role}.
-                  </motion.h2>
+                  </h2>
 
-                  <motion.div
+                  <div
                     id="typewriter"
-                    initial="hidden"
-                    animate="visible"
-                    custom={{ delay: HERO_TIMING.typewriter.delay / 1000 }}
-                    variants={fadeInUpVariants}
                     style={{ transition: 'none' }}
                   >
                     {/* TECH VIEW LAYER (visible first) */}
@@ -333,7 +298,7 @@ export default function HeroSection() {
                         <Socials className="hero-social-list" />
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 </div>
 
               </div>

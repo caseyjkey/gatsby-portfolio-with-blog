@@ -1,6 +1,9 @@
-import React, { Fragment, lazy, Suspense } from 'react';
-import type { ComponentType, LazyExoticComponent } from 'react';
+import React from 'react';
+import type { ComponentType } from 'react';
 import { motion } from 'motion/react';
+import { FaLaptopCode } from 'react-icons/fa';
+import { FiBookOpen, FiMusic } from 'react-icons/fi';
+import { GiBackpack } from 'react-icons/gi';
 import AnimatedSection from '../AnimatedSection';
 import {
   TIMING,
@@ -17,33 +20,17 @@ type AboutIcon = {
 };
 
 const FallbackIcon: ComponentType = () => <span aria-hidden="true">?</span>;
-
-// Lazyload an icon component
-// [param] icon {name: String, type: String}
-// [return] Component
-const createIconLoader = (
-  importer: () => Promise<unknown>,
-  name: string
-): LazyExoticComponent<ComponentType> =>
-  lazy(async () => {
-    const module = (await importer()) as Record<string, ComponentType>;
-    return { default: module[name] ?? FallbackIcon };
-  });
+const activityIcons: Record<string, ComponentType> = {
+  GiBackpack,
+  FiBookOpen,
+  FiMusic,
+  FaLaptopCode,
+};
 
 function loadIcon(
   icon: AboutIcon
-): LazyExoticComponent<ComponentType> | ComponentType {
-  if (icon.type === 'gi') {
-    return createIconLoader(() => import('react-icons/gi'), icon.name);
-  }
-  if (icon.type === 'fi') {
-    return createIconLoader(() => import('react-icons/fi'), icon.name);
-  }
-  if (icon.type === 'fa') {
-    return createIconLoader(() => import('react-icons/fa'), icon.name);
-  }
-
-  return FallbackIcon;
+): ComponentType {
+  return activityIcons[icon.name] ?? FallbackIcon;
 }
 
 interface ActivityProps {
@@ -61,35 +48,29 @@ function Activity({
   isVisible = false,
   delay = 0,
 }: ActivityProps) {
-  const isSSR = typeof window === 'undefined';
-
   return (
-    <Fragment>
-      {!isSSR && (
-        <Suspense fallback={<p>Loading...</p>}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{
-              opacity: isVisible ? 1 : 0,
-              scale: isVisible ? 1 : 0,
-            }}
-            transition={{
-              duration: TIMELINE.dot.duration,
-              delay: delay,
-              ease: TIMELINE.dot.ease,
-            }}
-          >
-            <div
-              className="about-section__activity-icon"
-              data-icon-name={icon?.name}
-            >
-              <Icon />
-            </div>
-          </motion.div>
-          <span dangerouslySetInnerHTML={{ __html: description }} />
-        </Suspense>
-      )}
-    </Fragment>
+    <>
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          opacity: isVisible ? 1 : 0,
+          scale: isVisible ? 1 : 0,
+        }}
+        transition={{
+          duration: TIMELINE.dot.duration,
+          delay,
+          ease: TIMELINE.dot.ease,
+        }}
+      >
+        <div
+          className="about-section__activity-icon"
+          data-icon-name={icon?.name}
+        >
+          <Icon />
+        </div>
+      </motion.div>
+      <span dangerouslySetInnerHTML={{ __html: description }} />
+    </>
   );
 }
 

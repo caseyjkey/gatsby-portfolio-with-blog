@@ -1,6 +1,5 @@
 @use 'theme' as *;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
 :root {
   --color-white: #{$white};
@@ -16,6 +15,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-width: 320px;
+  overflow-x: clip;
   font-family: $font-primary;
   background: $white;
   color: $text-body;

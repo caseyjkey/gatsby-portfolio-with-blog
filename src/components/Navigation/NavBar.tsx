@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useScrollDirection } from '../../hooks/useScrollDirection'
-import { fadeInUpVariants, MOBILE_VERTICAL_STACK, useIsMobile } from '../../animations'
-import { motion } from 'motion/react'
 import { navigate } from 'astro:transitions/client'
 import './navigation.scss'
 
@@ -178,15 +176,11 @@ export function Scroll({
   offset,
   isHomePage,
   atTop,
-  currentPath,
   onNavClick,
   navIndex,
   activeNavIndex,
-  collapsed,
 }: ScrollProps) {
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 992
-  const isMobile = useIsMobile()
-  const shouldAnimate = !isDesktop && collapsed !== undefined ? !collapsed : false
   const isHomeActive = isDesktop && isHomePage && atTop && to === 'Introduction'
   const isClickActive = !isDesktop && activeNavIndex === navIndex
   const isActive = isHomeActive || isClickActive
@@ -229,24 +223,7 @@ export function Scroll({
     </a>
   )
 
-  return isMobile ? (
-    <motion.li
-      className="nav-item"
-      variants={fadeInUpVariants}
-      initial={shouldAnimate ? 'hidden' : false}
-      animate={shouldAnimate ? 'visible' : false}
-      custom={{
-        delay: navIndex !== undefined ? navIndex * MOBILE_VERTICAL_STACK.stagger / 1000 : 0,
-        distance: MOBILE_VERTICAL_STACK.distance,
-      }}
-    >
-      {linkContent}
-    </motion.li>
-  ) : (
-    <li className="nav-item">
-      {linkContent}
-    </li>
-  )
+  return <li className="nav-item">{linkContent}</li>
 }
 
 // === TradLink (traditional anchor navigation) ===
@@ -265,17 +242,12 @@ interface TradLinkProps {
 export function TradLink({
   to,
   children,
-  isHomePage,
-  atTop,
   currentPath,
   onNavClick,
   navIndex,
   activeNavIndex,
-  collapsed,
 }: TradLinkProps) {
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 992
-  const isMobile = useIsMobile()
-  const shouldAnimate = !isDesktop && collapsed !== undefined ? !collapsed : false
 
   // Normalize paths for comparison (handle trailing slashes)
   const normalizePath = (path: string) => path.replace(/\/$/, '') || '/'
@@ -312,24 +284,7 @@ export function TradLink({
     </a>
   )
 
-  return isMobile ? (
-    <motion.li
-      className="nav-item"
-      variants={fadeInUpVariants}
-      initial={shouldAnimate ? 'hidden' : false}
-      animate={shouldAnimate ? 'visible' : false}
-      custom={{
-        delay: navIndex !== undefined ? navIndex * MOBILE_VERTICAL_STACK.stagger / 1000 : 0,
-        distance: MOBILE_VERTICAL_STACK.distance,
-      }}
-    >
-      {linkContent}
-    </motion.li>
-  ) : (
-    <li className="nav-item">
-      {linkContent}
-    </li>
-  )
+  return <li className="nav-item">{linkContent}</li>
 }
 
 // Default export: Nav with hardcoded navigation links (matches original Gatsby Navigation.tsx)

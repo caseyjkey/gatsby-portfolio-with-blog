@@ -34,6 +34,14 @@ const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteM
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
+    </noscript>
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -46,12 +54,31 @@ const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteM
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:creator" content={siteMetadata.twitterUsername} />
 
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z"></script>
     <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){window.dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-1QQK6QY29Z');
+      (() => {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+
+        function loadAnalytics() {
+          if (document.querySelector('script[data-google-analytics]')) return;
+
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z';
+          script.dataset.googleAnalytics = 'true';
+          document.head.appendChild(script);
+          window.gtag('js', new Date());
+          window.gtag('config', 'G-1QQK6QY29Z');
+        }
+
+        const analyticsTimer = window.setTimeout(loadAnalytics, 10000);
+        ['pointerdown', 'keydown', 'scroll'].forEach((eventName) => {
+          window.addEventListener(eventName, () => {
+            window.clearTimeout(analyticsTimer);
+            loadAnalytics();
+          }, { once: true, passive: true });
+        });
+      })();
     </script>
     <ClientRouter />
   </head>

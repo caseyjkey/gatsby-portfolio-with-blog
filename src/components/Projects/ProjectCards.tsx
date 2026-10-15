@@ -1,21 +1,31 @@
-import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'motion/react';
 import type { ComponentType } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import * as DiIcons from 'react-icons/di';
-import * as FaIcons from 'react-icons/fa';
-import * as IoIcons from 'react-icons/io';
-import * as SiIcons from 'react-icons/si';
-import * as GrIcons from 'react-icons/gr';
-import { FaChevronLeft, FaChevronRight, FaGithub, FaSearchPlus } from 'react-icons/fa';
+import {
+  DiBootstrap, DiDjango, DiFirebase, DiHeroku, DiJavascript1, DiJqueryLogo,
+  DiPhotoshop, DiSwift,
+} from 'react-icons/di';
+import {
+  FaApple, FaAws, FaBootstrap, FaChevronLeft, FaChevronRight, FaCreditCard,
+  FaDatabase, FaEthereum, FaGamepad, FaGit, FaGithub, FaGitlab, FaJava,
+  FaMicrochip, FaNewspaper, FaNode, FaNpm, FaPhp, FaPython, FaRaspberryPi,
+  FaReact, FaSass, FaSearchPlus, FaServer, FaSlack, FaStripe, FaSwift,
+  FaTwitter, FaWindows, FaWordpress,
+} from 'react-icons/fa';
+import { IoMdAnalytics, IoMdCloud } from 'react-icons/io';
+import { SiGraphql, SiOracle, SiRedux } from 'react-icons/si';
 import { formatProjectStatusLabel, type ProjectRecord } from '../../lib/projects';
 import './projects.scss';
 
 function formatDateRange(project: ProjectRecord) {
-  const start = format(new Date(`${project.start}-01`), 'MMMM yyyy');
+  const formatMonth = (value: string) => new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(`${value}-01T00:00:00Z`));
+  const start = formatMonth(project.start);
   if (project.end?.present) return `${start} - Present`;
-  if (project.end?.date) return `${start} - ${format(new Date(`${project.end.date}-01`), 'MMMM yyyy')}`;
+  if (project.end?.date) return `${start} - ${formatMonth(project.end.date)}`;
   return start;
 }
 
@@ -24,23 +34,22 @@ function getGallery(project: ProjectRecord) {
   return gallery.length ? gallery : [project.imageUrl];
 }
 
-const iconPacks = {
-  di: DiIcons,
-  fa: FaIcons,
-  io: IoIcons,
-  si: SiIcons,
-  gr: GrIcons,
-} as const;
+const technologyIcons: Record<string, ComponentType<{ size?: number | string }>> = {
+  DiBootstrap, DiDjango, DiFirebase, DiHeroku, DiJavascript1, DiJqueryLogo,
+  DiPhotoshop, DiSwift, FaApple, FaAws, FaBootstrap, FaCreditCard, FaDatabase,
+  FaEthereum, FaGamepad, FaGit, FaGithub, FaGitlab, FaJava, FaMicrochip,
+  FaNewspaper, FaNode, FaNpm, FaPhp, FaPython, FaRaspberryPi, FaReact, FaSass,
+  FaServer, FaSlack, FaStripe, FaSwift, FaTwitter, FaWindows, FaWordpress,
+  IoMdAnalytics, IoMdCloud, SiGraphql, SiOracle, SiRedux,
+};
 
 function getTechnologyIcons(project: ProjectRecord) {
-  return Object.entries(project.icons ?? {}).flatMap(([packName, iconNames]) => {
-    const pack = iconPacks[packName as keyof typeof iconPacks];
-    if (!pack || !iconNames) return [];
-
+  return Object.values(project.icons ?? {}).flatMap((iconNames) => {
+    if (!iconNames) return [];
     return iconNames
       .map((iconName) => ({
         name: iconName,
-        Icon: pack[iconName as keyof typeof pack] as ComponentType<{ size?: number | string }> | undefined,
+        Icon: technologyIcons[iconName],
       }))
       .filter((icon): icon is { name: string; Icon: ComponentType<{ size?: number | string }> } => Boolean(icon.Icon));
   });
@@ -419,6 +428,4 @@ export const __test__ = {
   formatStatusLabel: formatProjectStatusLabel,
   getTechnologyIcons,
   getGallery,
-  renderCardsMarkup: (projects: ProjectRecord[]) =>
-    renderToStaticMarkup(<ProjectCards projects={projects} title="Projects" subtitle="Test" />),
 };
