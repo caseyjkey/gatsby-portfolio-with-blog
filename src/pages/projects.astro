@@ -9,7 +9,7 @@ const allProjects = getProjects();
 ---
 
 <BaseLayout pathname="/projects" title="Projects | Casey Key">
-  <NavBar client:load />
+  <NavBar client:load pathname={Astro.url.pathname} />
   <ProjectCards
     client:visible
     projects={allProjects}

@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect, type ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { ANIMATION_CONFIG, SECONDARY_DELAYS } from '../animations/config';
+import { ANIMATION_CONFIG } from '../animations/config';
 import { fadeInUpVariants } from '../animations/transitions/fadeInUp';
+import { getScrollAnimationTimingScale, trackScrollVelocity } from '../animations/scrollVelocity';
 
 type Props = {
   children: ReactNode;
@@ -22,20 +23,27 @@ export default function AnimatedSection({
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
+  const [timing, setTiming] = useState({ delay, duration: duration / 1000 });
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const stopTrackingScrollVelocity = trackScrollVelocity();
 
     // Respect prefers-reduced-motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setIsInView(true);
-      return;
+      return stopTrackingScrollVelocity;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          const timingScale = getScrollAnimationTimingScale();
+          setTiming({
+            delay: delay * timingScale,
+            duration: (duration / 1000) * timingScale,
+          });
           setIsInView(true);
           if (once) observer.unobserve(el);
         } else if (!once) {
@@ -46,8 +54,11 @@ export default function AnimatedSection({
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [once, rootMargin]);
+    return () => {
+      observer.disconnect();
+      stopTrackingScrollVelocity();
+    };
+  }, [delay, duration, once, rootMargin]);
 
   return (
     <motion.div
@@ -55,7 +66,7 @@ export default function AnimatedSection({
       variants={fadeInUpVariants}
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
-      custom={{ delay }}
+      custom={timing}
       className={className}
     >
       {children}

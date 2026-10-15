@@ -18,7 +18,7 @@ const posts = [...blogPosts, ...projectPosts]
 ---
 
 <BaseLayout pathname="/blog" title="Blog | Casey Key">
-  <NavBar client:load />
+  <NavBar client:load pathname={Astro.url.pathname} />
   <main class="blog-page">
     <div class="container">
       <section class="hero">

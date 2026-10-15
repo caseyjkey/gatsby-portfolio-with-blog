@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type ReactNode } from 'react';
+import { Children, Fragment, isValidElement, useState, useRef, useEffect, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { GiGraduateCap } from 'react-icons/gi';
 import { AiOutlineTeam } from 'react-icons/ai';
@@ -56,6 +56,19 @@ function AccordionAnimatedBody({
   children: ReactNode;
 }) {
   const bodyRef = useRef<HTMLDivElement>(null);
+  const entries: ReactNode[] = [];
+
+  const flattenEntries = (nodes: ReactNode) => {
+    Children.forEach(nodes, (child) => {
+      if (isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment) {
+        flattenEntries(child.props.children);
+      } else {
+        entries.push(child);
+      }
+    });
+  };
+
+  flattenEntries(children);
 
   useEffect(() => {
     const el = bodyRef.current;
@@ -75,18 +88,16 @@ function AccordionAnimatedBody({
     <div ref={bodyRef} className="resume__accordion-body">
       {isOpen && (
         <>
-          {Array.isArray(children)
-            ? children.map((child, index) => (
-                <AnimatedSection
-                  key={index}
-                  delay={index * ACCORDION.staggerDelay}
-                  once={false}
-                >
-                  {child}
-                </AnimatedSection>
-              ))
-            : <AnimatedSection delay={0} once={false}>{children}</AnimatedSection>
-          }
+          {entries.map((child, index) => (
+            <AnimatedSection
+              key={isValidElement(child) && child.key != null ? child.key : index}
+              delay={index * ACCORDION.staggerDelay}
+              duration={ACCORDION.duration * 1000}
+              once={false}
+            >
+              {child}
+            </AnimatedSection>
+          ))}
         </>
       )}
     </div>

@@ -36,7 +36,7 @@ const { Content } = await render(post);
   title={`${post.data.title} | Casey Key`}
   image={coverUrl}
 >
-  <NavBar client:load />
+  <NavBar client:load pathname={Astro.url.pathname} />
   <main class="post-page">
     <article class="post">
       <header class="post-header">

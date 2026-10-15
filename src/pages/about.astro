@@ -6,7 +6,7 @@ import FooterSection from '../components/Footer/FooterSection';
 ---
 
 <BaseLayout pathname="/about" title="About | Casey Key">
-  <NavBar client:load />
+  <NavBar client:load pathname={Astro.url.pathname} />
   <AboutSection client:load />
   <FooterSection />
 </BaseLayout>

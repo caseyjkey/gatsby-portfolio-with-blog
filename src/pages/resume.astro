@@ -6,7 +6,7 @@ import FooterSection from '../components/Footer/FooterSection';
 ---
 
 <BaseLayout title="Resume | Casey Key">
-  <NavBar client:load />
+  <NavBar client:load pathname={Astro.url.pathname} />
   <ResumeAccordion client:load />
   <FooterSection />
 </BaseLayout>

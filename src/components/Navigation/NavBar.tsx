@@ -6,9 +6,10 @@ import './navigation.scss'
 // === Nav Container ===
 interface NavProps {
   children: React.ReactNode
+  pathname: string
 }
 
-export function Nav({ children }: NavProps) {
+export function Nav({ children, pathname }: NavProps) {
   const [collapsed, setCollapsed] = useState(true)
   const [scrolled, setScrolled] = useState(false)
   const [atTop, setAtTop] = useState(true)
@@ -17,9 +18,16 @@ export function Nav({ children }: NavProps) {
   const { isVisible } = useScrollDirection(5)
   const isMenuOpen = !collapsed
 
-  // Current path (client-side only)
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/'
+  const [currentPath, setCurrentPath] = useState(pathname)
   const isHomePage = currentPath === '/'
+
+  // Astro swaps pages without a full reload, so keep route-derived styling in sync.
+  useEffect(() => {
+    const syncPath = () => setCurrentPath(window.location.pathname)
+    syncPath()
+    document.addEventListener('astro:page-load', syncPath)
+    return () => document.removeEventListener('astro:page-load', syncPath)
+  }, [pathname])
 
   // Handle ripple effect on click with navigation delay
   const handleRippleClick = (
@@ -251,7 +259,11 @@ export function TradLink({
 
   // Normalize paths for comparison (handle trailing slashes)
   const normalizePath = (path: string) => path.replace(/\/$/, '') || '/'
-  const isPathActive = normalizePath(currentPath ?? '/') === normalizePath(to)
+  const normalizedCurrentPath = normalizePath(currentPath ?? '/')
+  const normalizedTarget = normalizePath(to)
+  const isPathActive = normalizedTarget === '/'
+    ? normalizedCurrentPath === '/'
+    : normalizedCurrentPath === normalizedTarget || normalizedCurrentPath.startsWith(`${normalizedTarget}/`)
   const isClickActive = !isDesktop && activeNavIndex === navIndex
 
   // Build class list
@@ -288,9 +300,9 @@ export function TradLink({
 }
 
 // Default export: Nav with hardcoded navigation links (matches original Gatsby Navigation.tsx)
-export default function NavBar() {
+export default function NavBar({ pathname }: { pathname: string }) {
   return (
-    <Nav>
+    <Nav pathname={pathname}>
       <TradLink to="/">Home</TradLink>
       <TradLink to="/resume">Resume</TradLink>
       <TradLink to="/blog">Blog</TradLink>

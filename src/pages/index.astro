@@ -12,7 +12,7 @@ const featuredProjects = getFeaturedProjects();
 ---
 
 <BaseLayout>
-  <NavBar client:load />
+  <NavBar client:load pathname={Astro.url.pathname} />
   <HeroSection client:load />
   <SkillsSection client:visible={{ rootMargin: '-100px' }} />
   <ExperienceTimeline client:visible={{ rootMargin: '-100px' }} />

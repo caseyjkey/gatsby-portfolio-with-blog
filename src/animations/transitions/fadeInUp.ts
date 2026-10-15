@@ -50,12 +50,12 @@ export const fadeInUpVariants: Variants = {
     y: 30,
     willChange: 'opacity, transform',
   },
-  visible: (custom?: { delay?: number; distance?: number }) => ({
+  visible: (custom?: { delay?: number; duration?: number; distance?: number }) => ({
     opacity: 1,
     y: 0,
     willChange: 'auto',
     transition: {
-      duration: 0.6,
+      duration: custom?.duration ?? 0.6,
       delay: custom?.delay || 0,
       ease: FADE_IN_UP_EASE,
     },

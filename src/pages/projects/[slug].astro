@@ -27,7 +27,7 @@ const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : 
   description={description}
   image={record?.imageUrl}
 >
-  <NavBar client:load />
+  <NavBar client:load pathname={Astro.url.pathname} />
   <main class="project-page">
     <article class="project">
       <header class="project-header">
