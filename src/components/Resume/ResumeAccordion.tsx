@@ -91,9 +91,13 @@ function AccordionAnimatedBody({
           {entries.map((child, index) => (
             <AnimatedSection
               key={isValidElement(child) && child.key != null ? child.key : index}
-              delay={index * ACCORDION.staggerDelay}
+              delay={0}
+              initialViewportDelay={index * ACCORDION.staggerDelay}
               duration={ACCORDION.duration * 1000}
-              once={false}
+              rootMargin="0px"
+              threshold={0}
+              trackViewportEdges
+              once
             >
               {child}
             </AnimatedSection>

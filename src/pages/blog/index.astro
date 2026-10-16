@@ -25,7 +25,7 @@ const posts = [...blogPosts, ...projectPosts]
         <h1>Blog</h1>
         <p>Coding, reflecting, evolving.</p>
       </section>
-      <section class="list">
+      <section class="list" data-blog-reveal-list>
         {posts.map((post) => (
           <article class="post-entry">
             <a href={post.href} class="post-link">
@@ -70,6 +70,31 @@ const posts = [...blogPosts, ...projectPosts]
     margin-bottom: 1.5rem;
   }
 
+  .list.reveal-ready .post-entry {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .list.reveal-ready .post-entry.is-revealed {
+    animation: reveal-post-entry var(--reveal-duration, 0.8s) cubic-bezier(0.2, 0.8, 0.2, 1)
+      var(--reveal-delay, 0s) both;
+  }
+
+  @keyframes reveal-post-entry {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .list.reveal-ready .post-entry {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+
   .post-entry:last-child {
     padding-bottom: 1rem;
     margin-bottom: 0;
@@ -105,3 +130,82 @@ const posts = [...blogPosts, ...projectPosts]
     .post-link h2 { font-size: calc(1.375rem + 1.5vw); }
   }
 </style>
+
+<script>
+  import { getScrollAnimationTimingScale, trackScrollVelocity } from '../../animations/scrollVelocity';
+
+  type BlogRevealWindow = Window & {
+    __blogRevealCleanup?: () => void;
+    __blogRevealInstalled?: boolean;
+  };
+
+  const revealWindow = window as BlogRevealWindow;
+
+  function initializeBlogReveal() {
+    revealWindow.__blogRevealCleanup?.();
+
+    const list = document.querySelector<HTMLElement>('[data-blog-reveal-list]');
+    if (!list) {
+      revealWindow.__blogRevealCleanup = undefined;
+      return;
+    }
+
+    const entries = Array.from(list.querySelectorAll<HTMLElement>('.post-entry'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stopTrackingVelocity = trackScrollVelocity();
+    const revealed = new WeakSet<HTMLElement>();
+
+    list.classList.add('reveal-ready');
+
+    const reveal = (entry: HTMLElement, staggerIndex = 0) => {
+      if (revealed.has(entry)) return;
+      revealed.add(entry);
+
+      const timingScale = getScrollAnimationTimingScale();
+      entry.style.setProperty('--reveal-delay', reducedMotion ? '0s' : `${staggerIndex * 0.1 * timingScale}s`);
+      entry.style.setProperty('--reveal-duration', reducedMotion ? '0s' : `${0.8 * timingScale}s`);
+      entry.classList.add('is-revealed');
+    };
+
+    const observer = new IntersectionObserver(
+      (observedEntries) => {
+        observedEntries.forEach((observedEntry) => {
+          const entry = observedEntry.target as HTMLElement;
+          if (observedEntry.isIntersecting || observedEntry.boundingClientRect.bottom <= 0) {
+            reveal(entry);
+            observer.unobserve(entry);
+          }
+        });
+      },
+      { rootMargin: '0px', threshold: 0 },
+    );
+
+    requestAnimationFrame(() => {
+      let initialBatchIndex = 0;
+
+      entries.forEach((entry) => {
+        const rect = entry.getBoundingClientRect();
+        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+
+        if (isInViewport || rect.bottom <= 0) {
+          reveal(entry, initialBatchIndex);
+          initialBatchIndex += 1;
+        } else {
+          observer.observe(entry);
+        }
+      });
+    });
+
+    revealWindow.__blogRevealCleanup = () => {
+      observer.disconnect();
+      stopTrackingVelocity();
+    };
+  }
+
+  if (!revealWindow.__blogRevealInstalled) {
+    revealWindow.__blogRevealInstalled = true;
+    document.addEventListener('astro:page-load', initializeBlogReveal);
+  }
+
+  initializeBlogReveal();
+</script>
