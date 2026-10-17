@@ -1,16 +1,11 @@
 import React from 'react';
 import type { ComponentType } from 'react';
-import { motion } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 import { FaLaptopCode } from 'react-icons/fa';
 import { FiBookOpen, FiMusic } from 'react-icons/fi';
 import { GiBackpack } from 'react-icons/gi';
 import AnimatedSection from '../AnimatedSection';
-import {
-  TIMING,
-  SECONDARY_DELAYS,
-  ILLUSTRATION,
-  TIMELINE,
-} from '../../animations/config';
+import { ILLUSTRATION, TIMELINE } from '../../animations/config';
 import aboutData from '../../data/about.json';
 import './about.scss';
 
@@ -80,6 +75,34 @@ const consultantBullets = [
   '<strong>Client Partnership:</strong> I bridge the gap between technical requirements and business goals, communicating complex concepts to stakeholders at all levels.',
 ];
 
+const consultantGroupVariants: Variants = {
+  hidden: {},
+  visible: {},
+};
+
+const consultantItemVariants = (index: number): Variants => ({
+  hidden: {
+    opacity: 0,
+    y: 30,
+    willChange: 'opacity, transform',
+  },
+  visible: (timing?: { duration?: number }) => {
+    const duration = timing?.duration ?? 0.6;
+    const timingScale = duration / 0.6;
+
+    return {
+      opacity: 1,
+      y: 0,
+      willChange: 'auto',
+      transition: {
+        duration,
+        delay: index * 0.1 * timingScale,
+        ease: [0.25, 0.1, 0.25, 1],
+      },
+    };
+  },
+});
+
 export default function AboutSection() {
   return (
     <section className="about-section" id="about-section">
@@ -146,20 +169,23 @@ export default function AboutSection() {
 
         {/* Consultant Approach */}
         <div className="about-section__consultant-wrapper">
-          <AnimatedSection delay={1.0}>
-            <div className="about-section__consultant">
-              <AnimatedSection delay={0.2}>
-                <h3>Consultant Approach</h3>
-              </AnimatedSection>
-              {consultantBullets.map((bullet, index) => (
-                <AnimatedSection
-                  key={index}
-                  delay={0.8 + index * TIMELINE.bullet.staggerIncrement}
-                >
-                  <p dangerouslySetInnerHTML={{ __html: bullet }} />
-                </AnimatedSection>
-              ))}
-            </div>
+          <AnimatedSection
+            className="about-section__consultant"
+            delay={0}
+            duration={600}
+            rootMargin="0px"
+            threshold={0}
+            trackViewportEdges
+            variants={consultantGroupVariants}
+          >
+            <motion.h3 variants={consultantItemVariants(0)}>Consultant Approach</motion.h3>
+            {consultantBullets.map((bullet, index) => (
+              <motion.p
+                key={index}
+                variants={consultantItemVariants(index + 1)}
+                dangerouslySetInnerHTML={{ __html: bullet }}
+              />
+            ))}
           </AnimatedSection>
         </div>
       </div>

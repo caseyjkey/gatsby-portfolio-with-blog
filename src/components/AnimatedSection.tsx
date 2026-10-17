@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, type ReactNode } from 'react';
-import { motion } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 import { ANIMATION_CONFIG } from '../animations/config';
 import { fadeInUpVariants } from '../animations/transitions/fadeInUp';
 import { getScrollAnimationTimingScale, trackScrollVelocity } from '../animations/scrollVelocity';
@@ -14,6 +14,7 @@ type Props = {
   rootMargin?: string;  // default from ANIMATION_CONFIG
   threshold?: number;
   trackViewportEdges?: boolean;
+  variants?: Variants;
 };
 
 export default function AnimatedSection({
@@ -26,6 +27,7 @@ export default function AnimatedSection({
   rootMargin = ANIMATION_CONFIG.rootMargin,
   threshold = 0.1,
   trackViewportEdges = false,
+  variants = fadeInUpVariants,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
@@ -117,7 +119,7 @@ export default function AnimatedSection({
   return (
     <motion.div
       ref={ref}
-      variants={fadeInUpVariants}
+      variants={variants}
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
       custom={timing}
