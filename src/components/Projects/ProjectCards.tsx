@@ -35,24 +35,62 @@ function getGallery(project: ProjectRecord) {
   return gallery.length ? gallery : [project.imageUrl];
 }
 
-const technologyIcons: Record<string, ComponentType<{ size?: number | string }>> = {
-  DiBootstrap, DiDjango, DiFirebase, DiHeroku, DiJavascript1, DiJqueryLogo,
-  DiPhotoshop, DiSwift, FaApple, FaAws, FaBootstrap, FaCreditCard, FaDatabase,
-  FaEthereum, FaGamepad, FaGit, FaGithub, FaGitlab, FaJava, FaMicrochip,
-  FaNewspaper, FaNode, FaNpm, FaPhp, FaPython, FaRaspberryPi, FaReact, FaSass,
-  FaServer, FaSlack, FaStripe, FaSwift, FaTwitter, FaWindows, FaWordpress,
-  IoMdAnalytics, IoMdCloud, SiGraphql, SiOracle, SiRedux,
+const technologyIcons: Record<string, {
+  Icon: ComponentType<{ size?: number | string }>;
+  label: string;
+}> = {
+  DiBootstrap: { Icon: DiBootstrap, label: 'Bootstrap' },
+  DiDjango: { Icon: DiDjango, label: 'Django' },
+  DiFirebase: { Icon: DiFirebase, label: 'Firebase' },
+  DiHeroku: { Icon: DiHeroku, label: 'Heroku' },
+  DiJavascript1: { Icon: DiJavascript1, label: 'JavaScript' },
+  DiJqueryLogo: { Icon: DiJqueryLogo, label: 'jQuery' },
+  DiPhotoshop: { Icon: DiPhotoshop, label: 'Adobe Photoshop' },
+  DiSwift: { Icon: DiSwift, label: 'Swift' },
+  FaApple: { Icon: FaApple, label: 'Apple' },
+  FaAws: { Icon: FaAws, label: 'Amazon Web Services' },
+  FaBootstrap: { Icon: FaBootstrap, label: 'Bootstrap' },
+  FaCreditCard: { Icon: FaCreditCard, label: 'Payments' },
+  FaDatabase: { Icon: FaDatabase, label: 'Database' },
+  FaEthereum: { Icon: FaEthereum, label: 'Ethereum' },
+  FaGamepad: { Icon: FaGamepad, label: 'Game Development' },
+  FaGit: { Icon: FaGit, label: 'Git' },
+  FaGithub: { Icon: FaGithub, label: 'GitHub' },
+  FaGitlab: { Icon: FaGitlab, label: 'GitLab' },
+  FaJava: { Icon: FaJava, label: 'Java' },
+  FaMicrochip: { Icon: FaMicrochip, label: 'Embedded Systems' },
+  FaNewspaper: { Icon: FaNewspaper, label: 'News API' },
+  FaNode: { Icon: FaNode, label: 'Node.js' },
+  FaNpm: { Icon: FaNpm, label: 'npm' },
+  FaPhp: { Icon: FaPhp, label: 'PHP' },
+  FaPython: { Icon: FaPython, label: 'Python' },
+  FaRaspberryPi: { Icon: FaRaspberryPi, label: 'Raspberry Pi' },
+  FaReact: { Icon: FaReact, label: 'React' },
+  FaSass: { Icon: FaSass, label: 'Sass' },
+  FaServer: { Icon: FaServer, label: 'Backend Services' },
+  FaSlack: { Icon: FaSlack, label: 'Slack' },
+  FaStripe: { Icon: FaStripe, label: 'Stripe' },
+  FaSwift: { Icon: FaSwift, label: 'Swift' },
+  FaTwitter: { Icon: FaTwitter, label: 'X / Twitter API' },
+  FaWindows: { Icon: FaWindows, label: 'Windows' },
+  FaWordpress: { Icon: FaWordpress, label: 'WordPress' },
+  IoMdAnalytics: { Icon: IoMdAnalytics, label: 'Analytics' },
+  IoMdCloud: { Icon: IoMdCloud, label: 'Cloud Services' },
+  SiGraphql: { Icon: SiGraphql, label: 'GraphQL' },
+  SiOracle: { Icon: SiOracle, label: 'Oracle' },
+  SiRedux: { Icon: SiRedux, label: 'Redux' },
 };
 
 function getTechnologyIcons(project: ProjectRecord) {
   return Object.values(project.icons ?? {}).flatMap((iconNames) => {
     if (!iconNames) return [];
     return iconNames
-      .map((iconName) => ({
-        name: iconName,
-        Icon: technologyIcons[iconName],
-      }))
-      .filter((icon): icon is { name: string; Icon: ComponentType<{ size?: number | string }> } => Boolean(icon.Icon));
+      .map((iconName) => ({ name: iconName, ...technologyIcons[iconName] }))
+      .filter((icon): icon is {
+        name: string;
+        Icon: ComponentType<{ size?: number | string }>;
+        label: string;
+      } => Boolean(icon.Icon));
   });
 }
 
@@ -241,7 +279,10 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
           aria-labelledby="project-modal-title"
           onClick={closeProject}
         >
-          <div className="project-modal__shell" onClick={(event) => event.stopPropagation()}>
+          <div
+            className={`project-modal__shell${shouldCollapseDescription ? ' project-modal__shell--expandable' : ''}`}
+            onClick={(event) => event.stopPropagation()}
+          >
             <div className="project-modal__topbar">
               <h3 id="project-modal-title">{activeProject.title}</h3>
               <button type="button" className="project-modal__close" onClick={closeProject} aria-label="Close project">
@@ -269,6 +310,13 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
                       <div className="project-modal__image-loading" aria-hidden="true" />
                     ) : null}
                     <img
+                      className="project-modal__image-backdrop"
+                      src={activeGallery[activeImageIndex]}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                    <img
+                      className="project-modal__image"
                       src={activeGallery[activeImageIndex]}
                       alt={activeProject.title}
                       loading="eager"
@@ -340,41 +388,45 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
             </div>
 
             <div className="project-modal__content">
-              <div className="project-modal__meta-header">
-                <div className="project-modal__title-row">
-                  <h4>{activeProject.subtitle}</h4>
-                  <div className="project-modal__side-meta">
-                    <span>{formatDateRange(activeProject)}</span>
-                    {activeProject.status ? (
-                      <span className="project-modal__status">
-                        {activeProject.status === 'live' ? <span className="project-modal__status-dot" aria-hidden="true" /> : null}
-                        {formatProjectStatusLabel(activeProject.status)}
-                      </span>
-                    ) : null}
+              <div className="project-modal__body">
+                <div className="project-modal__meta-header">
+                  <div className="project-modal__title-row">
+                    <h4>{activeProject.subtitle}</h4>
+                    <div className="project-modal__side-meta">
+                      <span>{formatDateRange(activeProject)}</span>
+                      <div className="project-modal__technology-status-row">
+                        {activeTechnologyIcons.length ? (
+                          <ul className="project-modal__icons" aria-label="Technologies used">
+                            {activeTechnologyIcons.map(({ name, label, Icon }) => (
+                              <li key={name} title={label} aria-label={label}>
+                                <Icon size={20} aria-hidden="true" />
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
+                        {activeProject.status ? (
+                          <span className="project-modal__status">
+                            {activeProject.status === 'live' ? <span className="project-modal__status-dot" aria-hidden="true" /> : null}
+                            {formatProjectStatusLabel(activeProject.status)}
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
                   </div>
                 </div>
-                {activeTechnologyIcons.length ? (
-                  <ul className="project-modal__icons" aria-label="Technologies used">
-                    {activeTechnologyIcons.map(({ name, Icon }) => (
-                      <li key={name} title={name}>
-                        <Icon size={20} />
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
 
-              <div className="project-modal__description">
-                <p>{visibleDescription}</p>
-                {shouldCollapseDescription ? (
-                  <button
-                    type="button"
-                    className="project-modal__read-more"
-                    onClick={() => setDescriptionExpanded((expanded) => !expanded)}
-                  >
-                    {descriptionExpanded ? 'Read Less ▲' : 'Read More ▼'}
-                  </button>
-                ) : null}
+                <div className="project-modal__description">
+                  <p>{visibleDescription}</p>
+                  {shouldCollapseDescription ? (
+                    <button
+                      type="button"
+                      className="project-modal__read-more"
+                      onClick={() => setDescriptionExpanded((expanded) => !expanded)}
+                    >
+                      {descriptionExpanded ? 'Read Less ▲' : 'Read More ▼'}
+                    </button>
+                  ) : null}
+                </div>
               </div>
 
               <div className="project-modal__actions">

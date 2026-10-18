@@ -70,6 +70,9 @@ describe('ProjectCards', () => {
       },
     });
 
-    expect(icons.map((icon) => icon.name)).toEqual(['FaReact', 'SiGraphql']);
+    expect(icons.map(({ name, label }) => ({ name, label }))).toEqual([
+      { name: 'FaReact', label: 'React' },
+      { name: 'SiGraphql', label: 'GraphQL' },
+    ]);
   });
 });
