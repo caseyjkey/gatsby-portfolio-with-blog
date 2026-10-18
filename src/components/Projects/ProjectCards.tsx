@@ -15,6 +15,7 @@ import {
 import { IoMdAnalytics, IoMdCloud } from 'react-icons/io';
 import { SiGraphql, SiOracle, SiRedux } from 'react-icons/si';
 import { formatProjectStatusLabel, type ProjectRecord } from '../../lib/projects';
+import AnimatedSection from '../AnimatedSection';
 import './projects.scss';
 
 function formatDateRange(project: ProjectRecord) {
@@ -66,6 +67,7 @@ type Props = {
 };
 
 export default function ProjectCards({ projects, title, subtitle }: Props) {
+  const isFeatured = title === 'Featured Work';
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -181,41 +183,52 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
   return (
     <section className={`projects${title === 'Featured Work' ? ' projects--featured' : ''}`}>
       <div className="container">
-        <div className="projects__intro">
-          <h2>{title}</h2>
-          <p>{subtitle}</p>
-        </div>
+        <AnimatedSection rootMargin="0px" threshold={0} trackViewportEdges>
+          <div className="projects__intro">
+            <h2>{title}</h2>
+            <p>{subtitle}</p>
+          </div>
+        </AnimatedSection>
         <div className="card-grid">
-          {projects.map((project) => (
-            <article
+          {projects.map((project, index) => (
+            <AnimatedSection
               key={project.slug}
-              className="project-card"
-              role="button"
-              tabIndex={0}
-              onClick={() => openProject(project)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  openProject(project);
-                }
-              }}
+              className="project-card-motion"
+              delay={isFeatured ? index * 0.1 : 0}
+              initialViewportDelay={isFeatured ? index * 0.1 : 0}
+              rootMargin="0px"
+              threshold={0}
+              trackViewportEdges
             >
-              <div className="project-card__media" aria-hidden="true">
-                <img src={project.imageUrl} alt={project.title} loading="lazy" />
-              </div>
-              <div className="project-card__body">
-                <h3>{project.title}</h3>
-                <div className="project-card__meta-row">
-                  <p>{project.subtitle}</p>
-                  {project.status ? (
-                    <span className="project-card__badge">
-                      {project.status === 'live' ? <span className="project-card__badge-dot" aria-hidden="true" /> : null}
-                      {formatProjectStatusLabel(project.status)}
-                    </span>
-                  ) : null}
+              <article
+                className="project-card"
+                role="button"
+                tabIndex={0}
+                onClick={() => openProject(project)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openProject(project);
+                  }
+                }}
+              >
+                <div className="project-card__media" aria-hidden="true">
+                  <img src={project.imageUrl} alt={project.title} loading="lazy" />
                 </div>
-              </div>
-            </article>
+                <div className="project-card__body">
+                  <h3>{project.title}</h3>
+                  <div className="project-card__meta-row">
+                    <p>{project.subtitle}</p>
+                    {project.status ? (
+                      <span className="project-card__badge">
+                        {project.status === 'live' ? <span className="project-card__badge-dot" aria-hidden="true" /> : null}
+                        {formatProjectStatusLabel(project.status)}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+              </article>
+            </AnimatedSection>
           ))}
         </div>
       </div>

@@ -298,11 +298,21 @@ $black-light: color.adjust($black, $lightness: 10%);
   }
 
   .primaryColor {
-    fill: $primary;
+    fill: $primary !important;
   }
 
   .darkColor {
-    fill: $black-light;
+    fill: $black-light !important;
+    filter: brightness(0);
+  }
+
+  // Dark Reader rewrites inline SVG fill attributes. Keep human skin tones
+  // consistent across all three illustrations while allowing the page chrome
+  // and typography to follow the user's dark-mode extension.
+  [fill='#F7B799'],
+  [fill='#FCB696'],
+  [fill='#D3B39B'] {
+    fill: #f7b799 !important;
   }
 }
 

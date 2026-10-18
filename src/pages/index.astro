@@ -17,7 +17,7 @@ const featuredProjects = getFeaturedProjects();
   <SkillsSection client:visible={{ rootMargin: '-100px' }} />
   <ExperienceTimeline client:visible={{ rootMargin: '-100px' }} />
   <ProjectCards
-    client:visible={{ rootMargin: '-100px' }}
+    client:idle={{ timeout: 2000 }}
     projects={featuredProjects}
     title="Featured Work"
     subtitle="Highlighted projects from my portfolio."

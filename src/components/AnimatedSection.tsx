@@ -107,6 +107,7 @@ export default function AnimatedSection({
       if (trackViewportEdges) {
         window.addEventListener('scroll', scheduleDirectCheck, { passive: true });
         window.addEventListener('resize', scheduleDirectCheck);
+        scheduleDirectCheck();
       }
     }
     return () => {

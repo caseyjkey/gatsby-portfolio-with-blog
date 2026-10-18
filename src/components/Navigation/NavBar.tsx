@@ -123,8 +123,8 @@ export function Nav({ children, pathname }: NavProps) {
               fontSize="52"
               fontWeight="900"
             >
-              <tspan textAnchor="middle" fill="white">C</tspan>
-              <tspan x="55" fill="black">asey Key</tspan>
+              <tspan className="brand-logo__initial" textAnchor="middle" fill="white">C</tspan>
+              <tspan className="brand-logo__wordmark" x="66" fill="black">asey Key</tspan>
             </text>
           </svg>
         </a>

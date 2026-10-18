@@ -66,6 +66,15 @@ $nav-height: 85px;
     svg {
       display: block;
     }
+
+    .brand-logo__initial {
+      fill: #fff !important;
+      filter: brightness(0) invert(1);
+    }
+
+    .brand-logo__wordmark {
+      fill: #000 !important;
+    }
   }
 
   // Nav link base color
