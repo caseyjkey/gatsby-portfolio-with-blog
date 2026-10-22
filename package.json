@@ -25,7 +25,7 @@
     "build": "astro build",
     "serve": "astro preview --host --port 8001",
     "clean": "rm -rf dist .astro",
-    "deploy": "bun run build && gh-pages -d dist -b master"
+    "deploy": "bun run build && gh-pages -d dist -b master --dotfiles"
   },
   "eslintConfig": {
     "extends": "react-app"
