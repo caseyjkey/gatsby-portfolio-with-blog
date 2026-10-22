@@ -34,11 +34,7 @@ export default function FooterSection() {
             <h2>Services</h2>
             <ul className="footer__services-list">
               <li>
-                <a
-                  href="https://www.fiverr.com/caseykey/tutor-java-cpp-python-or-javascript"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="/contact">
                   <FaLongArrowAltRight />
                   Tutoring
                 </a>

@@ -11,7 +11,7 @@ const allProjects = getProjects();
 <BaseLayout pathname="/projects" title="Projects | Casey Key">
   <NavBar client:load pathname={Astro.url.pathname} />
   <ProjectCards
-    client:visible
+    client:idle={{ timeout: 2000 }}
     projects={allProjects}
     title="Projects"
     subtitle="A mix of client work, late nights, and bold ideas."
