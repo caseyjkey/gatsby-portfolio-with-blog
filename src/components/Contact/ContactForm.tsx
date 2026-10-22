@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import AnimatedSection from '../AnimatedSection';
-import { SECONDARY_DELAYS, PROGRESSIVE_STAGGER } from '../../animations/config';
+import { PROGRESSIVE_STAGGER } from '../../animations/config';
 import './contact.scss';
 
 export default function ContactForm() {
@@ -33,7 +33,6 @@ export default function ContactForm() {
       <div className="container">
         <AnimatedSection>
           <div className="contact__header">
-            <h1 className="big">Contact</h1>
             <h2>Start a Conversation</h2>
             <p>Available for architectural consulting and senior engineering lead roles.</p>
           </div>

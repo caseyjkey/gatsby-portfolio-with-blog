@@ -301,9 +301,9 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
                   <motion.div
                     key={activeGallery[activeImageIndex]}
                     className="project-modal__slide"
-                    initial={{ opacity: 0, zIndex: 0 }}
-                    animate={{ opacity: 1, zIndex: 1 }}
-                    exit={{ opacity: 0, zIndex: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                   >
                     {!loadedImages[activeGallery[activeImageIndex]] ? (
