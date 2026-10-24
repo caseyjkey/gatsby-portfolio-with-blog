@@ -32,7 +32,7 @@
   background-color: $white;
 
   @media (max-width: 767.98px) {
-    padding-top: 60px;
+    padding-top: 3rem;
     padding-bottom: 0;
   }
 
@@ -185,6 +185,10 @@
   padding-left: 3.5rem;
   padding-top: 0.1rem;
   min-width: 0;
+
+  @media (max-width: 767.98px) {
+    padding-left: 1.25rem;
+  }
 }
 
 // === Company Header ===

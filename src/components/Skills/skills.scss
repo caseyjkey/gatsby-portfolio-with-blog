@@ -18,8 +18,7 @@ $black-light: color.adjust($black, $lightness: 10%);
   }
 
   @media (max-width: 767.98px) {
-    padding: 6em 0;
-    padding-bottom: calc(6em - 12px);
+    padding: 4.5rem 0 3rem;
   }
 
   @media (min-width: 768px) {
@@ -185,6 +184,7 @@ $black-light: color.adjust($black, $lightness: 10%);
       padding-right: 0;
       display: flex;
       justify-content: center;
+      order: -1;
     }
   }
 }
@@ -204,6 +204,10 @@ $black-light: color.adjust($black, $lightness: 10%);
   padding-bottom: 0.5rem;
   padding-top: 3rem;
   margin: 0;
+
+  @media (max-width: 767.98px) {
+    padding-top: 0;
+  }
 
   .heading-section {
     text-align: center;
