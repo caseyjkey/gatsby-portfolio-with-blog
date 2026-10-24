@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import AnimatedSection from '../AnimatedSection';
 import { fadeInUpVariants } from '../../animations/transitions/fadeInUp';
+import { useInViewAnimation } from '../../animations/hooks/useInViewAnimation';
 import {
-  TIMING,
   SECONDARY_DELAYS,
   PROGRESSIVE_STAGGER,
   ILLUSTRATION,
@@ -404,7 +404,6 @@ interface SkillSectionProps {
   bulletPoints: string[];
   illustrationSide: 'left' | 'right';
   illustrationType: 'fullstack' | 'ai-systems' | 'infrastructure';
-  isVisible: boolean;
   className?: string;
 }
 
@@ -414,11 +413,14 @@ function SkillSection({
   bulletPoints,
   illustrationSide,
   illustrationType,
-  isVisible,
   className = '',
 }: SkillSectionProps) {
   const illustrationRef = useRef<HTMLDivElement>(null);
   const [illustrationVisible, setIllustrationVisible] = useState(false);
+  const { ref: skillListRef, isInView: isSkillListVisible } = useInViewAnimation({
+    rootMargin: '0px 0px -15% 0px',
+    threshold: 0.05,
+  });
 
   useEffect(() => {
     const el = illustrationRef.current;
@@ -489,7 +491,7 @@ function SkillSection({
               <AnimatedSection key={idx} delay={0.5 + getSkillDelay(idx)}>
                 <motion.div
                   initial="hidden"
-                  animate={isVisible ? 'visible' : 'hidden'}
+                  animate="visible"
                   custom={{ delay: 0.5 + getSkillDelay(idx) }}
                   variants={fadeInUpVariants}
                   style={{ display: 'inline-block' }}
@@ -499,13 +501,13 @@ function SkillSection({
               </AnimatedSection>
             ))}
           </div>
-          <ul className="skill-list">
+          <ul className="skill-list" ref={skillListRef}>
             {bulletPoints.map((text, idx) => (
               <motion.li
                 key={idx}
                 className="skill-list-item"
                 initial="hidden"
-                animate={isVisible ? 'visible' : 'hidden'}
+                animate={isSkillListVisible ? 'visible' : 'hidden'}
                 custom={{
                   delay:
                     PROGRESSIVE_STAGGER.skills.baseDelay +
@@ -571,7 +573,6 @@ export default function SkillsSection() {
             ]}
             illustrationSide="left"
             illustrationType="fullstack"
-            isVisible={true}
           />
         </AnimatedSection>
 
@@ -596,7 +597,6 @@ export default function SkillsSection() {
               ]}
               illustrationSide="right"
               illustrationType="infrastructure"
-              isVisible={true}
             />
           </div>
         </AnimatedSection>
@@ -624,7 +624,6 @@ export default function SkillsSection() {
               ]}
               illustrationSide="left"
               illustrationType="ai-systems"
-              isVisible={true}
             />
           </div>
         </AnimatedSection>

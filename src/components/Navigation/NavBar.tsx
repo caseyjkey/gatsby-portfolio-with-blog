@@ -20,6 +20,7 @@ export function Nav({ children, pathname }: NavProps) {
 
   const [currentPath, setCurrentPath] = useState(pathname)
   const isHomePage = currentPath === '/'
+  const usesGlassSurface = !isHomePage || scrolled || isMenuOpen
 
   // Astro swaps pages without a full reload, so keep route-derived styling in sync.
   useEffect(() => {
@@ -104,6 +105,7 @@ export function Nav({ children, pathname }: NavProps) {
       data-visible={isVisible ? 'true' : 'false'}
       data-scrolled={scrolled ? 'true' : 'false'}
       data-menu-open={isMenuOpen ? 'true' : 'false'}
+      data-surface={usesGlassSurface ? 'glass' : 'transparent'}
     >
       <div className="nav-container">
         <a className="navbar-brand navbar-brand--svg" href="/" aria-label="Casey Key home">

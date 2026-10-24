@@ -220,10 +220,10 @@ $black-light: color.adjust($black, $lightness: 10%);
   margin: 0 0 1rem;
 }
 
-// === Mobile tight row (negative margin on small screens) ===
+// === Mobile row reset ===
 .tight-row-mobile {
   @media (max-width: 767.98px) {
-    margin-top: -3rem !important;
+    margin-top: 0 !important;
   }
 }
 
@@ -273,6 +273,12 @@ $black-light: color.adjust($black, $lightness: 10%);
   &--ai-systems {
     max-height: 500px;
 
+    @media (max-width: 767.98px) {
+      .illustration-svg {
+        transform-origin: bottom center;
+      }
+    }
+
     @media (min-width: 992px) {
       padding-top: 1rem;
     }
@@ -284,8 +290,12 @@ $black-light: color.adjust($black, $lightness: 10%);
     margin-bottom: 8rem;
 
     @media (max-width: 767.98px) {
-      margin-top: -1.5rem;
+      margin-top: 0;
       margin-bottom: 0;
+
+      .illustration-svg {
+        transform-origin: bottom center;
+      }
     }
   }
 }

@@ -18,5 +18,28 @@ describe('mobile homepage layout', () => {
     );
 
     expect(styles).toMatch(/\.timeline-entry[\s\S]*?max-width: 767\.98px[\s\S]*?padding-left: 1\.25rem/);
+    expect(styles).toMatch(/\.timeline-year[\s\S]*?max-width: 767\.98px[\s\S]*?margin-top: 4px/);
+  });
+
+  test('moves scaled illustration whitespace above the ML and cloud artwork', () => {
+    const styles = readFileSync(
+      new URL('../components/Skills/skills.scss', import.meta.url),
+      'utf8',
+    );
+
+    expect(styles).toMatch(/&--ai-systems[\s\S]*?max-width: 767\.98px[\s\S]*?transform-origin: bottom center/);
+    expect(styles).toMatch(/&--infrastructure[\s\S]*?max-width: 767\.98px[\s\S]*?margin-top: 0[\s\S]*?transform-origin: bottom center/);
+    expect(styles).not.toContain('margin-top: -3rem !important');
+  });
+
+  test('reveals each expertise bullet list from its own viewport observer', () => {
+    const source = readFileSync(
+      new URL('../components/Skills/SkillsSection.tsx', import.meta.url),
+      'utf8',
+    );
+
+    expect(source).toContain('ref={skillListRef}');
+    expect(source).toContain("animate={isSkillListVisible ? 'visible' : 'hidden'}");
+    expect(source).not.toContain('isVisible={true}');
   });
 });
