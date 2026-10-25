@@ -16,4 +16,17 @@ describe('NavBar glass surface', () => {
     expect(styles).toContain('-webkit-backdrop-filter: saturate(180%) blur(18px)');
     expect(styles).toContain('@supports not');
   });
+
+  test('aligns desktop and mobile navbar controls independently', () => {
+    expect(styles).toMatch(/breakpoint-up\(lg\)[\s\S]*?\.navbar-brand\s*{[\s\S]*?margin-bottom: 0\.8rem/);
+    expect(styles).toMatch(/breakpoint-down\(lg\)[\s\S]*?\.hamburger-toggle\s*{[\s\S]*?padding-bottom: 0\.8rem/);
+  });
+
+  test('keeps the open mobile drawer scrollable within the viewport', () => {
+    expect(styles).toMatch(/\[data-open="true"\][\s\S]*?height: calc\(100dvh - #\{\$nav-height\}\)/);
+    expect(styles).toMatch(/\[data-open="true"\][\s\S]*?max-height: calc\(100dvh - #\{\$nav-height\}\)/);
+    expect(styles).toMatch(/\[data-open="true"\][\s\S]*?overflow-y: auto/);
+    expect(styles).toContain('overscroll-behavior: contain');
+    expect(styles).toMatch(/\.navbar-collapse[\s\S]*?breakpoint-down\(lg\)[\s\S]*?box-sizing: border-box/);
+  });
 });

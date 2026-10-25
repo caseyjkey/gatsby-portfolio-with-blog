@@ -320,6 +320,10 @@ $black-light: color.adjust($black, $lightness: 10%);
     filter: brightness(0);
   }
 
+  .aws-logo path:first-child {
+    fill: #fff !important;
+  }
+
   // Dark Reader rewrites inline SVG fill attributes. Keep human skin tones
   // consistent across all three illustrations while allowing the page chrome
   // and typography to follow the user's dark-mode extension.
