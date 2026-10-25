@@ -1,6 +1,5 @@
-import { AnimatePresence, motion } from 'motion/react';
 import type { ComponentType } from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   DiBootstrap, DiDjango, DiFirebase, DiHeroku, DiJavascript1, DiJqueryLogo,
   DiPhotoshop, DiSwift,
@@ -33,6 +32,27 @@ function formatDateRange(project: ProjectRecord) {
 function getGallery(project: ProjectRecord) {
   const gallery = project.galleryImageUrls.filter(Boolean);
   return gallery.length ? gallery : [project.imageUrl];
+}
+
+async function decodeGalleryImage(imageUrl: string, createImage = () => new Image()) {
+  const image = createImage();
+  image.src = imageUrl;
+
+  if (typeof image.decode === 'function') {
+    try {
+      await image.decode();
+      return;
+    } catch {
+      // Some browsers reject decode() while still completing the image normally.
+    }
+  }
+
+  if (image.complete && image.naturalWidth > 0) return;
+
+  await new Promise<void>((resolve, reject) => {
+    image.addEventListener('load', () => resolve(), { once: true });
+    image.addEventListener('error', () => reject(new Error(`Unable to load ${imageUrl}`)), { once: true });
+  });
 }
 
 const technologyIcons: Record<string, {
@@ -113,6 +133,9 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const indicatorContainerRef = useRef<HTMLDivElement | null>(null);
   const indicatorRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const decodedImagesRef = useRef(new Set<string>());
+  const imageDecodePromisesRef = useRef(new Map<string, Promise<void>>());
+  const imageNavigationRequestRef = useRef(0);
 
   const activeProject = useMemo(
     () => projects.find((project) => project.slug === activeProjectSlug) ?? null,
@@ -144,6 +167,7 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
   };
 
   const closeProject = () => {
+    imageNavigationRequestRef.current += 1;
     setLightboxOpen(false);
     setActiveProjectSlug(null);
     setActiveImageIndex(0);
@@ -153,19 +177,74 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
 
   const closeLightbox = () => setLightboxOpen(false);
 
+  const ensureImageDecoded = useCallback((imageUrl: string) => {
+    if (decodedImagesRef.current.has(imageUrl)) {
+      setLoadedImages((images) => (
+        images[imageUrl] ? images : { ...images, [imageUrl]: true }
+      ));
+      return Promise.resolve();
+    }
+
+    const existingPromise = imageDecodePromisesRef.current.get(imageUrl);
+    if (existingPromise) return existingPromise;
+
+    const decodePromise = decodeGalleryImage(imageUrl)
+      .then(() => {
+        decodedImagesRef.current.add(imageUrl);
+        setLoadedImages((images) => ({ ...images, [imageUrl]: true }));
+      })
+      .finally(() => {
+        imageDecodePromisesRef.current.delete(imageUrl);
+      });
+
+    imageDecodePromisesRef.current.set(imageUrl, decodePromise);
+    return decodePromise;
+  }, []);
+
+  const showImage = async (index: number) => {
+    const imageUrl = activeGallery[index];
+    if (!imageUrl || index === activeImageIndex) return;
+
+    const requestId = imageNavigationRequestRef.current + 1;
+    imageNavigationRequestRef.current = requestId;
+
+    try {
+      await ensureImageDecoded(imageUrl);
+    } catch {
+      // Preserve navigation for a recoverable decode failure; the in-slide
+      // loading state remains until the actual image element reports ready.
+    }
+
+    // Give React one paint to mount the decoded destination at opacity 0 before
+    // activating it. Keeping that node mounted avoids AnimatePresence's exit
+    // cleanup remount, which reset the incoming slide near the end of the fade.
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+    });
+
+    if (imageNavigationRequestRef.current === requestId) {
+      setActiveImageIndex(index);
+    }
+  };
+
   const showPreviousImage = () => {
     if (!activeGallery.length) return;
-    setActiveImageIndex((index) => (index === 0 ? activeGallery.length - 1 : index - 1));
+    void showImage(activeImageIndex === 0 ? activeGallery.length - 1 : activeImageIndex - 1);
   };
 
   const showNextImage = () => {
     if (!activeGallery.length) return;
-    setActiveImageIndex((index) => (index + 1) % activeGallery.length);
+    void showImage((activeImageIndex + 1) % activeGallery.length);
   };
 
-  const showImage = (index: number) => {
-    setActiveImageIndex(index);
-  };
+  useEffect(() => {
+    if (activeGallery.length < 2) return;
+
+    const previousIndex = activeImageIndex === 0 ? activeGallery.length - 1 : activeImageIndex - 1;
+    const nextIndex = (activeImageIndex + 1) % activeGallery.length;
+    void ensureImageDecoded(activeGallery[previousIndex]).catch(() => undefined);
+    void ensureImageDecoded(activeGallery[nextIndex]).catch(() => undefined);
+  }, [activeGallery, activeImageIndex, ensureImageDecoded]);
 
   useEffect(() => {
     if (!activeProject && !lightboxOpen) return;
@@ -201,7 +280,7 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [activeProject, lightboxOpen, activeGallery.length]);
+  }, [activeProject, lightboxOpen, activeGallery.length, activeImageIndex]);
 
   useEffect(() => {
     const activeIndicator = indicatorRefs.current[activeImageIndex];
@@ -297,37 +376,42 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
                 onClick={() => setLightboxOpen(true)}
                 aria-label={`Expand ${activeProject.title} image`}
               >
-                <AnimatePresence mode="sync" initial={false}>
-                  <motion.div
-                    key={activeGallery[activeImageIndex]}
-                    className="project-modal__slide"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, ease: 'easeInOut' }}
-                  >
-                    {!loadedImages[activeGallery[activeImageIndex]] ? (
-                      <div className="project-modal__image-loading" aria-hidden="true" />
-                    ) : null}
-                    <img
-                      className="project-modal__image-backdrop"
-                      src={activeGallery[activeImageIndex]}
-                      alt=""
-                      aria-hidden="true"
-                    />
-                    <img
-                      className="project-modal__image"
-                      src={activeGallery[activeImageIndex]}
-                      alt={activeProject.title}
-                      loading="eager"
-                      decoding="async"
-                      onLoad={() => {
-                        const imageUrl = activeGallery[activeImageIndex];
-                        setLoadedImages((images) => ({ ...images, [imageUrl]: true }));
-                      }}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                {activeGallery.map((imageUrl, index) => (
+                  index === activeImageIndex || loadedImages[imageUrl] ? (
+                    <div
+                      key={imageUrl}
+                      className={`project-modal__slide${index === activeImageIndex ? ' is-active' : ''}`}
+                      aria-hidden={index !== activeImageIndex}
+                    >
+                      {!loadedImages[imageUrl] ? (
+                        <div className="project-modal__image-loading" aria-hidden="true" />
+                      ) : null}
+                      <img
+                        className="project-modal__image-backdrop"
+                        src={imageUrl}
+                        alt=""
+                        aria-hidden="true"
+                      />
+                      <img
+                        className="project-modal__image"
+                        src={imageUrl}
+                        alt={index === activeImageIndex ? activeProject.title : ''}
+                        loading="eager"
+                        decoding="async"
+                        onLoad={async (event) => {
+                          const image = event.currentTarget;
+                          try {
+                            await image.decode();
+                          } catch {
+                            // The load event still confirms a drawable fallback.
+                          }
+                          decodedImagesRef.current.add(imageUrl);
+                          setLoadedImages((images) => ({ ...images, [imageUrl]: true }));
+                        }}
+                      />
+                    </div>
+                  ) : null
+                ))}
               </button>
 
               {activeGallery.length > 1 ? (
@@ -490,6 +574,7 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
 }
 
 export const __test__ = {
+  decodeGalleryImage,
   formatStatusLabel: formatProjectStatusLabel,
   getTechnologyIcons,
   getGallery,

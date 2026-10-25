@@ -75,4 +75,39 @@ describe('ProjectCards', () => {
       { name: 'SiGraphql', label: 'GraphQL' },
     ]);
   });
+
+  test('decodes a gallery image before allowing its crossfade', async () => {
+    let requestedUrl = '';
+    let decoded = false;
+    const image = {
+      complete: false,
+      naturalWidth: 0,
+      addEventListener: () => undefined,
+      decode: async () => {
+        decoded = true;
+      },
+      get src() {
+        return requestedUrl;
+      },
+      set src(value: string) {
+        requestedUrl = value;
+      },
+    } as unknown as HTMLImageElement;
+
+    await __test__.decodeGalleryImage('/assets/farmx-alt.png', () => image);
+
+    expect(requestedUrl).toBe('/assets/farmx-alt.png');
+    expect(decoded).toBe(true);
+  });
+
+  test('uses persistent gallery slides instead of exit-remount animation', async () => {
+    const [componentSource, projectStyles] = await Promise.all([
+      Bun.file(new URL('./ProjectCards.tsx', import.meta.url)).text(),
+      Bun.file(new URL('./projects.scss', import.meta.url)).text(),
+    ]);
+
+    expect(componentSource).not.toContain('<AnimatePresence');
+    expect(componentSource).toContain("project-modal__slide${index === activeImageIndex ? ' is-active' : ''}");
+    expect(projectStyles).toMatch(/\.project-modal__slide[\s\S]*?opacity: 0;[\s\S]*?&\.is-active[\s\S]*?opacity: 1/);
+  });
 });
