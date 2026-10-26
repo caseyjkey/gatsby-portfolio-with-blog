@@ -269,7 +269,10 @@ $nav-height: 85px;
       padding: 1rem 0 2rem 0;
       height: 100%;
       flex: 1 0 auto;
-      justify-content: center;
+      // `safe` prevents an oversized link stack from being centered above the
+      // drawer's scroll origin, where the first link would sit behind the
+      // fixed navbar and could never be scrolled fully into view.
+      justify-content: safe center;
       position: relative;
       z-index: 1;
       list-style: none;

@@ -27,6 +27,7 @@ describe('NavBar glass surface', () => {
     expect(styles).toMatch(/\[data-open="true"\][\s\S]*?max-height: calc\(100dvh - #\{\$nav-height\}\)/);
     expect(styles).toMatch(/\[data-open="true"\][\s\S]*?overflow-y: auto/);
     expect(styles).toContain('overscroll-behavior: contain');
+    expect(styles).toContain('justify-content: safe center');
     expect(styles).toMatch(/\.navbar-collapse[\s\S]*?breakpoint-down\(lg\)[\s\S]*?box-sizing: border-box/);
   });
 });
