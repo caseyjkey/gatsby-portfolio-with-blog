@@ -19,7 +19,7 @@ describe('NavBar glass surface', () => {
 
   test('aligns desktop and mobile navbar controls independently', () => {
     expect(styles).toMatch(/breakpoint-up\(lg\)[\s\S]*?\.navbar-brand\s*{[\s\S]*?margin-bottom: 0\.8rem/);
-    expect(styles).toMatch(/breakpoint-down\(lg\)[\s\S]*?\.hamburger-toggle\s*{[\s\S]*?padding-bottom: 0\.8rem/);
+    expect(styles).toMatch(/breakpoint-down\(lg\)[\s\S]*?\.hamburger-toggle\s*{[\s\S]*?margin-right: 0\.1rem[\s\S]*?padding-bottom: 0\.8rem/);
   });
 
   test('keeps the open mobile drawer scrollable within the viewport', () => {
