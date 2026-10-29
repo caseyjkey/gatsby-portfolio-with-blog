@@ -83,6 +83,9 @@ const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteM
   </head>
   <body transition:animate="fade">
     <slot />
+    <script>
+      import '../scripts/konami';
+    </script>
     <script is:inline>
       document.addEventListener('astro:after-swap', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });

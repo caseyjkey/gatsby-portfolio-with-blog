@@ -5,6 +5,7 @@ import { FaLaptopCode } from 'react-icons/fa';
 import { FiBookOpen, FiMusic } from 'react-icons/fi';
 import { GiBackpack } from 'react-icons/gi';
 import AnimatedSection from '../AnimatedSection';
+import DeferredPolaroidStack from './DeferredPolaroidStack';
 import { ILLUSTRATION, TIMELINE } from '../../animations/config';
 import aboutData from '../../data/about.json';
 import './about.scss';
@@ -166,6 +167,8 @@ export default function AboutSection() {
             </AnimatedSection>
           </div>
         </div>
+
+        <DeferredPolaroidStack />
 
         {/* Consultant Approach */}
         <div className="about-section__consultant-wrapper">

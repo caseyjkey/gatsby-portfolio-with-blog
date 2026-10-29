@@ -239,7 +239,212 @@ $icon-gap: 16px;
   }
 
   &__consultant-wrapper {
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-bottom: 1rem;
+  }
+}
+
+// === Interactive photo stack ===
+.polaroid-stack-loader {
+  min-height: 400px;
+  display: flow-root;
+
+  &--loaded {
+    min-height: 0;
+  }
+
+  @media (max-width: 767.98px) {
+    min-height: 345px;
+
+    &--loaded {
+      min-height: 0;
+    }
+  }
+}
+
+.polaroid-stack {
+  margin: 2.75rem auto 1rem;
+  padding: 2.25rem 0 1rem;
+  overflow: visible;
+
+  &__intro {
+    text-align: center;
+    margin-bottom: 1.65rem;
+  }
+
+  &__eyebrow {
+    color: $black;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+
+  &__hint {
+    color: $text-muted;
+    font-size: 0.82rem;
+    margin: 0;
+  }
+
+  &__stage {
+    --card-width: 114px;
+    --card-height: 144px;
+    --card-step: 68px;
+    position: relative;
+    width: calc(var(--card-width) + (var(--card-step) * 6));
+    height: 220px;
+    max-width: 100%;
+    margin: 0 auto;
+    isolation: isolate;
+  }
+
+  &__slot {
+    position: absolute;
+    top: 12px;
+    left: calc(var(--card-step) * var(--card-index));
+    width: var(--card-width);
+    height: var(--card-height);
+    pointer-events: none;
+
+    @for $index from 1 through 7 {
+      &--#{$index} {
+        --card-index: #{$index - 1};
+        top: calc(12px + #{nth((4px, -2px, 3px, -4px, 2px, -3px, 4px), $index)});
+      }
+    }
+  }
+
+  &__card {
+    width: 100%;
+    height: 100%;
+    padding: 8px 8px 0;
+    border: 0;
+    border-radius: 2px;
+    background: #fff;
+    box-shadow:
+      0 2px 3px rgba(15, 23, 42, 0.12),
+      0 10px 28px rgba(15, 23, 42, 0.16);
+    color: #182033;
+    cursor: grab;
+    pointer-events: auto;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+
+    &:focus-visible {
+      outline: 3px solid rgba($primary, 0.7);
+      outline-offset: 5px;
+    }
+  }
+
+  &__image-wrap {
+    display: block;
+    width: 100%;
+    height: 106px;
+    overflow: hidden;
+    background: $light-gray;
+  }
+
+  &__image-wrap picture,
+  &__image-wrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  &__caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    overflow: hidden;
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(2px);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  &__card:hover &__caption,
+  &__card:focus-visible &__caption,
+  &__card[aria-pressed='true'] &__caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 767.98px) {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+
+    &__stage {
+      --card-width: 116px;
+      --card-height: 146px;
+      --card-step: 62px;
+      height: 198px;
+    }
+
+    &__image-wrap {
+      height: 111px;
+    }
+
+    &__caption {
+      height: 27px;
+      font-size: 0.58rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    &__intro {
+      margin-bottom: 1.35rem;
+    }
+
+    &__eyebrow {
+      font-size: 1.1rem;
+    }
+
+    &__hint {
+      font-size: 0.74rem;
+    }
+
+    &__stage {
+      --card-width: 96px;
+      --card-height: 121px;
+      --card-step: calc((100% - var(--card-width)) / 5);
+      width: calc(100% - 0.5rem);
+      height: 172px;
+    }
+
+    &__slot {
+      top: 9px;
+
+      &:nth-child(7) {
+        display: none;
+      }
+    }
+
+    &__card {
+      padding: 6px 6px 0;
+    }
+
+    &__image-wrap {
+      height: 91px;
+    }
+
+    &__caption {
+      height: 24px;
+      font-size: 0.49rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__card {
+      cursor: default;
+    }
   }
 }
