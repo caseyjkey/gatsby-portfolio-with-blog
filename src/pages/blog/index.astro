@@ -1,0 +1,211 @@
+---
+import { getCollection } from 'astro:content';
+import { format } from 'date-fns';
+import NavBar from '../../components/Navigation/NavBar';
+import FooterSection from '../../components/Footer/FooterSection';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { extractPreview } from '../../lib/content';
+
+const blogPosts = await getCollection('blog', ({ data }) => data.published);
+const projectPosts = await getCollection('projects', ({ data }) => data.published);
+const posts = [...blogPosts, ...projectPosts]
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .map((post) => ({
+    ...post,
+    href: `/${post.collection}/${post.id.replace(/\/index$/, '')}/`,
+    preview: extractPreview(post.body ?? '', 250),
+  }));
+---
+
+<BaseLayout pathname="/blog" title="Blog | Casey Key">
+  <NavBar client:load pathname={Astro.url.pathname} />
+  <main class="blog-page">
+    <div class="container">
+      <section class="hero">
+        <h1>Blog</h1>
+        <p>Coding, reflecting, evolving.</p>
+      </section>
+      <section class="list" data-blog-reveal-list>
+        {posts.map((post) => (
+          <article class="post-entry">
+            <a href={post.href} class="post-link">
+              <h2>{post.data.title}</h2>
+              <p class="date">{format(post.data.date, 'yyyy MMMM do')}</p>
+              <p class="excerpt">{post.preview}</p>
+            </a>
+          </article>
+        ))}
+      </section>
+    </div>
+  </main>
+  <FooterSection />
+</BaseLayout>
+
+<style>
+  .blog-page {
+    margin-top: 6em;
+  }
+
+  .hero {
+    text-align: center;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero h1 {
+    color: #000;
+    font-size: 50px;
+    line-height: 1.5;
+    font-weight: 700;
+    margin: 0 0 1.5rem;
+  }
+
+  .hero p {
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0 0 1rem;
+  }
+
+  .post-entry {
+    padding-bottom: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .list.reveal-ready .post-entry {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .list.reveal-ready .post-entry.is-revealed {
+    animation: reveal-post-entry var(--reveal-duration, 0.8s) cubic-bezier(0.2, 0.8, 0.2, 1)
+      var(--reveal-delay, 0s) both;
+  }
+
+  @keyframes reveal-post-entry {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .list.reveal-ready .post-entry {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+
+  .post-entry:last-child {
+    padding-bottom: 1rem;
+    margin-bottom: 0;
+  }
+
+  .post-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .post-link h2 {
+    color: #000;
+    font-size: 40px;
+    line-height: 1.5;
+    font-weight: 400;
+    margin: 0 0 0.5rem;
+  }
+
+  .date {
+    color: var(--color-primary);
+    font-weight: 400;
+    margin: 0 0 1rem;
+  }
+
+  .excerpt {
+    color: #000;
+    margin: 0 0 1rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .hero h1 { font-size: 38px; }
+    .post-link h2 { font-size: calc(1.375rem + 1.5vw); }
+  }
+</style>
+
+<script>
+  import { getScrollAnimationTimingScale, trackScrollVelocity } from '../../animations/scrollVelocity';
+
+  type BlogRevealWindow = Window & {
+    __blogRevealCleanup?: () => void;
+    __blogRevealInstalled?: boolean;
+  };
+
+  const revealWindow = window as BlogRevealWindow;
+
+  function initializeBlogReveal() {
+    revealWindow.__blogRevealCleanup?.();
+
+    const list = document.querySelector<HTMLElement>('[data-blog-reveal-list]');
+    if (!list) {
+      revealWindow.__blogRevealCleanup = undefined;
+      return;
+    }
+
+    const entries = Array.from(list.querySelectorAll<HTMLElement>('.post-entry'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stopTrackingVelocity = trackScrollVelocity();
+    const revealed = new WeakSet<HTMLElement>();
+
+    list.classList.add('reveal-ready');
+
+    const reveal = (entry: HTMLElement, staggerIndex = 0) => {
+      if (revealed.has(entry)) return;
+      revealed.add(entry);
+
+      const timingScale = getScrollAnimationTimingScale();
+      entry.style.setProperty('--reveal-delay', reducedMotion ? '0s' : `${staggerIndex * 0.1 * timingScale}s`);
+      entry.style.setProperty('--reveal-duration', reducedMotion ? '0s' : `${0.8 * timingScale}s`);
+      entry.classList.add('is-revealed');
+    };
+
+    const observer = new IntersectionObserver(
+      (observedEntries) => {
+        observedEntries.forEach((observedEntry) => {
+          const entry = observedEntry.target as HTMLElement;
+          if (observedEntry.isIntersecting || observedEntry.boundingClientRect.bottom <= 0) {
+            reveal(entry);
+            observer.unobserve(entry);
+          }
+        });
+      },
+      { rootMargin: '0px', threshold: 0 },
+    );
+
+    requestAnimationFrame(() => {
+      let initialBatchIndex = 0;
+
+      entries.forEach((entry) => {
+        const rect = entry.getBoundingClientRect();
+        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+
+        if (isInViewport || rect.bottom <= 0) {
+          reveal(entry, initialBatchIndex);
+          initialBatchIndex += 1;
+        } else {
+          observer.observe(entry);
+        }
+      });
+    });
+
+    revealWindow.__blogRevealCleanup = () => {
+      observer.disconnect();
+      stopTrackingVelocity();
+    };
+  }
+
+  if (!revealWindow.__blogRevealInstalled) {
+    revealWindow.__blogRevealInstalled = true;
+    document.addEventListener('astro:page-load', initializeBlogReveal);
+  }
+
+  initializeBlogReveal();
+</script>

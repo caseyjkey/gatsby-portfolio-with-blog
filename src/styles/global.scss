@@ -1,0 +1,36 @@
+@use 'theme' as *;
+
+
+:root {
+  --color-white: #{$white};
+  --color-black: #{$black};
+  --color-darken: #{$darken};
+  --color-primary: #{$primary};
+  --color-secondary: #{$secondary};
+  --text-muted: #{$text-muted};
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: clip;
+  font-family: $font-primary;
+  background: $white;
+  color: $text-body;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 400;
+}
+
+body.menu-show {
+  overflow: hidden;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+main { min-height: 100vh; }

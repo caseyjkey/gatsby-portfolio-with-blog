@@ -3,10 +3,8 @@
 To make this website your own, follow these steps:
 
 ### Changing your Website's Metadata
-In the root directory, you will find `gatsby-config.js`. 
-Inside this file you will notice `siteMetadata`, a group of key-value pairs.
-Change the values of `title`, `description`, and `author` to acurately represent your brand. 
-Change `canonical`'s value to be your current website url. 
+Site-level metadata and navigation defaults live in `src/config/site.ts`.
+Update `title`, `description`, social links, and canonical URL there.
 
 ### Customizing the Content of your Website
 
@@ -25,10 +23,10 @@ For your `bio`, make sure to remove all line-breaks, I recommend [this](http://r
 `<br />` will render to a line break in the browser. 
 
 ### Previewing
-From this directory run `bun install`, then run `bun run gatsby develop`.
+From this directory run `bun install`, then run `bun run dev`.
 
 ### Building
-You can build via `bun run gatsby build`. If you encounter a TypeComposer error, follow [this solution](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v4-to-v5/#multiple-versions-of-graphql) in docs, making sure to use `bun install`.
+You can build via `bun run build`.
 
 ### Deploying
 Run `bun run deploy`. If you encounter `"length" is outside of buffer bounds`

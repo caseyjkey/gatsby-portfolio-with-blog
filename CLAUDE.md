@@ -43,7 +43,7 @@ bun run dev:errors   # Show only errors from dev output
 | `bun run dev:logs` | View recent dev server logs |
 | `bun run dev:errors` | View only errors from logs |
 
-**Note:** `bun run dev` now logs to `/tmp/gatsby-dev.log` by default. Use `bun run dev:no-logs` if you don't want logging.
+**Note:** `bun run dev` now logs to `/tmp/astro-dev.log` by default. Use `bun run dev:no-logs` if you don't want logging.
 
 ## Git Worktrees
 
@@ -65,11 +65,11 @@ git worktree remove ./worktrees/branch-name
 ## Project Quick Reference
 
 ### Tech Stack
-- **Framework:** Gatsby (React-based SSG)
+- **Framework:** Astro + React islands/pages
 - **Styling:** styled-components + reactstrap (grid)
 - **Animations:** motion/react (Framer Motion)
 - **Icons:** react-icons (lazy-loaded for SSR)
-- **Scrolling:** react-scroll for smooth scrolling
+- **Content:** Astro content collections + MDX
 
 ### File Locations
 ```
@@ -80,19 +80,22 @@ src/
 │   └── **/style.ts   # Component-specific styles
 ├── data/             # Project data JSON files
 ├── hooks/            # Custom React hooks
-├── pages/            # Page components (with GraphQL)
-└── templates/        # MDX/blog post templates
+├── layouts/          # Astro layouts
+├── pages/            # Astro route files
+└── content.config.ts # Astro content collections
 ```
 
 ### Common Patterns
 
-**Scroll with react-scroll:**
+**Scroll to a section:**
 ```javascript
-const Scroll = require('react-scroll');
-Scroll.scroller.scrollTo('elementId', {
-  smooth: true,
-  offset: -80  // Account for fixed navbar
-});
+const element = document.getElementById('Experience');
+if (element) {
+  window.scrollTo({
+    top: element.getBoundingClientRect().top + window.pageYOffset - 80,
+    behavior: 'smooth',
+  });
+}
 ```
 
 **Lazy-load icons (SSR-safe):**

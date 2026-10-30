@@ -1,15 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { FaLinkedinIn, FaFacebookF, FaInstagram, FaGithub } from 'react-icons/fa'
+import type { ComponentType } from 'react';
+import { FaLinkedinIn, FaInstagram, FaGithub } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
-import { motion } from 'motion/react'
-import { fadeInUpVariants } from '../animations'
-import { ANIMATION_CONFIG } from '../animations/config'
 
 /* This is a generic component for placing social links anywhere
    TODO: Use props for social links */
-export default function Socials(props) {
+export default function Socials({ className = 'social-list' }: { className?: string }) {
   return (
-    <ul className="ftco-footer-social list-unstyled ">
+    <ul className={className}>
       <li>
         <Social Icon={FaXTwitter}
           link="https://x.com/thecaseykey"
@@ -34,47 +31,16 @@ export default function Socials(props) {
   );
 }
 
-function Social({ link, Icon }) {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const isMobile = () => {
-      if (typeof window === 'undefined') return false;
-      return window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint;
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        threshold: 0,
-        rootMargin: ANIMATION_CONFIG.rootMargin,
-      }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
+function Social({ link, Icon }: { link: string; Icon: ComponentType }) {
   return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={visible ? "visible" : "hidden"}
-      variants={fadeInUpVariants}
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Social link"
     >
-      <a href={link} target="_blank" rel="noopener noreferrer"><Icon /></a>
-    </motion.div>
+      <Icon />
+    </a>
   );
 }
 

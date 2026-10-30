@@ -1,0 +1,109 @@
+---
+import { getCollection, render } from 'astro:content';
+import { format } from 'date-fns';
+import NavBar from '../../components/Navigation/NavBar';
+import FooterSection from '../../components/Footer/FooterSection';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatProjectStatusLabel, getProjectBySlug } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => data.published);
+  return projects.map((project) => ({
+    params: { slug: project.id.replace(/\/index$/, '') },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const slug = project.id.replace(/\/index$/, '');
+const record = getProjectBySlug(slug.split('-').slice(2).join('-'));
+const { Content } = await render(project);
+const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : project.data.title;
+---
+
+<BaseLayout
+  pathname={`/projects/${slug}/`}
+  title={`${project.data.title} | Casey Key`}
+  description={description}
+  image={record?.imageUrl}
+>
+  <NavBar client:load pathname={Astro.url.pathname} />
+  <main class="project-page">
+    <article class="project">
+      <header class="project-header">
+        <h1>{project.data.title}</h1>
+        {record ? (
+          <p class="meta">
+            <span>{record.subtitle}</span>
+            <span>{format(new Date(`${record.start}-01`), 'MMMM yyyy')}</span>
+            {record.status ? <span>{formatProjectStatusLabel(record.status)}</span> : null}
+          </p>
+        ) : null}
+        {record?.imageUrl ? <img src={record.imageUrl} alt={record.title} class="hero" /> : null}
+      </header>
+      <div class="project-content">
+        <Content />
+      </div>
+      {record ? (
+        <section class="links">
+          {record.sourceLink ? <a href={record.sourceLink}>Source</a> : null}
+          {record.link ? <a href={record.link}>View Project</a> : null}
+        </section>
+      ) : null}
+    </article>
+  </main>
+  <FooterSection />
+</BaseLayout>
+
+<style>
+  .project-page {
+    padding: 7.5rem 1.25rem 5rem;
+  }
+
+  .project {
+    color: #000;
+    line-height: 1.8;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .project-header {
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 7vw, 4.5rem);
+    margin: 0 0 0.75rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    color: rgba(0, 0, 0, 0.58);
+    margin: 0;
+  }
+
+  .hero {
+    margin-top: 1.5rem;
+    width: 100%;
+    border-radius: 24px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+  }
+
+  .project-content :global(:first-child) {
+    margin-top: 0;
+  }
+
+  .links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .links a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+</style>

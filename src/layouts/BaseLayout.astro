@@ -1,0 +1,95 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '@fontsource/poppins/latin-400.css';
+import '@fontsource/poppins/latin-500.css';
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource/poppins/latin-700.css';
+import '@fontsource/poppins/latin-800.css';
+import '@fontsource/poppins/latin-900.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import { siteMetadata } from '../config/site';
+import '../components/Layout/style.scss';
+import '../styles/_layout.scss';
+import '../styles/global.scss';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string | { src?: string };
+  pathname?: string;
+}
+
+const {
+  title = siteMetadata.title,
+  description = siteMetadata.description,
+  image = siteMetadata.image,
+  pathname = Astro.url.pathname,
+} = Astro.props;
+
+const canonicalUrl = new URL(pathname, siteMetadata.siteUrl).toString();
+const imageUrl = typeof image === 'string' ? image : image?.src ?? siteMetadata.image;
+const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteMetadata.siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:creator" content={siteMetadata.twitterUsername} />
+
+    <script is:inline>
+      (() => {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+
+        function loadAnalytics() {
+          if (document.querySelector('script[data-google-analytics]')) return;
+
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z';
+          script.dataset.googleAnalytics = 'true';
+          document.head.appendChild(script);
+          window.gtag('js', new Date());
+          window.gtag('config', 'G-1QQK6QY29Z');
+        }
+
+        const analyticsTimer = window.setTimeout(loadAnalytics, 10000);
+        ['pointerdown', 'keydown', 'scroll'].forEach((eventName) => {
+          window.addEventListener(eventName, () => {
+            window.clearTimeout(analyticsTimer);
+            loadAnalytics();
+          }, { once: true, passive: true });
+        });
+      })();
+    </script>
+    <ClientRouter />
+  </head>
+  <body transition:animate="fade">
+    <slot />
+    <script>
+      import '../scripts/konami';
+    </script>
+    <script is:inline>
+      document.addEventListener('astro:after-swap', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    </script>
+  </body>
+</html>

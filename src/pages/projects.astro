@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/Navigation/NavBar';
+import ProjectCards from '../components/Projects/ProjectCards';
+import FooterSection from '../components/Footer/FooterSection';
+import { getProjects } from '../lib/projects';
+
+const allProjects = getProjects();
+---
+
+<BaseLayout pathname="/projects" title="Projects | Casey Key">
+  <NavBar client:load pathname={Astro.url.pathname} />
+  <ProjectCards
+    client:idle={{ timeout: 2000 }}
+    projects={allProjects}
+    title="Projects"
+    subtitle="A mix of client work, late nights, and bold ideas."
+  />
+  <FooterSection />
+</BaseLayout>

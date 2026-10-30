@@ -1,0 +1,316 @@
+import React, { useState, useEffect } from 'react'
+import { useScrollDirection } from '../../hooks/useScrollDirection'
+import { navigate } from 'astro:transitions/client'
+import './navigation.scss'
+
+// === Nav Container ===
+interface NavProps {
+  children: React.ReactNode
+  pathname: string
+}
+
+export function Nav({ children, pathname }: NavProps) {
+  const [collapsed, setCollapsed] = useState(true)
+  const [scrolled, setScrolled] = useState(false)
+  const [atTop, setAtTop] = useState(true)
+  const [activeNavIndex, setActiveNavIndex] = useState<number | null>(null)
+  const toggleNavbar = () => setCollapsed(!collapsed)
+  const { isVisible } = useScrollDirection(5)
+  const isMenuOpen = !collapsed
+
+  const [currentPath, setCurrentPath] = useState(pathname)
+  const isHomePage = currentPath === '/'
+  const usesGlassSurface = !isHomePage || scrolled || isMenuOpen
+
+  // Astro swaps pages without a full reload, so keep route-derived styling in sync.
+  useEffect(() => {
+    const syncPath = () => setCurrentPath(window.location.pathname)
+    syncPath()
+    document.addEventListener('astro:page-load', syncPath)
+    return () => document.removeEventListener('astro:page-load', syncPath)
+  }, [pathname])
+
+  // Handle ripple effect on click with navigation delay
+  const handleRippleClick = (
+    e: React.MouseEvent<HTMLElement>,
+    index: number,
+    callback?: () => void
+  ) => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 992
+    if (isMobile && callback) {
+      e.preventDefault()
+    }
+
+    const target = e.currentTarget
+    target.classList.remove('ripple-effect')
+    void target.offsetWidth // Trigger reflow
+    target.classList.add('ripple-effect')
+
+    setActiveNavIndex(index)
+
+    // Short delay before navigation (150ms)
+    if (isMobile && callback) {
+      setTimeout(() => {
+        callback()
+        setCollapsed(true)
+      }, 150)
+    }
+
+    // Remove ripple class after animation completes
+    setTimeout(() => {
+      target.classList.remove('ripple-effect')
+    }, 600)
+  }
+
+  // Reset active state when menu closes
+  useEffect(() => {
+    if (collapsed) {
+      setActiveNavIndex(null)
+    }
+  }, [collapsed])
+
+  // Disable body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen && window.innerWidth < 992) {
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+      document.body.classList.add('menu-show')
+    } else {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+      document.body.classList.remove('menu-show')
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+      document.body.classList.remove('menu-show')
+    }
+  }, [isMenuOpen])
+
+  // Track scroll state for glass effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      setScrolled(scrollY > 20)
+      setAtTop(scrollY < 50)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <nav
+      className="navbar"
+      id="ftco-navbar"
+      data-visible={isVisible ? 'true' : 'false'}
+      data-scrolled={scrolled ? 'true' : 'false'}
+      data-menu-open={isMenuOpen ? 'true' : 'false'}
+      data-surface={usesGlassSurface ? 'glass' : 'transparent'}
+    >
+      <div className="nav-container">
+        <a className="navbar-brand navbar-brand--svg" href="/" aria-label="Casey Key home">
+          <svg
+            viewBox="0 0 350 100"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ height: '50px', width: 'auto' }}
+            role="img"
+            aria-label="Casey Key"
+          >
+            <circle cx="45" cy="50" r="38" fill="#3e64ff" />
+
+            <text
+              x="45"
+              y="68"
+              fontFamily="Poppins, sans-serif"
+              fontSize="52"
+              fontWeight="900"
+            >
+              <tspan className="brand-logo__initial" textAnchor="middle" fill="white">C</tspan>
+              <tspan className="brand-logo__wordmark" x="66" fill="black">asey Key</tspan>
+            </text>
+          </svg>
+        </a>
+        <button
+          className="hamburger-toggle"
+          onClick={toggleNavbar}
+          id="hamburger"
+          aria-label="Toggle navigation"
+          aria-expanded={!collapsed}
+        >
+          <div className={`hamburger-icon ${!collapsed ? 'open' : ''}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+        <div className="navbar-collapse" data-open={!collapsed ? 'true' : 'false'}>
+          <ul className="navbar-nav">
+            {React.Children.map(children, (child, index) => {
+              if (React.isValidElement(child)) {
+                return React.cloneElement(child, {
+                  isHomePage,
+                  atTop,
+                  currentPath,
+                  onNavClick: handleRippleClick,
+                  navIndex: index,
+                  activeNavIndex,
+                  collapsed,
+                } as any)
+              }
+              return child
+            })}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  )
+}
+
+// === Scroll Link (scrolls to DOM element by ID) ===
+interface ScrollProps {
+  to: string
+  children: React.ReactNode
+  offset?: number
+  isHomePage?: boolean
+  atTop?: boolean
+  currentPath?: string
+  onNavClick?: (e: React.MouseEvent<HTMLElement>, index: number, callback?: () => void) => void
+  navIndex?: number
+  activeNavIndex?: number | null
+  collapsed?: boolean
+}
+
+export function Scroll({
+  to,
+  children,
+  offset,
+  isHomePage,
+  atTop,
+  onNavClick,
+  navIndex,
+  activeNavIndex,
+}: ScrollProps) {
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 992
+  const isHomeActive = isDesktop && isHomePage && atTop && to === 'Introduction'
+  const isClickActive = !isDesktop && activeNavIndex === navIndex
+  const isActive = isHomeActive || isClickActive
+
+  const scrollToElement = () => {
+    const element = document.getElementById(to)
+    if (element) {
+      const offsetValue = offset ?? -80
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset + offsetValue
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (onNavClick !== undefined && navIndex !== undefined) {
+      const isMobileView = typeof window !== 'undefined' && window.innerWidth < 992
+
+      if (isMobileView) {
+        e.preventDefault()
+        onNavClick(e, navIndex, scrollToElement)
+      } else {
+        e.preventDefault()
+        scrollToElement()
+        onNavClick(e, navIndex)
+      }
+    }
+  }
+
+  const linkContent = (
+    <a
+      href={`#${to}`}
+      className={`nav-link ${isActive ? 'react-scroll-active manual-active' : ''}`}
+      onClick={handleClick}
+    >
+      <span>{children}</span>
+    </a>
+  )
+
+  return <li className="nav-item">{linkContent}</li>
+}
+
+// === TradLink (traditional anchor navigation) ===
+interface TradLinkProps {
+  to: string
+  children: React.ReactNode
+  isHomePage?: boolean
+  atTop?: boolean
+  currentPath?: string
+  onNavClick?: (e: React.MouseEvent<HTMLElement>, index: number, callback?: () => void) => void
+  navIndex?: number
+  activeNavIndex?: number | null
+  collapsed?: boolean
+}
+
+export function TradLink({
+  to,
+  children,
+  currentPath,
+  onNavClick,
+  navIndex,
+  activeNavIndex,
+}: TradLinkProps) {
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 992
+
+  // Normalize paths for comparison (handle trailing slashes)
+  const normalizePath = (path: string) => path.replace(/\/$/, '') || '/'
+  const normalizedCurrentPath = normalizePath(currentPath ?? '/')
+  const normalizedTarget = normalizePath(to)
+  const isPathActive = normalizedTarget === '/'
+    ? normalizedCurrentPath === '/'
+    : normalizedCurrentPath === normalizedTarget || normalizedCurrentPath.startsWith(`${normalizedTarget}/`)
+  const isClickActive = !isDesktop && activeNavIndex === navIndex
+
+  // Build class list
+  const classNames = ['nav-link']
+  if (isPathActive) classNames.push('current-page')
+  if (isClickActive) classNames.push('manual-active')
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (onNavClick !== undefined && navIndex !== undefined) {
+      const isMobileView = typeof window !== 'undefined' && window.innerWidth < 992
+
+      if (isMobileView) {
+        onNavClick(e, navIndex, () => {
+          void navigate(to)
+        })
+      } else {
+        onNavClick(e, navIndex)
+      }
+    }
+  }
+
+  const linkContent = (
+    <a
+      href={to}
+      className={classNames.join(' ')}
+      onClick={handleClick}
+      aria-current={isPathActive ? 'page' : undefined}
+    >
+      <span>{children}</span>
+    </a>
+  )
+
+  return <li className="nav-item">{linkContent}</li>
+}
+
+// Default export: Nav with hardcoded navigation links (matches original Gatsby Navigation.tsx)
+export default function NavBar({ pathname }: { pathname: string }) {
+  return (
+    <Nav pathname={pathname}>
+      <TradLink to="/">Home</TradLink>
+      <TradLink to="/resume">Resume</TradLink>
+      <TradLink to="/blog">Blog</TradLink>
+      <TradLink to="/about">About</TradLink>
+      <TradLink to="/projects">Projects</TradLink>
+      <TradLink to="/contact">Contact</TradLink>
+    </Nav>
+  )
+}

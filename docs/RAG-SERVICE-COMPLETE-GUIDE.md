@@ -540,7 +540,7 @@ echo "GITHUB_TOKEN=your_token_here" >> .env
 ### Directory Structure
 
 ```
-gatsby-portfolio-with-blog/
+portfolio-site/
 ├── docs/
 │   └── RAG-SERVICE-COMPLETE-GUIDE.md  ← This file
 ├── scripts/
@@ -703,7 +703,7 @@ Set up a cron job to re-scrape and re-embed periodically:
 - [Jenny's RAG Guide](https://buildtolaunch.substack.com/p/ai-second-brain-rag-guide)
 - [OpenAI Embeddings Documentation](https://platform.openai.com/docs/guides/embeddings)
 - [OpenAI Pricing](https://openai.com/pricing)
-- [Gatsby Documentation](https://www.gatsbyjs.com/docs)
+- [Astro Documentation](https://docs.astro.build)
 
 ---
 

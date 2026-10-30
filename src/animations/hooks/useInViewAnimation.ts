@@ -8,7 +8,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { ANIMATION_CONFIG } from '../config';
 
-interface UseInViewAnimationOptions {
+export interface UseInViewAnimationOptions {
   /** Custom rootMargin override (uses desktop/mobile default if not specified) */
   rootMargin?: string;
   /** Custom threshold override */
@@ -39,7 +39,6 @@ export function useInViewAnimation(
     rootMargin,
     threshold,
     once = true,
-    forceMobile = false,
     skipAboveViewport = true,
     enabled = true, // New option
   } = options;
@@ -49,8 +48,6 @@ export function useInViewAnimation(
   const [isInView, setIsInView] = useState(false);
   const [isReady, setIsReady] = useState(false); // Track when ref has a value
   const [position, setPosition] = useState<ElementPosition>('unknown');
-
-  const isMobile = forceMobile || (typeof window !== 'undefined' && window.innerWidth < ANIMATION_CONFIG.mobileBreakpoint);
 
   const getRootMargin = useCallback(() => {
     if (rootMargin) return rootMargin;
