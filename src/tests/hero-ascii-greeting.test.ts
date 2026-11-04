@@ -40,4 +40,12 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain('IntersectionObserver');
     expect(component).toContain("addEventListener('visibilitychange'");
   });
+
+  test('paces frames and caps the mobile particle budget', () => {
+    expect(component).toContain('const MOBILE_FPS = 30');
+    expect(component).toContain('const MOBILE_SETTLED_FPS = 20');
+    expect(component).toContain('const MAX_MOBILE_PARTICLES = 320');
+    expect(component).toContain('if (items.length <= limit) return items.slice()');
+    expect(component).toContain('thinParticles(collected, maxParticles - dustCount)');
+  });
 });

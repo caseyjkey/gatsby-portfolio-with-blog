@@ -9,6 +9,22 @@ import React, { useEffect, useRef } from 'react';
 const SPRING_STRENGTH = 0.04;
 const DAMPING = 0.88;
 const ALPHA_LERP = 0.04;
+// Frame pacing. The particle loop is the only continuously animating thing
+// on the page, so it is capped rather than left on an unbounded rAF: mobile
+// gets 30fps, and once the particles have settled the idle flicker drops
+// further. Both keep the main thread free without visibly changing the effect.
+const MOBILE_FPS = 30;
+const DESKTOP_FPS = 60;
+const MOBILE_SETTLED_FPS = 20;
+const DESKTOP_SETTLED_FPS = 30;
+const SETTLE_AFTER_SECONDS = 2.5;
+// Hard cap on particle count. Every particle costs a physics step and a
+// fillText on every painted frame, so the count is the single biggest lever
+// on main-thread time. Desktop keeps the full density; mobile is capped
+// hard and spread over the same area, which reads the same at the smaller
+// glyph size.
+const MAX_DESKTOP_PARTICLES = 1500;
+const MAX_MOBILE_PARTICLES = 320;
 const GLYPH_SET_DESKTOP = '.:+-=*#@&~<>{}[]|/\\';
 const GLYPH_SET_MOBILE = '01';
 const MOBILE_BREAKPOINT = 600;
@@ -30,6 +46,14 @@ type Particle = {
 
 type Props = {
   text: string;
+};
+
+const thinParticles = (items: Particle[], limit: number) => {
+  if (items.length <= limit) return items.slice();
+  if (limit <= 0) return [];
+
+  const step = items.length / limit;
+  return Array.from({ length: limit }, (_, index) => items[Math.floor(index * step)]);
 };
 
 export default function AsciiGreeting({ text }: Props) {
@@ -63,6 +87,9 @@ export default function AsciiGreeting({ text }: Props) {
 
     const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     const glyphs = isMobile ? GLYPH_SET_MOBILE : GLYPH_SET_DESKTOP;
+    const activeFps = isMobile ? MOBILE_FPS : DESKTOP_FPS;
+    const settledFps = isMobile ? MOBILE_SETTLED_FPS : DESKTOP_SETTLED_FPS;
+    const maxParticles = isMobile ? MAX_MOBILE_PARTICLES : MAX_DESKTOP_PARTICLES;
     // Glyph density is derived from the rendered ASCII size, matching the
     // reference implementation's ratio of sample step to font size.
     let sampleStep = 4;
@@ -75,7 +102,11 @@ export default function AsciiGreeting({ text }: Props) {
     let height = 0;
     let particles: Particle[] = [];
     let frame = 0;
-    let startedAt = performance.now();
+    let lastFrameAt = 0;
+    // Anchor elapsed time to the rAF clock itself. In some Chromium builds,
+    // performance.now() and the callback timestamp use different origins;
+    // mixing them leaves every text particle stuck in its faint pre-roll.
+    let startedAt = 0;
     let pointerX = -9999;
     let pointerY = -9999;
     let inView = true;
@@ -123,7 +154,24 @@ export default function AsciiGreeting({ text }: Props) {
     };
 
     const draw = (now: number) => {
+      if (startedAt === 0) startedAt = now;
       const elapsed = (now - startedAt) / 1000;
+
+      // Frame pacing: skip the frame entirely when the budget has not elapsed
+      // yet, so a slow device burns fewer cycles than a fast one.
+      const targetFps = elapsed > SETTLE_AFTER_SECONDS ? settledFps : activeFps;
+      const minFrameTime = 1000 / targetFps;
+      if (lastFrameAt !== 0 && now - lastFrameAt < minFrameTime) {
+        frame = window.requestAnimationFrame(draw);
+        return;
+      }
+      const frameDelta = lastFrameAt === 0 ? 1000 / DESKTOP_FPS : now - lastFrameAt;
+      const simulationSteps = Math.min(
+        4,
+        Math.max(1, Math.round(frameDelta / (1000 / DESKTOP_FPS)))
+      );
+      lastFrameAt = now;
+
       context.clearRect(0, 0, width, height);
       context.fillStyle = ink;
 
@@ -136,23 +184,27 @@ export default function AsciiGreeting({ text }: Props) {
           continue;
         }
 
-        particle.vx += (particle.tx - particle.x) * SPRING_STRENGTH;
-        particle.vy += (particle.ty - particle.y) * SPRING_STRENGTH;
+        // Keep the original 60fps physics cadence even when paint is paced
+        // down. Extra simulation steps are cheap; extra fillText calls are not.
+        for (let step = 0; step < simulationSteps; step += 1) {
+          particle.vx += (particle.tx - particle.x) * SPRING_STRENGTH;
+          particle.vy += (particle.ty - particle.y) * SPRING_STRENGTH;
 
-        const dx = particle.x - pointerX;
-        const dy = particle.y - pointerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+          const dx = particle.x - pointerX;
+          const dy = particle.y - pointerY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < repulsionRadius && distance > 0) {
-          const push = ((1 - distance / repulsionRadius) ** 2) * repulsionForce;
-          particle.vx += (dx / distance) * push;
-          particle.vy += (dy / distance) * push;
+          if (distance < repulsionRadius && distance > 0) {
+            const push = ((1 - distance / repulsionRadius) ** 2) * repulsionForce;
+            particle.vx += (dx / distance) * push;
+            particle.vy += (dy / distance) * push;
+          }
+
+          particle.vx *= DAMPING;
+          particle.vy *= DAMPING;
+          particle.x += particle.vx;
+          particle.y += particle.vy;
         }
-
-        particle.vx *= DAMPING;
-        particle.vy *= DAMPING;
-        particle.x += particle.vx;
-        particle.y += particle.vy;
         particle.alpha += (particle.targetAlpha - particle.alpha) * ALPHA_LERP;
 
         if (particle.isText) {
@@ -189,6 +241,7 @@ export default function AsciiGreeting({ text }: Props) {
         window.cancelAnimationFrame(frame);
         frame = 0;
       }
+      lastFrameAt = 0;
     };
 
     const observer = new IntersectionObserver(
@@ -244,7 +297,10 @@ export default function AsciiGreeting({ text }: Props) {
           ? Math.round(bandFontSize * (availableWidth / bandTextWidth))
           : Math.round(bandFontSize);
 
-      sampleStep = Math.max(1, Math.round(displayFontSize / 20));
+      // Coarser sampling on mobile: fewer particles to integrate and paint per
+      // frame, which is where the blocking time showed up.
+      const stepRatio = isMobile ? 26 : 20;
+      sampleStep = Math.max(1, Math.round(displayFontSize / stepRatio));
       glyphSize = Math.max(3, Math.round(displayFontSize / 13));
 
       measureContext.font = `${fontWeight} ${displayFontSize}px ${fontFamily}`;
@@ -306,7 +362,12 @@ export default function AsciiGreeting({ text }: Props) {
         }
       }
 
-      const dustCount = Math.max(30, Math.floor(collected.length * 0.15));
+      const dustRatio = isMobile ? 0.08 : 0.15;
+      const desiredDust = Math.max(20, Math.floor(collected.length * dustRatio));
+      const dustCount = Math.min(desiredDust, Math.floor(maxParticles * dustRatio));
+      const textParticles = thinParticles(collected, maxParticles - dustCount);
+      collected.length = 0;
+      collected.push(...textParticles);
       for (let index = 0; index < dustCount; index += 1) {
         const x = Math.random() * width;
         const y = Math.random() * height;
@@ -332,7 +393,7 @@ export default function AsciiGreeting({ text }: Props) {
       context.textAlign = 'center';
       context.textBaseline = 'middle';
 
-      startedAt = performance.now();
+      startedAt = 0;
       container.classList.add('is-ready');
       heading.classList.add('is-ascii');
       start();
