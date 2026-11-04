@@ -29,6 +29,9 @@ const {
 const canonicalUrl = new URL(pathname, siteMetadata.siteUrl).toString();
 const imageUrl = typeof image === 'string' ? image : image?.src ?? siteMetadata.image;
 const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteMetadata.siteUrl).toString();
+const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID?.trim();
+const analyticsEnabled =
+  import.meta.env.PROD && /^G-[A-Z0-9]+$/.test(gaMeasurementId ?? '');
 ---
 
 <!doctype html>
@@ -53,32 +56,40 @@ const ogImage = imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, siteM
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:creator" content={siteMetadata.twitterUsername} />
 
-    <script is:inline>
-      (() => {
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+    {analyticsEnabled && (
+      <script is:inline define:vars={{ gaMeasurementId }}>
+        (() => {
+          if (window.__portfolioAnalyticsInitialized) return;
+          window.__portfolioAnalyticsInitialized = true;
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = window.gtag || function gtag() {
+            // gtag.js consumes each native Arguments object from dataLayer.
+            window.dataLayer.push(arguments);
+          };
 
-        function loadAnalytics() {
-          if (document.querySelector('script[data-google-analytics]')) return;
+          function loadAnalytics() {
+            if (document.querySelector('script[data-google-analytics]')) return;
 
-          const script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-1QQK6QY29Z';
-          script.dataset.googleAnalytics = 'true';
-          document.head.appendChild(script);
-          window.gtag('js', new Date());
-          window.gtag('config', 'G-1QQK6QY29Z');
-        }
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`;
+            script.dataset.googleAnalytics = 'true';
+            document.head.appendChild(script);
+            window.gtag('js', new Date());
+            window.gtag('config', gaMeasurementId);
+          }
 
-        const analyticsTimer = window.setTimeout(loadAnalytics, 10000);
-        ['pointerdown', 'keydown', 'scroll'].forEach((eventName) => {
-          window.addEventListener(eventName, () => {
-            window.clearTimeout(analyticsTimer);
-            loadAnalytics();
-          }, { once: true, passive: true });
-        });
-      })();
-    </script>
+          // Keep analytics off the critical rendering path without losing engaged visits.
+          const analyticsTimer = window.setTimeout(loadAnalytics, 10000);
+          ['pointerdown', 'keydown', 'scroll'].forEach((eventName) => {
+            window.addEventListener(eventName, () => {
+              window.clearTimeout(analyticsTimer);
+              loadAnalytics();
+            }, { once: true, passive: true });
+          });
+        })();
+      </script>
+    )}
     <ClientRouter />
   </head>
   <body transition:animate="fade">
