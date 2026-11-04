@@ -3,6 +3,7 @@ import { IoMdArrowRoundDown } from 'react-icons/io';
 import Typewriter from 'typewriter-effect/dist/core';
 import introductionData from '../../data/introduction.json';
 import Socials from '../Social';
+import AsciiGreeting from './AsciiGreeting';
 import './hero.scss';
 
 // === Blob SVG Components ===
@@ -272,7 +273,7 @@ export default function HeroSection() {
                 style={{ transform: `scale(${textScale})`, transformOrigin: 'top center' }}
               >
                 <div>
-                  <h3 className="hero-subheader">{introductionData.greeting}</h3>
+                  <AsciiGreeting text={introductionData.greeting} />
                 </div>
 
                 <div className="hero-slider">
