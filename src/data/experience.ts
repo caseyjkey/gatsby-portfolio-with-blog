@@ -118,7 +118,7 @@ const rawExperienceData: ExperienceEntry[] = [
     ]
   },
   {
-    year: "September 2024 – Present",
+    year: "January 2025 – Present",
     company: "Salesforce",
     location: "San Francisco, CA",
     title: "Full Stack Software Engineer",

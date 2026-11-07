@@ -50,7 +50,9 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain('const MOBILE_FPS = 30');
     expect(component).toContain('const MOBILE_SETTLED_FPS = 20');
     expect(component).toContain('const MAX_MOBILE_PARTICLES = 340');
-    expect(component).toContain("const GLYPH_SET_MOBILE = '.:+-=#';");
+    expect(component).toContain("const GLYPH_SET_MOBILE = '+=#@&*%';");
+    expect(component).toContain('const MOBILE_GLYPH_SIZE = 9');
+    expect(component).toContain('const MOBILE_GLYPH_WEIGHT = 700');
     expect(component).toContain('const dustRatio = isMobile ? 0.05 : 0.15');
     expect(component).toContain('if (items.length <= limit) return items.slice()');
     expect(component).toContain('thinParticles(collected, maxParticles - dustCount)');

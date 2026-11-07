@@ -31,7 +31,14 @@ const GLYPH_SET_DESKTOP = '.:+-=*#@&~<>{}[]|/\\';
 // strokes and the "e" in particular reads as an "o". These glyphs keep the
 // crossbars and counters that make each letter identifiable while staying
 // light enough for a small canvas.
-const GLYPH_SET_MOBILE = '.:+-=#';
+const GLYPH_SET_MOBILE = '+=#@&*%';
+// Ink coverage per particle. Tiny sparse glyphs leave the word washed out on
+// a phone, so mobile draws fewer but larger, denser marks: the same particle
+// budget covers roughly four times the area, which is what makes the
+// letters solid without costing extra frame time.
+const MOBILE_GLYPH_SIZE = 9;
+const MOBILE_GLYPH_WEIGHT = 700;
+const DESKTOP_GLYPH_WEIGHT = 500;
 const MOBILE_BREAKPOINT = 600;
 
 type Particle = {
@@ -319,7 +326,14 @@ export default function AsciiGreeting({ text }: Props) {
       // frame, which is where the blocking time showed up.
       const stepRatio = isMobile ? 26 : 20;
       sampleStep = Math.max(1, Math.round(displayFontSize / stepRatio));
-      glyphSize = Math.max(3, Math.round(displayFontSize / 13));
+      // Mobile draws noticeably larger marks. At the old ~5px size each
+      // particle covered so little of the letter that the word read as a
+      // washed-out smear on a phone screen. Larger glyphs cover about four
+      // times the area per particle, so the same budget now produces a solid
+      // word without spending any extra frame time.
+      glyphSize = isMobile
+        ? MOBILE_GLYPH_SIZE
+        : Math.max(3, Math.round(displayFontSize / 13));
 
       measureContext.font = `${fontWeight} ${displayFontSize}px ${fontFamily}`;
       if ('letterSpacing' in measureContext) {
@@ -409,7 +423,7 @@ export default function AsciiGreeting({ text }: Props) {
 
       particles = collected;
 
-      context.font = `500 ${glyphSize}px ${fontFamily}`;
+      context.font = `${isMobile ? MOBILE_GLYPH_WEIGHT : DESKTOP_GLYPH_WEIGHT} ${glyphSize}px ${fontFamily}`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
 
