@@ -413,23 +413,18 @@ export default function AsciiGreeting({ text }: Props) {
         staticContext.fillStyle = ink;
         staticContext.globalAlpha = 0.98;
 
-        // The points sit on a regular 2px grid, so one string per row renders
-        // the exact same glyph field in roughly 60 calls instead of ~1300.
-        // Negative letter spacing makes each monospace cell advance by the
-        // sampling step while spaces preserve holes and letter counters.
-        const glyphAdvance = staticContext.measureText('0').width;
-        if ('letterSpacing' in staticContext) {
-          staticContext.letterSpacing = `${sampleStep - glyphAdvance}px`;
-        }
+        // Paint the dense field once, then cache it as a bitmap. Do not pack a
+        // row into one string and depend on CanvasRenderingContext2D
+        // letterSpacing: some mobile Chromium builds ignore that property,
+        // causing every row to overrun the canvas and collapse into a solid
+        // blue block. Individual positions are deterministic everywhere, and
+        // this loop runs only during setup rather than on every frame.
         for (let y = 0; y < height; y += sampleStep) {
-          let row = '';
           for (let x = 0; x < width; x += sampleStep) {
-            row +=
-              pixels[(y * width + x) * 4 + 3] > 100
-                ? glyphs[Math.floor(Math.random() * glyphs.length)]
-                : ' ';
+            if (pixels[(y * width + x) * 4 + 3] <= 100) continue;
+            const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
+            staticContext.fillText(glyph, x, y);
           }
-          staticContext.fillText(row, 0, y);
         }
 
         mobileStaticLayer = staticLayer;
