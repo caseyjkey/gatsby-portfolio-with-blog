@@ -31,9 +31,14 @@ describe('ASCII hero greeting', () => {
     expect(styles).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.ascii-hero\s*{\s*display: none/);
   });
 
-  test('reacts to pointer and touch input', () => {
-    expect(component).toContain("addEventListener('mousemove'");
-    expect(component).toContain("addEventListener('touchmove'");
+  test('supports mouse hover plus touch tap, hold, drag, and release', () => {
+    expect(component).toContain("addEventListener('pointerdown'");
+    expect(component).toContain("addEventListener('pointermove'");
+    expect(component).toContain("addEventListener('pointerup'");
+    expect(component).toContain("addEventListener('pointercancel'");
+    expect(component).toContain('setPointerCapture(event.pointerId)');
+    expect(component).toContain('clearPointer()');
+    expect(styles).toMatch(/\.ascii-hero[\s\S]*?canvas\s*{[\s\S]*?touch-action: none/);
   });
 
   test('pauses the animation off-screen and when the tab is hidden', () => {
@@ -44,7 +49,9 @@ describe('ASCII hero greeting', () => {
   test('paces frames and caps the mobile particle budget', () => {
     expect(component).toContain('const MOBILE_FPS = 30');
     expect(component).toContain('const MOBILE_SETTLED_FPS = 20');
-    expect(component).toContain('const MAX_MOBILE_PARTICLES = 320');
+    expect(component).toContain('const MAX_MOBILE_PARTICLES = 340');
+    expect(component).toContain("const GLYPH_SET_MOBILE = '.:+-=#';");
+    expect(component).toContain('const dustRatio = isMobile ? 0.05 : 0.15');
     expect(component).toContain('if (items.length <= limit) return items.slice()');
     expect(component).toContain('thinParticles(collected, maxParticles - dustCount)');
   });

@@ -24,9 +24,14 @@ const SETTLE_AFTER_SECONDS = 2.5;
 // hard and spread over the same area, which reads the same at the smaller
 // glyph size.
 const MAX_DESKTOP_PARTICLES = 1500;
-const MAX_MOBILE_PARTICLES = 320;
+const MAX_MOBILE_PARTICLES = 340;
 const GLYPH_SET_DESKTOP = '.:+-=*#@&~<>{}[]|/\\';
-const GLYPH_SET_MOBILE = '01';
+// Mobile uses a reduced but still shape-bearing vocabulary. A binary '01'
+// set renders the word as a barcode: every letter loses its distinguishing
+// strokes and the "e" in particular reads as an "o". These glyphs keep the
+// crossbars and counters that make each letter identifiable while staying
+// light enough for a small canvas.
+const GLYPH_SET_MOBILE = '.:+-=#';
 const MOBILE_BREAKPOINT = 600;
 
 type Particle = {
@@ -109,6 +114,7 @@ export default function AsciiGreeting({ text }: Props) {
     let startedAt = 0;
     let pointerX = -9999;
     let pointerY = -9999;
+    let activeContactPointer: number | null = null;
     let inView = true;
     let cancelled = false;
 
@@ -121,36 +127,47 @@ export default function AsciiGreeting({ text }: Props) {
       };
     };
 
-    const handlePointerMove = (event: MouseEvent) => {
+    const clearPointer = () => {
+      pointerX = -9999;
+      pointerY = -9999;
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse' && event.pointerId !== activeContactPointer) return;
       const point = toLocalPoint(event.clientX, event.clientY);
       pointerX = point.x;
       pointerY = point.y;
     };
 
-    const handlePointerLeave = () => {
-      pointerX = -9999;
-      pointerY = -9999;
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.pointerType === 'mouse') return;
+      activeContactPointer = event.pointerId;
+      // Capture keeps the effect alive while the finger drags outside the
+      // canvas. It throws if the pointer is already gone, so guard it: a
+      // failed capture must never break the tap itself.
+      try {
+        canvas.setPointerCapture(event.pointerId);
+      } catch {
+        /* pointer already released; the tap still works without capture */
+      }
+      handlePointerMove(event);
     };
 
-    const handleTouchStart = (event: TouchEvent) => {
-      const touch = event.touches[0];
-      if (!touch) return;
-      const point = toLocalPoint(touch.clientX, touch.clientY);
-      pointerX = point.x;
-      pointerY = point.y;
+    const handlePointerLeave = (event: PointerEvent) => {
+      if (event.pointerType === 'mouse') clearPointer();
     };
 
-    const handleTouchMove = (event: TouchEvent) => {
-      const touch = event.touches[0];
-      if (!touch) return;
-      const point = toLocalPoint(touch.clientX, touch.clientY);
-      pointerX = point.x;
-      pointerY = point.y;
-    };
-
-    const handleTouchEnd = () => {
-      pointerX = -9999;
-      pointerY = -9999;
+    const handlePointerRelease = (event: PointerEvent) => {
+      if (event.pointerId !== activeContactPointer) return;
+      activeContactPointer = null;
+      clearPointer();
+      try {
+        if (canvas.hasPointerCapture(event.pointerId)) {
+          canvas.releasePointerCapture(event.pointerId);
+        }
+      } catch {
+        /* capture was already released by the browser */
+      }
     };
 
     const draw = (now: number) => {
@@ -260,11 +277,12 @@ export default function AsciiGreeting({ text }: Props) {
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    canvas.addEventListener('mousemove', handlePointerMove, { passive: true });
-    canvas.addEventListener('mouseleave', handlePointerLeave);
-    canvas.addEventListener('touchstart', handleTouchStart, { passive: true });
-    canvas.addEventListener('touchmove', handleTouchMove, { passive: true });
-    canvas.addEventListener('touchend', handleTouchEnd);
+    canvas.addEventListener('pointerdown', handlePointerDown, { passive: true });
+    canvas.addEventListener('pointermove', handlePointerMove, { passive: true });
+    canvas.addEventListener('pointerleave', handlePointerLeave);
+    canvas.addEventListener('pointerup', handlePointerRelease);
+    canvas.addEventListener('pointercancel', handlePointerRelease);
+    canvas.addEventListener('lostpointercapture', handlePointerRelease);
 
     const setup = async () => {
       await document.fonts.ready;
@@ -362,7 +380,9 @@ export default function AsciiGreeting({ text }: Props) {
         }
       }
 
-      const dustRatio = isMobile ? 0.08 : 0.15;
+      // Mobile spends more of its fixed budget on the letter contours so the
+      // opening in the "e" survives thinning and cannot read as an "o".
+      const dustRatio = isMobile ? 0.05 : 0.15;
       const desiredDust = Math.max(20, Math.floor(collected.length * dustRatio));
       const dustCount = Math.min(desiredDust, Math.floor(maxParticles * dustRatio));
       const textParticles = thinParticles(collected, maxParticles - dustCount);
@@ -406,11 +426,12 @@ export default function AsciiGreeting({ text }: Props) {
       stop();
       observer.disconnect();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      canvas.removeEventListener('mousemove', handlePointerMove);
-      canvas.removeEventListener('mouseleave', handlePointerLeave);
-      canvas.removeEventListener('touchstart', handleTouchStart);
-      canvas.removeEventListener('touchmove', handleTouchMove);
-      canvas.removeEventListener('touchend', handleTouchEnd);
+      canvas.removeEventListener('pointerdown', handlePointerDown);
+      canvas.removeEventListener('pointermove', handlePointerMove);
+      canvas.removeEventListener('pointerleave', handlePointerLeave);
+      canvas.removeEventListener('pointerup', handlePointerRelease);
+      canvas.removeEventListener('pointercancel', handlePointerRelease);
+      canvas.removeEventListener('lostpointercapture', handlePointerRelease);
     };
   }, [text]);
 
