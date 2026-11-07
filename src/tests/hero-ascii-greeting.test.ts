@@ -46,15 +46,17 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain("addEventListener('visibilitychange'");
   });
 
-  test('paces frames and caps the mobile particle budget', () => {
+  test('keeps mobile dense without running a continuous particle loop', () => {
     expect(component).toContain('const MOBILE_FPS = 30');
     expect(component).toContain('const MOBILE_SETTLED_FPS = 20');
-    expect(component).toContain('const MAX_MOBILE_PARTICLES = 340');
-    expect(component).toContain("const GLYPH_SET_MOBILE = '+=#@&*%';");
-    expect(component).toContain('const MOBILE_GLYPH_SIZE = 9');
-    expect(component).toContain('const MOBILE_GLYPH_WEIGHT = 700');
-    expect(component).toContain('const dustRatio = isMobile ? 0.05 : 0.15');
-    expect(component).toContain('if (items.length <= limit) return items.slice()');
-    expect(component).toContain('thinParticles(collected, maxParticles - dustCount)');
+    expect(component).toContain('const MOBILE_SAMPLE_STEP = 2');
+    expect(component).toContain('const MOBILE_GLYPH_SIZE = 5');
+    expect(component).toContain("const GLYPH_SET_MOBILE = '01';");
+    expect(component).toContain('let mobileStaticLayer: HTMLCanvasElement | null = null');
+    expect(component).toContain('context.drawImage(mobileStaticLayer, 0, 0, width, height)');
+    expect(component).toContain('if (isMobile) {\n        paintMobileStatic();\n        return;');
+    // Thinning the sampled points destroyed the letterforms, so every sampled
+    // point must survive in the cached mobile glyph field.
+    expect(component).not.toContain('thinParticles');
   });
 });

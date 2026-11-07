@@ -656,10 +656,10 @@ $social-view-delay: 0.6s;
 }
 
 // === ASCII greeting particles ===
-// The greeting is sampled into a canvas of ASCII glyphs that fly in, settle,
-// flicker between characters, and scatter away from the pointer. The real
-// heading stays in the DOM for assistive technology and keeps its layout box,
-// so nothing on the page shifts when the effect takes over.
+// The greeting is sampled into a canvas of ASCII glyphs. Desktop animates the
+// particles; mobile caches the dense settled glyph field and applies a cheap
+// touch fade. The real heading stays in the DOM for assistive technology and
+// keeps its layout box, so nothing shifts when the effect takes over.
 .hero-greeting {
   // Inline block keeps the greeting centered in the hero column while still
   // giving the ASCII canvas a positioning context to overlay. The band uses a
@@ -671,7 +671,9 @@ $social-view-delay: 0.6s;
   margin-bottom: -0.5rem;
 
   @media (max-width: 767.98px) {
-    height: 5.25rem;
+    // The mobile ASCII word spans the full column at the reference's density,
+    // so the band has to be tall enough to hold it without clipping.
+    height: 7.5rem;
   }
 }
 

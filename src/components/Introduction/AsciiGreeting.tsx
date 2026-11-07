@@ -3,8 +3,9 @@ import React, { useEffect, useRef } from 'react';
 // === ASCII greeting particles ===
 // Interaction adapted from the devlog~ hero: the rendered word is sampled into
 // particles that fly in, settle, flicker between glyphs, and scatter away from
-// the pointer. The real heading stays in the DOM for assistive technology and
-// keeps reserving its layout box, so nothing on the page shifts.
+// the pointer on desktop. Mobile caches the same dense glyph field as one
+// bitmap and uses a cheap touch fade. The real heading stays in the DOM for
+// assistive technology and reserves its layout box, so nothing shifts.
 
 const SPRING_STRENGTH = 0.04;
 const DAMPING = 0.88;
@@ -20,25 +21,28 @@ const DESKTOP_SETTLED_FPS = 30;
 const SETTLE_AFTER_SECONDS = 2.5;
 // Hard cap on particle count. Every particle costs a physics step and a
 // fillText on every painted frame, so the count is the single biggest lever
-// on main-thread time. Desktop keeps the full density; mobile is capped
-// hard and spread over the same area, which reads the same at the smaller
-// glyph size.
-const MAX_DESKTOP_PARTICLES = 1500;
-const MAX_MOBILE_PARTICLES = 340;
+// on main-thread time. The count is controlled by the sampling step rather
+// than by thinning the result: an evenly strided subset of the sampled
+// points no longer traces the letter strokes, which destroyed the word.
+// Mobile keeps every sampled point, exactly like the reference implementation,
+// but flattens the settled glyphs into a cached layer. Repainting 1300 separate
+// fillText calls every frame made the phone spend nearly all its time in long
+// tasks; drawing the cached layer is one operation and preserves every stroke.
 const GLYPH_SET_DESKTOP = '.:+-=*#@&~<>{}[]|/\\';
-// Mobile uses a reduced but still shape-bearing vocabulary. A binary '01'
-// set renders the word as a barcode: every letter loses its distinguishing
-// strokes and the "e" in particular reads as an "o". These glyphs keep the
-// crossbars and counters that make each letter identifiable while staying
-// light enough for a small canvas.
-const GLYPH_SET_MOBILE = '+=#@&*%';
-// Ink coverage per particle. Tiny sparse glyphs leave the word washed out on
-// a phone, so mobile draws fewer but larger, denser marks: the same particle
-// budget covers roughly four times the area, which is what makes the
-// letters solid without costing extra frame time.
-const MOBILE_GLYPH_SIZE = 9;
-const MOBILE_GLYPH_WEIGHT = 700;
-const DESKTOP_GLYPH_WEIGHT = 500;
+// Mobile uses the reference implementation's binary set. It renders lighter
+// than a mixed set, but the marks are small and dense enough that the
+// letterforms still read correctly, and it keeps the effect cheap on a phone.
+const GLYPH_SET_MOBILE = '01';
+// Sampling and mark geometry, following the reference implementation: a
+// 2px sample step with 5px marks reproduces the letterforms faithfully.
+// The previous setup sampled at 3px and then thinned the result down to a
+// particle budget, and that thinning is what destroyed the letterforms: an
+// evenly strided subset of the sample points no longer traces the strokes,
+// so the "e" lost its crossbar and the word turned into lumps.
+const MOBILE_SAMPLE_STEP = 2;
+const MOBILE_GLYPH_SIZE = 5;
+const DESKTOP_SAMPLE_STEP = 4;
+const DESKTOP_GLYPH_SIZE = 6;
 const MOBILE_BREAKPOINT = 600;
 
 type Particle = {
@@ -58,14 +62,6 @@ type Particle = {
 
 type Props = {
   text: string;
-};
-
-const thinParticles = (items: Particle[], limit: number) => {
-  if (items.length <= limit) return items.slice();
-  if (limit <= 0) return [];
-
-  const step = items.length / limit;
-  return Array.from({ length: limit }, (_, index) => items[Math.floor(index * step)]);
 };
 
 export default function AsciiGreeting({ text }: Props) {
@@ -101,7 +97,6 @@ export default function AsciiGreeting({ text }: Props) {
     const glyphs = isMobile ? GLYPH_SET_MOBILE : GLYPH_SET_DESKTOP;
     const activeFps = isMobile ? MOBILE_FPS : DESKTOP_FPS;
     const settledFps = isMobile ? MOBILE_SETTLED_FPS : DESKTOP_SETTLED_FPS;
-    const maxParticles = isMobile ? MAX_MOBILE_PARTICLES : MAX_DESKTOP_PARTICLES;
     // Glyph density is derived from the rendered ASCII size, matching the
     // reference implementation's ratio of sample step to font size.
     let sampleStep = 4;
@@ -122,8 +117,38 @@ export default function AsciiGreeting({ text }: Props) {
     let pointerX = -9999;
     let pointerY = -9999;
     let activeContactPointer: number | null = null;
+    let mobileStaticLayer: HTMLCanvasElement | null = null;
     let inView = true;
     let cancelled = false;
+
+    const paintMobileStatic = () => {
+      if (!mobileStaticLayer) return;
+
+      context.clearRect(0, 0, width, height);
+      context.globalAlpha = 1;
+      context.drawImage(mobileStaticLayer, 0, 0, width, height);
+
+      // Keep touch interaction without waking the full particle simulation.
+      // A soft local fade tracks the finger, then the cached word snaps back
+      // on release. This costs one bitmap draw instead of 1300 fillText calls.
+      if (pointerX > -1000 && pointerY > -1000) {
+        context.save();
+        context.globalCompositeOperation = 'destination-out';
+        const fade = context.createRadialGradient(
+          pointerX,
+          pointerY,
+          0,
+          pointerX,
+          pointerY,
+          repulsionRadius
+        );
+        fade.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
+        fade.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        context.fillStyle = fade;
+        context.fillRect(0, 0, width, height);
+        context.restore();
+      }
+    };
 
     const toLocalPoint = (clientX: number, clientY: number) => {
       const rect = canvas.getBoundingClientRect();
@@ -144,6 +169,7 @@ export default function AsciiGreeting({ text }: Props) {
       const point = toLocalPoint(event.clientX, event.clientY);
       pointerX = point.x;
       pointerY = point.y;
+      if (isMobile) paintMobileStatic();
     };
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -168,6 +194,7 @@ export default function AsciiGreeting({ text }: Props) {
       if (event.pointerId !== activeContactPointer) return;
       activeContactPointer = null;
       clearPointer();
+      if (isMobile) paintMobileStatic();
       try {
         if (canvas.hasPointerCapture(event.pointerId)) {
           canvas.releasePointerCapture(event.pointerId);
@@ -257,6 +284,10 @@ export default function AsciiGreeting({ text }: Props) {
     };
 
     const start = () => {
+      if (isMobile) {
+        paintMobileStatic();
+        return;
+      }
       if (!frame) frame = window.requestAnimationFrame(draw);
     };
 
@@ -309,7 +340,9 @@ export default function AsciiGreeting({ text }: Props) {
       const headingBox = heading.getBoundingClientRect();
       const wrapperBox = wrapper.getBoundingClientRect();
       const columnWidth = wrapper.parentElement?.getBoundingClientRect().width ?? wrapperBox.width;
-      const availableWidth = Math.max(180, Math.min(columnWidth * 0.8, 460));
+      // The reference lets the word span the full column. Capping it at 80%
+      // shrank the letterforms and made the strokes ambiguous.
+      const availableWidth = Math.max(180, columnWidth);
 
       // Fit the ASCII block inside the CSS-reserved band so nothing reflows.
       const reservedHeight = wrapper.getBoundingClientRect().height || height;
@@ -322,18 +355,11 @@ export default function AsciiGreeting({ text }: Props) {
           ? Math.round(bandFontSize * (availableWidth / bandTextWidth))
           : Math.round(bandFontSize);
 
-      // Coarser sampling on mobile: fewer particles to integrate and paint per
-      // frame, which is where the blocking time showed up.
-      const stepRatio = isMobile ? 26 : 20;
-      sampleStep = Math.max(1, Math.round(displayFontSize / stepRatio));
-      // Mobile draws noticeably larger marks. At the old ~5px size each
-      // particle covered so little of the letter that the word read as a
-      // washed-out smear on a phone screen. Larger glyphs cover about four
-      // times the area per particle, so the same budget now produces a solid
-      // word without spending any extra frame time.
-      glyphSize = isMobile
-        ? MOBILE_GLYPH_SIZE
-        : Math.max(3, Math.round(displayFontSize / 13));
+      // Sample every 2px on mobile and 4px on desktop, matching the
+      // reference. Sampling densely and keeping every point is what keeps the
+      // letterforms intact.
+      sampleStep = isMobile ? MOBILE_SAMPLE_STEP : DESKTOP_SAMPLE_STEP;
+      glyphSize = isMobile ? MOBILE_GLYPH_SIZE : DESKTOP_GLYPH_SIZE;
 
       measureContext.font = `${fontWeight} ${displayFontSize}px ${fontFamily}`;
       if ('letterSpacing' in measureContext) {
@@ -372,6 +398,48 @@ export default function AsciiGreeting({ text }: Props) {
       samplerContext.fillText(text, 0, height / 2);
 
       const pixels = samplerContext.getImageData(0, 0, width, height).data;
+
+      if (isMobile) {
+        const staticLayer = document.createElement('canvas');
+        staticLayer.width = canvas.width;
+        staticLayer.height = canvas.height;
+        const staticContext = staticLayer.getContext('2d');
+        if (!staticContext) return;
+
+        staticContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        staticContext.font = `500 ${glyphSize}px ${fontFamily}`;
+        staticContext.textAlign = 'left';
+        staticContext.textBaseline = 'middle';
+        staticContext.fillStyle = ink;
+        staticContext.globalAlpha = 0.98;
+
+        // The points sit on a regular 2px grid, so one string per row renders
+        // the exact same glyph field in roughly 60 calls instead of ~1300.
+        // Negative letter spacing makes each monospace cell advance by the
+        // sampling step while spaces preserve holes and letter counters.
+        const glyphAdvance = staticContext.measureText('0').width;
+        if ('letterSpacing' in staticContext) {
+          staticContext.letterSpacing = `${sampleStep - glyphAdvance}px`;
+        }
+        for (let y = 0; y < height; y += sampleStep) {
+          let row = '';
+          for (let x = 0; x < width; x += sampleStep) {
+            row +=
+              pixels[(y * width + x) * 4 + 3] > 100
+                ? glyphs[Math.floor(Math.random() * glyphs.length)]
+                : ' ';
+          }
+          staticContext.fillText(row, 0, y);
+        }
+
+        mobileStaticLayer = staticLayer;
+        startedAt = 0;
+        container.classList.add('is-ready');
+        heading.classList.add('is-ascii');
+        paintMobileStatic();
+        return;
+      }
+
       const collected: Particle[] = [];
 
       for (let y = 0; y < height; y += sampleStep) {
@@ -383,7 +451,7 @@ export default function AsciiGreeting({ text }: Props) {
             delay: (x / width) * 1.2,
             isText: true,
             phase: Math.random() * Math.PI * 2,
-            targetAlpha: 0.85 + Math.random() * 0.15,
+            targetAlpha: 0.85 + Math.random() * 0.05,
             tx: x,
             ty: y,
             vx: 0,
@@ -394,14 +462,10 @@ export default function AsciiGreeting({ text }: Props) {
         }
       }
 
-      // Mobile spends more of its fixed budget on the letter contours so the
-      // opening in the "e" survives thinning and cannot read as an "o".
-      const dustRatio = isMobile ? 0.05 : 0.15;
-      const desiredDust = Math.max(20, Math.floor(collected.length * dustRatio));
-      const dustCount = Math.min(desiredDust, Math.floor(maxParticles * dustRatio));
-      const textParticles = thinParticles(collected, maxParticles - dustCount);
-      collected.length = 0;
-      collected.push(...textParticles);
+      // Desktop keeps the animated particles. Mobile returned above after
+      // caching its full-density glyph field, so neither path thins strokes.
+      const dustRatio = 0.15;
+      const dustCount = Math.max(20, Math.floor(collected.length * dustRatio));
       for (let index = 0; index < dustCount; index += 1) {
         const x = Math.random() * width;
         const y = Math.random() * height;
@@ -423,7 +487,7 @@ export default function AsciiGreeting({ text }: Props) {
 
       particles = collected;
 
-      context.font = `${isMobile ? MOBILE_GLYPH_WEIGHT : DESKTOP_GLYPH_WEIGHT} ${glyphSize}px ${fontFamily}`;
+      context.font = `500 ${glyphSize}px ${fontFamily}`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
 
