@@ -53,9 +53,13 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain('const MOBILE_GLYPH_SIZE = 5');
     expect(component).toContain("const GLYPH_SET_MOBILE = '01';");
     expect(component).toContain('let mobileStaticLayer: HTMLCanvasElement | null = null');
+    expect(component).toContain('let mobileGlyphPoints:');
     expect(component).toContain('context.drawImage(mobileStaticLayer, 0, 0, width, height)');
     expect(component).toContain('if (isMobile) {\n        paintMobileStatic();\n        return;');
     expect(component).toContain('staticContext.fillText(glyph, x, y)');
+    expect(component).toContain('mobileGlyphPoints.push({ char: glyph, x, y })');
+    expect(component).toContain('paintMobileStatic(1 - progress)');
+    expect(component).toContain('MOBILE_RELEASE_MS');
     expect(component).not.toContain("staticContext.letterSpacing");
     // Thinning the sampled points destroyed the letterforms, so every sampled
     // point must survive in the cached mobile glyph field.

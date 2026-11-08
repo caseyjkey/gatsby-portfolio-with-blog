@@ -44,6 +44,8 @@ const MOBILE_GLYPH_SIZE = 5;
 const DESKTOP_SAMPLE_STEP = 4;
 const DESKTOP_GLYPH_SIZE = 6;
 const MOBILE_BREAKPOINT = 600;
+const MOBILE_RELEASE_MS = 320;
+const MOBILE_SCATTER_DISTANCE = 24;
 
 type Particle = {
   alpha: number;
@@ -118,36 +120,59 @@ export default function AsciiGreeting({ text }: Props) {
     let pointerY = -9999;
     let activeContactPointer: number | null = null;
     let mobileStaticLayer: HTMLCanvasElement | null = null;
+    let mobileGlyphPoints: Array<{ char: string; x: number; y: number }> = [];
     let inView = true;
     let cancelled = false;
 
-    const paintMobileStatic = () => {
+    const paintMobileStatic = (scatterStrength = 0) => {
       if (!mobileStaticLayer) return;
 
       context.clearRect(0, 0, width, height);
       context.globalAlpha = 1;
       context.drawImage(mobileStaticLayer, 0, 0, width, height);
 
-      // Keep touch interaction without waking the full particle simulation.
-      // A soft local fade tracks the finger, then the cached word snaps back
-      // on release. This costs one bitmap draw instead of 1300 fillText calls.
-      if (pointerX > -1000 && pointerY > -1000) {
-        context.save();
-        context.globalCompositeOperation = 'destination-out';
-        const fade = context.createRadialGradient(
-          pointerX,
-          pointerY,
-          0,
-          pointerX,
-          pointerY,
-          repulsionRadius
+      if (scatterStrength <= 0 || pointerX < -1000 || pointerY < -1000) return;
+
+      // Erase a soft patch from the cached bitmap, then redraw only the nearby
+      // glyphs pushed away from the finger. This restores visible tap/drag
+      // feedback without restarting the full mobile particle simulation.
+      const scatterRadius = repulsionRadius * 1.2;
+      context.save();
+      context.globalCompositeOperation = 'destination-out';
+      const fade = context.createRadialGradient(
+        pointerX,
+        pointerY,
+        0,
+        pointerX,
+        pointerY,
+        scatterRadius
+      );
+      fade.addColorStop(0, `rgba(0, 0, 0, ${0.88 * scatterStrength})`);
+      fade.addColorStop(0.72, `rgba(0, 0, 0, ${0.74 * scatterStrength})`);
+      fade.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      context.fillStyle = fade;
+      context.fillRect(0, 0, width, height);
+      context.restore();
+
+      context.fillStyle = ink;
+      context.globalAlpha = 0.98;
+      for (const point of mobileGlyphPoints) {
+        const dx = point.x - pointerX;
+        const dy = point.y - pointerY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance >= scatterRadius) continue;
+
+        // Give the exact center a stable direction instead of dividing by 0.
+        const angle = distance > 0 ? Math.atan2(dy, dx) : (point.x + point.y) * 0.17;
+        const push =
+          (1 - distance / scatterRadius) ** 2 * MOBILE_SCATTER_DISTANCE * scatterStrength;
+        context.fillText(
+          point.char,
+          point.x + Math.cos(angle) * push,
+          point.y + Math.sin(angle) * push
         );
-        fade.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
-        fade.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        context.fillStyle = fade;
-        context.fillRect(0, 0, width, height);
-        context.restore();
       }
+      context.globalAlpha = 1;
     };
 
     const toLocalPoint = (clientX: number, clientY: number) => {
@@ -169,11 +194,15 @@ export default function AsciiGreeting({ text }: Props) {
       const point = toLocalPoint(event.clientX, event.clientY);
       pointerX = point.x;
       pointerY = point.y;
-      if (isMobile) paintMobileStatic();
+      if (isMobile) paintMobileStatic(1);
     };
 
     const handlePointerDown = (event: PointerEvent) => {
       if (event.pointerType === 'mouse') return;
+      if (isMobile && frame) {
+        window.cancelAnimationFrame(frame);
+        frame = 0;
+      }
       activeContactPointer = event.pointerId;
       // Capture keeps the effect alive while the finger drags outside the
       // canvas. It throws if the pointer is already gone, so guard it: a
@@ -193,14 +222,34 @@ export default function AsciiGreeting({ text }: Props) {
     const handlePointerRelease = (event: PointerEvent) => {
       if (event.pointerId !== activeContactPointer) return;
       activeContactPointer = null;
-      clearPointer();
-      if (isMobile) paintMobileStatic();
       try {
         if (canvas.hasPointerCapture(event.pointerId)) {
           canvas.releasePointerCapture(event.pointerId);
         }
       } catch {
         /* capture was already released by the browser */
+      }
+
+      if (isMobile) {
+        // Use the rAF clock for the whole release animation. performance.now()
+        // and the rAF timestamp can use different origins, and mixing them
+        // collapses the spring-back into a single frame.
+        let releasedAt = 0;
+        const settle = (now: number) => {
+          if (releasedAt === 0) releasedAt = now;
+          const progress = Math.min(1, (now - releasedAt) / MOBILE_RELEASE_MS);
+          paintMobileStatic(1 - progress);
+          if (progress < 1) {
+            frame = window.requestAnimationFrame(settle);
+            return;
+          }
+          frame = 0;
+          clearPointer();
+          paintMobileStatic();
+        };
+        frame = window.requestAnimationFrame(settle);
+      } else {
+        clearPointer();
       }
     };
 
@@ -412,6 +461,9 @@ export default function AsciiGreeting({ text }: Props) {
         staticContext.textBaseline = 'middle';
         staticContext.fillStyle = ink;
         staticContext.globalAlpha = 0.98;
+        context.font = `500 ${glyphSize}px ${fontFamily}`;
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
 
         // Paint the dense field once, then cache it as a bitmap. Do not pack a
         // row into one string and depend on CanvasRenderingContext2D
@@ -424,6 +476,7 @@ export default function AsciiGreeting({ text }: Props) {
             if (pixels[(y * width + x) * 4 + 3] <= 100) continue;
             const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
             staticContext.fillText(glyph, x, y);
+            mobileGlyphPoints.push({ char: glyph, x, y });
           }
         }
 
