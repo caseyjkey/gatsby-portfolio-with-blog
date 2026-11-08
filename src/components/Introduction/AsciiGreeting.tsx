@@ -3,9 +3,12 @@ import React, { useEffect, useRef } from 'react';
 // === ASCII greeting particles ===
 // Interaction adapted from the devlog~ hero: the rendered word is sampled into
 // particles that fly in, settle, flicker between glyphs, and scatter away from
-// the pointer on desktop. Mobile caches the same dense glyph field as one
-// bitmap and uses a cheap touch fade. The real heading stays in the DOM for
-// assistive technology and reserves its layout box, so nothing shifts.
+// the pointer. Mobile keeps the same dense glyph field, but instead of
+// repainting all ~1300 glyphs every frame it caches the resting word as one
+// bitmap and simulates only the glyphs a finger actually disturbs. Those
+// motes get the same spring and damping as desktop, so a swipe leaves a
+// visible wake instead of a flashlight hole. The real heading stays in the
+// DOM for assistive technology and reserves its layout box, so nothing shifts.
 
 const SPRING_STRENGTH = 0.04;
 const DAMPING = 0.88;
@@ -44,8 +47,18 @@ const MOBILE_GLYPH_SIZE = 5;
 const DESKTOP_SAMPLE_STEP = 4;
 const DESKTOP_GLYPH_SIZE = 6;
 const MOBILE_BREAKPOINT = 600;
-const MOBILE_RELEASE_MS = 320;
-const MOBILE_SCATTER_DISTANCE = 24;
+// Mobile touch physics. A mote is a glyph that a finger has displaced; it
+// keeps its own velocity so it trails the finger and springs back over about
+// a second, which is what makes the motion read as a swoosh.
+const MOBILE_MAX_ACTIVE = 64;
+const MOBILE_INTERACTION_FPS = 24;
+const MOBILE_KICK = 1.8;
+const MOBILE_REPULSION_SCALE = 1.35;
+const MOBILE_SPRING_STRENGTH = 0.022;
+const MOBILE_DAMPING = 0.9;
+const MOBILE_TRAIL_OFFSET = 0.85;
+const MOBILE_SETTLE_DISTANCE = 0.5;
+const MOBILE_SETTLE_SPEED = 0.4;
 
 type Particle = {
   alpha: number;
@@ -58,6 +71,22 @@ type Particle = {
   ty: number;
   vx: number;
   vy: number;
+  x: number;
+  y: number;
+};
+
+type MobileMote = {
+  char: string;
+  homeX: number;
+  homeY: number;
+  vx: number;
+  vy: number;
+  x: number;
+  y: number;
+};
+
+type MobileGlyphPoint = {
+  char: string;
   x: number;
   y: number;
 };
@@ -112,67 +141,178 @@ export default function AsciiGreeting({ text }: Props) {
     let particles: Particle[] = [];
     let frame = 0;
     let lastFrameAt = 0;
+    let lastMobileFrameAt = 0;
     // Anchor elapsed time to the rAF clock itself. In some Chromium builds,
     // performance.now() and the callback timestamp use different origins;
     // mixing them leaves every text particle stuck in its faint pre-roll.
     let startedAt = 0;
     let pointerX = -9999;
     let pointerY = -9999;
+    let previousPointerX = -9999;
+    let previousPointerY = -9999;
     let activeContactPointer: number | null = null;
     let mobileStaticLayer: HTMLCanvasElement | null = null;
-    let mobileGlyphPoints: Array<{ char: string; x: number; y: number }> = [];
+    const mobileGlyphSprites = new Map<string, HTMLCanvasElement>();
+    let mobileGlyphPoints: MobileGlyphPoint[] = [];
+    let mobileMotes: MobileMote[] = [];
     let inView = true;
     let cancelled = false;
 
-    const paintMobileStatic = (scatterStrength = 0) => {
+    // Repaint the mobile word: the cached resting bitmap with each active
+    // mote erased from its home, then the moving motes on top. Removing the
+    // home glyphs prevents the doubled "flashlight" look and makes the wake
+    // read as the word itself moving.
+    const paintMobile = () => {
       if (!mobileStaticLayer) return;
 
       context.clearRect(0, 0, width, height);
       context.globalAlpha = 1;
       context.drawImage(mobileStaticLayer, 0, 0, width, height);
 
-      if (scatterStrength <= 0 || pointerX < -1000 || pointerY < -1000) return;
-
-      // Erase a soft patch from the cached bitmap, then redraw only the nearby
-      // glyphs pushed away from the finger. This restores visible tap/drag
-      // feedback without restarting the full mobile particle simulation.
-      const scatterRadius = repulsionRadius * 1.2;
-      context.save();
-      context.globalCompositeOperation = 'destination-out';
-      const fade = context.createRadialGradient(
-        pointerX,
-        pointerY,
-        0,
-        pointerX,
-        pointerY,
-        scatterRadius
-      );
-      fade.addColorStop(0, `rgba(0, 0, 0, ${0.88 * scatterStrength})`);
-      fade.addColorStop(0.72, `rgba(0, 0, 0, ${0.74 * scatterStrength})`);
-      fade.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      context.fillStyle = fade;
-      context.fillRect(0, 0, width, height);
-      context.restore();
-
-      context.fillStyle = ink;
-      context.globalAlpha = 0.98;
-      for (const point of mobileGlyphPoints) {
-        const dx = point.x - pointerX;
-        const dy = point.y - pointerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance >= scatterRadius) continue;
-
-        // Give the exact center a stable direction instead of dividing by 0.
-        const angle = distance > 0 ? Math.atan2(dy, dx) : (point.x + point.y) * 0.17;
-        const push =
-          (1 - distance / scatterRadius) ** 2 * MOBILE_SCATTER_DISTANCE * scatterStrength;
-        context.fillText(
-          point.char,
-          point.x + Math.cos(angle) * push,
-          point.y + Math.sin(angle) * push
+      if (mobileMotes.length === 0) return;
+      for (const mote of mobileMotes) {
+        context.clearRect(
+          mote.homeX - 1,
+          mote.homeY - glyphSize * 0.62,
+          glyphSize * 0.78,
+          glyphSize * 1.24
         );
       }
-      context.globalAlpha = 1;
+      for (const mote of mobileMotes) {
+        const sprite = mobileGlyphSprites.get(mote.char);
+        if (!sprite) continue;
+        context.drawImage(
+          sprite,
+          mote.x,
+          mote.y - glyphSize * 0.62,
+          glyphSize * 0.78,
+          glyphSize * 1.24
+        );
+      }
+    };
+
+    // Advance the disturbed glyphs. Only motes near the finger are simulated,
+    // which keeps the per-frame cost proportional to the touch rather than
+    // to the size of the word.
+    const stepMobileMotes = () => {
+      if (mobileMotes.length === 0) return false;
+
+      const radius = repulsionRadius * MOBILE_REPULSION_SCALE;
+      const activeMotes: MobileMote[] = [];
+
+      for (const mote of mobileMotes) {
+        const dx = mote.x - pointerX;
+        const dy = mote.y - pointerY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (pointerX > -1000 && distance < radius) {
+          const falloff = (1 - distance / radius) ** 2;
+          const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
+          mote.vx += Math.cos(angle) * falloff * MOBILE_KICK;
+          mote.vy += Math.sin(angle) * falloff * MOBILE_KICK;
+        }
+
+        mote.vx += (mote.homeX - mote.x) * MOBILE_SPRING_STRENGTH;
+        mote.vy += (mote.homeY - mote.y) * MOBILE_SPRING_STRENGTH;
+        mote.vx *= MOBILE_DAMPING;
+        mote.vy *= MOBILE_DAMPING;
+        mote.x += mote.vx;
+        mote.y += mote.vy;
+
+        const settled =
+          Math.abs(mote.homeX - mote.x) < MOBILE_SETTLE_DISTANCE &&
+          Math.abs(mote.homeY - mote.y) < MOBILE_SETTLE_DISTANCE &&
+          Math.abs(mote.vx) < MOBILE_SETTLE_SPEED &&
+          Math.abs(mote.vy) < MOBILE_SETTLE_SPEED;
+
+        if (settled) {
+          mote.x = mote.homeX;
+          mote.y = mote.homeY;
+          mote.vx = 0;
+          mote.vy = 0;
+        } else {
+          activeMotes.push(mote);
+        }
+      }
+
+      mobileMotes = activeMotes;
+      return mobileMotes.length > 0;
+    };
+
+    // Promote the glyphs under the finger into motes so they can be pushed.
+    const disturbMobile = (
+      touchX: number,
+      touchY: number,
+      gestureX: number,
+      gestureY: number
+    ) => {
+      const radius = repulsionRadius * MOBILE_REPULSION_SCALE;
+      const candidates: Array<{ char: string; x: number; y: number; distance: number }> = [];
+
+      for (const point of mobileGlyphPoints) {
+        const dx = point.x - touchX;
+        const dy = point.y - touchY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance >= radius) continue;
+        candidates.push({ char: point.char, x: point.x, y: point.y, distance });
+      }
+
+      // Only the closest glyphs become motes, so a swipe cannot turn into
+      // hundreds of simultaneous springs.
+      candidates.sort((a, b) => a.distance - b.distance);
+      for (const candidate of candidates) {
+        const existing = mobileMotes.find(
+          (mote) =>
+            mote.char === candidate.char &&
+            Math.abs(mote.homeX - candidate.x) < 0.01 &&
+            Math.abs(mote.homeY - candidate.y) < 0.01
+        );
+        if (existing) {
+          // Already disturbed: push it further instead of creating a duplicate.
+          const dx = candidate.x - touchX;
+          const dy = candidate.y - touchY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
+          existing.vx += Math.cos(angle) * MOBILE_KICK * 0.6 + gestureX * 0.12;
+          existing.vy += Math.sin(angle) * MOBILE_KICK * 0.6 + gestureY * 0.12;
+          continue;
+        }
+        if (mobileMotes.length >= MOBILE_MAX_ACTIVE) continue;
+
+        const dx = candidate.x - touchX;
+        const dy = candidate.y - touchY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
+        const falloff = (1 - distance / radius) ** 2;
+        mobileMotes.push({
+          char: candidate.char,
+          homeX: candidate.x,
+          homeY: candidate.y,
+          vx: Math.cos(angle) * MOBILE_KICK * falloff + gestureX * 0.18,
+          vy: Math.sin(angle) * MOBILE_KICK * falloff + gestureY * 0.18,
+          x: candidate.x,
+          y: candidate.y,
+        });
+      }
+    };
+
+    const drawMobile = (now: number) => {
+      frame = 0;
+      const minFrameTime = 1000 / MOBILE_INTERACTION_FPS;
+      if (lastMobileFrameAt !== 0 && now - lastMobileFrameAt < minFrameTime) {
+        frame = window.requestAnimationFrame(drawMobile);
+        return;
+      }
+      lastMobileFrameAt = now;
+      const active = stepMobileMotes();
+      paintMobile();
+      if ((active || activeContactPointer !== null) && inView && !document.hidden) {
+        frame = window.requestAnimationFrame(drawMobile);
+      }
+    };
+
+    const startMobile = () => {
+      if (!frame) frame = window.requestAnimationFrame(drawMobile);
     };
 
     const toLocalPoint = (clientX: number, clientY: number) => {
@@ -187,22 +327,32 @@ export default function AsciiGreeting({ text }: Props) {
     const clearPointer = () => {
       pointerX = -9999;
       pointerY = -9999;
+      previousPointerX = -9999;
+      previousPointerY = -9999;
     };
 
     const handlePointerMove = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse' && event.pointerId !== activeContactPointer) return;
       const point = toLocalPoint(event.clientX, event.clientY);
-      pointerX = point.x;
-      pointerY = point.y;
-      if (isMobile) paintMobileStatic(1);
+      const gestureX = previousPointerX < -1000 ? 0 : Math.max(-24, Math.min(24, point.x - previousPointerX));
+      const gestureY = previousPointerY < -1000 ? 0 : Math.max(-24, Math.min(24, point.y - previousPointerY));
+      if (isMobile) {
+        // Keep the visible wake just behind the finger during a swipe so the
+        // hand does not cover the interesting part of the interaction.
+        pointerX = point.x - gestureX * MOBILE_TRAIL_OFFSET;
+        pointerY = point.y - gestureY * MOBILE_TRAIL_OFFSET;
+        disturbMobile(pointerX, pointerY, gestureX, gestureY);
+        previousPointerX = point.x;
+        previousPointerY = point.y;
+        startMobile();
+      } else {
+        pointerX = point.x;
+        pointerY = point.y;
+      }
     };
 
     const handlePointerDown = (event: PointerEvent) => {
       if (event.pointerType === 'mouse') return;
-      if (isMobile && frame) {
-        window.cancelAnimationFrame(frame);
-        frame = 0;
-      }
       activeContactPointer = event.pointerId;
       // Capture keeps the effect alive while the finger drags outside the
       // canvas. It throws if the pointer is already gone, so guard it: a
@@ -230,27 +380,8 @@ export default function AsciiGreeting({ text }: Props) {
         /* capture was already released by the browser */
       }
 
-      if (isMobile) {
-        // Use the rAF clock for the whole release animation. performance.now()
-        // and the rAF timestamp can use different origins, and mixing them
-        // collapses the spring-back into a single frame.
-        let releasedAt = 0;
-        const settle = (now: number) => {
-          if (releasedAt === 0) releasedAt = now;
-          const progress = Math.min(1, (now - releasedAt) / MOBILE_RELEASE_MS);
-          paintMobileStatic(1 - progress);
-          if (progress < 1) {
-            frame = window.requestAnimationFrame(settle);
-            return;
-          }
-          frame = 0;
-          clearPointer();
-          paintMobileStatic();
-        };
-        frame = window.requestAnimationFrame(settle);
-      } else {
-        clearPointer();
-      }
+      clearPointer();
+      if (isMobile) startMobile();
     };
 
     const draw = (now: number) => {
@@ -334,7 +465,8 @@ export default function AsciiGreeting({ text }: Props) {
 
     const start = () => {
       if (isMobile) {
-        paintMobileStatic();
+        paintMobile();
+        if (mobileMotes.length > 0) startMobile();
         return;
       }
       if (!frame) frame = window.requestAnimationFrame(draw);
@@ -346,6 +478,7 @@ export default function AsciiGreeting({ text }: Props) {
         frame = 0;
       }
       lastFrameAt = 0;
+      lastMobileFrameAt = 0;
     };
 
     const observer = new IntersectionObserver(
@@ -465,6 +598,24 @@ export default function AsciiGreeting({ text }: Props) {
         context.textAlign = 'left';
         context.textBaseline = 'middle';
 
+        for (const glyph of glyphs) {
+          const sprite = document.createElement('canvas');
+          const spriteWidth = glyphSize * 0.78;
+          const spriteHeight = glyphSize * 1.24;
+          sprite.width = Math.ceil(spriteWidth * pixelRatio);
+          sprite.height = Math.ceil(spriteHeight * pixelRatio);
+          const spriteContext = sprite.getContext('2d');
+          if (!spriteContext) continue;
+          spriteContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+          spriteContext.font = `500 ${glyphSize}px ${fontFamily}`;
+          spriteContext.textAlign = 'left';
+          spriteContext.textBaseline = 'middle';
+          spriteContext.fillStyle = ink;
+          spriteContext.globalAlpha = 0.98;
+          spriteContext.fillText(glyph, 0, spriteHeight / 2);
+          mobileGlyphSprites.set(glyph, sprite);
+        }
+
         // Paint the dense field once, then cache it as a bitmap. Do not pack a
         // row into one string and depend on CanvasRenderingContext2D
         // letterSpacing: some mobile Chromium builds ignore that property,
@@ -484,7 +635,7 @@ export default function AsciiGreeting({ text }: Props) {
         startedAt = 0;
         container.classList.add('is-ready');
         heading.classList.add('is-ascii');
-        paintMobileStatic();
+        paintMobile();
         return;
       }
 

@@ -46,7 +46,7 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain("addEventListener('visibilitychange'");
   });
 
-  test('keeps mobile dense without running a continuous particle loop', () => {
+  test('keeps mobile dense and simulates only touch-disturbed glyphs', () => {
     expect(component).toContain('const MOBILE_FPS = 30');
     expect(component).toContain('const MOBILE_SETTLED_FPS = 20');
     expect(component).toContain('const MOBILE_SAMPLE_STEP = 2');
@@ -54,12 +54,21 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain("const GLYPH_SET_MOBILE = '01';");
     expect(component).toContain('let mobileStaticLayer: HTMLCanvasElement | null = null');
     expect(component).toContain('let mobileGlyphPoints:');
+    expect(component).toContain('let mobileMotes: MobileMote[] = []');
     expect(component).toContain('context.drawImage(mobileStaticLayer, 0, 0, width, height)');
-    expect(component).toContain('if (isMobile) {\n        paintMobileStatic();\n        return;');
     expect(component).toContain('staticContext.fillText(glyph, x, y)');
     expect(component).toContain('mobileGlyphPoints.push({ char: glyph, x, y })');
-    expect(component).toContain('paintMobileStatic(1 - progress)');
-    expect(component).toContain('MOBILE_RELEASE_MS');
+    expect(component).toContain('const MOBILE_MAX_ACTIVE = 64');
+    expect(component).toContain('const MOBILE_INTERACTION_FPS = 24');
+    expect(component).toContain('const mobileGlyphSprites = new Map');
+    expect(component).toContain('mobileGlyphSprites.get(mote.char)');
+    expect(component).toContain('const stepMobileMotes = () =>');
+    expect(component).toContain('const disturbMobile = (');
+    expect(component).toContain('gestureX * 0.18');
+    expect(component).toContain('mote.vx += (mote.homeX - mote.x) * MOBILE_SPRING_STRENGTH');
+    expect(component).toContain('point.x - gestureX * MOBILE_TRAIL_OFFSET');
+    expect(component).toContain('if (mobileMotes.length > 0) startMobile()');
+    expect(component).not.toContain('createRadialGradient');
     expect(component).not.toContain("staticContext.letterSpacing");
     // Thinning the sampled points destroyed the letterforms, so every sampled
     // point must survive in the cached mobile glyph field.
