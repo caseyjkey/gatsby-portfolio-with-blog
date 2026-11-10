@@ -1,0 +1,4 @@
+World map - low resolution.svg
+Source: https://commons.wikimedia.org/wiki/File:World_map_-_low_resolution.svg
+License: Creative Commons Attribution-ShareAlike 3.0 Unported
+Imported without geographic modification for the Ops Pulse ambient map underlay.

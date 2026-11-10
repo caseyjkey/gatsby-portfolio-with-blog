@@ -4,6 +4,7 @@ import Typewriter from 'typewriter-effect/dist/core';
 import introductionData from '../../data/introduction.json';
 import Socials from '../Social';
 import AsciiGreeting from './AsciiGreeting';
+import OpsPulse from './OpsPulse';
 import './hero.scss';
 
 // === Blob SVG Components ===
@@ -205,6 +206,7 @@ export default function HeroSection() {
 
   return (
     <section className="hero-wrap" id="Introduction">
+      <OpsPulse />
       <div className="hero-overlay"></div>
 
       {/* Desktop Falling Arrow */}
