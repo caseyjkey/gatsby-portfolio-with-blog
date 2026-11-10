@@ -83,8 +83,9 @@ const COUNTRY_LABELS: Record<string, string> = {
 // What actually happens to a beacon, in plain language.
 const PIPELINE = ['EDGE', 'SANITIZE', 'STORE', 'STREAM'];
 
-// The telemetry API is same-origin with the portfolio, mounted at
-// /analytics. Local development proxies that path to the local service.
+// The telemetry API. It is same-origin with the portfolio when the site is
+// served next to the service; otherwise the build points at the telemetry
+// host, which answers with permissive CORS headers.
 const API = (import.meta.env.PUBLIC_OPS_PULSE_API?.trim() || '/analytics').replace(/\/$/, '');
 
 function anchorFor(code: string): { x: number; y: number } | null {
