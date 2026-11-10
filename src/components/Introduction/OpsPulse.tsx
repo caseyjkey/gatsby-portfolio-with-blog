@@ -83,10 +83,9 @@ const COUNTRY_LABELS: Record<string, string> = {
 // What actually happens to a beacon, in plain language.
 const PIPELINE = ['EDGE', 'SANITIZE', 'STORE', 'STREAM'];
 
-// The telemetry API is same-origin with the portfolio. Local development
-// proxies this path to the local service; GitHub Pages deploys it as a static
-// site and naturally has no server-side telemetry endpoint.
-const API = (import.meta.env.PUBLIC_OPS_PULSE_API?.trim() || '/api/ops-pulse').replace(/\/$/, '');
+// The telemetry API is same-origin with the portfolio, mounted at
+// /analytics. Local development proxies that path to the local service.
+const API = (import.meta.env.PUBLIC_OPS_PULSE_API?.trim() || '/analytics').replace(/\/$/, '');
 
 function anchorFor(code: string): { x: number; y: number } | null {
   const raw = COUNTRY_ANCHORS[code] ?? PREVIEW_ANCHORS[code];

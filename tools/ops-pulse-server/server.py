@@ -33,6 +33,11 @@ DB_PATH = os.environ.get("OPS_PULSE_DB", "ops-pulse.sqlite3")
 STARTED_AT = time.time()
 INSTANCE = os.environ.get("OPS_PULSE_INSTANCE") or socket.gethostname()
 
+# The service is mounted behind the site's /analytics path in production and
+# answers on its own /api/ops-pulse prefix locally. Accept either prefix so
+# the same build works behind a reverse proxy that does or does not rewrite.
+API_PREFIXES = ("/analytics", "/api/ops-pulse")
+
 # How long a row keeps city/region/cell detail before it is downgraded.
 DETAIL_RETENTION_SECONDS = int(os.environ.get("OPS_PULSE_DETAIL_SECONDS", "86400"))
 # Rows are pruned entirely after this long.
@@ -162,6 +167,17 @@ def sanitize_path(raw: str) -> str:
 def clean_text(raw, limit: int) -> str:
     text = str(raw or "").strip()[:limit]
     return "".join(ch for ch in text if ch.isprintable())
+
+
+def normalize_route(path: str) -> str:
+    """Map a mounted prefix back to the canonical API path."""
+    route = path.rstrip("/") or "/"
+    for prefix in API_PREFIXES:
+        if route == prefix:
+            return "/api/ops-pulse"
+        if route.startswith(prefix + "/"):
+            return "/api/ops-pulse" + route[len(prefix) :]
+    return route
 
 
 def record(
@@ -306,7 +322,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self) -> None:  # noqa: N802
-        route = urlparse(self.path).path
+        route = normalize_route(urlparse(self.path).path)
 
         if route == "/api/ops-pulse/health":
             self._json(
@@ -352,7 +368,7 @@ class Handler(BaseHTTPRequestHandler):
         self._json({"error": "not found"}, 404)
 
     def do_POST(self) -> None:  # noqa: N802
-        route = urlparse(self.path).path
+        route = normalize_route(urlparse(self.path).path)
         if route != "/api/ops-pulse/visit":
             self._json({"error": "not found"}, 404)
             return

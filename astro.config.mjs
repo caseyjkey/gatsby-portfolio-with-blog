@@ -16,10 +16,12 @@ export default defineConfig({
   vite: {
     server: {
       proxy: {
-        '/api/ops-pulse': {
+        // The telemetry service is mounted at /analytics in production.
+        // Proxy it to the local service during development.
+        '/analytics': {
           target: telemetryTarget,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/ops-pulse/, '/api/ops-pulse'),
+          rewrite: (path) => path.replace(/^\/analytics/, '/analytics'),
         },
       },
     },
