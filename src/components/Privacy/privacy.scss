@@ -1,0 +1,72 @@
+@use '../../styles/theme' as *;
+
+// === Privacy Page ===
+.privacy {
+  margin-top: 6em;
+  padding: 3rem 0.75rem 4rem;
+  flex: 1 0 auto;
+
+  &__header {
+    max-width: 770px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+  }
+
+  &__heading {
+    color: $black;
+    font-size: 50px;
+    font-weight: 700;
+    margin: 0 0 1rem;
+
+    @media (max-width: 767.98px) {
+      font-size: 36px;
+    }
+  }
+
+  &__subheader {
+    color: $text-muted;
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  &__body {
+    max-width: 770px;
+    margin: 0 auto;
+
+    p {
+      color: $darken;
+      font-size: 1rem;
+      line-height: 1.75;
+      margin: 0 0 1.15rem;
+    }
+
+    a {
+      color: $primary;
+      font-weight: 600;
+    }
+  }
+
+  &__section-title {
+    color: $black;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 2.25rem 0 0.85rem;
+  }
+
+  &__list {
+    margin: 0 0 1.25rem;
+    padding-left: 1.15rem;
+    color: $darken;
+
+    li {
+      margin-bottom: 0.6rem;
+      line-height: 1.7;
+    }
+
+    strong {
+      color: $black;
+      font-weight: 600;
+    }
+  }
+}

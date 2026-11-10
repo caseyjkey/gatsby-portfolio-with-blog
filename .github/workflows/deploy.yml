@@ -35,6 +35,10 @@ jobs:
         run: bunx astro check
 
       - name: Build
+        env:
+          # The telemetry service runs on the EC2 VPS, not next to the
+          # GitHub Pages build. Point the client at it explicitly.
+          PUBLIC_OPS_PULSE_API: https://ops.gilbert.keycasey.com/api/ops-pulse
         run: bun run build
 
       - name: Publish dist to master

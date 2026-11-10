@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/Navigation/NavBar';
+import FooterSection from '../components/Footer/FooterSection';
+import '../components/Privacy/privacy.scss';
+---
+
+<BaseLayout
+  pathname="/privacy"
+  title="Privacy | Casey Key"
+  description="How this site handles visit data for the live Ops Pulse telemetry map."
+>
+  <NavBar client:load pathname={Astro.url.pathname} />
+  <main class="privacy">
+    <header class="privacy__header">
+      <h1 class="privacy__heading">Privacy</h1>
+      <p class="privacy__subheader">
+        What the live Ops Pulse map on the home page records, and what it never
+        records.
+      </p>
+    </header>
+
+    <section class="privacy__body">
+      <h2 class="privacy__section-title">What the map shows</h2>
+      <p>
+        The hero of this site renders a live map of recent visits. Each dot is a
+        coarse location cell, roughly the size of a city, and it appears only
+        after someone has actually loaded the page.
+      </p>
+      <p>
+        Your own visit is the pulsing marker. Other visitors appear as static
+        dots, so you can tell at a glance which one is you.
+      </p>
+
+      <h2 class="privacy__section-title">What is recorded</h2>
+      <ul class="privacy__list">
+        <li>
+          <strong>Country</strong> — a two-letter country code, used as a
+          fallback position for the dot.
+        </li>
+        <li>
+          <strong>Region and city</strong> — resolved in your own browser from a
+          public geolocation service, then rounded to a city-scale cell.
+        </li>
+        <li>
+          <strong>Page path</strong> — the path you loaded, with any query
+          string removed.
+        </li>
+        <li>
+          <strong>Timing</strong> — when the visit happened and how long the
+          page took to respond.
+        </li>
+      </ul>
+
+      <h2 class="privacy__section-title">What is never recorded</h2>
+      <ul class="privacy__list">
+        <li>Your IP address. It is not stored, logged, or sent to the map.</li>
+        <li>
+          Exact coordinates, an address, or a device identifier. The location
+          is rounded to a city-scale cell before it is stored.
+        </li>
+        <li>
+          Cookies, advertising identifiers, or cross-site trackers for this map.
+          It uses no storage and no third-party cookies.
+        </li>
+        <li>
+          Referrer hostnames, query strings, or anything identifying you to the
+          telemetry service.
+        </li>
+      </ul>
+
+      <h2 class="privacy__section-title">How long it is kept</h2>
+      <p>
+        Detailed city and region information is automatically downgraded to a
+        country-level aggregate after 24 hours, and the underlying records are
+        deleted within 7 days. The map only ever displays activity from the
+        last hour.
+      </p>
+
+      <h2 class="privacy__section-title">Third parties</h2>
+      <p>
+        Location is resolved in your browser by a third-party geolocation
+        service, which receives your IP address in order to answer the request.
+        That service is not operated by this site, and no location data is
+        shared with it beyond the lookup itself.
+      </p>
+
+      <h2 class="privacy__section-title">Questions</h2>
+      <p>
+        Something unclear here, or you would like the data for your visits
+        removed? <a href="/contact">Get in touch</a> and I will help.
+      </p>
+    </section>
+  </main>
+  <FooterSection />
+</BaseLayout>
