@@ -43,7 +43,7 @@ jobs:
         env:
           # The telemetry service runs on the EC2 VPS, not next to the
           # GitHub Pages build. Point the client at it explicitly.
-          PUBLIC_OPS_PULSE_API: https://analytics.gilbert.keycasey.com/analytics
+          PUBLIC_OPS_PULSE_API: https://analytics.keycasey.com/analytics
         run: bun run build
 
       - name: Configure GitHub Pages
