@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import './ops-pulse.scss';
 import COUNTRY_CODES from './country-codes.json';
 
@@ -118,7 +118,100 @@ export default function OpsPulse() {
   const [live, setLive] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [trace, setTrace] = useState(0);
-  const startedAt = useRef<number>(Date.now());
+  const [pipelineLayout, setPipelineLayout] = useState<{ nodes: { x: number; y: number; w: number; h: number }[]; path: string }>({ nodes: [], path: '' });
+
+  // Anchor the pipeline to the real responsive portrait bounds. The headshot
+  // has different assets/sizing on mobile and desktop, so fixed offsets drift
+  // into it at common viewport sizes.
+  useLayoutEffect(() => {
+    const root = document.querySelector<HTMLElement>('.ops-pulse');
+    const hero = document.querySelector<HTMLElement>('.hero-wrap');
+    if (!root || !hero) return undefined;
+
+    const updateLayout = () => {
+      const heroRect = hero.getBoundingClientRect();
+      const portrait = [...document.querySelectorAll<HTMLElement>(
+        '.hero-mobile-headshot-img, .hero-desktop-headshot-img',
+      )].find((image) => image.getBoundingClientRect().width > 0);
+      if (!portrait) return;
+
+      const rect = portrait.getBoundingClientRect();
+      const mobile = window.matchMedia('(max-width: 767.98px)').matches;
+      const compactDesktop = !mobile && heroRect.width <= 1100;
+      const px = (value: number) => value - heroRect.left;
+      const py = (value: number) => value - heroRect.top;
+      const nodes: { x: number; y: number; w: number; h: number }[] = [];
+      let path = '';
+
+      if (mobile) {
+        const leftSpace = px(rect.left);
+        const rightSpace = heroRect.width - px(rect.right);
+        const railOnRight = rightSpace >= leftSpace;
+        const railWidth = Math.max(34, Math.min(60, Math.max(leftSpace, rightSpace) - 8));
+        const x = railOnRight ? px(rect.right) + 4 : px(rect.left) - railWidth - 4;
+        const h = 34;
+        const startY = py(rect.top) + 16;
+        const endY = py(rect.bottom) - h - 12;
+        const step = (endY - startY) / (PIPELINE.length - 1);
+        PIPELINE.forEach((_, index) => nodes.push({ x, y: startY + step * index, w: railWidth, h }));
+        const centerX = x + railWidth / 2;
+        path = `M ${centerX} ${startY + h / 2} V ${endY + h / 2}`;
+        root.style.setProperty('--ops-trace-left', `${px(rect.left)}px`);
+        root.style.setProperty('--ops-trace-width', `${rect.width}px`);
+        root.style.setProperty('--ops-trace-top', `${py(rect.bottom) + 8}px`);
+      } else if (compactDesktop) {
+        const size = 40;
+        const gap = Math.max(10, Math.min(20, (rect.width - size * PIPELINE.length) / (PIPELINE.length - 1)));
+        const x0 = px(rect.left) + (rect.width - (size * PIPELINE.length + gap * (PIPELINE.length - 1))) / 2;
+        const y = py(rect.bottom) + 10;
+        PIPELINE.forEach((_, index) => nodes.push({ x: x0 + index * (size + gap), y, w: size, h: size }));
+        const cy = y + size / 2;
+        path = `M ${x0 + size} ${cy} H ${x0 + size + gap + size * 3 + gap * 2}`;
+        root.style.setProperty('--ops-trace-left', `${px(rect.left)}px`);
+        root.style.setProperty('--ops-trace-width', `${rect.width}px`);
+        root.style.setProperty('--ops-trace-top', `${y + size + 8}px`);
+      } else {
+        const size = Math.max(52, Math.min(64, heroRect.width * 0.045));
+        const xLeft = Math.max(8, px(rect.left) - size - 14);
+        const xRight = Math.min(heroRect.width - size - 8, px(rect.right) + 14);
+        const yTop = Math.max(82, py(rect.top) - size - 14);
+        const yBottom = Math.min(heroRect.height - size - 18, py(rect.bottom) + 12);
+        nodes.push(
+          { x: xLeft, y: yTop, w: size, h: size },
+          { x: xRight, y: yTop, w: size, h: size },
+          { x: xRight, y: yBottom, w: size, h: size },
+          { x: xLeft, y: yBottom, w: size, h: size },
+        );
+        const a = { x: xLeft + size / 2, y: yTop + size / 2 };
+        const b = { x: xRight + size / 2, y: yTop + size / 2 };
+        const c = { x: xRight + size / 2, y: yBottom + size / 2 };
+        const d = { x: xLeft + size / 2, y: yBottom + size / 2 };
+        const radius = Math.min(24, Math.max(12, size * 0.32));
+        path = `M ${a.x} ${a.y} H ${b.x - radius} Q ${b.x} ${a.y} ${b.x} ${a.y + radius} V ${c.y - radius} Q ${c.x} ${c.y} ${c.x - radius} ${c.y} H ${d.x}`;
+        root.style.setProperty('--ops-trace-left', `${px(rect.left)}px`);
+        root.style.setProperty('--ops-trace-width', `${rect.width}px`);
+        root.style.setProperty('--ops-trace-top', `${py(rect.bottom) + size + 20}px`);
+      }
+
+      setPipelineLayout({ nodes, path });
+    };
+
+    updateLayout();
+    const observer = new ResizeObserver(updateLayout);
+    observer.observe(hero);
+    const portraitImages = document.querySelectorAll<HTMLElement>(
+      '.hero-mobile-headshot-img, .hero-desktop-headshot-img',
+    );
+    portraitImages.forEach((image) => observer.observe(image));
+    const text = document.querySelector<HTMLElement>('.hero-animated-content .hero-text');
+    if (text) observer.observe(text);
+    window.addEventListener('resize', updateLayout);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateLayout);
+    };
+  }, [mode]);
 
   // Resolve in the browser so a tailnet/dev proxy cannot accidentally locate
   // the proxy host instead of the actual visitor. The IP itself is never read,
@@ -332,7 +425,10 @@ export default function OpsPulse() {
     : 'idle';
 
   return (
-    <section className="ops-pulse" aria-label="Live Ops Pulse preview">
+    <section
+      className={`ops-pulse${mode === 'pipeline' ? ' is-pipeline' : ''}`}
+      aria-label="Live Ops Pulse preview"
+    >
       <div className="ops-pulse__glow" aria-hidden="true" />
 
       <header className="ops-pulse__topbar">
@@ -374,7 +470,7 @@ export default function OpsPulse() {
         </div>
       </header>
 
-      <div className="ops-pulse__stage">
+      <div className={`ops-pulse__stage${mode === 'pipeline' ? ' is-pipeline' : ''}`}>
         {mode === 'traffic' ? (
           <div className="ops-pulse__map-view">
             <div className="ops-pulse__world-map" aria-hidden="true" />
@@ -429,21 +525,32 @@ export default function OpsPulse() {
             </svg>
           </div>
         ) : (
-          <div className="ops-pulse__pipeline-view">
+          <div className="ops-pulse__pipeline-view" aria-label="How a visit is processed">
+            <svg className="ops-pulse__pipeline-route" aria-hidden="true">
+              <path className="ops-pulse__pipeline-route-base" d={pipelineLayout.path} />
+              <path
+                className="ops-pulse__pipeline-route-active"
+                d={pipelineLayout.path}
+                pathLength="1"
+                style={{ strokeDashoffset: 1 - Math.max(0, trace) / (PIPELINE.length - 1) }}
+              />
+            </svg>
             <div className="ops-pulse__pipeline-track" aria-label="Edge event delivery pipeline">
               {PIPELINE.map((step, index) => (
                 <React.Fragment key={step}>
                   <div
+                    data-pipeline-step={index}
                     className={`ops-pulse__node${index <= trace ? ' is-active' : ''}`}
+                    style={pipelineLayout.nodes[index] ? {
+                      left: `${pipelineLayout.nodes[index].x}px`,
+                      top: `${pipelineLayout.nodes[index].y}px`,
+                      width: `${pipelineLayout.nodes[index].w}px`,
+                      height: `${pipelineLayout.nodes[index].h}px`,
+                    } : undefined}
                   >
                     <small className="ops-pulse__node-index">0{index + 1}</small>
                     <span>{step}</span>
                   </div>
-                  {index < PIPELINE.length - 1 && (
-                    <span
-                      className={`ops-pulse__connector${index < trace ? ' is-active' : ''}`}
-                    />
-                  )}
                 </React.Fragment>
               ))}
             </div>
