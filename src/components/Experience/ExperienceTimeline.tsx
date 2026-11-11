@@ -8,21 +8,23 @@ import { ANIMATION_CONFIG, TIMING, TIMELINE, EASING, SECONDARY_DELAYS } from '..
 import { isSectionHeaderVisible } from '../../animations/utils/headerVisibility'
 import './experience.scss'
 
+const TIMELINE_CASCADE_STAGGER_MS = 180;
+
 // Timeline row item with animations
 interface TimelineRowItemProps {
   entry: ExperienceEntry;
   index: number;
   totalEntries: number;
   onAnimated?: (index: number) => void;
-  onFirstItemReached?: () => void;
+  previousItemReached?: boolean;
   rowRef?: (el: HTMLDivElement | null) => void;
   dotRef?: React.RefObject<HTMLDivElement | null>;
   timelineContainerRef: React.RefObject<HTMLDivElement | null>;
   triggeredScroll?: boolean;
 }
 
-function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemReached, rowRef, dotRef, timelineContainerRef, triggeredScroll = false }: TimelineRowItemProps) {
-  const [nodePopped, setNodePopped] = useState(false);
+function TimelineRowItem({ entry, index, totalEntries, onAnimated, previousItemReached = false, rowRef, dotRef, timelineContainerRef, triggeredScroll = false }: TimelineRowItemProps) {
+  const [lineHasReached, setLineHasReached] = useState(false);
   const [hasBeenReached, setHasBeenReached] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -31,19 +33,19 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
     once: true,
   });
 
-  // Call onFirstItemReached when first item is reached
+  // Rows reveal only after the line reaches them *and* the preceding row has
+  // started. IntersectionObserver callbacks can arrive out of DOM order during
+  // a smooth jump, so delay values alone cannot guarantee a top-down cascade.
   useEffect(() => {
-    if (hasBeenReached && index === 0 && onFirstItemReached) {
-      onFirstItemReached();
-    }
-  }, [hasBeenReached, index, onFirstItemReached]);
+    if (!lineHasReached || !previousItemReached || hasBeenReached) return;
 
-  useEffect(() => {
-    if (isInView && !nodePopped) {
-      setNodePopped(true);
+    const timer = window.setTimeout(() => {
+      setHasBeenReached(true);
       onAnimated?.(index);
-    }
-  }, [isInView, nodePopped, index, onAnimated]);
+    }, index > 0 ? TIMELINE_CASCADE_STAGGER_MS : 0);
+
+    return () => window.clearTimeout(timer);
+  }, [lineHasReached, previousItemReached, hasBeenReached, index, onAnimated]);
 
   // Check if line has reached this dot by reading CSS variable
   useEffect(() => {
@@ -63,7 +65,7 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
           : lineHeight >= dotPositionRelativeToContainer;
 
         if (shouldTrigger) {
-          setHasBeenReached(true); // Once this is true, it never goes back to false
+          setLineHasReached(true); // Once this is true, it never goes back to false
         }
       }
     };
@@ -89,34 +91,33 @@ function TimelineRowItem({ entry, index, totalEntries, onAnimated, onFirstItemRe
 
   const isLast = index === totalEntries - 1;
   const isFirst = index === 0;
-  const isSecond = index === 1;
 
   // Calculate delay: first item has delay, second item has stagger if triggered by button
   // Header-aware: if header is not visible (scrolled past), start immediately
   const getYearDelay = () => {
+    if (triggeredScroll) return 0;
     if (isFirst) {
       const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('Experience');
       return headerVisible ? TIMELINE.year.firstDelay : 0;
     }
-    if (isSecond && triggeredScroll) return TIMELINE.year.firstDelay + 0.5; // 0.5s stagger after first
     return TIMELINE.year.delay;
   };
 
   const getDotDelay = () => {
+    if (triggeredScroll) return 0;
     if (isFirst) {
       const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('Experience');
       return headerVisible ? TIMELINE.dot.firstDelay : 0;
     }
-    if (isSecond && triggeredScroll) return TIMELINE.dot.firstDelay + 0.5;
     return TIMELINE.dot.delay;
   };
 
   const getEntryDelay = () => {
+    if (triggeredScroll) return 0;
     if (isFirst) {
       const headerVisible = typeof window !== 'undefined' && isSectionHeaderVisible('Experience');
       return headerVisible ? TIMELINE.entry.firstDelay : 0;
     }
-    if (isSecond && triggeredScroll) return TIMELINE.entry.firstDelay + TIMELINE.entry.delay;
     return TIMELINE.entry.delay;
   };
 
@@ -225,7 +226,17 @@ export default function ExperienceTimeline() {
   });
 
   // Track first timeline item's reached state for fade-in trigger
-  const [firstItemReached, setFirstItemReached] = useState(false);
+  const [reachedRows, setReachedRows] = useState<Set<number>>(() => new Set());
+  const firstItemReached = reachedRows.has(0);
+
+  const handleRowAnimated = useCallback((index: number) => {
+    setReachedRows((current) => {
+      if (current.has(index)) return current;
+      const next = new Set(current);
+      next.add(index);
+      return next;
+    });
+  }, []);
 
   // Calculate the maximum line height (distance to last dot)
   const getMaxLineHeight = (): number => {
@@ -381,8 +392,8 @@ export default function ExperienceTimeline() {
               entry={entry}
               index={index}
               totalEntries={experienceData.length}
-              onAnimated={index === 0 ? () => setFirstItemReached(true) : undefined}
-              onFirstItemReached={index === 0 ? () => setFirstItemReached(true) : undefined}
+              onAnimated={handleRowAnimated}
+              previousItemReached={index === 0 || reachedRows.has(index - 1)}
               rowRef={(el) => { rowRefs.current[index] = el; }}
               dotRef={index === 0 ? firstDotRef : index === experienceData.length - 1 ? lastDotRef : undefined}
               timelineContainerRef={timelineContainerRef}

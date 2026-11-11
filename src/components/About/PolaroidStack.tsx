@@ -16,37 +16,37 @@ type PolaroidPhoto = {
 const photos: PolaroidPhoto[] = [
   {
     src: '/images/about-polaroids/casey-dog.webp',
-    alt: 'Casey crouching beside a brown bulldog on a sunny sidewalk',
+    alt: 'Casey laughing while petting a brown bulldog on a sunny sidewalk',
     caption: 'new best friend',
   },
   {
     src: '/images/about-polaroids/casey-coffee-shop.webp',
-    alt: 'Casey working on a laptop in a sunlit coffee shop',
+    alt: 'Casey taking a coffee break while working on a laptop in a neighborhood cafe',
     caption: 'building somewhere new',
   },
   {
     src: '/images/about-polaroids/casey-coast-v2.webp',
-    alt: 'Casey hiking above a rocky coastline at golden hour',
+    alt: 'Casey turning back mid-hike above a windswept rocky coastline',
     caption: 'take the scenic route',
   },
   {
     src: '/images/about-polaroids/casey-dinner.webp',
-    alt: 'Casey laughing with friends over dinner',
+    alt: 'Casey laughing with friends over a backyard cookout dinner',
     caption: 'good people, good food',
   },
   {
     src: '/images/about-polaroids/casey-motorcycle.webp',
-    alt: 'Casey standing beside a motorcycle at a scenic overlook',
+    alt: 'Casey checking his motorcycle at a cloudy mountain overlook',
     caption: 'weekend therapy',
   },
   {
     src: '/images/about-polaroids/casey-concert.webp',
-    alt: 'Casey enjoying a small live music show',
+    alt: 'Casey singing along with friends in the crowd at a small live music show',
     caption: 'always near the speakers',
   },
   {
     src: '/images/about-polaroids/casey-city-night.webp',
-    alt: 'Casey exploring a city street after dark',
+    alt: 'Casey walking with friends on a rainy city street after dark',
     caption: 'after-hours wandering',
   },
 ];
@@ -79,6 +79,8 @@ type PolaroidCardProps = {
   isDimmed: boolean;
   neighborShift: number;
   isActive: boolean;
+  cardRef: (el: HTMLButtonElement | null) => void;
+  dragBounds: { left: number; right: number; top: number; bottom: number } | null;
   onActivate: (index: number) => void;
   onFocusPhoto: (index: number | null) => void;
   onHoverPhoto: (index: number | null) => void;
@@ -92,6 +94,8 @@ function PolaroidCard({
   isDimmed,
   neighborShift,
   isActive,
+  cardRef,
+  dragBounds,
   onActivate,
   onFocusPhoto,
   onHoverPhoto,
@@ -170,12 +174,14 @@ function PolaroidCard({
       }}
     >
       <motion.button
+        ref={cardRef}
         type="button"
         className="polaroid-stack__card"
         data-polaroid-card
         drag
-        dragElastic={0.08}
-        dragMomentum={!shouldReduceMotion}
+        dragConstraints={dragBounds ?? undefined}
+        dragElastic={0.03}
+        dragMomentum={false}
         onPointerDown={handlePointerDown}
         onDragStart={() => onActivate(index)}
         onDrag={handleDrag}
@@ -222,6 +228,62 @@ export default function PolaroidStack() {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [stageSize, setStageSize] = useState<{ width: number; height: number } | null>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return undefined;
+
+    const measure = () => {
+      const rect = stage.getBoundingClientRect();
+      setStageSize({ width: rect.width, height: rect.height });
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
+
+  // Motion's drag constraints are relative to the element's own origin, so
+  // the allowed travel is the distance from the card's resting position to
+  // the edge of the stage, minus the overhang the card's rotation adds.
+  //
+  // The rotation overhang is derived from the resting angle rather than
+  // measured from the rendered box, so the bounds never depend on when the
+  // rotation spring happens to be sampled.
+  const computeDragBounds = (index: number, rotationDegrees: number) => {
+    const stage = stageRef.current;
+    const card = cardRefs.current[index];
+    if (!stage || !card || !stageSize) return null;
+
+    const stageBox = stage.getBoundingClientRect();
+    const cardBox = card.getBoundingClientRect();
+    if (stageBox.width === 0) return null;
+
+    const angle = (Math.abs(rotationDegrees) * Math.PI) / 180;
+    const width = card.offsetWidth;
+    const height = card.offsetHeight;
+    const rotatedWidth = width * Math.cos(angle) + height * Math.sin(angle);
+    const rotatedHeight = width * Math.sin(angle) + height * Math.cos(angle);
+    const overhangX = Math.max(0, (rotatedWidth - width) / 2);
+    const overhangY = Math.max(0, (rotatedHeight - height) / 2);
+
+    // Un-rotated layout box of the card.
+    const layoutLeft = cardBox.left + overhangX;
+    const layoutTop = cardBox.top + overhangY;
+    const layoutRight = layoutLeft + width;
+    const layoutBottom = layoutTop + height;
+
+    return {
+      left: stageBox.left - layoutLeft + overhangX,
+      right: stageBox.right - layoutRight - overhangX,
+      top: stageBox.top - layoutTop + overhangY,
+      bottom: stageBox.bottom - layoutBottom - overhangY,
+    };
+  };
 
   useEffect(() => {
     if (focusedIndex === null) return;
@@ -244,17 +306,19 @@ export default function PolaroidStack() {
 
   return (
     <div className="polaroid-stack" ref={rootRef}>
-      <div className="polaroid-stack__intro">
-        <p className="polaroid-stack__eyebrow">Life outside the terminal</p>
-        <p className="polaroid-stack__hint">
-          Drag the photos around. Tap one for a closer look.
-        </p>
-      </div>
-      <div className="polaroid-stack__stage" aria-label="A draggable stack of photos from Casey's life">
+      <div ref={stageRef} className="polaroid-stack__stage" aria-label="A draggable stack of photos from Casey's life">
         {photos.map((photo, index) => {
           const distanceFromHover = hoveredIndex === null ? 99 : index - hoveredIndex;
           const neighborShift =
             distanceFromHover === -1 ? -9 : distanceFromHover === 1 ? 9 : 0;
+
+          const restingRotation = (isCompact ? mobileRotations : desktopRotations)[index];
+
+          // Keep every card inside the stack even while rotated. The cards
+          // are tilted, so the constraint has to allow for the rotation
+          // overhang; otherwise a dragged card can hang off the edge of the
+          // stack and look broken.
+          const dragBounds = stageSize ? computeDragBounds(index, restingRotation) : null;
 
           return (
             <PolaroidCard
@@ -266,6 +330,10 @@ export default function PolaroidStack() {
               isDimmed={focusedIndex !== null && focusedIndex !== index}
               neighborShift={neighborShift}
               isActive={activeIndex === index || hoveredIndex === index}
+              cardRef={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              dragBounds={dragBounds}
               onActivate={setActiveIndex}
               onFocusPhoto={setFocusedIndex}
               onHoverPhoto={setHoveredIndex}
