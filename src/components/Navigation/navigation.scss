@@ -149,7 +149,7 @@ $nav-height: 85px;
             height: 2px;
             bottom: 4px;
             left: 0;
-            background: $primary;
+            background: var(--color-primary);
             transform: scaleX(0);
             transform-origin: center;
             transition: transform 0.3s ease-in-out;
@@ -158,7 +158,7 @@ $nav-height: 85px;
 
         // Hover: growing blue underline (not for active pages)
         &:hover:not(.active):not(.current-page):not(.react-scroll-active):not([aria-current="page"]) {
-          color: $primary;
+          color: var(--color-primary);
 
           > span::before {
             transform: scaleX(1);
@@ -170,7 +170,7 @@ $nav-height: 85px;
         &.current-page,
         &.react-scroll-active,
         &[aria-current="page"] {
-          color: $primary;
+          color: var(--color-primary);
 
           > span::before {
             transform: scaleX(1);
@@ -315,25 +315,25 @@ $nav-height: 85px;
       transition: color 0.2s ease;
 
       &:hover {
-        color: $primary;
+        color: var(--color-primary);
       }
 
       &.active,
       &.current-page,
       &.react-scroll-active,
       &[aria-current="page"] {
-        color: $primary;
+        color: var(--color-primary);
 
         > span {
           text-decoration: underline;
           text-underline-offset: 4px;
           text-decoration-thickness: 2px;
-          text-decoration-color: $primary;
+          text-decoration-color: var(--color-primary);
         }
       }
 
       &.manual-active {
-        color: $primary;
+        color: var(--color-primary);
       }
     }
   }

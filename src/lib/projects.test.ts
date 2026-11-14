@@ -37,6 +37,7 @@ describe('project helpers', () => {
             start: '2024-4',
             end: { date: '2024-9' },
             status: 'beta',
+            konamiOnly: true,
             project: 'demo',
           },
         },
@@ -47,5 +48,6 @@ describe('project helpers', () => {
     expect(record.galleryImageUrls).toEqual(['/assets/third.png', '/assets/alt.png']);
     expect(record.postSlug).toBe('/projects/2024-04-demo/');
     expect(record.end?.date).toBe('2024-09');
+    expect(record.konamiOnly).toBe(true);
   });
 });

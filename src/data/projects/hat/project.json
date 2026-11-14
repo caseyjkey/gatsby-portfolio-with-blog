@@ -23,6 +23,7 @@
   "subtitle": "IoT Development",
   "title": "Programming Hat",
   "project": "hat",
+  "konamiOnly": true,
   "icons": {
     "fa": [
       "FaRaspberryPi",

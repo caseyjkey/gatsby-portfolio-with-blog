@@ -116,7 +116,7 @@ export function Nav({ children, pathname }: NavProps) {
             role="img"
             aria-label="Casey Key"
           >
-            <circle cx="45" cy="50" r="38" fill="#3e64ff" />
+            <circle cx="45" cy="50" r="38" fill="var(--color-primary)" />
 
             <text
               x="45"

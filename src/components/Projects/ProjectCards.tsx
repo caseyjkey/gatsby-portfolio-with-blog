@@ -14,6 +14,7 @@ import {
 import { IoMdAnalytics, IoMdCloud } from 'react-icons/io';
 import { SiGraphql, SiOracle, SiRedux } from 'react-icons/si';
 import { formatProjectStatusLabel, type ProjectRecord } from '../../lib/projects';
+import { useKonamiMode } from '../../hooks/useKonamiMode';
 import AnimatedSection from '../AnimatedSection';
 import './projects.scss';
 
@@ -126,6 +127,11 @@ type Props = {
 
 export default function ProjectCards({ projects, title, subtitle }: Props) {
   const isFeatured = title === 'Featured Work';
+  const konamiMode = useKonamiMode();
+  const visibleProjects = useMemo(
+    () => projects.filter((project) => !project.konamiOnly || konamiMode),
+    [projects, konamiMode],
+  );
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -174,6 +180,10 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
     setLoadedImages({});
     setDescriptionExpanded(false);
   };
+
+  useEffect(() => {
+    if (!konamiMode && activeProject?.konamiOnly) closeProject();
+  }, [konamiMode, activeProject]);
 
   const closeLightbox = () => setLightboxOpen(false);
 
@@ -307,7 +317,7 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
           </div>
         </AnimatedSection>
         <div className="card-grid">
-          {projects.map((project, index) => (
+          {visibleProjects.map((project, index) => (
             <AnimatedSection
               key={project.slug}
               className="project-card-motion"

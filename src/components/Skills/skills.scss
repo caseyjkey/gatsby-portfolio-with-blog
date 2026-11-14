@@ -2,7 +2,6 @@
 @use '../../styles/theme' as *;
 
 // === Derived Colors (replaces polished.lighten) ===
-$primary-light: color.adjust($primary, $lightness: 31%);
 $black-light: color.adjust($black, $lightness: 10%);
 
 // === Skills Section ===
@@ -56,7 +55,7 @@ $black-light: color.adjust($black, $lightness: 10%);
 
   svg {
     display: block;
-    color: $primary;
+    color: var(--color-primary);
     margin-left: 0;
     margin-right: auto;
     margin-bottom: 1.2rem;
@@ -72,7 +71,7 @@ $black-light: color.adjust($black, $lightness: 10%);
   font-weight: 800;
   font-size: 30px;
   margin-bottom: 30px;
-  color: $primary;
+  color: var(--color-primary);
 }
 
 .subsection-title {
@@ -312,7 +311,7 @@ $black-light: color.adjust($black, $lightness: 10%);
   }
 
   .primaryColor {
-    fill: $primary !important;
+    fill: var(--color-primary) !important;
   }
 
   .darkColor {

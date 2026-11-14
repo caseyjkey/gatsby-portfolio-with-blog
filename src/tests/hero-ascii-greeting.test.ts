@@ -17,7 +17,18 @@ const hero = readFileSync(
 describe('ASCII hero greeting', () => {
   test('renders the greeting through the particle component', () => {
     expect(hero).toContain('import AsciiGreeting');
-    expect(hero).toContain('<AsciiGreeting text={introductionData.greeting} />');
+    expect(hero).toContain("<AsciiGreeting text={konamiMode ? 'o shit\\nwaddup' : introductionData.greeting} />");
+  });
+
+  test('samples multi-line greetings as separate centered canvas lines', () => {
+    expect(component).toContain("const lines = text.split('\\n')");
+    expect(component).toContain('lines.forEach((line, index) =>');
+    expect(styles).toMatch(/\.hero-subheader[\s\S]*?white-space: pre-line/);
+  });
+
+  test('clears the previous particle visibility state before rebuilding text', () => {
+    expect(component).toContain("container.classList.remove('is-ready')");
+    expect(component).toContain("heading.classList.remove('is-ascii')");
   });
 
   test('keeps the real heading available to assistive technology', () => {

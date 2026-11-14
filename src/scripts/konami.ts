@@ -1,3 +1,5 @@
+import { restoreKonamiMode, toggleKonamiMode } from '../lib/konamiMode';
+
 const KONAMI_SEQUENCE = [
   'ArrowUp',
   'ArrowUp',
@@ -42,6 +44,9 @@ if (typeof window !== 'undefined' && !window.__konamiListenerInstalled) {
   window.__konamiListenerInstalled = true;
   let sequenceIndex = 0;
 
+  restoreKonamiMode();
+  document.addEventListener('astro:after-swap', restoreKonamiMode);
+
   window.addEventListener('keydown', async (event) => {
     if (event.repeat || event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) {
       return;
@@ -51,6 +56,7 @@ if (typeof window !== 'undefined' && !window.__konamiListenerInstalled) {
 
     if (sequenceIndex === KONAMI_SEQUENCE.length) {
       sequenceIndex = 0;
+      toggleKonamiMode();
       const { launchConfetti } = await import('./konamiConfetti');
       launchConfetti();
     }

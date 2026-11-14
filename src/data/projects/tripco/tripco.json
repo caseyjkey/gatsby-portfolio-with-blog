@@ -30,6 +30,7 @@
   "title": "Brewery Trip Planner",
   "status": "completed",
   "project": "tripco",
+  "konamiOnly": true,
   "icons": {
     "fa": [
       "FaReact",

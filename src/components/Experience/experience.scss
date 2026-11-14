@@ -92,9 +92,9 @@
   width: 2px;
   background: linear-gradient(
     to bottom,
-    $primary 0%,
-    $primary calc(100% - 20px),
-    rgba($primary, 0) 100%
+    var(--color-primary) 0%,
+    var(--color-primary) calc(100% - 20px),
+    rgba(var(--color-primary-rgb), 0) 100%
   );
 
   @media (max-width: 767.98px) {
@@ -168,7 +168,7 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background-color: $primary;
+  background-color: var(--color-primary);
   left: -18px;
   position: absolute;
   z-index: 2;
@@ -262,7 +262,7 @@
       content: '\2022';
       position: absolute;
       left: 0;
-      color: $primary;
+      color: var(--color-primary);
       font-size: 1.2rem;
       font-weight: bold;
     }

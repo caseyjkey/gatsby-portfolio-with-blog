@@ -37,18 +37,18 @@
 
 .btn-primary {
   @include btn-base;
-  background-color: $primary;
-  border-color: $primary;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
   color: $white;
 
   &:hover:not(:active) {
-    background-color: $primary-hover;
-    border-color: $primary-hover;
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
     color: $white;
   }
   &:active {
-    background-color: $primary-active;
-    border-color: $primary-active;
+    background-color: var(--color-primary-active);
+    border-color: var(--color-primary-active);
   }
 }
 
@@ -72,15 +72,15 @@
 .btn-ghost {
   @include btn-base;
   background-color: transparent;
-  border-color: $primary;
-  color: $primary;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 
   &:hover:not(:active) {
-    background-color: $primary;
+    background-color: var(--color-primary);
     color: $white;
   }
   &:active {
-    background-color: $primary-hover;
+    background-color: var(--color-primary-hover);
     color: $white;
   }
 }
@@ -98,6 +98,6 @@
   text-decoration: none;
   transition: color 0.15s ease-out;
 
-  &:hover { color: $primary; text-decoration: underline; }
+  &:hover { color: var(--color-primary); text-decoration: underline; }
   &:disabled, &.disabled { opacity: 0.65; cursor: not-allowed; }
 }

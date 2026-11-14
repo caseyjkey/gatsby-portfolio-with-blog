@@ -9,7 +9,6 @@ $white: #fff;
 $black: #000000;
 $darken: #232931;
 
-$primary: #3e64ff;
 $secondary: #a0f669;
 
 $breakpoints: (
@@ -67,12 +66,12 @@ body {
 
 a {
 	transition: .3s all ease;
-	color: $primary;
+	color: var(--color-primary);
 
 	&:hover,
 	&:focus {
 		text-decoration: none;
-		color: $primary;
+		color: var(--color-primary);
 		outline: none !important;
 	}
 }
@@ -93,7 +92,7 @@ h5,
 }
 
 .text-primary {
-	color: $primary !important;
+	color: var(--color-primary) !important;
 }
 
 
@@ -155,7 +154,7 @@ h5,
 						height: 2px;
 						bottom: 0;
 						left: 0;
-						background: $primary;
+						background: var(--color-primary);
 						visibility: visible;
 						-webkit-transform: scaleX(0);
 						-moz-transform: scaleX(0);
@@ -195,12 +194,12 @@ h5,
 			&.cta {
 				>a {
 					color: $white;
-					border: 1px solid $primary;
+					border: 1px solid var(--color-primary);
 					padding-top: .7rem;
 					padding-bottom: .7rem;
 					padding-left: 18px;
 					padding-right: 18px;
-					background: $primary;
+					background: var(--color-primary);
 					margin-top: 0;
 					@include border-radius(5px);
 
@@ -210,8 +209,8 @@ h5,
 					}
 
 					&:hover {
-						background: $primary;
-						border: 1px solid $primary;
+						background: var(--color-primary);
+						border: 1px solid var(--color-primary);
 					}
 				}
 
@@ -227,7 +226,7 @@ h5,
 				&.active {
 					background: transparent;
 					background: none;
-					color: $primary;
+					color: var(--color-primary);
 
 					span {
 						&:before {
@@ -242,7 +241,7 @@ h5,
 			@include media-breakpoint-down(md) {
 				&.active {
 					>a {
-						color: $primary;
+						color: var(--color-primary);
 					}
 				}
 			}
@@ -288,7 +287,7 @@ h5,
 		width: 40px;
 		height: 40px;
 		content: '';
-		background: $primary;
+		background: var(--color-primary);
 		z-index: -1;
 		transform: translateY(-50%);
 		@include border-radius(50%);
@@ -308,32 +307,32 @@ h5,
 
 @-webkit-keyframes pulse {
 	0% {
-		-webkit-box-shadow: 0 0 0 0 rgba($primary, 0.4);
+		-webkit-box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0.4);
 	}
 
 	70% {
-		-webkit-box-shadow: 0 0 0 30px rgba($primary, 0);
+		-webkit-box-shadow: 0 0 0 30px rgba(var(--color-primary-rgb), 0);
 	}
 
 	100% {
-		-webkit-box-shadow: 0 0 0 0 rgba($primary, 0);
+		-webkit-box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0);
 	}
 }
 
 @keyframes pulse {
 	0% {
-		-moz-box-shadow: 0 0 0 0 rgba($primary, 0.4);
-		box-shadow: 0 0 0 0 rgba($primary, 0.4);
+		-moz-box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0.4);
+		box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0.4);
 	}
 
 	70% {
-		-moz-box-shadow: 0 0 0 30px rgba($primary, 0);
-		box-shadow: 0 0 0 30px rgba($primary, 0);
+		-moz-box-shadow: 0 0 0 30px rgba(var(--color-primary-rgb), 0);
+		box-shadow: 0 0 0 30px rgba(var(--color-primary-rgb), 0);
 	}
 
 	100% {
-		-moz-box-shadow: 0 0 0 0 rgba($primary, 0);
-		box-shadow: 0 0 0 0 rgba($primary, 0);
+		-moz-box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0);
+		box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0);
 	}
 }
 
@@ -350,7 +349,7 @@ h5,
 }
 
 .bg-primary {
-	background: $primary;
+	background: var(--color-primary);
 }
 
 
@@ -375,7 +374,7 @@ h5,
 		i {
 			font-size: 60px;
 			line-height: 1.0;
-			color: $primary;
+			color: var(--color-primary);
 		}
 	}
 
@@ -397,7 +396,7 @@ h5,
 				content: '';
 				width: 30px;
 				height: 1px;
-				background: $primary;
+				background: var(--color-primary);
 				margin: 0 auto;
 			}
 
@@ -417,7 +416,7 @@ h5,
 			text-transform: uppercase;
 			font-size: 12px;
 			margin-bottom: 10px;
-			color: $primary;
+			color: var(--color-primary);
 		}
 
 		p {
@@ -426,7 +425,7 @@ h5,
 	}
 
 	&:hover {
-		background: $primary;
+		background: var(--color-primary);
 
 		.icon {
 			i {
@@ -468,7 +467,7 @@ h5,
 }
 
 .progress-bar {
-	background: $primary;
+	background: var(--color-primary);
 	box-shadow: none;
 	font-size: 12px;
 	line-height: 1.2;
@@ -485,7 +484,7 @@ h5,
 		width: 34px;
 		height: 34px;
 		content: '';
-		background: $primary;
+		background: var(--color-primary);
 		@include border-radius(2px);
 		opacity: 0;
 	}
@@ -582,7 +581,7 @@ h5,
 
 // USEFUL CODE
 .aside-stretch {
-	background: color.adjust($primary, $lightness: 10%);
+	background: color-mix(in srgb, var(--color-primary), white 20%);
 
 	&:after {
 		position: absolute;
@@ -591,7 +590,7 @@ h5,
 		bottom: 0;
 		content: '';
 		width: 360%;
-		background: color.adjust($primary, $lightness: 10%);
+		background: color-mix(in srgb, var(--color-primary), white 20%);
 		// background: #333644;
 	}
 
@@ -635,7 +634,7 @@ textarea.form-control {
 }
 
 .bg-primary {
-	background: $primary !important;
+	background: var(--color-primary) !important;
 }
 
 
@@ -674,7 +673,7 @@ textarea.form-control {
 
 			&:hover,
 			&:focus {
-				color: $primary;
+				color: var(--color-primary);
 			}
 		}
 	}
@@ -685,7 +684,7 @@ textarea.form-control {
 		width: 100px;
 
 		span {
-			color: $primary;
+			color: var(--color-primary);
 		}
 	}
 }
@@ -705,32 +704,32 @@ textarea.form-control {
 
 @-webkit-keyframes pulse {
 	0% {
-		-webkit-box-shadow: 0 0 0 0 rgba($primary, 0.4);
+		-webkit-box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0.4);
 	}
 
 	70% {
-		-webkit-box-shadow: 0 0 0 30px rgba($primary, 0);
+		-webkit-box-shadow: 0 0 0 30px rgba(var(--color-primary-rgb), 0);
 	}
 
 	100% {
-		-webkit-box-shadow: 0 0 0 0 rgba($primary, 0);
+		-webkit-box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0);
 	}
 }
 
 @keyframes pulse {
 	0% {
-		-moz-box-shadow: 0 0 0 0 rgba($primary, 0.4);
-		box-shadow: 0 0 0 0 rgba($primary, 0.4);
+		-moz-box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0.4);
+		box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0.4);
 	}
 
 	70% {
-		-moz-box-shadow: 0 0 0 30px rgba($primary, 0);
-		box-shadow: 0 0 0 30px rgba($primary, 0);
+		-moz-box-shadow: 0 0 0 30px rgba(var(--color-primary-rgb), 0);
+		box-shadow: 0 0 0 30px rgba(var(--color-primary-rgb), 0);
 	}
 
 	100% {
-		-moz-box-shadow: 0 0 0 0 rgba($primary, 0);
-		box-shadow: 0 0 0 0 rgba($primary, 0);
+		-moz-box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0);
+		box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0);
 	}
 }
 
@@ -858,7 +857,7 @@ textarea.form-control {
 		strong.number {
 			font-weight: 700;
 			font-size: 30px;
-			color: $primary;
+			color: var(--color-primary);
 			display: block;
 		}
 
@@ -879,7 +878,7 @@ textarea.form-control {
 		display: block;
 		font-size: 72px;
 		font-weight: bold;
-		color: $primary;
+		color: var(--color-primary);
 	}
 
 	.ftco-label {
@@ -927,7 +926,7 @@ textarea.form-control {
 				&:hover,
 				&:focus,
 				&:active {
-					color: $primary;
+					color: var(--color-primary);
 				}
 			}
 		}
@@ -941,14 +940,14 @@ textarea.form-control {
 		font-weight: 600;
 
 		span {
-			color: $primary;
+			color: var(--color-primary);
 		}
 
 		a {
-			color: $primary;
+			color: var(--color-primary);
 
 			&:hover {
-				color: $primary;
+				color: var(--color-primary);
 			}
 		}
 	}
@@ -1066,7 +1065,7 @@ textarea.form-control {
 		.icon {
 			width: 100px;
 			height: 100px;
-			background: $primary;
+			background: var(--color-primary);
 			margin: 0 auto;
 			margin-bottom: 10px;
 			@include border-radius(50%);
@@ -1101,7 +1100,7 @@ textarea.form-control {
 	.contact-info {
 		p {
 			a {
-				color: $primary;
+				color: var(--color-primary);
 			}
 
 			span {}
@@ -1155,7 +1154,7 @@ textarea.form-control {
 				&:hover,
 				&:active,
 				&:focus {
-					color: $primary;
+					color: var(--color-primary);
 				}
 			}
 		}
@@ -1260,7 +1259,7 @@ textarea.form-control {
 				font-size: 13px;
 				letter-spacing: .1em;
 				color: rgba(255, 255, 255, .3);
-				color: $primary;
+				color: var(--color-primary);
 				font-weight: 600;
 				margin-bottom: 20px;
 			}
@@ -1351,12 +1350,12 @@ textarea.form-control {
 				position: absolute;
 				right: 0;
 				top: 0;
-				color: $primary;
+				color: var(--color-primary);
 			}
 
 			&:hover,
 			&:focus {
-				color: $primary;
+				color: var(--color-primary);
 			}
 		}
 

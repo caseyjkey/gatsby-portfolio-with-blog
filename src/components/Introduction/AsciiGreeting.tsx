@@ -108,6 +108,12 @@ export default function AsciiGreeting({ text }: Props) {
     const heading = headingRef.current;
     if (!wrapper || !container || !canvas || !heading) return undefined;
 
+    // A text change tears down and rebuilds the particle field. Remove the
+    // previous run's visibility classes before reading the heading color,
+    // otherwise the new canvas inherits `color: transparent`.
+    container.classList.remove('is-ready');
+    heading.classList.remove('is-ascii');
+
     // Reduced motion keeps the plain heading and never starts the effect.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return undefined;
@@ -135,6 +141,7 @@ export default function AsciiGreeting({ text }: Props) {
     const repulsionRadius = Math.max(40, fontSize * 1.6);
     const repulsionForce = isMobile ? 5 : 3;
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const lines = text.split('\n');
 
     let width = 0;
     let height = 0;
@@ -528,9 +535,12 @@ export default function AsciiGreeting({ text }: Props) {
 
       // Fit the ASCII block inside the CSS-reserved band so nothing reflows.
       const reservedHeight = wrapper.getBoundingClientRect().height || height;
-      const baseMetrics = measureContext.measureText(text);
-      const baseTextWidth = Math.max(1, baseMetrics.width);
-      const bandFontSize = Math.max(16, reservedHeight / 1.3);
+      const baseTextWidth = Math.max(
+        1,
+        ...lines.map((line) => measureContext.measureText(line).width),
+      );
+      const lineHeightRatio = 1.15;
+      const bandFontSize = Math.max(16, reservedHeight / (lineHeightRatio * lines.length));
       const bandTextWidth = baseTextWidth * (bandFontSize / fontSize);
       const displayFontSize =
         bandTextWidth > availableWidth
@@ -547,10 +557,12 @@ export default function AsciiGreeting({ text }: Props) {
       if ('letterSpacing' in measureContext) {
         measureContext.letterSpacing = `${letterSpacing === '0px' ? 0 : Number.parseFloat(letterSpacing) * (displayFontSize / fontSize)}px`;
       }
-      const displayMetrics = measureContext.measureText(text);
-      const scaledTextWidth = Math.max(1, Math.ceil(displayMetrics.width));
+      const scaledTextWidth = Math.max(
+        1,
+        ...lines.map((line) => Math.ceil(measureContext.measureText(line).width)),
+      );
       width = scaledTextWidth;
-      height = Math.ceil(displayFontSize * 1.3);
+      height = Math.ceil(displayFontSize * lineHeightRatio * lines.length);
 
       // Center the wider ASCII block on the greeting it replaces.
       const headingCenterX = headingBox.left + headingBox.width / 2;
@@ -575,9 +587,13 @@ export default function AsciiGreeting({ text }: Props) {
         samplerContext.letterSpacing = `${letterSpacing === '0px' ? 0 : Number.parseFloat(letterSpacing) * (displayFontSize / fontSize)}px`;
       }
       samplerContext.fillStyle = '#ffffff';
-      samplerContext.textAlign = 'left';
+      samplerContext.textAlign = 'center';
       samplerContext.textBaseline = 'middle';
-      samplerContext.fillText(text, 0, height / 2);
+      const lineHeight = displayFontSize * lineHeightRatio;
+      lines.forEach((line, index) => {
+        const y = lineHeight * (index + 0.5);
+        samplerContext.fillText(line, width / 2, y);
+      });
 
       const pixels = samplerContext.getImageData(0, 0, width, height).data;
 
@@ -701,6 +717,8 @@ export default function AsciiGreeting({ text }: Props) {
     return () => {
       cancelled = true;
       stop();
+      container.classList.remove('is-ready');
+      heading.classList.remove('is-ascii');
       observer.disconnect();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       canvas.removeEventListener('pointerdown', handlePointerDown);

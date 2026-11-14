@@ -12,6 +12,7 @@
   "title": "Innovative UI/UX Portfolio",
   "status": "live",
   "project": "uxportfolio",
+  "konamiOnly": true,
   "icons": {
     "fa": [],
     "di": [

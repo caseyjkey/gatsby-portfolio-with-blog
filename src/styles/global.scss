@@ -6,8 +6,20 @@
   --color-black: #{$black};
   --color-darken: #{$darken};
   --color-primary: #{$primary};
+  --color-primary-rgb: 62, 100, 255;
+  --color-primary-hover: #{$primary-hover};
+  --color-primary-active: #{$primary-active};
+  --color-primary-light: #dbe2ff;
   --color-secondary: #{$secondary};
   --text-muted: #{$text-muted};
+}
+
+:root[data-konami-mode='active'] {
+  --color-primary: #e11d48;
+  --color-primary-rgb: 225, 29, 72;
+  --color-primary-hover: #be123c;
+  --color-primary-active: #9f1239;
+  --color-primary-light: #ffe4e6;
 }
 
 html { scroll-behavior: smooth; }

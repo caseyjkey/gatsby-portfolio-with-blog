@@ -17,6 +17,7 @@ type RawProject = {
   link?: string;
   sourceLink?: string;
   status?: string;
+  konamiOnly?: boolean;
   project: string;
 };
 
@@ -106,7 +107,7 @@ export function getProjects() {
 
 export function getFeaturedProjects() {
   const featured = new Set(['spiritbeads', 'farmx', 'datacatalog']);
-  return projectRecords.filter((project) => featured.has(project.slug));
+  return projectRecords.filter((project) => featured.has(project.slug) || project.konamiOnly);
 }
 
 export function getProjectBySlug(slug: string) {
