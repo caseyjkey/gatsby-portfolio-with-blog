@@ -128,7 +128,9 @@ export default function AsciiGreeting({ text }: Props) {
     const fontWeight = headingStyle.fontWeight || '600';
     const letterSpacing =
       headingStyle.letterSpacing === 'normal' ? '0px' : headingStyle.letterSpacing;
-    const ink = headingStyle.color;
+    const ink = window.getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-primary')
+      .trim() || '#3e64ff';
 
     const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     const glyphs = isMobile ? GLYPH_SET_MOBILE : GLYPH_SET_DESKTOP;
@@ -539,7 +541,7 @@ export default function AsciiGreeting({ text }: Props) {
         1,
         ...lines.map((line) => measureContext.measureText(line).width),
       );
-      const lineHeightRatio = 1.15;
+      const lineHeightRatio = 1.02;
       const bandFontSize = Math.max(16, reservedHeight / (lineHeightRatio * lines.length));
       const bandTextWidth = baseTextWidth * (bandFontSize / fontSize);
       const displayFontSize =
@@ -564,10 +566,15 @@ export default function AsciiGreeting({ text }: Props) {
       width = scaledTextWidth;
       height = Math.ceil(displayFontSize * lineHeightRatio * lines.length);
 
-      // Center the wider ASCII block on the greeting it replaces.
-      const headingCenterX = headingBox.left + headingBox.width / 2;
-      container.style.left = `${headingCenterX - width / 2 - wrapperBox.left}px`;
+      // Anchor to the full greeting band rather than the plain heading's text
+      // width. This keeps both one- and two-line variants truly centered on
+      // narrow screens.
+      container.style.left = '50%';
+      container.style.right = 'auto';
       container.style.top = `${headingBox.top - wrapperBox.top}px`;
+      container.style.bottom = 'auto';
+      container.style.width = `${width}px`;
+      container.style.transform = 'translateX(-50%)';
 
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;

@@ -227,8 +227,8 @@ export default function HeroSection() {
           <div className="hero-mobile-headshot-container">
             <MobileBlob className="hero-mobile-blob" />
             <picture>
-              <source media="(max-width: 991.98px)" srcSet={konamiMode ? '/images/about-polaroids/casey-city-night.webp' : '/mobile-headshot.webp'} width="1728" height="2368" />
-              <img className="hero-mobile-headshot-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1728' height='2368'%3E%3C/svg%3E" alt="Casey Key" width="1728" height="2368" fetchPriority="high" />
+              <source media="(max-width: 991.98px)" srcSet={konamiMode ? '/images/about-polaroids/casey-city-night-cutout.webp' : '/mobile-headshot.webp'} width={konamiMode ? 1122 : 1728} height={konamiMode ? 1402 : 2368} />
+              <img className={`hero-mobile-headshot-img${konamiMode ? ' is-konami' : ''}`} src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1728' height='2368'%3E%3C/svg%3E" alt="Casey Key" width={konamiMode ? 1122 : 1728} height={konamiMode ? 1402 : 2368} fetchPriority="high" />
             </picture>
           </div>
         </div>
@@ -240,8 +240,8 @@ export default function HeroSection() {
           <div className="hero-desktop-headshot-container">
             <DesktopBlob className="hero-desktop-blob" />
             <picture>
-              <source media="(min-width: 992px)" srcSet={konamiMode ? '/images/about-polaroids/casey-city-night.webp' : '/headshot.webp'} width="1728" height="2368" />
-              <img className="hero-desktop-headshot-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1728' height='2368'%3E%3C/svg%3E" alt="Casey Key" width="1728" height="2368" fetchPriority="high" />
+              <source media="(min-width: 992px)" srcSet={konamiMode ? '/images/about-polaroids/casey-city-night-cutout.webp' : '/headshot.webp'} width={konamiMode ? 1122 : 1728} height={konamiMode ? 1402 : 2368} />
+              <img className={`hero-desktop-headshot-img${konamiMode ? ' is-konami' : ''}`} src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1728' height='2368'%3E%3C/svg%3E" alt="Casey Key" width={konamiMode ? 1122 : 1728} height={konamiMode ? 1402 : 2368} fetchPriority="high" />
             </picture>
           </div>
         </div>

@@ -128,10 +128,16 @@ type Props = {
 export default function ProjectCards({ projects, title, subtitle }: Props) {
   const isFeatured = title === 'Featured Work';
   const konamiMode = useKonamiMode();
-  const visibleProjects = useMemo(
-    () => projects.filter((project) => !project.konamiOnly || konamiMode),
-    [projects, konamiMode],
-  );
+  const visibleProjects = useMemo(() => {
+    if (isFeatured) {
+      const featuredSet = projects.filter((project) => (
+        konamiMode ? project.konamiOnly : !project.konamiOnly
+      ));
+      return featuredSet.slice(0, 3);
+    }
+
+    return projects.filter((project) => !project.konamiOnly || konamiMode);
+  }, [isFeatured, projects, konamiMode]);
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -328,7 +334,7 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
               trackViewportEdges
             >
               <article
-                className="project-card"
+                className={`project-card${project.konamiOnly && konamiMode ? ' project-card--unlocked' : ''}`}
                 role="button"
                 tabIndex={0}
                 onClick={() => openProject(project)}

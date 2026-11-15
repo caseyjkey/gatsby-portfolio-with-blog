@@ -31,10 +31,16 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain("heading.classList.remove('is-ascii')");
   });
 
+  test('hides the plain heading during setup and centers the canvas on the full band', () => {
+    expect(styles).toMatch(/\.hero-greeting \.hero-subheader\s*{\s*color: transparent/);
+    expect(component).toContain("container.style.left = '50%'");
+    expect(component).toContain("container.style.transform = 'translateX(-50%)'");
+  });
+
   test('keeps the real heading available to assistive technology', () => {
     expect(component).toContain('ref={headingRef}');
     expect(component).toContain('{text}');
-    expect(styles).toMatch(/\.hero-subheader\.is-ascii\s*{\s*color: transparent/);
+    expect(styles).toMatch(/\.hero-greeting \.hero-subheader\s*{\s*color: transparent/);
   });
 
   test('skips the effect entirely under reduced motion', () => {

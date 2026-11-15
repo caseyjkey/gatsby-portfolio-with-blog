@@ -15,12 +15,14 @@ describe('Konami mode', () => {
 
   test('switches the greeting and defers the alternate portrait URL until activation', () => {
     expect(hero).toContain("konamiMode ? 'o shit\\nwaddup'");
-    expect(hero).toContain("konamiMode ? '/images/about-polaroids/casey-city-night.webp'");
+    expect(hero).toContain("konamiMode ? '/images/about-polaroids/casey-city-night-cutout.webp'");
   });
 
   test('reveals opt-in projects only while the mode is active', () => {
     expect(projectCards).toContain('!project.konamiOnly || konamiMode');
+    expect(projectCards).toContain('return featuredSet.slice(0, 3)');
     expect(projectCards).toContain('visibleProjects.map');
+    expect(projectCards).toContain("project-card--unlocked");
   });
 
   test('changes the shared primary palette to red', () => {

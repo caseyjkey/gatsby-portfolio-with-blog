@@ -59,6 +59,7 @@
 }
 
 .project-card {
+  position: relative;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -69,6 +70,34 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &--unlocked {
+    border: 1px solid rgba(var(--color-primary-rgb), 0.35);
+    box-shadow:
+      0 8px 26px rgba(var(--color-primary-rgb), 0.14),
+      0 0 0 1px rgba(var(--color-primary-rgb), 0.08);
+
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 4;
+      top: -45%;
+      left: -75%;
+      width: 42%;
+      height: 190%;
+      pointer-events: none;
+      transform: skewX(-18deg);
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(var(--color-primary-rgb), 0.28),
+        rgba(255, 255, 255, 0.54),
+        rgba(var(--color-primary-rgb), 0.2),
+        transparent
+      );
+      animation: project-unlocked-shimmer 2.8s ease-in-out infinite;
+    }
+  }
 
   &:hover {
     transform: translateY(-4px);
@@ -170,6 +199,18 @@
     p:last-child {
       margin-bottom: 0;
     }
+  }
+}
+
+@keyframes project-unlocked-shimmer {
+  0%, 18% { left: -75%; }
+  72%, 100% { left: 135%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card--unlocked::after {
+    animation: none;
+    display: none;
   }
 }
 
