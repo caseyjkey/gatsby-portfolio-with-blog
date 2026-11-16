@@ -1,4 +1,9 @@
 import { restoreKonamiMode, toggleKonamiMode } from '../lib/konamiMode';
+import {
+  canUseMobileHomeHeaderCode,
+  registerMobileHomeHeaderTap,
+  type HeaderTapState,
+} from './mobileKonamiTap';
 
 const KONAMI_SEQUENCE = [
   'ArrowUp',
@@ -51,9 +56,18 @@ declare global {
 if (typeof window !== 'undefined' && !window.__konamiListenerInstalled) {
   window.__konamiListenerInstalled = true;
   let sequenceIndex = 0;
+  let headerTapState: HeaderTapState = { count: 0, lastTapAt: 0 };
 
   restoreKonamiMode();
-  document.addEventListener('astro:after-swap', restoreKonamiMode);
+  document.addEventListener('astro:after-swap', () => {
+    sequenceIndex = 0;
+    headerTapState = { count: 0, lastTapAt: 0 };
+    restoreKonamiMode();
+  });
+  document.addEventListener('astro:page-load', () => {
+    sequenceIndex = 0;
+    headerTapState = { count: 0, lastTapAt: 0 };
+  });
 
   window.addEventListener('keydown', async (event) => {
     if (event.repeat || event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) {
@@ -76,4 +90,29 @@ if (typeof window !== 'undefined' && !window.__konamiListenerInstalled) {
       launchConfetti();
     }
   });
+
+  window.addEventListener('click', async (event) => {
+    if (!(event.target instanceof Element) || event.detail === 0) return;
+    const brand = event.target.closest('.navbar-brand');
+    if (!brand) return;
+
+    const eligible = canUseMobileHomeHeaderCode(
+      window.location.pathname,
+      window.innerWidth,
+      window.scrollY,
+    );
+    const result = registerMobileHomeHeaderTap(headerTapState, Date.now(), eligible);
+    headerTapState = result.state;
+
+    // On eligible mobile home taps, do not let the brand anchor navigate away
+    // or reset the short tap sequence before its fifth activation.
+    if (eligible) event.preventDefault();
+    if (!result.activated) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    toggleKonamiMode();
+    const { launchConfetti } = await import('./konamiConfetti');
+    launchConfetti();
+  }, true);
 }

@@ -1,4 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import {
+  ASCII_RIPPLE_LIFETIME_MS,
+  sampleAsciiRippleField,
+  type RippleSource,
+} from '../../animations/asciiRipple';
 
 // === ASCII greeting particles ===
 // Interaction adapted from the devlog~ hero: the rendered word is sampled into
@@ -50,7 +55,7 @@ const MOBILE_BREAKPOINT = 600;
 // Mobile touch physics. A mote is a glyph that a finger has displaced; it
 // keeps its own velocity so it trails the finger and springs back over about
 // a second, which is what makes the motion read as a swoosh.
-const MOBILE_MAX_ACTIVE = 96;
+const MOBILE_MAX_ACTIVE = 220;
 const MOBILE_INTERACTION_FPS = 24;
 const MOBILE_KICK = 1.25;
 const MOBILE_REPULSION_SCALE = 2.05;
@@ -59,11 +64,9 @@ const MOBILE_DAMPING = 0.94;
 const MOBILE_TRAIL_OFFSET = 1.1;
 const MOBILE_SETTLE_DISTANCE = 0.5;
 const MOBILE_SETTLE_SPEED = 0.4;
-const RIPPLE_SPEED = 260;
-const RIPPLE_LIFETIME = 0.72;
-const RIPPLE_WIDTH = 34;
-const RIPPLE_MAX_SOURCES = 18;
-const RIPPLE_SAMPLE_DISTANCE = 18;
+const RIPPLE_MAX_SOURCES = 36;
+const RIPPLE_SAMPLE_DISTANCE = 22;
+const MOBILE_RIPPLE_MIN_STRENGTH = 0.018;
 
 type Particle = {
   alpha: number;
@@ -82,6 +85,7 @@ type Particle = {
 
 type MobileMote = {
   char: string;
+  pointIndex: number;
   homeX: number;
   homeY: number;
   vx: number;
@@ -94,12 +98,6 @@ type MobileGlyphPoint = {
   char: string;
   x: number;
   y: number;
-};
-
-type RippleSource = {
-  x: number;
-  y: number;
-  bornAt: number;
 };
 
 type Props = {
@@ -192,22 +190,16 @@ export default function AsciiGreeting({ text }: Props) {
       context.drawImage(mobileStaticLayer, 0, 0, width, height);
 
       if (mobileMotes.length === 0) return;
-      // Fade the original glyph shape rather than cutting rectangular holes
-      // out of the cached word, so each mote flows from its own letterform.
+      // Erase the exact cached glyphs at their home pixels, never a spatial
+      // brush patch. That means the whole word stays intact outside the glyphs
+      // actually swept into the wavefront.
       context.save();
       context.globalCompositeOperation = 'destination-out';
+      context.globalAlpha = 1;
       for (const mote of mobileMotes) {
-        const sprite = mobileGlyphSprites.get(mote.char);
-        if (!sprite) continue;
-        const displacement = Math.hypot(mote.x - mote.homeX, mote.y - mote.homeY);
-        context.globalAlpha = Math.min(0.94, 0.45 + displacement / 14);
-        context.drawImage(
-          sprite,
-          mote.homeX,
-          mote.homeY - glyphSize * 0.62,
-          glyphSize * 0.78,
-          glyphSize * 1.24
-        );
+        const point = mobileGlyphPoints[mote.pointIndex];
+        if (!point) continue;
+        context.fillRect(point.x, point.y - 2.5, 5, 5);
       }
       context.restore();
       for (const mote of mobileMotes) {
@@ -228,22 +220,25 @@ export default function AsciiGreeting({ text }: Props) {
     // Advance the disturbed glyphs. Only motes near the finger are simulated,
     // which keeps the per-frame cost proportional to the touch rather than
     // to the size of the word.
-    const stepMobileMotes = () => {
-      if (mobileMotes.length === 0) return false;
-
+    const stepMobileMotes = (now: number) => {
       const radius = repulsionRadius * MOBILE_REPULSION_SCALE;
       const activeMotes: MobileMote[] = [];
 
       for (const mote of mobileMotes) {
         const dx = mote.x - pointerX;
         const dy = mote.y - pointerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = Math.hypot(dx, dy);
+        const field = sampleAsciiRippleField(mote.homeX, mote.homeY, rippleSources, now);
 
-        if (pointerX > -1000 && distance < radius) {
+        if (field.strength > MOBILE_RIPPLE_MIN_STRENGTH) {
+          const force = Math.min(2.4, field.strength * MOBILE_KICK * 3.2);
+          mote.vx += field.x * force;
+          mote.vy += field.y * force;
+        }
+        if (pointerX > -1000 && distance < radius && distance > 0.01) {
           const falloff = (1 - distance / radius) ** 2;
-          const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
-          mote.vx += Math.cos(angle) * falloff * MOBILE_KICK;
-          mote.vy += Math.sin(angle) * falloff * MOBILE_KICK;
+          mote.vx += (dx / distance) * falloff * MOBILE_KICK * 0.35;
+          mote.vy += (dy / distance) * falloff * MOBILE_KICK * 0.35;
         }
 
         mote.vx += (mote.homeX - mote.x) * MOBILE_SPRING_STRENGTH;
@@ -278,68 +273,69 @@ export default function AsciiGreeting({ text }: Props) {
       touchX: number,
       touchY: number,
       gestureX: number,
-      gestureY: number
+      gestureY: number,
+      now: number
     ) => {
       const radius = repulsionRadius * MOBILE_REPULSION_SCALE;
-      const candidates: Array<{ char: string; x: number; y: number; distance: number }> = [];
+      const candidates: Array<{
+        char: string;
+        x: number;
+        y: number;
+        distance: number;
+        pointIndex: number;
+        field: ReturnType<typeof sampleAsciiRippleField>;
+      }> = [];
 
-      for (const point of mobileGlyphPoints) {
+      mobileGlyphPoints.forEach((point, pointIndex) => {
         const dx = point.x - touchX;
         const dy = point.y - touchY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance >= radius) continue;
-        candidates.push({ char: point.char, x: point.x, y: point.y, distance });
-      }
+        const distance = Math.hypot(dx, dy);
+        const field = sampleAsciiRippleField(point.x, point.y, rippleSources, now);
+        if (distance >= radius && field.strength < MOBILE_RIPPLE_MIN_STRENGTH) return;
+        candidates.push({ char: point.char, x: point.x, y: point.y, distance, pointIndex, field });
+      });
 
-      // Only the closest glyphs become motes, so a swipe cannot turn into
-      // hundreds of simultaneous springs.
-      candidates.sort((a, b) => a.distance - b.distance);
-      for (const candidate of candidates) {
-        const existing = mobileMotes.find(
-          (mote) =>
-            mote.char === candidate.char &&
-            Math.abs(mote.homeX - candidate.x) < 0.01 &&
-            Math.abs(mote.homeY - candidate.y) < 0.01
-        );
-        if (existing) {
-          // Already disturbed: push it further instead of creating a duplicate.
-          const dx = candidate.x - touchX;
-          const dy = candidate.y - touchY;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
-          existing.vx += Math.cos(angle) * MOBILE_KICK * 0.6 + gestureX * 0.12;
-          existing.vy += Math.sin(angle) * MOBILE_KICK * 0.6 + gestureY * 0.12;
-          continue;
-        }
-        if (mobileMotes.length >= MOBILE_MAX_ACTIVE) {
-          // Keep the fixed-size physics pool moving with the finger. The old
-          // implementation filled all slots at pointerdown, so later points
-          // in the same swipe could not disturb any new glyphs and the ripple
-          // appeared frozen at its initial location.
-          let farthestIndex = -1;
-          let farthestDistance = candidate.distance;
-          mobileMotes.forEach((mote, index) => {
-            const moteDistance = Math.hypot(mote.homeX - touchX, mote.homeY - touchY);
-            if (moteDistance > farthestDistance) {
-              farthestDistance = moteDistance;
-              farthestIndex = index;
-            }
-          });
-          if (farthestIndex < 0) continue;
-          mobileMotes.splice(farthestIndex, 1);
-        }
+      // Reuse only the strongest glyphs from the full-word ripple field. A
+      // swipe can now recruit motes far from the finger as each wavefront
+      // travels, instead of touching a small local patch and stopping there.
+      const score = (candidate: (typeof candidates)[number]) =>
+        candidate.field.strength +
+        (candidate.distance < radius ? 0.12 * (1 - candidate.distance / radius) : 0);
+      candidates.sort((a, b) => score(b) - score(a));
+
+      // Reserve an equal slice of the mote budget for each horizontal part of
+      // the word. Without this, the strongest local samples can crowd out
+      // distant glyphs even though the ripple field reaches them.
+      const distributedCandidates = new Map<number, (typeof candidates)[number]>();
+      const perBand = Math.ceil(MOBILE_MAX_ACTIVE / 5);
+      for (let band = 0; band < 5; band += 1) {
+        candidates
+          .filter((candidate) => Math.min(4, Math.floor((candidate.x / width) * 5)) === band)
+          .slice(0, perBand)
+          .forEach((candidate) => distributedCandidates.set(candidate.pointIndex, candidate));
+      }
+      const selectedCandidates = [...distributedCandidates.values()]
+        .sort((a, b) => score(b) - score(a))
+        .slice(0, MOBILE_MAX_ACTIVE);
+      const selectedPoints = new Set(selectedCandidates.map((candidate) => candidate.pointIndex));
+      mobileMotes = mobileMotes.filter((mote) => selectedPoints.has(mote.pointIndex));
+      for (const candidate of selectedCandidates) {
+        const existing = mobileMotes.find((mote) => mote.pointIndex === candidate.pointIndex);
+        if (existing) continue;
 
         const dx = candidate.x - touchX;
         const dy = candidate.y - touchY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = Math.hypot(dx, dy);
         const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
-        const falloff = (1 - distance / radius) ** 2;
+        const falloff = distance < radius ? (1 - distance / radius) ** 2 : 0;
+        const fieldForce = Math.min(2.4, candidate.field.strength * MOBILE_KICK * 3.2);
         mobileMotes.push({
           char: candidate.char,
+          pointIndex: candidate.pointIndex,
           homeX: candidate.x,
           homeY: candidate.y,
-          vx: Math.cos(angle) * MOBILE_KICK * falloff + gestureX * 0.18,
-          vy: Math.sin(angle) * MOBILE_KICK * falloff + gestureY * 0.18,
+          vx: candidate.field.x * fieldForce + Math.cos(angle) * MOBILE_KICK * falloff + gestureX * 0.18,
+          vy: candidate.field.y * fieldForce + Math.sin(angle) * MOBILE_KICK * falloff + gestureY * 0.18,
           x: candidate.x,
           y: candidate.y,
         });
@@ -354,9 +350,11 @@ export default function AsciiGreeting({ text }: Props) {
         return;
       }
       lastMobileFrameAt = now;
-      const active = stepMobileMotes();
+      rippleClock = now;
+      const active = stepMobileMotes(now);
       paintMobile();
-      if ((active || activeContactPointer !== null) && inView && !document.hidden) {
+      rippleSources = rippleSources.filter((source) => now - source.bornAt <= ASCII_RIPPLE_LIFETIME_MS);
+      if ((active || activeContactPointer !== null || rippleSources.length > 0) && inView && !document.hidden) {
         frame = window.requestAnimationFrame(drawMobile);
       }
     };
@@ -386,14 +384,19 @@ export default function AsciiGreeting({ text }: Props) {
       const steps = Math.max(1, Math.ceil(distance / RIPPLE_SAMPLE_DISTANCE));
       for (let index = 1; index <= steps; index += 1) {
         const progress = index / steps;
+        const sourceAt = now - ((steps - index) / steps) * Math.min(120, distance * 0.32);
         rippleSources.push({
           x: fromX + (toX - fromX) * progress,
           y: fromY + (toY - fromY) * progress,
-          bornAt: now,
+          bornAt: sourceAt,
         });
       }
       if (rippleSources.length > RIPPLE_MAX_SOURCES) {
-        rippleSources.splice(0, rippleSources.length - RIPPLE_MAX_SOURCES);
+        const activeSources = rippleSources.slice(-RIPPLE_MAX_SOURCES);
+        const stride = activeSources.length / RIPPLE_MAX_SOURCES;
+        rippleSources = Array.from({ length: RIPPLE_MAX_SOURCES }, (_, index) =>
+          activeSources[Math.floor(index * stride)],
+        );
       }
     };
 
@@ -407,7 +410,13 @@ export default function AsciiGreeting({ text }: Props) {
         // hand does not cover the interesting part of the interaction.
         pointerX = point.x - gestureX * MOBILE_TRAIL_OFFSET;
         pointerY = point.y - gestureY * MOBILE_TRAIL_OFFSET;
-        disturbMobile(pointerX, pointerY, gestureX, gestureY);
+        const now = rippleClock;
+        if (previousPointerX > -1000 && previousPointerY > -1000) {
+          addRippleAlong(previousPointerX, previousPointerY, point.x, point.y, now);
+        } else {
+          rippleSources.push({ x: point.x, y: point.y, bornAt: now });
+        }
+        disturbMobile(pointerX, pointerY, gestureX, gestureY, now);
         previousPointerX = point.x;
         previousPointerY = point.y;
         startMobile();
@@ -416,7 +425,7 @@ export default function AsciiGreeting({ text }: Props) {
         if (previousPointerX > -1000 && previousPointerY > -1000) {
           addRippleAlong(previousPointerX, previousPointerY, point.x, point.y, now);
         } else {
-          rippleSources.push({ x: point.x, y: point.y, bornAt: now });
+          rippleSources.push({ x: point.x, y: point.y, bornAt: now - 28 });
         }
         pointerX = point.x;
         pointerY = point.y;
@@ -500,23 +509,10 @@ export default function AsciiGreeting({ text }: Props) {
           // the lettering. A soft wavefront and tangential force make the
           // glyphs ripple outward instead of erasing a fixed circle.
           if (!isMobile && rippleSources.length > 0) {
-            for (const source of rippleSources) {
-              const age = (now - source.bornAt) / 1000;
-              if (age < 0 || age > RIPPLE_LIFETIME) continue;
-              const dx = particle.x - source.x;
-              const dy = particle.y - source.y;
-              const distance = Math.hypot(dx, dy);
-              if (distance < 0.01) continue;
-              const wave = RIPPLE_SPEED * age;
-              const band = (distance - wave) / RIPPLE_WIDTH;
-              const falloff = Math.exp(-band * band) * (1 - age / RIPPLE_LIFETIME);
-              const radialX = dx / distance;
-              const radialY = dy / distance;
-              const swirl = 0.42;
-              const push = falloff * repulsionForce * 1.8;
-              particle.vx += (radialX - radialY * swirl) * push;
-              particle.vy += (radialY + radialX * swirl) * push;
-            }
+            const field = sampleAsciiRippleField(particle.x, particle.y, rippleSources, now);
+            const push = field.strength * repulsionForce * 1.7;
+            particle.vx += field.x * push;
+            particle.vy += field.y * push;
           } else if (isMobile && pointerX > -1000) {
             const dx = particle.x - pointerX;
             const dy = particle.y - pointerY;
@@ -561,7 +557,7 @@ export default function AsciiGreeting({ text }: Props) {
 
       context.globalAlpha = 1;
       rippleSources = rippleSources.filter(
-        (source) => (now - source.bornAt) / 1000 <= RIPPLE_LIFETIME
+        (source) => now - source.bornAt <= ASCII_RIPPLE_LIFETIME_MS
       );
       frame = window.requestAnimationFrame(draw);
     };

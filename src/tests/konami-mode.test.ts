@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import { readFileSync } from 'node:fs';
 
 const konami = readFileSync(new URL('../scripts/konami.ts', import.meta.url), 'utf8');
+const mobileTap = readFileSync(new URL('../scripts/mobileKonamiTap.ts', import.meta.url), 'utf8');
 const hero = readFileSync(new URL('../components/Introduction/HeroSection.tsx', import.meta.url), 'utf8');
 const projectCards = readFileSync(new URL('../components/Projects/ProjectCards.tsx', import.meta.url), 'utf8');
 const theme = readFileSync(new URL('../styles/global.scss', import.meta.url), 'utf8');
@@ -38,6 +39,16 @@ describe('Konami mode', () => {
       { slug: 'scholarshipsplus', private: true, publicPost: true },
       { slug: 'neongoals', private: true, publicPost: true },
     ]);
+  });
+
+  test('supports five mobile home-header taps only when at the top of home', () => {
+    expect(mobileTap).toContain('MOBILE_HOME_HEADER_TAP_COUNT = 5');
+    expect(mobileTap).toContain("pathname === '/' || pathname === '/index.html'");
+    expect(mobileTap).toContain('viewportWidth <= MOBILE_HOME_MAX_WIDTH');
+    expect(mobileTap).toContain('scrollY <= TOP_OF_PAGE_THRESHOLD');
+    expect(konami).toContain("window.addEventListener('click'");
+    expect(konami).toContain("event.target.closest('.navbar-brand')");
+    expect(konami).toContain('event.stopImmediatePropagation()');
   });
 
   test('changes the shared primary palette to red', () => {
