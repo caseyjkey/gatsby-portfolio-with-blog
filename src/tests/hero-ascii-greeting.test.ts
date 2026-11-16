@@ -81,6 +81,9 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain('mobileGlyphPoints.push({ char: glyph, x, y })');
     expect(component).toContain('const MOBILE_MAX_ACTIVE = 96');
     expect(component).toContain('const MOBILE_INTERACTION_FPS = 24');
+    expect(component).toContain('const MOBILE_REPULSION_SCALE = 2.05');
+    expect(component).toContain('const RIPPLE_SPEED = 260');
+    expect(component).toContain('const RIPPLE_LIFETIME = 0.72');
     expect(component).toContain('const mobileGlyphSprites = new Map');
     expect(component).toContain('mobileGlyphSprites.get(mote.char)');
     expect(component).toContain('const stepMobileMotes = () =>');
@@ -89,6 +92,10 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain('mote.vx += (mote.homeX - mote.x) * MOBILE_SPRING_STRENGTH');
     expect(component).toContain('point.x - gestureX * MOBILE_TRAIL_OFFSET');
     expect(component).toContain('mobileMotes.splice(farthestIndex, 1)');
+    expect(component).toContain('context.globalCompositeOperation = \'destination-out\'');
+    expect(component).toContain('addRippleAlong(previousPointerX, previousPointerY, point.x, point.y, now)');
+    expect(component).toContain('const wave = RIPPLE_SPEED * age');
+    expect(component).toContain('const swirl = 0.42');
     expect(component).toContain('if (mobileMotes.length > 0) startMobile()');
     expect(component).not.toContain('createRadialGradient');
     expect(component).not.toContain("staticContext.letterSpacing");

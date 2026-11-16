@@ -52,13 +52,18 @@ const MOBILE_BREAKPOINT = 600;
 // a second, which is what makes the motion read as a swoosh.
 const MOBILE_MAX_ACTIVE = 96;
 const MOBILE_INTERACTION_FPS = 24;
-const MOBILE_KICK = 1.8;
-const MOBILE_REPULSION_SCALE = 1.35;
-const MOBILE_SPRING_STRENGTH = 0.022;
-const MOBILE_DAMPING = 0.9;
-const MOBILE_TRAIL_OFFSET = 0.85;
+const MOBILE_KICK = 1.25;
+const MOBILE_REPULSION_SCALE = 2.05;
+const MOBILE_SPRING_STRENGTH = 0.009;
+const MOBILE_DAMPING = 0.94;
+const MOBILE_TRAIL_OFFSET = 1.1;
 const MOBILE_SETTLE_DISTANCE = 0.5;
 const MOBILE_SETTLE_SPEED = 0.4;
+const RIPPLE_SPEED = 260;
+const RIPPLE_LIFETIME = 0.72;
+const RIPPLE_WIDTH = 34;
+const RIPPLE_MAX_SOURCES = 18;
+const RIPPLE_SAMPLE_DISTANCE = 18;
 
 type Particle = {
   alpha: number;
@@ -89,6 +94,12 @@ type MobileGlyphPoint = {
   char: string;
   x: number;
   y: number;
+};
+
+type RippleSource = {
+  x: number;
+  y: number;
+  bornAt: number;
 };
 
 type Props = {
@@ -150,6 +161,7 @@ export default function AsciiGreeting({ text }: Props) {
     let particles: Particle[] = [];
     let frame = 0;
     let lastFrameAt = 0;
+    let rippleClock = 0;
     let lastMobileFrameAt = 0;
     // Anchor elapsed time to the rAF clock itself. In some Chromium builds,
     // performance.now() and the callback timestamp use different origins;
@@ -160,6 +172,7 @@ export default function AsciiGreeting({ text }: Props) {
     let previousPointerX = -9999;
     let previousPointerY = -9999;
     let activeContactPointer: number | null = null;
+    let rippleSources: RippleSource[] = [];
     let mobileStaticLayer: HTMLCanvasElement | null = null;
     const mobileGlyphSprites = new Map<string, HTMLCanvasElement>();
     let mobileGlyphPoints: MobileGlyphPoint[] = [];
@@ -179,17 +192,28 @@ export default function AsciiGreeting({ text }: Props) {
       context.drawImage(mobileStaticLayer, 0, 0, width, height);
 
       if (mobileMotes.length === 0) return;
+      // Fade the original glyph shape rather than cutting rectangular holes
+      // out of the cached word, so each mote flows from its own letterform.
+      context.save();
+      context.globalCompositeOperation = 'destination-out';
       for (const mote of mobileMotes) {
-        context.clearRect(
-          mote.homeX - 1,
+        const sprite = mobileGlyphSprites.get(mote.char);
+        if (!sprite) continue;
+        const displacement = Math.hypot(mote.x - mote.homeX, mote.y - mote.homeY);
+        context.globalAlpha = Math.min(0.94, 0.45 + displacement / 14);
+        context.drawImage(
+          sprite,
+          mote.homeX,
           mote.homeY - glyphSize * 0.62,
           glyphSize * 0.78,
           glyphSize * 1.24
         );
       }
+      context.restore();
       for (const mote of mobileMotes) {
         const sprite = mobileGlyphSprites.get(mote.char);
         if (!sprite) continue;
+        context.globalAlpha = Math.min(1, 0.64 + Math.hypot(mote.vx, mote.vy) * 0.12);
         context.drawImage(
           sprite,
           mote.x,
@@ -198,6 +222,7 @@ export default function AsciiGreeting({ text }: Props) {
           glyphSize * 1.24
         );
       }
+      context.globalAlpha = 1;
     };
 
     // Advance the disturbed glyphs. Only motes near the finger are simulated,
@@ -356,6 +381,22 @@ export default function AsciiGreeting({ text }: Props) {
       previousPointerY = -9999;
     };
 
+    const addRippleAlong = (fromX: number, fromY: number, toX: number, toY: number, now: number) => {
+      const distance = Math.hypot(toX - fromX, toY - fromY);
+      const steps = Math.max(1, Math.ceil(distance / RIPPLE_SAMPLE_DISTANCE));
+      for (let index = 1; index <= steps; index += 1) {
+        const progress = index / steps;
+        rippleSources.push({
+          x: fromX + (toX - fromX) * progress,
+          y: fromY + (toY - fromY) * progress,
+          bornAt: now,
+        });
+      }
+      if (rippleSources.length > RIPPLE_MAX_SOURCES) {
+        rippleSources.splice(0, rippleSources.length - RIPPLE_MAX_SOURCES);
+      }
+    };
+
     const handlePointerMove = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse' && event.pointerId !== activeContactPointer) return;
       const point = toLocalPoint(event.clientX, event.clientY);
@@ -371,8 +412,16 @@ export default function AsciiGreeting({ text }: Props) {
         previousPointerY = point.y;
         startMobile();
       } else {
+        const now = rippleClock;
+        if (previousPointerX > -1000 && previousPointerY > -1000) {
+          addRippleAlong(previousPointerX, previousPointerY, point.x, point.y, now);
+        } else {
+          rippleSources.push({ x: point.x, y: point.y, bornAt: now });
+        }
         pointerX = point.x;
         pointerY = point.y;
+        previousPointerX = point.x;
+        previousPointerY = point.y;
       }
     };
 
@@ -410,6 +459,7 @@ export default function AsciiGreeting({ text }: Props) {
     };
 
     const draw = (now: number) => {
+      rippleClock = now;
       if (startedAt === 0) startedAt = now;
       const elapsed = (now - startedAt) / 1000;
 
@@ -446,14 +496,39 @@ export default function AsciiGreeting({ text }: Props) {
           particle.vx += (particle.tx - particle.x) * SPRING_STRENGTH;
           particle.vy += (particle.ty - particle.y) * SPRING_STRENGTH;
 
-          const dx = particle.x - pointerX;
-          const dy = particle.y - pointerY;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < repulsionRadius && distance > 0) {
-            const push = ((1 - distance / repulsionRadius) ** 2) * repulsionForce;
-            particle.vx += (dx / distance) * push;
-            particle.vy += (dy / distance) * push;
+          // Desktop cursor samples send a traveling, decaying wave through
+          // the lettering. A soft wavefront and tangential force make the
+          // glyphs ripple outward instead of erasing a fixed circle.
+          if (!isMobile && rippleSources.length > 0) {
+            for (const source of rippleSources) {
+              const age = (now - source.bornAt) / 1000;
+              if (age < 0 || age > RIPPLE_LIFETIME) continue;
+              const dx = particle.x - source.x;
+              const dy = particle.y - source.y;
+              const distance = Math.hypot(dx, dy);
+              if (distance < 0.01) continue;
+              const wave = RIPPLE_SPEED * age;
+              const band = (distance - wave) / RIPPLE_WIDTH;
+              const falloff = Math.exp(-band * band) * (1 - age / RIPPLE_LIFETIME);
+              const radialX = dx / distance;
+              const radialY = dy / distance;
+              const swirl = 0.42;
+              const push = falloff * repulsionForce * 1.8;
+              particle.vx += (radialX - radialY * swirl) * push;
+              particle.vy += (radialY + radialX * swirl) * push;
+            }
+          } else if (isMobile && pointerX > -1000) {
+            const dx = particle.x - pointerX;
+            const dy = particle.y - pointerY;
+            const distance = Math.hypot(dx, dy);
+            if (distance < repulsionRadius && distance > 0.01) {
+              const falloff = (1 - distance / repulsionRadius) ** 2;
+              const radialX = dx / distance;
+              const radialY = dy / distance;
+              const push = falloff * repulsionForce * 1.4;
+              particle.vx += (radialX - radialY * 0.38) * push;
+              particle.vy += (radialY + radialX * 0.38) * push;
+            }
           }
 
           particle.vx *= DAMPING;
@@ -485,6 +560,9 @@ export default function AsciiGreeting({ text }: Props) {
       }
 
       context.globalAlpha = 1;
+      rippleSources = rippleSources.filter(
+        (source) => (now - source.bornAt) / 1000 <= RIPPLE_LIFETIME
+      );
       frame = window.requestAnimationFrame(draw);
     };
 
