@@ -18,6 +18,7 @@ type RawProject = {
   sourceLink?: string;
   status?: string;
   konamiOnly?: boolean;
+  hasPost?: boolean;
   project: string;
 };
 
@@ -25,7 +26,7 @@ export type ProjectRecord = RawProject & {
   slug: string;
   imageUrl: string;
   galleryImageUrls: string[];
-  postSlug: string;
+  postSlug?: string;
 };
 
 export function formatProjectStatusLabel(status: string) {
@@ -86,7 +87,7 @@ const toProjectRecord = (
     slug,
     imageUrl,
     galleryImageUrls,
-    postSlug: buildPostSlug(raw.start, slug),
+    postSlug: raw.hasPost === false ? undefined : buildPostSlug(raw.start, slug),
     start: normalizeMonth(raw.start),
     end: raw.end?.date
       ? {

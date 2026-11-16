@@ -38,7 +38,11 @@ const { Content } = await render(post);
 >
   <NavBar client:load pathname={Astro.url.pathname} />
   <main class="post-page">
-    <article class="post">
+    <article
+      class:list={['post', { 'post--unlocked': post.data.konamiOnly }]}
+      data-konami-only={post.data.konamiOnly ? '' : undefined}
+      hidden={post.data.konamiOnly}
+    >
       <header class="post-header">
         <h1>{post.data.title}</h1>
         <p>{format(post.data.date, 'MMMM d, yyyy')}</p>
@@ -48,6 +52,9 @@ const { Content } = await render(post);
         <Content />
       </div>
     </article>
+    <p class="konami-locked-hint" data-konami-locked-hint>
+      This post is unlocked with the Konami code.
+    </p>
   </main>
   <FooterSection />
 </BaseLayout>
@@ -62,6 +69,85 @@ const { Content } = await render(post);
     line-height: 1.8;
     max-width: 900px;
     margin: 0 auto;
+  }
+
+  /* Konami-unlocked write-ups get the same red treatment as the unlocked */
+  /* project cards so revealed content reads as a distinct tier. */
+  .post--unlocked {
+    position: relative;
+    padding: 2.5rem 2.5rem 3rem;
+    border: 1px solid rgba(var(--color-primary-rgb), 0.35);
+    border-radius: 1.5rem;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(var(--color-primary-rgb), 0.06),
+        rgba(var(--color-primary-rgb), 0.02)
+      ),
+      #ffffff;
+    box-shadow:
+      0 10px 34px rgba(var(--color-primary-rgb), 0.14),
+      0 0 0 1px rgba(var(--color-primary-rgb), 0.08);
+    overflow: hidden;
+  }
+
+  .post--unlocked::before {
+    content: '';
+    position: absolute;
+    z-index: 4;
+    top: -45%;
+    left: -75%;
+    width: 42%;
+    height: 190%;
+    pointer-events: none;
+    transform: skewX(-18deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(var(--color-primary-rgb), 0.26),
+      rgba(255, 255, 255, 0.52),
+      rgba(var(--color-primary-rgb), 0.18),
+      transparent
+    );
+    animation: blog-post-unlocked-shimmer 2.8s ease-in-out infinite;
+  }
+
+  .post--unlocked .post-header h1 {
+    color: var(--color-primary);
+  }
+
+  @keyframes blog-post-unlocked-shimmer {
+    0%,
+    18% {
+      left: -75%;
+    }
+
+    72%,
+    100% {
+      left: 135%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post--unlocked::before {
+      animation: none;
+      display: none;
+    }
+  }
+
+  .konami-locked-hint {
+    max-width: 900px;
+    margin: 1.5rem auto 0;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .post--unlocked {
+      padding: 1.75rem 1.25rem 2.25rem;
+      border-radius: 1.25rem;
+    }
   }
 
   .post-header {
@@ -212,4 +298,8 @@ const { Content } = await render(post);
   }
 
   document.addEventListener('astro:after-swap', enhanceCodeBlocks);
+</script>
+
+<script>
+  import "../../scripts/konamiGatedContent";
 </script>

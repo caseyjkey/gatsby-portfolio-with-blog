@@ -24,6 +24,10 @@
 
 html { scroll-behavior: smooth; }
 
+// Konami-gated entries use the `hidden` attribute, but layout rules that set
+// `display` would otherwise override it. Keep the hidden state authoritative.
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   min-width: 320px;

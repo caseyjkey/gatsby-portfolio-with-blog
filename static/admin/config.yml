@@ -74,6 +74,7 @@ collections:
     fields: # The fields for each document, usually in front matter
       - {label: "Project Name", name: "project", widget: "string", hint: "A project name used for files and folders", pattern: ['^[\w\-]+$', "Accepted characters are alphanumeric, _, and -."]}
       - {label: "Konami-only", name: "konamiOnly", widget: "boolean", default: false, required: false, hint: "Hide this project until Konami mode is active."}
+      - {label: "Has public project post", name: "hasPost", widget: "boolean", default: true, required: false, hint: "Disable to hide the Read Post action for private projects."}
       - {label: "Image", name: "image", widget: "image", allow_multiple: false}
       - label: "Gallery"
         name: "galleryImages"

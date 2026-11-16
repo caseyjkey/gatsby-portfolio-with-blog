@@ -23,6 +23,14 @@ export function nextKonamiIndex(currentIndex: number, key: string): number {
   return normalizedKey === KONAMI_SEQUENCE[0] ? 1 : 0;
 }
 
+export function shouldPreventKonamiDefault(currentIndex: number, key: string): boolean {
+  const normalizedKey = key.length === 1 ? key.toLowerCase() : key;
+  return (
+    normalizedKey === KONAMI_SEQUENCE[currentIndex] ||
+    normalizedKey === KONAMI_SEQUENCE[0]
+  );
+}
+
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
 
@@ -50,6 +58,13 @@ if (typeof window !== 'undefined' && !window.__konamiListenerInstalled) {
   window.addEventListener('keydown', async (event) => {
     if (event.repeat || event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) {
       return;
+    }
+
+    if (shouldPreventKonamiDefault(sequenceIndex, event.key)) {
+      // Arrow keys normally scroll the page. Keep the viewport fixed while a
+      // valid Konami sequence is being entered so the reveal does not jump
+      // the hero 80px away from its intended layout.
+      event.preventDefault();
     }
 
     sequenceIndex = nextKonamiIndex(sequenceIndex, event.key);

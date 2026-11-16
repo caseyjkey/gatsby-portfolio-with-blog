@@ -9,6 +9,7 @@ const blog = defineCollection({
     date: z.coerce.date(),
     published: z.boolean().default(false),
     cover: z.string().optional(),
+    konamiOnly: z.boolean().default(false),
   }),
 });
 
@@ -18,6 +19,7 @@ const projects = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     published: z.boolean().default(false),
+    konamiOnly: z.boolean().default(false),
   }),
 });
 

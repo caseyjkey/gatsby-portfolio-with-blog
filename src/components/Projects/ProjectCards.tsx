@@ -537,9 +537,11 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
                         <FaGithub size={16} /> Source
                       </a>
                     ) : null}
-                    <a href={activeProject.postSlug} className="btn-ghost">
-                      Read Post
-                    </a>
+                    {activeProject.postSlug ? (
+                      <a href={activeProject.postSlug} className="btn-ghost">
+                        Read Post
+                      </a>
+                    ) : null}
                     {activeProject.link ? <a href={activeProject.link} className="btn-primary">View Project</a> : null}
                   </div>
                 </div>

@@ -1,0 +1,46 @@
+---
+title: 'Githubly: Giving Developers a Sharper GitHub Presence'
+date: 2025-01-15
+published: true
+konamiOnly: true
+---
+
+**Developer Brand Management** | January 2025 - Present
+
+## Overview
+
+A GitHub profile is a developer's public portfolio, and almost nobody optimizes it. **Githubly** is a SaaS workspace for doing exactly that: shaping a profile so that it communicates what a developer actually wants a recruiter or collaborator to see.
+
+## The Four Tools
+
+**1. Contribution Graph Studio.** The contribution graph is the most-read element of a GitHub profile, and it is also the most accidental. Githubly lets a developer fill the graph with generated activity, draw custom patterns and text, and apply curated presets, so the graph reflects intent instead of whatever happened to land in a given week.
+
+**2. Repository Organizer.** This is the LLM-powered core. Given a list of repositories, it analyzes what each one actually is, groups related work into coherent collections, and recommends what to feature, what to archive, and what should be private. It then drafts the SEO-facing metadata: better titles, descriptions, and topics.
+
+**3. Profile README Generator.** A profile README is the first thing a visitor reads and the last thing most developers write. The generator produces a structured, recruiter-readable README from the repositories a developer actually cares about.
+
+**4. Repository Discovery.** For developers building a presence from scratch, the tool searches for relevant repositories to reference and can add them to a profile with sensible names, which gives the organizer something real to work with.
+
+## Why a Subscription Product
+
+The free tier covers the contribution graph and basic organization. The advanced organizer passes, generated profile READMEs, and discovery sit behind a monthly Pro subscription, which is the honest shape of the value: this is for people who actively want to manage their professional presence, not for everyone.
+
+## Stack
+
+- **Framework:** Next.js with TypeScript
+- **Database:** PostgreSQL with Prisma
+- **Runtime:** Bun with Docker for deployment and pm2 for process supervision
+- **AI:** LLM APIs used for repository analysis and copy generation
+- **Automation:** Bash and TypeScript scripts driving the GitHub API
+
+## What I Learned
+
+**Positioning is a product problem, not a writing problem.** The tooling is only useful if it can tell the difference between "this repository is interesting" and "this repository is noise," which is a judgment call that needs real analysis.
+
+**Generated copy has to pass an editor.** Every recommendation the organizer produces is a draft that a human still has to approve, and designing for that approval step shaped the whole flow.
+
+**Structure beats volume.** The single highest-impact change for a profile was usually consolidation, not more repositories.
+
+## Links
+
+[Live App](https://githubly.keycasey.com) | [GitHub](https://github.com/keycasey)

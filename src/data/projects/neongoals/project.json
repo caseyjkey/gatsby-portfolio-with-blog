@@ -1,0 +1,25 @@
+{
+  "image": "images/today.webp",
+  "title": "Neon Goals",
+  "subtitle": "AI Goal Management",
+  "description": "Neon Goals turns broad ambitions into focused goals, projects, and next actions through a neon-styled planning workspace. The app combines daily commitments, category views, deadlines, wishlist and research tracking, and an AI planning assistant in one responsive interface.<br /><br />The system includes a React and TypeScript client, a NestJS service, PostgreSQL persistence, OAuth authentication, and a user-scoped MCP endpoint so trusted assistants can read goals and perform idempotent goal and task updates. A public demo mode makes the full product experience explorable without touching real user data.",
+  "icons": {
+    "fa": ["FaReact", "FaNode", "FaDatabase", "FaServer"],
+    "io": ["IoMdCloud"]
+  },
+  "start": "2026-01",
+  "end": {
+    "present": true
+  },
+  "galleryImages": [
+    { "image": "images/today.webp" },
+    { "image": "images/all-goals.webp" },
+    { "image": "images/login.webp" }
+  ],
+  "link": "https://goals.keycasey.com",
+  "sourceLink": "https://github.com/keycasey/Neon-Goals-UI",
+  "status": "live",
+  "hasPost": true,
+  "project": "neongoals",
+  "konamiOnly": true
+}

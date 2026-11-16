@@ -50,7 +50,7 @@ const MOBILE_BREAKPOINT = 600;
 // Mobile touch physics. A mote is a glyph that a finger has displaced; it
 // keeps its own velocity so it trails the finger and springs back over about
 // a second, which is what makes the motion read as a swoosh.
-const MOBILE_MAX_ACTIVE = 64;
+const MOBILE_MAX_ACTIVE = 96;
 const MOBILE_INTERACTION_FPS = 24;
 const MOBILE_KICK = 1.8;
 const MOBILE_REPULSION_SCALE = 1.35;
@@ -286,7 +286,23 @@ export default function AsciiGreeting({ text }: Props) {
           existing.vy += Math.sin(angle) * MOBILE_KICK * 0.6 + gestureY * 0.12;
           continue;
         }
-        if (mobileMotes.length >= MOBILE_MAX_ACTIVE) continue;
+        if (mobileMotes.length >= MOBILE_MAX_ACTIVE) {
+          // Keep the fixed-size physics pool moving with the finger. The old
+          // implementation filled all slots at pointerdown, so later points
+          // in the same swipe could not disturb any new glyphs and the ripple
+          // appeared frozen at its initial location.
+          let farthestIndex = -1;
+          let farthestDistance = candidate.distance;
+          mobileMotes.forEach((mote, index) => {
+            const moteDistance = Math.hypot(mote.homeX - touchX, mote.homeY - touchY);
+            if (moteDistance > farthestDistance) {
+              farthestDistance = moteDistance;
+              farthestIndex = index;
+            }
+          });
+          if (farthestIndex < 0) continue;
+          mobileMotes.splice(farthestIndex, 1);
+        }
 
         const dx = candidate.x - touchX;
         const dy = candidate.y - touchY;

@@ -1,0 +1,58 @@
+---
+title: 'Neon Goals: Turning Ambition Into a Planning System'
+date: 2026-01-27
+published: true
+konamiOnly: true
+---
+
+**AI Goal Management** | January 2026 - Present
+
+## Overview
+
+Most goal apps are a to-do list with a nice coat of paint. **Neon Goals** is built around a different premise: a goal is not a checkbox, it is a system. It breaks a large ambition into projects, next actions, and scheduled work, then keeps the whole chain visible so a goal never quietly dies because nobody touched it for two weeks.
+
+The product ships as three pieces: a React and TypeScript client, a NestJS service backed by PostgreSQL, and a user-scoped MCP endpoint that lets trusted assistants read goals and perform idempotent goal and task updates.
+
+## The Problem With Flat Goal Lists
+
+The failure mode I kept hitting in my own systems was that goals, projects, and tasks all lived in the same undifferentiated list. That made three things impossible:
+
+- **Seeing real progress.** A checked task on a project nobody advanced felt identical to actual forward movement.
+- **Planning a day.** With one flat list, "what should I do today" required sorting in my head every morning.
+- **Keeping context.** Writing an essay for one application while starting a second meant rewriting the same context from scratch.
+
+Neon Goals models the hierarchy explicitly. A goal owns projects, a project owns actions, and each layer carries its own state. The Today view is assembled from scheduled actions rather than from a hand-curated list.
+
+## The View Model
+
+The interface supports two deliberate views over the same data:
+
+- **List** for scanning, sorting, and triage.
+- **Cards** for reading the shape of a goal at a glance.
+
+Categories run across both: Today, Todos, All Goals, Wishlist, Product Research, Finances, and Actions. Each goal carries a target date, so remaining days are visible in the row rather than buried in a detail view.
+
+## An Assistant That Actually Has Context
+
+The most interesting piece is the Open chat panel. It is not a generic chatbot bolted onto a task app; it operates over the user's own goal graph.
+
+The service exposes a stateless Streamable HTTP MCP endpoint at `/api/mcp`, authenticated with user-scoped OAuth. Because the endpoint is idempotent, a retried tool call cannot double-create a goal. That property matters more than it sounds: assistants retry, users double-click, and background jobs re-run. Making every mutation idempotent removed a whole class of "why did I get two of these" bugs.
+
+## Architecture Notes
+
+- **Client:** React with TypeScript, styled with Tailwind and shadcn/ui.
+- **Service:** NestJS with PostgreSQL persistence and OAuth authentication.
+- **Interface:** A stateless Streamable HTTP MCP endpoint exposing goal reads plus idempotent goal and task mutations.
+- **Real-time:** Server-sent events push updates so open views stay in sync without polling.
+
+## What I Learned
+
+**A goal is a tree, not a list.** Once the data model stopped treating everything as equivalent, nearly every UI decision got easier.
+
+**Idempotency is a product feature.** Making tool mutations safe to retry is what allowed the assistant to be trusted with real data.
+
+**Real-time should be boring.** Server-sent events plus a clear invalidation story was less work and fewer bugs than a socket layer with a reconnect protocol.
+
+## Links
+
+[Live App](https://goals.keycasey.com) | [GitHub (UI)](https://github.com/keycasey/Neon-Goals-UI) | [GitHub (Service)](https://github.com/keycasey/Neon-Goals-Service)

@@ -1,0 +1,25 @@
+{
+  "image": "images/portal-dashboard.webp",
+  "title": "Scholarships Plus",
+  "subtitle": "Indigenous Education Technology",
+  "description": "Scholarships Plus helps Indigenous students organize opportunities, improve essays, and track applications across multiple academic years. Structured workflows keep deadlines, requirements, drafts, outcomes, and renewals in one place while preserving a longitudinal record of each student's growth.<br /><br />The Remix and PostgreSQL application adds AI-assisted essay feedback, retrieval from a student's previous writing, a portal indexer for Native Forward, AISES, and Cobell, and a Chrome extension that places approved answers into real application forms. The long-term model strategy uses per-student writing to amplify each person's authentic voice rather than replace it.",
+  "icons": {
+    "fa": ["FaReact", "FaDatabase", "FaNode"],
+    "io": ["IoMdAnalytics"]
+  },
+  "start": "2024-10",
+  "end": {
+    "present": true
+  },
+  "galleryImages": [
+    { "image": "images/portal-dashboard.webp" },
+    { "image": "images/extension-autofill-preview.webp" },
+    { "image": "images/extension-autofill.webp" },
+    { "image": "images/extension-setup.webp" }
+  ],
+  "sourceLink": "https://github.com/keycasey/Scholarships-Plus",
+  "status": "beta",
+  "hasPost": true,
+  "project": "scholarshipsplus",
+  "konamiOnly": true
+}

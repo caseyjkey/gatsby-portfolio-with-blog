@@ -1,0 +1,23 @@
+{
+  "image": "images/githubly-live.webp",
+  "title": "Githubly",
+  "subtitle": "Developer Brand Management",
+  "description": "Githubly is a SaaS workspace for optimizing a developer's GitHub presence for clarity, search visibility, and impact. Its contribution graph studio can create deliberate activity patterns, while an LLM-assisted repository organizer audits a profile, groups related work, recommends what to feature or archive, and drafts stronger titles, descriptions, topics, and READMEs.<br /><br />The product roadmap also includes a profile README generator and a repository discovery workflow for newer developers. The application is built with Next.js, TypeScript, Prisma, PostgreSQL, Docker, Bun, and LLM APIs, with a subscription tier planned for advanced automation.",
+  "icons": {
+    "fa": ["FaGithub", "FaReact", "FaDatabase", "FaNode"],
+    "io": ["IoMdAnalytics"]
+  },
+  "start": "2025-01",
+  "end": {
+    "present": true
+  },
+  "galleryImages": [
+    { "image": "images/githubly-live.webp" }
+  ],
+  "link": "https://githubly.keycasey.com",
+  "sourceLink": "https://github.com/keycasey",
+  "status": "live",
+  "hasPost": true,
+  "project": "githubly",
+  "konamiOnly": true
+}

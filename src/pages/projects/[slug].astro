@@ -29,7 +29,11 @@ const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : 
 >
   <NavBar client:load pathname={Astro.url.pathname} />
   <main class="project-page">
-    <article class="project">
+    <article
+      class:list={['project', { 'project--unlocked': project.data.konamiOnly }]}
+      data-konami-only={project.data.konamiOnly ? '' : undefined}
+      hidden={project.data.konamiOnly}
+    >
       <header class="project-header">
         <h1>{project.data.title}</h1>
         {record ? (
@@ -51,6 +55,9 @@ const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : 
         </section>
       ) : null}
     </article>
+    <p class="konami-locked-hint" data-konami-locked-hint>
+      This write-up is unlocked with the Konami code.
+    </p>
   </main>
   <FooterSection />
 </BaseLayout>
@@ -65,6 +72,85 @@ const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : 
     line-height: 1.8;
     max-width: 900px;
     margin: 0 auto;
+  }
+
+  /* Konami-unlocked write-ups get the same red treatment as the unlocked */
+  /* project cards so revealed content reads as a distinct tier. */
+  .project--unlocked {
+    position: relative;
+    padding: 2.5rem 2.5rem 3rem;
+    border: 1px solid rgba(var(--color-primary-rgb), 0.35);
+    border-radius: 1.5rem;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(var(--color-primary-rgb), 0.06),
+        rgba(var(--color-primary-rgb), 0.02)
+      ),
+      #ffffff;
+    box-shadow:
+      0 10px 34px rgba(var(--color-primary-rgb), 0.14),
+      0 0 0 1px rgba(var(--color-primary-rgb), 0.08);
+    overflow: hidden;
+  }
+
+  .project--unlocked::before {
+    content: '';
+    position: absolute;
+    z-index: 4;
+    top: -45%;
+    left: -75%;
+    width: 42%;
+    height: 190%;
+    pointer-events: none;
+    transform: skewX(-18deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(var(--color-primary-rgb), 0.26),
+      rgba(255, 255, 255, 0.52),
+      rgba(var(--color-primary-rgb), 0.18),
+      transparent
+    );
+    animation: project-post-unlocked-shimmer 2.8s ease-in-out infinite;
+  }
+
+  .project--unlocked h1 {
+    color: var(--color-primary);
+  }
+
+  @keyframes project-post-unlocked-shimmer {
+    0%,
+    18% {
+      left: -75%;
+    }
+
+    72%,
+    100% {
+      left: 135%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project--unlocked::before {
+      animation: none;
+      display: none;
+    }
+  }
+
+  .konami-locked-hint {
+    max-width: 900px;
+    margin: 1.5rem auto 0;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .project--unlocked {
+      padding: 1.75rem 1.25rem 2.25rem;
+      border-radius: 1.25rem;
+    }
   }
 
   .project-header {
@@ -107,3 +193,7 @@ const description = record?.subtitle ? `${record.title} | ${record.subtitle}` : 
     font-weight: 600;
   }
 </style>
+
+<script>
+  import "../../scripts/konamiGatedContent";
+</script>

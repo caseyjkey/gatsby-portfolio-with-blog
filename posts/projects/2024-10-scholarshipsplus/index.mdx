@@ -1,0 +1,58 @@
+---
+title: 'Scholarships Plus: An Essay Assistant That Sounds Like You'
+date: 2024-10-12
+published: true
+konamiOnly: true
+---
+
+**Indigenous Education Technology** | October 2024 - Present
+
+## Overview
+
+Scholarship essays are one of the few places where students are asked to write about themselves repeatedly, for years, to audiences who have never met them. The result is a portfolio of strong writing that nobody can reuse, because every application starts from a blank page.
+
+**Scholarships Plus** is a framework for Indigenous students to organize opportunities, apply to them, and track the outcomes across multiple academic years. The core idea is that a student's own past writing is the best raw material for their next application, and the platform's job is to help them use it without sanding off their voice.
+
+## The Portal Side
+
+The dashboard is the entry point. It aggregates indexed scholarship opportunities into one searchable, filterable surface, with filters for class level, GPA range, enrollment status, deadline, and award amount. Each scholarship card carries its source portal, deadline countdown, requirements, and a direct action to begin an application.
+
+Behind that list sits a scraper that indexes real portals (Native Forward, AISES, and the Cobell Scholarship portal) using a Puppeteer-driven session-capture flow. The developer logs in once, the captured session is stored, and the resulting index powers the dashboard.
+
+Two flows matter most:
+
+- **Apply with AI** opens a guided chat scoped to a single scholarship and its specific questions.
+- **Apply Now** hands off to the original portal, using a captured session when one exists.
+
+## The Extension Side
+
+The Chrome extension is the part I like most. It runs on the real application form, detects the essay fields, and puts a sparkle icon next to each one. Clicking the sparkle fills the field with the student's own approved response. A side panel chat lets the student refine the wording before accepting it.
+
+The design constraint that shaped everything: the extension has to work on portals the platform does not control and has never seen. That pushed the field detection to be resilient rather than clever, and it pushed the UI to stay out of the way until the student asks for it.
+
+## Retrieval From the Student's Own Writing
+
+The essay assistant uses retrieval over a student's uploaded past applications. Essays are chunked and embedded, so a question like "describe a time you led a group through conflict" can retrieve the specific passage where the student actually described that, instead of generating something generically impressive.
+
+The long-term model strategy is a LoRA fine-tune per student, trained on their own previous writing, so suggestions get more personal over time rather than more generic.
+
+## Stack
+
+- **Framework:** Remix with server-side rendering
+- **Database:** PostgreSQL with the pgvector extension for embeddings
+- **ORM:** Prisma
+- **Auth:** Cookie-based sessions plus JWT for extension calls
+- **Testing:** Cypress for end-to-end, Vitest for units
+- **Scraping:** Puppeteer with persistent portal sessions
+
+## What I Learned
+
+**Authorship is the hard part, not generation.** The interesting engineering was making a suggestion feel like something the student would have written.
+
+**Real portals are hostile.** Every portal I indexed broke something different, so the scraper had to be defensive and the session model had to be explicit about expiry.
+
+**Vertical support beats breadth.** Supporting three portals deeply and reliably was worth more than a shallow index of thirty.
+
+## Links
+
+[GitHub](https://github.com/keycasey/Scholarships-Plus)

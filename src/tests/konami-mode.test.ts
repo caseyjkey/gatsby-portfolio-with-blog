@@ -5,6 +5,9 @@ const konami = readFileSync(new URL('../scripts/konami.ts', import.meta.url), 'u
 const hero = readFileSync(new URL('../components/Introduction/HeroSection.tsx', import.meta.url), 'utf8');
 const projectCards = readFileSync(new URL('../components/Projects/ProjectCards.tsx', import.meta.url), 'utf8');
 const theme = readFileSync(new URL('../styles/global.scss', import.meta.url), 'utf8');
+const githubly = JSON.parse(readFileSync(new URL('../data/projects/githubly/project.json', import.meta.url), 'utf8'));
+const scholarshipsPlus = JSON.parse(readFileSync(new URL('../data/projects/scholarshipsplus/project.json', import.meta.url), 'utf8'));
+const neonGoals = JSON.parse(readFileSync(new URL('../data/projects/neongoals/project.json', import.meta.url), 'utf8'));
 
 describe('Konami mode', () => {
   test('toggles the shared mode and preserves confetti', () => {
@@ -23,6 +26,18 @@ describe('Konami mode', () => {
     expect(projectCards).toContain('return featuredSet.slice(0, 3)');
     expect(projectCards).toContain('visibleProjects.map');
     expect(projectCards).toContain("project-card--unlocked");
+  });
+
+  test('keeps the three new private projects behind Konami mode', () => {
+    expect([githubly, scholarshipsPlus, neonGoals].map((project) => ({
+      slug: project.project,
+      private: project.konamiOnly,
+      publicPost: project.hasPost,
+    }))).toEqual([
+      { slug: 'githubly', private: true, publicPost: true },
+      { slug: 'scholarshipsplus', private: true, publicPost: true },
+      { slug: 'neongoals', private: true, publicPost: true },
+    ]);
   });
 
   test('changes the shared primary palette to red', () => {
