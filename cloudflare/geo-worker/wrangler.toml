@@ -1,0 +1,7 @@
+name = "keycasey-geo"
+main = "src/index.ts"
+compatibility_date = "2026-11-16"
+workers_dev = true
+
+[observability]
+enabled = false
