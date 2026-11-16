@@ -9,12 +9,12 @@ const styles = readFileSync(
   new URL('../components/Introduction/hero.scss', import.meta.url),
   'utf8',
 );
-const hero = readFileSync(
-  new URL('../components/Introduction/HeroSection.tsx', import.meta.url),
+const opsStyles = readFileSync(
+  new URL('../components/Introduction/ops-pulse.scss', import.meta.url),
   'utf8',
 );
-const ripple = readFileSync(
-  new URL('../animations/asciiRipple.ts', import.meta.url),
+const hero = readFileSync(
+  new URL('../components/Introduction/HeroSection.tsx', import.meta.url),
   'utf8',
 );
 
@@ -71,11 +71,11 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain("addEventListener('visibilitychange'");
   });
 
-  test('keeps mobile dense and simulates only touch-disturbed glyphs', () => {
+  test('keeps mobile readable and simulates only touch-disturbed glyphs', () => {
     expect(component).toContain('const MOBILE_FPS = 30');
     expect(component).toContain('const MOBILE_SETTLED_FPS = 20');
-    expect(component).toContain('const MOBILE_SAMPLE_STEP = 2');
-    expect(component).toContain('const MOBILE_GLYPH_SIZE = 5');
+    expect(component).toContain('const MOBILE_SAMPLE_STEP = 4');
+    expect(component).toContain('const MOBILE_GLYPH_SIZE = 6');
     expect(component).toContain("const GLYPH_SET_MOBILE = '01';");
     expect(component).toContain('let mobileStaticLayer: HTMLCanvasElement | null = null');
     expect(component).toContain('let mobileGlyphPoints:');
@@ -83,30 +83,35 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain('context.drawImage(mobileStaticLayer, 0, 0, width, height)');
     expect(component).toContain('staticContext.fillText(glyph, x, y)');
     expect(component).toContain('mobileGlyphPoints.push({ char: glyph, x, y })');
-    expect(component).toContain('const MOBILE_MAX_ACTIVE = 220');
+    expect(component).toContain('const MOBILE_MAX_ACTIVE = 64');
+    expect(component).toContain('const MAX_DESKTOP_PARTICLES = 1500');
+    expect(component).toContain('const MAX_MOBILE_PARTICLES = 320');
     expect(component).toContain('const MOBILE_INTERACTION_FPS = 24');
-    expect(component).toContain('const MOBILE_REPULSION_SCALE = 2.05');
-    expect(ripple).toContain('const ASCII_RIPPLE_SPEED = 560');
-    expect(ripple).toContain('const ASCII_RIPPLE_LIFETIME_MS = 1350');
-    expect(component).toContain('const mobileGlyphSprites = new Map');
-    expect(component).toContain('mobileGlyphSprites.get(mote.char)');
-    expect(component).toContain('const stepMobileMotes = (now: number) =>');
-    expect(component).toContain('sampleAsciiRippleField(point.x, point.y, rippleSources, now)');
-    expect(component).toContain('const selectedCandidates = [...distributedCandidates.values()]');
-    expect(component).toContain('const perBand = Math.ceil(MOBILE_MAX_ACTIVE / 5)');
+    expect(component).toContain('const MOBILE_REPULSION_SCALE = 1.35');
+    expect(component).toContain('const stepMobileMotes = () =>');
+    expect(component).toContain('const push = falloff * repulsionForce');
+    expect(component).toContain('pointerVelocityX * falloff * 0.08');
     expect(component).toContain('const disturbMobile = (');
     expect(component).toContain('gestureX * 0.18');
     expect(component).toContain('mote.vx += (mote.homeX - mote.x) * MOBILE_SPRING_STRENGTH');
-    expect(component).toContain('point.x - gestureX * MOBILE_TRAIL_OFFSET');
+    expect(component).toContain('pointerX = point.x;');
+    expect(component).toContain('mobileMotes.splice(farthestIndex, 1)');
     expect(component).toContain('context.globalCompositeOperation = \'destination-out\'');
-    expect(component).toContain('addRippleAlong(previousPointerX, previousPointerY, point.x, point.y, now)');
-    expect(ripple).toContain('const waveRadius = (ASCII_RIPPLE_SPEED * ageMs) / 1000');
-    expect(ripple).toContain('const swirl = 0.58');
-    expect(component).toContain('rippleSources.length > 0) && inView');
+    expect(component).toContain('mote.x,');
+    expect(component).toContain('mote.y - glyphSize * 0.62');
+    expect(component).toContain('paintMobile();');
+    expect(component).toContain('thinParticles(collected, maxParticles - dustCount)');
+    expect(component).not.toContain('rippleSources');
+    expect(component).toContain('if (mobileMotes.length > 0) startMobile()');
     expect(component).not.toContain('createRadialGradient');
     expect(component).not.toContain("staticContext.letterSpacing");
-    // Thinning the sampled points destroyed the letterforms, so every sampled
-    // point must survive in the cached mobile glyph field.
-    expect(component).not.toContain('thinParticles');
+    // Desktop particle count is capped to preserve visible flow without
+    // saturating the motion into a dense moving mass.
+    expect(component).toContain('const textParticles = thinParticles(collected, maxParticles - dustCount)');
+  });
+
+  test('leaves a narrow mobile gutter between the Ops Pulse pill and greeting', () => {
+    expect(opsStyles).toMatch(/@media \(max-width: 767\.98px\)[\s\S]*?top: 64px/);
+    expect(styles).toMatch(/\.hero-text[\s\S]*?margin-top: calc\(1em \+ 17px\)/);
   });
 });
