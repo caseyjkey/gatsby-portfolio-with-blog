@@ -6,6 +6,9 @@ import {
   type RegionalProfile,
 } from '../data/regionalProfiles';
 import { resolveVisitorLocation } from '../lib/visitorLocation';
+import {
+  REGIONAL_PROFILE_SELECTION_EVENT,
+} from '../lib/regionalProfileSelection';
 
 function getPreviewProfile() {
   if (typeof window === 'undefined') return null;
@@ -18,15 +21,25 @@ export function useRegionalProfile() {
   const [profile, setProfile] = useState<RegionalProfile>(genericRegionalProfile);
 
   useEffect(() => {
+    let manuallySelected = false;
+    const handleSelection = (event: Event) => {
+      manuallySelected = true;
+      const id = (event as CustomEvent<string>).detail;
+      setProfile(getRegionalProfileById(id));
+    };
+    window.addEventListener(REGIONAL_PROFILE_SELECTION_EVENT, handleSelection);
+
     const preview = getPreviewProfile();
     if (preview) {
       setProfile(preview);
-      return undefined;
+      return () => {
+        window.removeEventListener(REGIONAL_PROFILE_SELECTION_EVENT, handleSelection);
+      };
     }
 
     let cancelled = false;
     void resolveVisitorLocation().then((location) => {
-      if (!cancelled) {
+      if (!cancelled && !manuallySelected) {
         setProfile(selectRegionalProfile(
           location?.latitude,
           location?.longitude,
@@ -36,6 +49,7 @@ export function useRegionalProfile() {
     });
     return () => {
       cancelled = true;
+      window.removeEventListener(REGIONAL_PROFILE_SELECTION_EVENT, handleSelection);
     };
   }, []);
 

@@ -1,4 +1,8 @@
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import type { RegionalProfileId } from '../../data/regionalProfiles';
+import { useKonamiMode } from '../../hooks/useKonamiMode';
+import { useRegionalProfile } from '../../hooks/useRegionalProfile';
+import { selectRegionalProfileForSession } from '../../lib/regionalProfileSelection';
 import { resolveVisitorLocation, type VisitorLocation } from '../../lib/visitorLocation';
 import './ops-pulse.scss';
 import COUNTRY_CODES from './country-codes.json';
@@ -93,6 +97,28 @@ function anchorFor(code: string): { x: number; y: number } | null {
 // part of the map instead of the middle of an ocean.
 const MAP_PROJECTION = { ax: 2.6, bx: 460, ay: -3.61, by: 316 };
 
+type RegionMapTarget = {
+  id: Exclude<RegionalProfileId, 'generic'>;
+  shortLabel: string;
+  latitude: number;
+  longitude: number;
+  labelX: number;
+  labelY: number;
+};
+
+// Market anchors use the same fitted projection as live traffic. Their labels
+// are intentionally fanned out from the dense US map area so every target has
+// a distinct touch area while its leader line preserves geographic meaning.
+export const REGION_MAP_TARGETS: RegionMapTarget[] = [
+  { id: 'sf', shortLabel: 'SF', latitude: 37.7749, longitude: -122.4194, labelX: 120, labelY: 130 },
+  { id: 'la', shortLabel: 'LA', latitude: 34.0522, longitude: -118.2437, labelX: 120, labelY: 235 },
+  { id: 'wyoming', shortLabel: 'WY', latitude: 41.14, longitude: -104.82, labelX: 190, labelY: 105 },
+  { id: 'colorado', shortLabel: 'CO', latitude: 40.015, longitude: -105.12, labelX: 190, labelY: 245 },
+  { id: 'nyc', shortLabel: 'NYC', latitude: 40.7128, longitude: -74.006, labelX: 325, labelY: 110 },
+  { id: 'dc', shortLabel: 'DC', latitude: 38.9072, longitude: -77.0369, labelX: 330, labelY: 180 },
+  { id: 'miami', shortLabel: 'MIA', latitude: 25.7617, longitude: -80.1918, labelX: 315, labelY: 260 },
+];
+
 function anchorForCoordinates(latitude?: number, longitude?: number) {
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
   const { ax, bx, ay, by } = MAP_PROJECTION;
@@ -105,6 +131,8 @@ function anchorForCoordinates(latitude?: number, longitude?: number) {
 }
 
 export default function OpsPulse() {
+  const konamiMode = useKonamiMode();
+  const activeRegionalProfile = useRegionalProfile();
   const [mode, setMode] = useState<'traffic' | 'pipeline'>('traffic');
   const [snapshot, setSnapshot] = useState<Snapshot>(FALLBACK_SNAPSHOT);
   const [you, setYou] = useState<VisitorLocation | null>(null);
@@ -112,6 +140,10 @@ export default function OpsPulse() {
   const [showInfo, setShowInfo] = useState(false);
   const [trace, setTrace] = useState(0);
   const [pipelineLayout, setPipelineLayout] = useState<{ nodes: { x: number; y: number; w: number; h: number }[]; path: string }>({ nodes: [], path: '' });
+
+  useEffect(() => {
+    if (konamiMode) setMode('traffic');
+  }, [konamiMode]);
 
   // Anchor the pipeline to the real responsive portrait bounds. The headshot
   // has different assets/sizing on mobile and desktop, so fixed offsets drift
@@ -392,7 +424,7 @@ export default function OpsPulse() {
 
   return (
     <section
-      className={`ops-pulse${mode === 'pipeline' ? ' is-pipeline' : ''}`}
+      className={`ops-pulse${mode === 'pipeline' ? ' is-pipeline' : ''}${konamiMode ? ' is-region-select' : ''}`}
       aria-label="Live Ops Pulse preview"
     >
       <div className="ops-pulse__glow" aria-hidden="true" />
@@ -439,12 +471,20 @@ export default function OpsPulse() {
       <div className={`ops-pulse__stage${mode === 'pipeline' ? ' is-pipeline' : ''}`}>
         {mode === 'traffic' ? (
           <div className="ops-pulse__map-view">
+            {konamiMode && (
+              <div className="ops-pulse__region-prompt" aria-live="polite">
+                <span>SELECT MARKET</span>
+                <strong>{activeRegionalProfile.label}</strong>
+              </div>
+            )}
             <div className="ops-pulse__world-map" aria-hidden="true" />
             <svg
               className="ops-pulse__map-svg"
               viewBox="0 0 950 620"
-              role="img"
-              aria-label={`Live request activity by region. ${snapshot.totalRequests} requests recorded in the last hour.`}
+              role={konamiMode ? 'group' : 'img'}
+              aria-label={konamiMode
+                ? `Choose a portfolio market. ${activeRegionalProfile.label} is active.`
+                : `Live request activity by region. ${snapshot.totalRequests} requests recorded in the last hour.`}
             >
               {clusters.map((cluster) => {
                 const cx = cluster.x * MAP_SCALE.x;
@@ -488,6 +528,51 @@ export default function OpsPulse() {
                   </text>
                 </g>
               )}
+              {konamiMode && REGION_MAP_TARGETS.map((target) => {
+                const anchor = anchorForCoordinates(target.latitude, target.longitude);
+                if (!anchor) return null;
+                const anchorX = anchor.x * MAP_SCALE.x;
+                const anchorY = anchor.y * MAP_SCALE.y;
+                const selected = activeRegionalProfile.id === target.id;
+                const activate = () => selectRegionalProfileForSession(target.id);
+                return (
+                  <React.Fragment key={target.id}>
+                    <line
+                      className="ops-pulse__region-leader"
+                      x1={anchorX}
+                      y1={anchorY}
+                      x2={target.labelX}
+                      y2={target.labelY}
+                    />
+                    <circle
+                      className="ops-pulse__region-anchor"
+                      cx={anchorX}
+                      cy={anchorY}
+                      r="4"
+                    />
+                    <g
+                      className={`ops-pulse__region-target${selected ? ' is-active' : ''}`}
+                      transform={`translate(${target.labelX} ${target.labelY})`}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Use ${target.id === 'colorado' ? 'Colorado Front Range' : target.id === 'wyoming' ? 'Wyoming' : target.shortLabel} portfolio content`}
+                      aria-pressed={selected}
+                      onClick={activate}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          activate();
+                        }
+                      }}
+                    >
+                      <title>{target.id === 'colorado' ? 'Colorado Front Range' : target.id === 'wyoming' ? 'Wyoming' : target.shortLabel}</title>
+                      <rect className="ops-pulse__region-hit" x="-48" y="-35" width="96" height="70" rx="35" />
+                      <rect className="ops-pulse__region-pill" x="-38" y="-25" width="76" height="50" rx="25" />
+                      <text y="1">{target.shortLabel}</text>
+                    </g>
+                  </React.Fragment>
+                );
+              })}
             </svg>
           </div>
         ) : (
