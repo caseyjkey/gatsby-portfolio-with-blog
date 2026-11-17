@@ -42,6 +42,45 @@
   pointer-events: none;
   isolation: isolate;
 
+  &.is-region-select {
+    // Lift only the unlocked overlay above the decorative hero layers. The
+    // root remains pointer-events:none, so only the explicit market targets
+    // and existing controls become interactive.
+    z-index: 25;
+
+    .ops-pulse__stage {
+      opacity: 0.96;
+      mask-image: none;
+    }
+
+    .ops-pulse__world-map,
+    .ops-pulse__map-svg {
+      transform: translateY(-50%) scale(1.72);
+      transform-origin: 20% 39%;
+      transition: transform 420ms ease, opacity 220ms ease;
+    }
+
+    .ops-pulse__you,
+    .ops-pulse__halo,
+    .ops-pulse__point,
+    .ops-pulse__point-label {
+      opacity: 0.14;
+    }
+
+    @media (max-width: 767.98px) {
+      .ops-pulse__stage {
+        left: 0;
+        width: 100%;
+      }
+
+      .ops-pulse__world-map,
+      .ops-pulse__map-svg {
+        transform: translateY(-40%) scale(1.58);
+        transform-origin: 21% 40%;
+      }
+    }
+  }
+
   &::before {
     position: absolute;
     inset: 0;
@@ -304,6 +343,97 @@
   &__map-svg {
     overflow: visible;
     filter: drop-shadow(0 25px 50px rgba(var(--color-primary-rgb), 0.05));
+  }
+
+  &__region-prompt {
+    position: absolute;
+    top: 14%;
+    left: 2%;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: #53658f;
+    font-family: $font-mono;
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    pointer-events: none;
+
+    span { font-weight: 800; }
+    strong {
+      color: var(--color-primary);
+      font-size: 8px;
+      letter-spacing: 0.03em;
+    }
+
+    @media (max-width: 767.98px) {
+      display: none;
+    }
+  }
+
+  &__region-leader {
+    stroke: rgba(var(--color-primary-rgb), 0.62);
+    stroke-width: 1.35;
+    stroke-dasharray: 3 3;
+    vector-effect: non-scaling-stroke;
+    pointer-events: none;
+  }
+
+  &__region-anchor {
+    fill: #fff;
+    stroke: var(--color-primary);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    pointer-events: none;
+  }
+
+  &__region-target {
+    color: var(--color-primary);
+    cursor: pointer;
+    pointer-events: all;
+    outline: none;
+
+    .ops-pulse__region-hit {
+      fill: transparent;
+      stroke: none;
+    }
+
+    .ops-pulse__region-pill {
+      fill: rgba(255, 255, 255, 0.92);
+      stroke: rgba(var(--color-primary-rgb), 0.62);
+      stroke-width: 1.5;
+      vector-effect: non-scaling-stroke;
+      filter: drop-shadow(0 5px 10px rgba(var(--color-primary-rgb), 0.18));
+      transition: fill 160ms ease, stroke 160ms ease;
+    }
+
+    text {
+      fill: currentColor;
+      font-family: $font-mono;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+
+    &:hover .ops-pulse__region-pill,
+    &:focus-visible .ops-pulse__region-pill,
+    &.is-active .ops-pulse__region-pill {
+      fill: var(--color-primary);
+      stroke: #fff;
+    }
+
+    &:hover,
+    &:focus-visible,
+    &.is-active {
+      color: #fff;
+    }
+
+    &:focus-visible .ops-pulse__region-pill {
+      stroke-width: 3;
+    }
   }
 
   &__route {
