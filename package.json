@@ -25,7 +25,8 @@
     "build": "astro build",
     "serve": "astro preview --host --port 8001",
     "clean": "rm -rf dist .astro",
-    "deploy": "bun run build && gh-pages -d dist -b master --dotfiles"
+    "deploy": "bun run build && gh-pages -d dist -b master --dotfiles",
+    "deploy:geo": "bunx wrangler@4.163.0 deploy --config cloudflare/geo-worker/wrangler.toml"
   },
   "eslintConfig": {
     "extends": "react-app"

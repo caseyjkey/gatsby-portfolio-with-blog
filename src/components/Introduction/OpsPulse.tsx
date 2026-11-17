@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { resolveVisitorLocation, type VisitorLocation } from '../../lib/visitorLocation';
 import './ops-pulse.scss';
 import COUNTRY_CODES from './country-codes.json';
 
@@ -42,14 +43,6 @@ type Snapshot = {
   lastEventAt: number | null;
   instance?: string;
   source: 'live' | 'demo';
-};
-
-type VisitorLocation = {
-  code: string;
-  city?: string;
-  region?: string;
-  latitude?: number;
-  longitude?: number;
 };
 
 const FALLBACK_SNAPSHOT: Snapshot = {
@@ -218,36 +211,9 @@ export default function OpsPulse() {
   // stored, or sent to our telemetry service.
   useEffect(() => {
     let cancelled = false;
-    const resolveVisitor = async () => {
-      try {
-        const res = await fetch('https://ipapi.co/json/', {
-          headers: { Accept: 'application/json' },
-          referrerPolicy: 'no-referrer',
-        });
-        const data = res.ok ? await res.json() : null;
-        if (!cancelled && data?.country_code) {
-          setYou({
-            code: String(data.country_code).toUpperCase(),
-            city: data.city || undefined,
-            region: data.region || undefined,
-            latitude: Number(data.latitude),
-            longitude: Number(data.longitude),
-          });
-          return;
-        }
-      } catch {
-        /* fall through to edge-provided country */
-      }
-
-      try {
-        const res = await fetch(`${API}/you`, { headers: { Accept: 'application/json' } });
-        const data = res.ok ? await res.json() : null;
-        if (!cancelled && data?.country) setYou({ code: data.country });
-      } catch {
-        /* location is optional */
-      }
-    };
-    void resolveVisitor();
+    void resolveVisitorLocation().then((location) => {
+      if (!cancelled && location) setYou(location);
+    });
     return () => {
       cancelled = true;
     };

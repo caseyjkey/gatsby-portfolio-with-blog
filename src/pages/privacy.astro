@@ -32,6 +32,16 @@ import '../components/Privacy/privacy.scss';
         dots, so you can tell at a glance which one is you.
       </p>
 
+      <h2 class="privacy__section-title">Location-aware portfolio content</h2>
+      <p>
+        The home page may use the same browser-resolved location to emphasize
+        experience and projects relevant to a nearby professional market. The
+        match happens in your browser, does not create a visitor profile, and
+        falls back to the general portfolio outside the listed market areas.
+        The coarse edge response may remain in your private browser cache for
+        up to five minutes so repeat page loads do not need another lookup.
+      </p>
+
       <h2 class="privacy__section-title">What is recorded</h2>
       <ul class="privacy__list">
         <li>
@@ -79,10 +89,11 @@ import '../components/Privacy/privacy.scss';
 
       <h2 class="privacy__section-title">Third parties</h2>
       <p>
-        Location is resolved in your browser by a third-party geolocation
-        service, which receives your IP address in order to answer the request.
-        That service is not operated by this site, and no location data is
-        shared with it beyond the lookup itself.
+        Location is resolved primarily by a small Cloudflare edge service that
+        returns only coarse geographic fields and never exposes or stores your
+        IP address. If that service is unavailable, the page may fall back to a
+        public geolocation service, which receives your IP address solely to
+        answer the lookup.
       </p>
 
       <h2 class="privacy__section-title">Questions</h2>

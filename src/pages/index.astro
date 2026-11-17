@@ -6,9 +6,15 @@ import SkillsSection from '../components/Skills/SkillsSection';
 import ExperienceTimeline from '../components/Experience/ExperienceTimeline';
 import ProjectCards from '../components/Projects/ProjectCards';
 import FooterSection from '../components/Footer/FooterSection';
-import { getFeaturedProjects } from '../lib/projects';
+import { regionalProfiles } from '../data/regionalProfiles';
+import { getProjects } from '../lib/projects';
 
-const featuredProjects = getFeaturedProjects();
+const regionalFeaturedSlugs = new Set(
+  regionalProfiles.flatMap((profile) => profile.featuredProjectSlugs),
+);
+const projects = getProjects().filter((project) => (
+  project.konamiOnly || regionalFeaturedSlugs.has(project.slug)
+));
 ---
 
 <BaseLayout>
@@ -18,9 +24,10 @@ const featuredProjects = getFeaturedProjects();
   <ExperienceTimeline client:visible={{ rootMargin: '-100px' }} />
   <ProjectCards
     client:idle={{ timeout: 2000 }}
-    projects={featuredProjects}
+    projects={projects}
     title="Featured Work"
     subtitle="Highlighted projects from my portfolio."
+    variant="featured"
   />
   <FooterSection />
 </BaseLayout>

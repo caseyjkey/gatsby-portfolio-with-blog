@@ -24,6 +24,11 @@ describe('ASCII hero greeting', () => {
     expect(hero).toContain("<AsciiGreeting text={konamiMode ? 'o shit\\nwaddup' : introductionData.greeting} />");
   });
 
+  test('does not announce regional personalization in the hero', () => {
+    expect(hero).not.toContain('Focused for');
+    expect(hero).not.toContain('hero-market-context');
+  });
+
   test('samples multi-line greetings as separate centered canvas lines', () => {
     expect(component).toContain("const lines = text.split('\\n')");
     expect(component).toContain('lines.forEach((line, index) =>');

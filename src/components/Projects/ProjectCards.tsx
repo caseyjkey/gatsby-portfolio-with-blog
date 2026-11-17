@@ -15,6 +15,7 @@ import { IoMdAnalytics, IoMdCloud } from 'react-icons/io';
 import { SiGraphql, SiOracle, SiRedux } from 'react-icons/si';
 import { formatProjectStatusLabel, type ProjectRecord } from '../../lib/projects';
 import { useKonamiMode } from '../../hooks/useKonamiMode';
+import { useRegionalProfile } from '../../hooks/useRegionalProfile';
 import AnimatedSection from '../AnimatedSection';
 import './projects.scss';
 
@@ -123,21 +124,35 @@ type Props = {
   projects: ProjectRecord[];
   title: string;
   subtitle: string;
+  variant?: 'featured';
 };
 
-export default function ProjectCards({ projects, title, subtitle }: Props) {
-  const isFeatured = title === 'Featured Work';
+function selectFeaturedProjects(projects: ProjectRecord[], slugs: string[]) {
+  const projectsBySlug = new Map(projects.map((project) => [project.slug, project]));
+  return slugs
+    .map((slug) => projectsBySlug.get(slug))
+    .filter((project): project is ProjectRecord => Boolean(project));
+}
+
+export default function ProjectCards({ projects, title, subtitle, variant }: Props) {
+  const isFeatured = variant === 'featured' || title === 'Featured Work';
   const konamiMode = useKonamiMode();
+  const regionalProfile = useRegionalProfile();
+  const displayTitle = isFeatured ? regionalProfile.featuredTitle : title;
+  const displaySubtitle = isFeatured ? regionalProfile.featuredSubtitle : subtitle;
   const visibleProjects = useMemo(() => {
     if (isFeatured) {
-      const featuredSet = projects.filter((project) => (
-        konamiMode ? project.konamiOnly : !project.konamiOnly
-      ));
-      return featuredSet.slice(0, 3);
+      if (konamiMode) {
+        return projects.filter((project) => project.konamiOnly).slice(0, 3);
+      }
+      return selectFeaturedProjects(
+        projects.filter((project) => !project.konamiOnly),
+        regionalProfile.featuredProjectSlugs,
+      ).slice(0, 3);
     }
 
     return projects.filter((project) => !project.konamiOnly || konamiMode);
-  }, [isFeatured, projects, konamiMode]);
+  }, [isFeatured, projects, konamiMode, regionalProfile.featuredProjectSlugs]);
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -314,12 +329,12 @@ export default function ProjectCards({ projects, title, subtitle }: Props) {
   }, [activeImageIndex]);
 
   return (
-    <section className={`projects${title === 'Featured Work' ? ' projects--featured' : ''}`}>
+    <section className={`projects${isFeatured ? ' projects--featured' : ''}`}>
       <div className="container">
         <AnimatedSection rootMargin="0px" threshold={0} trackViewportEdges>
           <div className="projects__intro">
-            <h2>{title}</h2>
-            <p>{subtitle}</p>
+            <h2>{displayTitle}</h2>
+            <p>{displaySubtitle}</p>
           </div>
         </AnimatedSection>
         <div className="card-grid">
@@ -596,4 +611,5 @@ export const __test__ = {
   formatStatusLabel: formatProjectStatusLabel,
   getTechnologyIcons,
   getGallery,
+  selectFeaturedProjects,
 };

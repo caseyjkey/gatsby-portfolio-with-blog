@@ -3,6 +3,7 @@ import { IoMdArrowRoundDown } from 'react-icons/io';
 import Typewriter from 'typewriter-effect/dist/core';
 import introductionData from '../../data/introduction.json';
 import { useKonamiMode } from '../../hooks/useKonamiMode';
+import { useRegionalProfile } from '../../hooks/useRegionalProfile';
 import Socials from '../Social';
 import AsciiGreeting from './AsciiGreeting';
 import OpsPulse from './OpsPulse';
@@ -77,8 +78,9 @@ function FallingArrow() {
 // === Main Hero Section ===
 export default function HeroSection() {
   const konamiMode = useKonamiMode();
-  const headers = introductionData.descriptions.map(({ description }) => description.header);
-  const subheaders = introductionData.descriptions.map(({ description }) => description.subheader);
+  const regionalProfile = useRegionalProfile();
+  const headers = regionalProfile.descriptions.map(({ header }) => header);
+  const subheaders = regionalProfile.descriptions.map(({ subheader }) => subheader);
 
   const typingSpeed = 35;
   const deleteSpeed = 10;
@@ -127,6 +129,9 @@ export default function HeroSection() {
     const header = document.getElementById('typewriter1');
     const subheader = document.getElementById('typewriter2');
     if (!header || !subheader) return;
+    setHeaderEnd(false);
+    header.textContent = '';
+    subheader.textContent = '';
     let typewriter1 = new Typewriter(header, {
       loop: false,
       delay: typingSpeed,
@@ -175,7 +180,7 @@ export default function HeroSection() {
       (typewriter1 as unknown as { stop: () => void }).stop();
       (typewriter2 as unknown as { stop: () => void }).stop();
     };
-  }, []);
+  }, [regionalProfile.id]);
 
   // Handle the transition to the final text
   useEffect(() => {
@@ -282,7 +287,7 @@ export default function HeroSection() {
 
                 <div className="hero-slider">
                   <h2 className="subheader">
-                    I'm <span id="name">{introductionData.name}</span>, the {introductionData.role}.
+                    I'm <span id="name">{introductionData.name}</span>, the {regionalProfile.role}.
                   </h2>
 
                   <div

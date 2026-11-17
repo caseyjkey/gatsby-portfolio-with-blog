@@ -24,7 +24,8 @@ describe('Konami mode', () => {
 
   test('reveals opt-in projects only while the mode is active', () => {
     expect(projectCards).toContain('!project.konamiOnly || konamiMode');
-    expect(projectCards).toContain('return featuredSet.slice(0, 3)');
+    expect(projectCards).toContain('projects.filter((project) => project.konamiOnly).slice(0, 3)');
+    expect(projectCards).toContain('projects.filter((project) => !project.konamiOnly)');
     expect(projectCards).toContain('visibleProjects.map');
     expect(projectCards).toContain("project-card--unlocked");
   });

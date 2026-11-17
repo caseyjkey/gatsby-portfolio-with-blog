@@ -76,6 +76,19 @@ describe('ProjectCards', () => {
     ]);
   });
 
+  test('orders featured projects by the active market profile', () => {
+    const projects = [
+      liveProject,
+      { ...liveProject, slug: 'oracle', project: 'oracle', title: 'Oracle' },
+      { ...liveProject, slug: 'workspaces', project: 'workspaces', title: 'WorkSpaces' },
+    ];
+
+    expect(
+      __test__.selectFeaturedProjects(projects, ['workspaces', 'oracle', 'farmx'])
+        .map((project) => project.slug),
+    ).toEqual(['workspaces', 'oracle', 'farmx']);
+  });
+
   test('decodes a gallery image before allowing its crossfade', async () => {
     let requestedUrl = '';
     let decoded = false;
