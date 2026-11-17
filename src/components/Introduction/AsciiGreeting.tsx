@@ -1,14 +1,21 @@
 import React, { useEffect, useRef } from 'react';
+import {
+  buildMobileMorphLinks,
+  stepMobileNeighborMorph,
+  type MorphLink,
+  type MorphMote,
+} from '../../animations/mobileAsciiMorph';
 
 // === ASCII greeting particles ===
 // Interaction adapted from the devlog~ hero: the rendered word is sampled into
 // particles that fly in, settle, flicker between glyphs, and scatter away from
 // the pointer. Mobile keeps the same dense glyph field, but instead of
 // repainting all ~1300 glyphs every frame it caches the resting word as one
-// bitmap and simulates only the glyphs a finger actually disturbs. Those
-// motes get the same spring and damping as desktop, so a swipe leaves a
-// visible wake instead of a flashlight hole. The real heading stays in the
-// DOM for assistive technology and reserves its layout box, so nothing shifts.
+// bitmap and simulates a spring-linked subset of its glyphs. A finger directly
+// moves the nearest glyphs; those glyphs pull their neighbors, and the motion
+// travels through the word like the desktop field instead of stopping at the
+// touch radius. The real heading stays in the DOM for assistive technology and
+// reserves its layout box, so nothing shifts.
 
 const SPRING_STRENGTH = 0.04;
 const DAMPING = 0.88;
@@ -42,17 +49,16 @@ const MOBILE_GLYPH_SIZE = 6;
 const DESKTOP_SAMPLE_STEP = 4;
 const DESKTOP_GLYPH_SIZE = 6;
 const MOBILE_BREAKPOINT = 600;
-// Mobile touch physics. A mote is a glyph that a finger has displaced; it
-// keeps its own velocity so it trails the finger and springs back over about
-// a second, which is what makes the motion read as a swoosh.
-const MOBILE_MAX_ACTIVE = 64;
+// Mobile touch physics. Direct contact recruits only a small local set, then
+// the spring mesh promotes neighbors as displacement reaches them. The larger
+// total budget is still bounded, but no longer traps motion beneath a finger.
+const MOBILE_MAX_ACTIVE = 500;
+const MOBILE_DIRECT_ACTIVE = 52;
 const MOBILE_INTERACTION_FPS = 24;
-const MOBILE_KICK = 1.8;
-const MOBILE_REPULSION_SCALE = 1.35;
-const MOBILE_SPRING_STRENGTH = 0.022;
-const MOBILE_DAMPING = 0.9;
-const MOBILE_SETTLE_DISTANCE = 0.5;
-const MOBILE_SETTLE_SPEED = 0.4;
+const MOBILE_SIMULATION_STEPS = 6;
+const MOBILE_KICK = 1.55;
+const MOBILE_REPULSION_SCALE = 1.18;
+const MOBILE_RELEASE_DAMPING = 0.82;
 
 type Particle = {
   alpha: number;
@@ -63,16 +69,6 @@ type Particle = {
   targetAlpha: number;
   tx: number;
   ty: number;
-  vx: number;
-  vy: number;
-  x: number;
-  y: number;
-};
-
-type MobileMote = {
-  char: string;
-  homeX: number;
-  homeY: number;
   vx: number;
   vy: number;
   x: number;
@@ -168,7 +164,8 @@ export default function AsciiGreeting({ text }: Props) {
     let mobileStaticLayer: HTMLCanvasElement | null = null;
     const mobileGlyphSprites = new Map<string, HTMLCanvasElement>();
     let mobileGlyphPoints: MobileGlyphPoint[] = [];
-    let mobileMotes: MobileMote[] = [];
+    let mobileMorphLinks: MorphLink[] = [];
+    let mobileMotes: MorphMote[] = [];
     let inView = true;
     let cancelled = false;
 
@@ -187,14 +184,15 @@ export default function AsciiGreeting({ text }: Props) {
       context.save();
       context.globalCompositeOperation = 'destination-out';
       for (const mote of mobileMotes) {
-        const sprite = mobileGlyphSprites.get(mote.char);
+        const point = mobileGlyphPoints[mote.pointIndex];
+        const sprite = point ? mobileGlyphSprites.get(point.char) : undefined;
         if (!sprite) continue;
-        const displacement = Math.hypot(mote.x - mote.homeX, mote.y - mote.homeY);
+        const displacement = Math.hypot(mote.x - point.x, mote.y - point.y);
         context.globalAlpha = Math.min(0.94, 0.45 + displacement / 14);
         context.drawImage(
           sprite,
-          mote.homeX,
-          mote.homeY - glyphSize * 0.62,
+          point.x,
+          point.y - glyphSize * 0.62,
           glyphSize * 0.78,
           glyphSize * 1.24
         );
@@ -202,7 +200,8 @@ export default function AsciiGreeting({ text }: Props) {
       context.restore();
 
       for (const mote of mobileMotes) {
-        const sprite = mobileGlyphSprites.get(mote.char);
+        const point = mobileGlyphPoints[mote.pointIndex];
+        const sprite = point ? mobileGlyphSprites.get(point.char) : undefined;
         if (!sprite) continue;
         context.globalAlpha = Math.min(1, 0.64 + Math.hypot(mote.vx, mote.vy) * 0.12);
         context.drawImage(
@@ -216,14 +215,12 @@ export default function AsciiGreeting({ text }: Props) {
       context.globalAlpha = 1;
     };
 
-    // Advance the disturbed glyphs. Only motes near the finger are simulated,
-    // which keeps the per-frame cost proportional to the touch rather than
-    // to the size of the word.
+    // Apply the direct finger force, then let the linked spring mesh carry
+    // that displacement into glyphs outside the touch radius.
     const stepMobileMotes = () => {
       if (mobileMotes.length === 0) return false;
 
       const radius = repulsionRadius * MOBILE_REPULSION_SCALE;
-      const activeMotes: MobileMote[] = [];
 
       for (const mote of mobileMotes) {
         const dx = mote.x - pointerX;
@@ -236,31 +233,20 @@ export default function AsciiGreeting({ text }: Props) {
           mote.vx += Math.cos(angle) * falloff * MOBILE_KICK;
           mote.vy += Math.sin(angle) * falloff * MOBILE_KICK;
         }
-
-        mote.vx += (mote.homeX - mote.x) * MOBILE_SPRING_STRENGTH;
-        mote.vy += (mote.homeY - mote.y) * MOBILE_SPRING_STRENGTH;
-        mote.vx *= MOBILE_DAMPING;
-        mote.vy *= MOBILE_DAMPING;
-        mote.x += mote.vx;
-        mote.y += mote.vy;
-
-        const settled =
-          Math.abs(mote.homeX - mote.x) < MOBILE_SETTLE_DISTANCE &&
-          Math.abs(mote.homeY - mote.y) < MOBILE_SETTLE_DISTANCE &&
-          Math.abs(mote.vx) < MOBILE_SETTLE_SPEED &&
-          Math.abs(mote.vy) < MOBILE_SETTLE_SPEED;
-
-        if (settled) {
-          mote.x = mote.homeX;
-          mote.y = mote.homeY;
-          mote.vx = 0;
-          mote.vy = 0;
-        } else {
-          activeMotes.push(mote);
+        if (pointerX < -1000) {
+          mote.vx *= MOBILE_RELEASE_DAMPING;
+          mote.vy *= MOBILE_RELEASE_DAMPING;
         }
       }
 
-      mobileMotes = activeMotes;
+      for (let step = 0; step < MOBILE_SIMULATION_STEPS; step += 1) {
+        mobileMotes = stepMobileNeighborMorph(
+          mobileGlyphPoints,
+          mobileMorphLinks,
+          mobileMotes,
+          MOBILE_MAX_ACTIVE,
+        );
+      }
       return mobileMotes.length > 0;
     };
 
@@ -272,26 +258,25 @@ export default function AsciiGreeting({ text }: Props) {
       gestureY: number
     ) => {
       const radius = repulsionRadius * MOBILE_REPULSION_SCALE;
-      const candidates: Array<{ char: string; x: number; y: number; distance: number }> = [];
+      const candidates: Array<{
+        pointIndex: number;
+        x: number;
+        y: number;
+        distance: number;
+      }> = [];
 
-      for (const point of mobileGlyphPoints) {
+      mobileGlyphPoints.forEach((point, pointIndex) => {
         const dx = point.x - touchX;
         const dy = point.y - touchY;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance >= radius) continue;
-        candidates.push({ char: point.char, x: point.x, y: point.y, distance });
-      }
+        if (distance < radius) candidates.push({ pointIndex, x: point.x, y: point.y, distance });
+      });
 
-      // Only the closest glyphs become motes, so a swipe cannot turn into
-      // hundreds of simultaneous springs.
+      // Only direct-contact glyphs are added here. Neighbor activation happens
+      // during the physics step, so the response grows outward continuously.
       candidates.sort((a, b) => a.distance - b.distance);
-      for (const candidate of candidates) {
-        const existing = mobileMotes.find(
-          (mote) =>
-            mote.char === candidate.char &&
-            Math.abs(mote.homeX - candidate.x) < 0.01 &&
-            Math.abs(mote.homeY - candidate.y) < 0.01
-        );
+      for (const candidate of candidates.slice(0, MOBILE_DIRECT_ACTIVE)) {
+        const existing = mobileMotes.find((mote) => mote.pointIndex === candidate.pointIndex);
         if (existing) {
           // Already disturbed: reinforce the local pointer-following motion.
           const dx = candidate.x - touchX;
@@ -305,13 +290,18 @@ export default function AsciiGreeting({ text }: Props) {
         if (mobileMotes.length >= MOBILE_MAX_ACTIVE) {
           const farthestIndex = mobileMotes.reduce(
             (farthest, mote, index, motes) =>
-              Math.hypot(mote.homeX - touchX, mote.homeY - touchY) >
-              Math.hypot(motes[farthest].homeX - touchX, motes[farthest].homeY - touchY)
-                ? index
-                : farthest,
+              Math.hypot(
+                mobileGlyphPoints[mote.pointIndex].x - touchX,
+                mobileGlyphPoints[mote.pointIndex].y - touchY,
+              ) >
+              Math.hypot(
+                mobileGlyphPoints[motes[farthest].pointIndex].x - touchX,
+                mobileGlyphPoints[motes[farthest].pointIndex].y - touchY,
+              ) ? index : farthest,
             0,
           );
-          if (Math.hypot(mobileMotes[farthestIndex].homeX - touchX, mobileMotes[farthestIndex].homeY - touchY) <= candidate.distance) continue;
+          const farthestPoint = mobileGlyphPoints[mobileMotes[farthestIndex].pointIndex];
+          if (Math.hypot(farthestPoint.x - touchX, farthestPoint.y - touchY) <= candidate.distance) continue;
           mobileMotes.splice(farthestIndex, 1);
         }
 
@@ -321,9 +311,7 @@ export default function AsciiGreeting({ text }: Props) {
         const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
         const falloff = (1 - distance / radius) ** 2;
         mobileMotes.push({
-          char: candidate.char,
-          homeX: candidate.x,
-          homeY: candidate.y,
+          pointIndex: candidate.pointIndex,
           vx: Math.cos(angle) * MOBILE_KICK * falloff + gestureX * 0.18,
           vy: Math.sin(angle) * MOBILE_KICK * falloff + gestureY * 0.18,
           x: candidate.x,
@@ -682,6 +670,7 @@ export default function AsciiGreeting({ text }: Props) {
             mobileGlyphPoints.push({ char: glyph, x, y });
           }
         }
+        mobileMorphLinks = buildMobileMorphLinks(mobileGlyphPoints, sampleStep);
 
         mobileStaticLayer = staticLayer;
         startedAt = 0;
