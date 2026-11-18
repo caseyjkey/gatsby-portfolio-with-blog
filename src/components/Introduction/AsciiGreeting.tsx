@@ -52,13 +52,13 @@ const MOBILE_BREAKPOINT = 600;
 // Mobile touch physics. Direct contact recruits only a small local set, then
 // the spring mesh promotes neighbors as displacement reaches them. The larger
 // total budget is still bounded, but no longer traps motion beneath a finger.
-const MOBILE_MAX_ACTIVE = 500;
+const MOBILE_MAX_ACTIVE = 1200;
 const MOBILE_DIRECT_ACTIVE = 52;
 const MOBILE_INTERACTION_FPS = 24;
 const MOBILE_SIMULATION_STEPS = 6;
 const MOBILE_KICK = 1.55;
 const MOBILE_REPULSION_SCALE = 1.18;
-const MOBILE_RELEASE_DAMPING = 0.82;
+const MOBILE_RELEASE_DAMPING = 0.2;
 
 type Particle = {
   alpha: number;
@@ -169,49 +169,36 @@ export default function AsciiGreeting({ text }: Props) {
     let inView = true;
     let cancelled = false;
 
-    // Repaint the cached mobile word, fade only the home glyphs that actually
-    // moved, then draw those displaced glyphs at their live spring positions.
-    // This keeps the response directly under the finger without an eraser
-    // hole or a traveling concentric wave.
+    // The cached bitmap is only the idle fast path. During interaction every
+    // sampled glyph is drawn exactly once: inactive glyphs at home and active
+    // glyphs at their spring position. That makes the original word itself
+    // deform instead of compositing a darker moving copy over a static word.
     const paintMobile = () => {
       if (!mobileStaticLayer) return;
 
       context.clearRect(0, 0, width, height);
       context.globalAlpha = 1;
-      context.drawImage(mobileStaticLayer, 0, 0, width, height);
-      if (mobileMotes.length === 0) return;
+      if (mobileMotes.length === 0) {
+        context.drawImage(mobileStaticLayer, 0, 0, width, height);
+        return;
+      }
 
-      context.save();
-      context.globalCompositeOperation = 'destination-out';
-      for (const mote of mobileMotes) {
-        const point = mobileGlyphPoints[mote.pointIndex];
-        const sprite = point ? mobileGlyphSprites.get(point.char) : undefined;
-        if (!sprite) continue;
-        const displacement = Math.hypot(mote.x - point.x, mote.y - point.y);
-        context.globalAlpha = Math.min(0.94, 0.45 + displacement / 14);
+      const activeByPoint = new Map(
+        mobileMotes.map((mote) => [mote.pointIndex, mote]),
+      );
+      context.globalAlpha = 1;
+      mobileGlyphPoints.forEach((point, pointIndex) => {
+        const sprite = mobileGlyphSprites.get(point.char);
+        if (!sprite) return;
+        const mote = activeByPoint.get(pointIndex);
         context.drawImage(
           sprite,
-          point.x,
-          point.y - glyphSize * 0.62,
+          mote?.x ?? point.x,
+          (mote?.y ?? point.y) - glyphSize * 0.62,
           glyphSize * 0.78,
           glyphSize * 1.24
         );
-      }
-      context.restore();
-
-      for (const mote of mobileMotes) {
-        const point = mobileGlyphPoints[mote.pointIndex];
-        const sprite = point ? mobileGlyphSprites.get(point.char) : undefined;
-        if (!sprite) continue;
-        context.globalAlpha = Math.min(1, 0.64 + Math.hypot(mote.vx, mote.vy) * 0.12);
-        context.drawImage(
-          sprite,
-          mote.x,
-          mote.y - glyphSize * 0.62,
-          glyphSize * 0.78,
-          glyphSize * 1.24
-        );
-      }
+      });
       context.globalAlpha = 1;
     };
 
@@ -637,7 +624,7 @@ export default function AsciiGreeting({ text }: Props) {
         staticContext.textAlign = 'left';
         staticContext.textBaseline = 'middle';
         staticContext.fillStyle = ink;
-        staticContext.globalAlpha = 0.98;
+        staticContext.globalAlpha = 1;
         context.font = `500 ${glyphSize}px ${fontFamily}`;
         context.textAlign = 'left';
         context.textBaseline = 'middle';
@@ -666,7 +653,15 @@ export default function AsciiGreeting({ text }: Props) {
           for (let x = 0; x < width; x += sampleStep) {
             if (pixels[(y * width + x) * 4 + 3] <= 100) continue;
             const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-            staticContext.fillText(glyph, x, y);
+            const sprite = mobileGlyphSprites.get(glyph);
+            if (!sprite) continue;
+            staticContext.drawImage(
+              sprite,
+              x,
+              y - glyphSize * 0.62,
+              glyphSize * 0.78,
+              glyphSize * 1.24,
+            );
             mobileGlyphPoints.push({ char: glyph, x, y });
           }
         }
