@@ -76,7 +76,7 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain("addEventListener('visibilitychange'");
   });
 
-  test('keeps mobile readable and simulates only touch-disturbed glyphs', () => {
+  test('keeps mobile readable and propagates touch motion through glyph neighbors', () => {
     expect(component).toContain('const MOBILE_FPS = 30');
     expect(component).toContain('const MOBILE_SETTLED_FPS = 20');
     expect(component).toContain('const MOBILE_SAMPLE_STEP = 4');
@@ -84,26 +84,33 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain("const GLYPH_SET_MOBILE = '01';");
     expect(component).toContain('let mobileStaticLayer: HTMLCanvasElement | null = null');
     expect(component).toContain('let mobileGlyphPoints:');
-    expect(component).toContain('let mobileMotes: MobileMote[] = []');
+    expect(component).toContain('let mobileMotes: MorphMote[] = []');
+    expect(component).toContain('let mobileMorphLinks: MorphLink[] = []');
     expect(component).toContain('context.drawImage(mobileStaticLayer, 0, 0, width, height)');
-    expect(component).toContain('staticContext.fillText(glyph, x, y)');
+    expect(component).toContain('staticContext.drawImage(');
     expect(component).toContain('mobileGlyphPoints.push({ char: glyph, x, y })');
-    expect(component).toContain('const MOBILE_MAX_ACTIVE = 64');
+    expect(component).toContain('const MOBILE_MAX_ACTIVE = 1200');
+    expect(component).toContain('const MOBILE_DIRECT_ACTIVE = 52');
+    expect(component).toContain('const MOBILE_SIMULATION_STEPS = 6');
     expect(component).toContain('const MAX_DESKTOP_PARTICLES = 1500');
     expect(component).toContain('const MAX_MOBILE_PARTICLES = 320');
     expect(component).toContain('const MOBILE_INTERACTION_FPS = 24');
-    expect(component).toContain('const MOBILE_REPULSION_SCALE = 1.35');
+    expect(component).toContain('const MOBILE_REPULSION_SCALE = 1.18');
+    expect(component).toContain('const MOBILE_RELEASE_DAMPING = 0.2');
     expect(component).toContain('const stepMobileMotes = () =>');
+    expect(component).toContain('buildMobileMorphLinks(mobileGlyphPoints, sampleStep)');
+    expect(component).toContain('stepMobileNeighborMorph(');
     expect(component).toContain('const push = falloff * repulsionForce');
     expect(component).toContain('pointerVelocityX * falloff * 0.08');
     expect(component).toContain('const disturbMobile = (');
     expect(component).toContain('gestureX * 0.18');
-    expect(component).toContain('mote.vx += (mote.homeX - mote.x) * MOBILE_SPRING_STRENGTH');
     expect(component).toContain('pointerX = point.x;');
     expect(component).toContain('mobileMotes.splice(farthestIndex, 1)');
-    expect(component).toContain('context.globalCompositeOperation = \'destination-out\'');
-    expect(component).toContain('mote.x,');
-    expect(component).toContain('mote.y - glyphSize * 0.62');
+    expect(component).toContain('const activeByPoint = new Map(');
+    expect(component).toContain('mobileGlyphPoints.forEach((point, pointIndex) =>');
+    expect(component).toContain('mote?.x ?? point.x');
+    expect(component).toContain('(mote?.y ?? point.y) - glyphSize * 0.62');
+    expect(component).not.toContain("globalCompositeOperation = 'destination-out'");
     expect(component).toContain('paintMobile();');
     expect(component).toContain('thinParticles(collected, maxParticles - dustCount)');
     expect(component).not.toContain('rippleSources');
