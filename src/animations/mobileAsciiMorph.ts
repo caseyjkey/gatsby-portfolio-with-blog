@@ -14,6 +14,12 @@ export type MorphMote = {
 
 export type MorphLink = readonly [number, number];
 
+export type MorphActivationZone = {
+  radius: number;
+  x: number;
+  y: number;
+};
+
 const LINK_RADIUS_MULTIPLIER = 4.5;
 const ROW_BRIDGE_MULTIPLIER = 11;
 const ROW_SKIP_MULTIPLIER = 8;
@@ -29,10 +35,9 @@ const PROPAGATION_BANDS = 5;
 const MIN_ACTIVE_STEPS = 5;
 
 /**
- * Connect each sampled glyph to a small set of nearby glyphs. The links make
- * the word behave like one loose spring mesh: a touched glyph pulls its
- * neighbors, which pull theirs, instead of every glyph reacting only to the
- * finger's radius.
+ * Connect each sampled glyph to a small set of nearby glyphs. The links let a
+ * touched glyph pull a short ring of neighbors; stepMobileNeighborMorph's
+ * activation zone keeps that elastic response around the fingertip.
  */
 export function buildMobileMorphLinks(
   points: readonly MorphPoint[],
@@ -54,8 +59,9 @@ export function buildMobileMorphLinks(
   const links = new Set<string>();
 
   // The opaque samples form separate islands for each letter. Bridge adjacent
-  // islands along each sample row so a tug on the H can reach the e/l/l/o;
-  // nearest-neighbor links alone stop at the whitespace between letters.
+  // islands along each sample row so a tug near a letter edge can yield the
+  // next letter inside the activation zone; the spatial cap prevents a bridge
+  // chain from spreading the response across the whole word.
   const rows = new Map<number, number[]>();
   points.forEach((point, pointIndex) => {
     const row = Math.round(point.y / sampleStep);
@@ -126,6 +132,7 @@ export function stepMobileNeighborMorph(
   links: readonly MorphLink[],
   motes: readonly MorphMote[],
   maxActive: number,
+  activationZone?: MorphActivationZone,
 ): MorphMote[] {
   if (motes.length === 0) return [];
 
@@ -182,7 +189,13 @@ export function stepMobileNeighborMorph(
   let added = 0;
   [...impulses.entries()]
     .filter(([pointIndex, impulse]) =>
-      !active.has(pointIndex) && Math.hypot(impulse.x, impulse.y) >= ACTIVATION_IMPULSE
+      !active.has(pointIndex) &&
+      Math.hypot(impulse.x, impulse.y) >= ACTIVATION_IMPULSE &&
+      (!activationZone ||
+        Math.hypot(
+          points[pointIndex].x - activationZone.x,
+          points[pointIndex].y - activationZone.y,
+        ) <= activationZone.radius)
     )
     .sort(([, first], [, second]) =>
       Math.hypot(second.x, second.y) - Math.hypot(first.x, first.y)
