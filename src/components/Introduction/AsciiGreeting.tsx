@@ -54,13 +54,14 @@ const MOBILE_BREAKPOINT = 600;
 // what makes this read like a finger moving through water instead of a slap
 // making the entire word jiggle.
 const MOBILE_MAX_ACTIVE = 280;
-const MOBILE_DIRECT_ACTIVE = 32;
+const MOBILE_DIRECT_ACTIVE = 48;
 const MOBILE_INTERACTION_FPS = 30;
 const MOBILE_SIMULATION_STEPS = 2;
 const MOBILE_KICK = 5.2;
-const MOBILE_REPULSION_SCALE = 0.62;
+const MOBILE_REPULSION_SCALE = 0.9;
 const MOBILE_PROPAGATION_SCALE = 0.9;
 const MOBILE_RELEASE_DAMPING = 0.2;
+const MOBILE_RELEASE_POSITION_DAMPING = 0.68;
 
 type Particle = {
   alpha: number;
@@ -227,6 +228,9 @@ export default function AsciiGreeting({ text }: Props) {
         if (pointerX < -1000) {
           mote.vx *= MOBILE_RELEASE_DAMPING;
           mote.vy *= MOBILE_RELEASE_DAMPING;
+          const home = mobileGlyphPoints[mote.pointIndex];
+          mote.x = home.x + (mote.x - home.x) * MOBILE_RELEASE_POSITION_DAMPING;
+          mote.y = home.y + (mote.y - home.y) * MOBILE_RELEASE_POSITION_DAMPING;
         }
       }
 
@@ -236,11 +240,13 @@ export default function AsciiGreeting({ text }: Props) {
           mobileMorphLinks,
           mobileMotes,
           MOBILE_MAX_ACTIVE,
-          {
-            x: mobileFocusX,
-            y: mobileFocusY,
-            radius: repulsionRadius * MOBILE_PROPAGATION_SCALE,
-          },
+          pointerX > -1000
+            ? {
+                x: mobileFocusX,
+                y: mobileFocusY,
+                radius: repulsionRadius * MOBILE_PROPAGATION_SCALE,
+              }
+            : { x: 0, y: 0, radius: 0 },
         );
       }
       return mobileMotes.length > 0;
