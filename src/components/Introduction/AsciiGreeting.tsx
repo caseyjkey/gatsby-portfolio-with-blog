@@ -54,12 +54,12 @@ const MOBILE_BREAKPOINT = 600;
 // what makes this read like a finger moving through water instead of a slap
 // making the entire word jiggle.
 const MOBILE_MAX_ACTIVE = 280;
-const MOBILE_DIRECT_ACTIVE = 40;
+const MOBILE_DIRECT_ACTIVE = 32;
 const MOBILE_INTERACTION_FPS = 30;
 const MOBILE_SIMULATION_STEPS = 2;
-const MOBILE_KICK = 1.55;
-const MOBILE_REPULSION_SCALE = 0.72;
-const MOBILE_PROPAGATION_SCALE = 1.35;
+const MOBILE_KICK = 5.2;
+const MOBILE_REPULSION_SCALE = 0.62;
+const MOBILE_PROPAGATION_SCALE = 0.9;
 const MOBILE_RELEASE_DAMPING = 0.2;
 
 type Particle = {
@@ -281,8 +281,8 @@ export default function AsciiGreeting({ text }: Props) {
           const dy = candidate.y - touchY;
           const distance = Math.hypot(dx, dy);
           const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
-          existing.vx += Math.cos(angle) * MOBILE_KICK * 0.55 + gestureX * 0.12;
-          existing.vy += Math.sin(angle) * MOBILE_KICK * 0.55 + gestureY * 0.12;
+          existing.vx += Math.cos(angle) * MOBILE_KICK * 0.55 + gestureX * 0.2;
+          existing.vy += Math.sin(angle) * MOBILE_KICK * 0.55 + gestureY * 0.2;
           continue;
         }
         if (mobileMotes.length >= MOBILE_MAX_ACTIVE) {
@@ -310,8 +310,8 @@ export default function AsciiGreeting({ text }: Props) {
         const falloff = (1 - distance / radius) ** 2;
         mobileMotes.push({
           pointIndex: candidate.pointIndex,
-          vx: Math.cos(angle) * MOBILE_KICK * falloff + gestureX * 0.18,
-          vy: Math.sin(angle) * MOBILE_KICK * falloff + gestureY * 0.18,
+          vx: Math.cos(angle) * MOBILE_KICK * falloff + gestureX * 0.3,
+          vy: Math.sin(angle) * MOBILE_KICK * falloff + gestureY * 0.3,
           x: candidate.x,
           y: candidate.y,
         });
