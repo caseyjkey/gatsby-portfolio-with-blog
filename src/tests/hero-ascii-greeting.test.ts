@@ -76,7 +76,7 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain("addEventListener('visibilitychange'");
   });
 
-  test('keeps mobile readable and propagates touch motion through glyph neighbors', () => {
+  test('keeps mobile readable and localizes touch motion to nearby glyph neighbors', () => {
     expect(component).toContain('const MOBILE_FPS = 30');
     expect(component).toContain('const MOBILE_SETTLED_FPS = 20');
     expect(component).toContain('const MOBILE_SAMPLE_STEP = 4');
@@ -89,21 +89,23 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain('context.drawImage(mobileStaticLayer, 0, 0, width, height)');
     expect(component).toContain('staticContext.drawImage(');
     expect(component).toContain('mobileGlyphPoints.push({ char: glyph, x, y })');
-    expect(component).toContain('const MOBILE_MAX_ACTIVE = 1200');
-    expect(component).toContain('const MOBILE_DIRECT_ACTIVE = 52');
-    expect(component).toContain('const MOBILE_SIMULATION_STEPS = 6');
+    expect(component).toContain('const MOBILE_MAX_ACTIVE = 280');
+    expect(component).toContain('const MOBILE_DIRECT_ACTIVE = 32');
+    expect(component).toContain('const MOBILE_SIMULATION_STEPS = 2');
     expect(component).toContain('const MAX_DESKTOP_PARTICLES = 1500');
     expect(component).toContain('const MAX_MOBILE_PARTICLES = 320');
-    expect(component).toContain('const MOBILE_INTERACTION_FPS = 24');
-    expect(component).toContain('const MOBILE_REPULSION_SCALE = 1.18');
+    expect(component).toContain('const MOBILE_INTERACTION_FPS = 30');
+    expect(component).toContain('const MOBILE_REPULSION_SCALE = 0.62');
+    expect(component).toContain('const MOBILE_PROPAGATION_SCALE = 0.9');
     expect(component).toContain('const MOBILE_RELEASE_DAMPING = 0.2');
     expect(component).toContain('const stepMobileMotes = () =>');
     expect(component).toContain('buildMobileMorphLinks(mobileGlyphPoints, sampleStep)');
     expect(component).toContain('stepMobileNeighborMorph(');
+    expect(component).toContain('radius: repulsionRadius * MOBILE_PROPAGATION_SCALE');
     expect(component).toContain('const push = falloff * repulsionForce');
     expect(component).toContain('pointerVelocityX * falloff * 0.08');
     expect(component).toContain('const disturbMobile = (');
-    expect(component).toContain('gestureX * 0.18');
+    expect(component).toContain('gestureX * 0.3');
     expect(component).toContain('pointerX = point.x;');
     expect(component).toContain('mobileMotes.splice(farthestIndex, 1)');
     expect(component).toContain('const activeByPoint = new Map(');

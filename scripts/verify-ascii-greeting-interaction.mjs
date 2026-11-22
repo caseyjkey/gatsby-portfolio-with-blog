@@ -201,7 +201,9 @@ async function verifyViewport({ mobile, screenshotPath, activeScreenshotPath }) 
       `,
     );
 
-    const startX = Math.round(canvas.left + canvas.width * 0.12);
+    // Touch the middle of the mobile word so localization can be measured on
+    // both sides. Desktop retains the original left-to-right hover probe.
+    const startX = Math.round(canvas.left + canvas.width * (mobile ? 0.5 : 0.12));
     const startY = Math.round(canvas.top + canvas.height * 0.5);
     const pointerType = mobile ? 'touch' : 'mouse';
     await request(`/session/${sessionId}/actions`, {
@@ -217,13 +219,18 @@ async function verifyViewport({ mobile, screenshotPath, activeScreenshotPath }) 
             { type: 'pointerMove', origin: 'viewport', x: startX + 18, y: startY - 8, duration: 160 },
             { type: 'pointerMove', origin: 'viewport', x: startX + 38, y: startY + 6, duration: 160 },
             { type: 'pause', duration: 220 },
-            ...(mobile ? [{ type: 'pointerUp', button: 0 }] : []),
           ],
         },
       ],
     });
-    await sleep(100);
     await screenshot(sessionId, activeScreenshotPath);
+    if (mobile) {
+      // Releasing the active input sources preserves the same real touch
+      // pointer created above and dispatches its pointerup to the captured
+      // canvas. A second action sequence would create a new source in some
+      // ChromeDriver versions and leave the original finger held down.
+      await request(`/session/${sessionId}/actions`, undefined, 'DELETE');
+    }
     await sleep(1900);
 
     const result = await execute(
@@ -259,12 +266,13 @@ try {
     screenshotPath: '/tmp/ascii-greeting-desktop.png',
     activeScreenshotPath: '/tmp/ascii-greeting-desktop-active.png',
   });
-  const farMobileBands = mobile.maxChanged.slice(2);
-  if (farMobileBands.some((changed) => changed <= 3)) {
-    throw new Error(`mobile motion did not reach every far band: ${JSON.stringify(mobile)}`);
+  const touchedMobileBands = mobile.maxChanged.slice(2, 4);
+  if (touchedMobileBands.some((changed) => changed <= 3)) {
+    throw new Error(`mobile touch did not deform the local glyph field: ${JSON.stringify(mobile)}`);
   }
-  if (mobile.firstChangedAt[4] <= mobile.firstChangedAt[0] + 50) {
-    throw new Error(`mobile far side changed like a simultaneous blast: ${JSON.stringify(mobile)}`);
+  const farMobileBands = [mobile.maxChanged[0], mobile.maxChanged[4]];
+  if (farMobileBands.some((changed) => changed > 3)) {
+    throw new Error(`mobile touch diffused into the far glyph field: ${JSON.stringify(mobile)}`);
   }
   const peakMobileChange = mobile.maxChanged.reduce((total, value) => total + value, 0);
   const finalMobileChange = mobile.finalChanged.reduce((total, value) => total + value, 0);

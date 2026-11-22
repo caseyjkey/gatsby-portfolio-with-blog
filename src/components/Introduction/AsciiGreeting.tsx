@@ -12,10 +12,10 @@ import {
 // the pointer. Mobile keeps the same dense glyph field, but instead of
 // repainting all ~1300 glyphs every frame it caches the resting word as one
 // bitmap and simulates a spring-linked subset of its glyphs. A finger directly
-// moves the nearest glyphs; those glyphs pull their neighbors, and the motion
-// travels through the word like the desktop field instead of stopping at the
-// touch radius. The real heading stays in the DOM for assistive technology and
-// reserves its layout box, so nothing shifts.
+// moves the nearest glyphs; those glyphs pull a short ring of neighbors so the
+// letterform bends around the fingertip without turning the whole word into a
+// diffuse wobble. The real heading stays in the DOM for assistive technology
+// and reserves its layout box, so nothing shifts.
 
 const SPRING_STRENGTH = 0.04;
 const DAMPING = 0.88;
@@ -49,15 +49,17 @@ const MOBILE_GLYPH_SIZE = 6;
 const DESKTOP_SAMPLE_STEP = 4;
 const DESKTOP_GLYPH_SIZE = 6;
 const MOBILE_BREAKPOINT = 600;
-// Mobile touch physics. Direct contact recruits only a small local set, then
-// the spring mesh promotes neighbors as displacement reaches them. The larger
-// total budget is still bounded, but no longer traps motion beneath a finger.
-const MOBILE_MAX_ACTIVE = 1200;
-const MOBILE_DIRECT_ACTIVE = 52;
-const MOBILE_INTERACTION_FPS = 24;
-const MOBILE_SIMULATION_STEPS = 6;
-const MOBILE_KICK = 1.55;
-const MOBILE_REPULSION_SCALE = 1.18;
+// Mobile touch physics. The direct zone follows the fingertip and a slightly
+// larger propagation zone lets adjacent glyphs yield. The hard spatial cap is
+// what makes this read like a finger moving through water instead of a slap
+// making the entire word jiggle.
+const MOBILE_MAX_ACTIVE = 280;
+const MOBILE_DIRECT_ACTIVE = 32;
+const MOBILE_INTERACTION_FPS = 30;
+const MOBILE_SIMULATION_STEPS = 2;
+const MOBILE_KICK = 5.2;
+const MOBILE_REPULSION_SCALE = 0.62;
+const MOBILE_PROPAGATION_SCALE = 0.9;
 const MOBILE_RELEASE_DAMPING = 0.2;
 
 type Particle = {
@@ -166,6 +168,8 @@ export default function AsciiGreeting({ text }: Props) {
     let mobileGlyphPoints: MobileGlyphPoint[] = [];
     let mobileMorphLinks: MorphLink[] = [];
     let mobileMotes: MorphMote[] = [];
+    let mobileFocusX = -9999;
+    let mobileFocusY = -9999;
     let inView = true;
     let cancelled = false;
 
@@ -232,6 +236,11 @@ export default function AsciiGreeting({ text }: Props) {
           mobileMorphLinks,
           mobileMotes,
           MOBILE_MAX_ACTIVE,
+          {
+            x: mobileFocusX,
+            y: mobileFocusY,
+            radius: repulsionRadius * MOBILE_PROPAGATION_SCALE,
+          },
         );
       }
       return mobileMotes.length > 0;
@@ -245,6 +254,8 @@ export default function AsciiGreeting({ text }: Props) {
       gestureY: number
     ) => {
       const radius = repulsionRadius * MOBILE_REPULSION_SCALE;
+      mobileFocusX = touchX;
+      mobileFocusY = touchY;
       const candidates: Array<{
         pointIndex: number;
         x: number;
@@ -270,8 +281,8 @@ export default function AsciiGreeting({ text }: Props) {
           const dy = candidate.y - touchY;
           const distance = Math.hypot(dx, dy);
           const angle = distance > 0 ? Math.atan2(dy, dx) : 0;
-          existing.vx += Math.cos(angle) * MOBILE_KICK * 0.55 + gestureX * 0.12;
-          existing.vy += Math.sin(angle) * MOBILE_KICK * 0.55 + gestureY * 0.12;
+          existing.vx += Math.cos(angle) * MOBILE_KICK * 0.55 + gestureX * 0.2;
+          existing.vy += Math.sin(angle) * MOBILE_KICK * 0.55 + gestureY * 0.2;
           continue;
         }
         if (mobileMotes.length >= MOBILE_MAX_ACTIVE) {
@@ -299,8 +310,8 @@ export default function AsciiGreeting({ text }: Props) {
         const falloff = (1 - distance / radius) ** 2;
         mobileMotes.push({
           pointIndex: candidate.pointIndex,
-          vx: Math.cos(angle) * MOBILE_KICK * falloff + gestureX * 0.18,
-          vy: Math.sin(angle) * MOBILE_KICK * falloff + gestureY * 0.18,
+          vx: Math.cos(angle) * MOBILE_KICK * falloff + gestureX * 0.3,
+          vy: Math.sin(angle) * MOBILE_KICK * falloff + gestureY * 0.3,
           x: candidate.x,
           y: candidate.y,
         });
