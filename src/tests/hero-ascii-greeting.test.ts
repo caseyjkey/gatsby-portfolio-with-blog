@@ -90,14 +90,15 @@ describe('ASCII hero greeting', () => {
     expect(component).toContain('staticContext.drawImage(');
     expect(component).toContain('mobileGlyphPoints.push({ char: glyph, x, y })');
     expect(component).toContain('const MOBILE_MAX_ACTIVE = 280');
-    expect(component).toContain('const MOBILE_DIRECT_ACTIVE = 32');
+    expect(component).toContain('const MOBILE_DIRECT_ACTIVE = 48');
     expect(component).toContain('const MOBILE_SIMULATION_STEPS = 2');
     expect(component).toContain('const MAX_DESKTOP_PARTICLES = 1500');
     expect(component).toContain('const MAX_MOBILE_PARTICLES = 320');
     expect(component).toContain('const MOBILE_INTERACTION_FPS = 30');
-    expect(component).toContain('const MOBILE_REPULSION_SCALE = 0.62');
+    expect(component).toContain('const MOBILE_REPULSION_SCALE = 0.9');
     expect(component).toContain('const MOBILE_PROPAGATION_SCALE = 0.9');
     expect(component).toContain('const MOBILE_RELEASE_DAMPING = 0.2');
+    expect(component).toContain('const MOBILE_RELEASE_POSITION_DAMPING = 0.68');
     expect(component).toContain('const stepMobileMotes = () =>');
     expect(component).toContain('buildMobileMorphLinks(mobileGlyphPoints, sampleStep)');
     expect(component).toContain('stepMobileNeighborMorph(');
