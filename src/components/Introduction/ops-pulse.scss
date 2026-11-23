@@ -436,6 +436,29 @@
     }
   }
 
+  @media (min-width: 768px) {
+    // Keep desktop market controls compact while retaining generous hit areas.
+    &__region-hit {
+      x: -38px;
+      y: -30px;
+      width: 76px;
+      height: 60px;
+      rx: 30px;
+    }
+
+    &__region-pill {
+      x: -30px;
+      y: -20px;
+      width: 60px;
+      height: 40px;
+      rx: 20px;
+    }
+
+    &__region-target text {
+      font-size: 11px;
+    }
+  }
+
   &__route {
     fill: none;
     stroke: rgba(var(--color-primary-rgb), 0.24);

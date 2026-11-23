@@ -102,6 +102,8 @@ type RegionMapTarget = {
   shortLabel: string;
   latitude: number;
   longitude: number;
+  mapX: number;
+  mapY: number;
   labelX: number;
   labelY: number;
 };
@@ -110,13 +112,13 @@ type RegionMapTarget = {
 // are intentionally fanned out from the dense US map area so every target has
 // a distinct touch area while its leader line preserves geographic meaning.
 export const REGION_MAP_TARGETS: RegionMapTarget[] = [
-  { id: 'sf', shortLabel: 'SF', latitude: 37.7749, longitude: -122.4194, labelX: 120, labelY: 130 },
-  { id: 'la', shortLabel: 'LA', latitude: 34.0522, longitude: -118.2437, labelX: 120, labelY: 235 },
-  { id: 'wyoming', shortLabel: 'WY', latitude: 41.14, longitude: -104.82, labelX: 190, labelY: 105 },
-  { id: 'colorado', shortLabel: 'CO', latitude: 40.015, longitude: -105.12, labelX: 190, labelY: 245 },
-  { id: 'nyc', shortLabel: 'NYC', latitude: 40.7128, longitude: -74.006, labelX: 325, labelY: 110 },
-  { id: 'dc', shortLabel: 'DC', latitude: 38.9072, longitude: -77.0369, labelX: 330, labelY: 180 },
-  { id: 'miami', shortLabel: 'MIA', latitude: 25.7617, longitude: -80.1918, labelX: 315, labelY: 260 },
+  { id: 'sf', shortLabel: 'SF', latitude: 37.7749, longitude: -122.4194, mapX: 151, mapY: 213, labelX: 120, labelY: 130 },
+  { id: 'la', shortLabel: 'LA', latitude: 34.0522, longitude: -118.2437, mapX: 162, mapY: 237, labelX: 120, labelY: 235 },
+  { id: 'wyoming', shortLabel: 'WY', latitude: 41.14, longitude: -104.82, mapX: 205, mapY: 185, labelX: 190, labelY: 105 },
+  { id: 'colorado', shortLabel: 'CO', latitude: 40.015, longitude: -105.12, mapX: 204, mapY: 218, labelX: 190, labelY: 245 },
+  { id: 'nyc', shortLabel: 'NYC', latitude: 40.7128, longitude: -74.006, mapX: 277, mapY: 190, labelX: 325, labelY: 110 },
+  { id: 'dc', shortLabel: 'DC', latitude: 38.9072, longitude: -77.0369, mapX: 270, mapY: 208, labelX: 330, labelY: 180 },
+  { id: 'miami', shortLabel: 'MIA', latitude: 25.7617, longitude: -80.1918, mapX: 263, mapY: 260, labelX: 315, labelY: 260 },
 ];
 
 function anchorForCoordinates(latitude?: number, longitude?: number) {
@@ -474,7 +476,7 @@ export default function OpsPulse() {
             {konamiMode && (
               <div className="ops-pulse__region-prompt" aria-live="polite">
                 <span>SELECT MARKET</span>
-                <strong>{activeRegionalProfile.label}</strong>
+                <strong>{activeRegionalProfile.id === 'generic' ? 'GENERAL MARKET' : activeRegionalProfile.label}</strong>
               </div>
             )}
             <div className="ops-pulse__world-map" aria-hidden="true" />
@@ -483,7 +485,7 @@ export default function OpsPulse() {
               viewBox="0 0 950 620"
               role={konamiMode ? 'group' : 'img'}
               aria-label={konamiMode
-                ? `Choose a portfolio market. ${activeRegionalProfile.label} is active.`
+                ? `Choose a portfolio market. ${activeRegionalProfile.id === 'generic' ? 'General market' : activeRegionalProfile.label} is active.`
                 : `Live request activity by region. ${snapshot.totalRequests} requests recorded in the last hour.`}
             >
               {clusters.map((cluster) => {
@@ -529,10 +531,8 @@ export default function OpsPulse() {
                 </g>
               )}
               {konamiMode && REGION_MAP_TARGETS.map((target) => {
-                const anchor = anchorForCoordinates(target.latitude, target.longitude);
-                if (!anchor) return null;
-                const anchorX = anchor.x * MAP_SCALE.x;
-                const anchorY = anchor.y * MAP_SCALE.y;
+                const anchorX = target.mapX;
+                const anchorY = target.mapY;
                 const selected = activeRegionalProfile.id === target.id;
                 const activate = () => selectRegionalProfileForSession(target.id);
                 return (

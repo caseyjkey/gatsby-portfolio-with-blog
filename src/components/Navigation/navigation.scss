@@ -421,6 +421,14 @@ $nav-height: 85px;
       background: $white !important;
     }
 
+    // Cover common dark-mode extension/theme markers when the browser does
+    // not expose a dark prefers-color-scheme value to the page.
+    html[data-darkreader-mode='dynamic'] & span,
+    html[data-theme='dark'] & span,
+    html.dark & span {
+      background: $white !important;
+    }
+
     span:nth-child(1) {
       top: 0;
     }
