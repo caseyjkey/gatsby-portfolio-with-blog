@@ -227,7 +227,7 @@ export default function HeroSection() {
       </div>
 
       {/* Mobile SVG (headshot + blob) */}
-      <div className="hero-mobile-svg">
+      <div className={`hero-mobile-svg${konamiMode ? ' is-konami' : ''}`}>
         <div>
           <div className="hero-mobile-headshot-container">
             <MobileBlob className="hero-mobile-blob" />
@@ -240,7 +240,7 @@ export default function HeroSection() {
       </div>
 
       {/* Desktop Illustration */}
-      <div className="hero-desktop-illustration">
+      <div className={`hero-desktop-illustration${konamiMode ? ' is-konami' : ''}`}>
         <div>
           <div className="hero-desktop-headshot-container">
             <DesktopBlob className="hero-desktop-blob" />

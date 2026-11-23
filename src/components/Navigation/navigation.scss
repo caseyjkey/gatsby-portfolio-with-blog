@@ -199,7 +199,9 @@ $nav-height: 85px;
 
     .hamburger-toggle {
       transform: translateY(7px);
-      margin-right: 0.1rem;
+      // Match the shared 0.75rem container gutter exactly. Any extra margin
+      // moves the icon inward and breaks its right-edge alignment with copy.
+      margin-right: 0;
       padding-bottom: 0.8rem;
     }
 
@@ -401,7 +403,30 @@ $nav-height: 85px;
       opacity: 1;
       left: 50%;
       transform: translateX(-50%) rotate(0deg);
-      transition: 0.25s ease-in-out, height 0.25s ease-in-out;
+      transition: transform 0.25s ease-in-out,
+                  opacity 0.25s ease-in-out,
+                  top 0.25s ease-in-out,
+                  height 0.25s ease-in-out;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      span {
+        background: $white;
+      }
+    }
+
+    // Dark-mode extensions expose this scheme marker after transforming the
+    // page. Keep this control legible even when their color rewrite misses it.
+    :root[data-darkreader-scheme='dark'] & span {
+      background: $white !important;
+    }
+
+    // Cover common dark-mode extension/theme markers when the browser does
+    // not expose a dark prefers-color-scheme value to the page.
+    html[data-darkreader-mode='dynamic'] & span,
+    html[data-theme='dark'] & span,
+    html.dark & span {
+      background: $white !important;
     }
 
     span:nth-child(1) {
