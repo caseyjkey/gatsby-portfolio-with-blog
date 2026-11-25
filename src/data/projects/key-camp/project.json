@@ -1,0 +1,19 @@
+{
+  "image": "images/key-camp.svg",
+  "title": "Key Camp",
+  "subtitle": "Agentic Engineering for Everyone",
+  "description": "An AI fluency and creative problem-solving curriculum for grades 3–12. Students build a Raspberry Pi environment, configure an agent, and use it to turn their own ideas—from art and construction to community projects and software—into working outcomes.",
+  "icons": {
+    "fa": ["FaRaspberryPi", "FaServer", "FaGithub"]
+  },
+  "start": "2026-11",
+  "end": {
+    "present": true
+  },
+  "link": "https://camp.keycasey.com",
+  "sourceLink": "https://github.com/caseyjkey/camp",
+  "status": "in-progress",
+  "hasPost": true,
+  "project": "key-camp",
+  "konamiOnly": true
+}
