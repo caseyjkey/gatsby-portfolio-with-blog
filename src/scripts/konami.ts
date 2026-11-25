@@ -1,4 +1,5 @@
 import { restoreKonamiMode, toggleKonamiMode } from '../lib/konamiMode';
+import { trackKonamiUnlock } from '../lib/analytics';
 import {
   canUseMobileHomeHeaderCode,
   registerMobileHomeHeaderTap,
@@ -85,7 +86,8 @@ if (typeof window !== 'undefined' && !window.__konamiListenerInstalled) {
 
     if (sequenceIndex === KONAMI_SEQUENCE.length) {
       sequenceIndex = 0;
-      toggleKonamiMode();
+      const active = toggleKonamiMode();
+      if (active) trackKonamiUnlock('keyboard');
       const { launchConfetti } = await import('./konamiConfetti');
       launchConfetti();
     }
@@ -111,7 +113,8 @@ if (typeof window !== 'undefined' && !window.__konamiListenerInstalled) {
 
     event.preventDefault();
     event.stopImmediatePropagation();
-    toggleKonamiMode();
+    const active = toggleKonamiMode();
+    if (active) trackKonamiUnlock('mobile_header');
     const { launchConfetti } = await import('./konamiConfetti');
     launchConfetti();
   }, true);

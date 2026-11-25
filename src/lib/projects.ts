@@ -40,7 +40,7 @@ const projectModules = isViteRuntime
   ? import.meta.glob('../data/projects/*/*.json', { eager: true })
   : {};
 const imageModules = isViteRuntime
-  ? import.meta.glob('../data/projects/**/*.{png,jpg,jpeg,webp,gif}', {
+  ? import.meta.glob('../data/projects/**/*.{png,jpg,jpeg,webp,gif,svg}', {
       eager: true,
       import: 'default',
     })

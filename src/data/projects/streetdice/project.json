@@ -1,0 +1,24 @@
+{
+  "image": "images/street-dice.webp",
+  "title": "Street Dice",
+  "subtitle": "A Back-Alley Craps Table",
+  "description": "A two-player React dice game inspired by street craps: high-or-low shooter selection, come-out and point rounds, paper-money betting, a visible pot, and a gritty late-night table aesthetic.",
+  "icons": {
+    "fa": ["FaReact", "FaGamepad", "FaGithub"]
+  },
+  "start": "2026-11",
+  "end": {
+    "present": true
+  },
+  "galleryImages": [
+    { "image": "images/street-dice.webp" },
+    { "image": "images/street-dice-rules.svg" },
+    { "image": "images/street-dice-wallet.svg" }
+  ],
+  "link": "https://dice.keycasey.com",
+  "sourceLink": "https://github.com/caseyjkey/street-dice",
+  "status": "live",
+  "hasPost": true,
+  "project": "streetdice",
+  "konamiOnly": true
+}

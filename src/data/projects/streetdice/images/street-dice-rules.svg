@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 889" role="img" aria-labelledby="title desc">
+  <title id="title">Street Dice rules screen concept</title>
+  <desc id="desc">A planned Street Dice rules screen with a back-alley table aesthetic.</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#24211f"/><stop offset="1" stop-color="#111110"/></linearGradient>
+    <linearGradient id="paper" x2="0" y2="1"><stop stop-color="#f5e7bf"/><stop offset="1" stop-color="#d8c698"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="1280" height="889" fill="url(#bg)"/>
+  <path d="M0 110h1280M0 760h1280" stroke="#9b2f29" stroke-width="5" opacity=".45"/>
+  <text x="62" y="74" fill="#f3dfaa" font-family="Arial Black, sans-serif" font-size="32" letter-spacing="5">STREET DICE</text>
+  <text x="62" y="101" fill="#a99b80" font-family="Arial, sans-serif" font-size="15" letter-spacing="3">BACK-ALLEY RULEBOOK</text>
+  <rect x="1020" y="44" width="190" height="43" rx="5" fill="#9b2f29" transform="rotate(-3 1020 44)"/>
+  <text x="1040" y="72" fill="#fff1cf" font-family="Arial Black, sans-serif" font-size="16" letter-spacing="2">PLANNED</text>
+  <rect x="102" y="160" width="1076" height="560" rx="12" fill="url(#paper)" filter="url(#shadow)" transform="rotate(-.4 640 440)"/>
+  <text x="164" y="242" fill="#25201b" font-family="Georgia, serif" font-size="48" font-weight="bold">How the block plays</text>
+  <text x="166" y="278" fill="#8e2c27" font-family="Arial Black, sans-serif" font-size="16" letter-spacing="3">THE QUICK VERSION</text>
+  <path d="M164 300h950" stroke="#b8a879" stroke-width="2"/>
+  <g font-family="Arial, sans-serif" fill="#342d24">
+    <circle cx="195" cy="353" r="24" fill="#9b2f29"/><text x="187" y="362" fill="#fff1cf" font-size="22" font-weight="bold">1</text>
+    <text x="242" y="348" font-size="25" font-weight="bold">Pick the shooter</text><text x="242" y="377" font-size="18">High or Low decides who owns the roll.</text>
+    <circle cx="195" cy="448" r="24" fill="#9b2f29"/><text x="187" y="457" fill="#fff1cf" font-size="22" font-weight="bold">2</text>
+    <text x="242" y="443" font-size="25" font-weight="bold">Roll the come-out</text><text x="242" y="472" font-size="18">7 or 11 wins. 2, 3, or 12 loses. Anything else sets the point.</text>
+    <circle cx="195" cy="543" r="24" fill="#9b2f29"/><text x="187" y="552" fill="#fff1cf" font-size="22" font-weight="bold">3</text>
+    <text x="242" y="538" font-size="25" font-weight="bold">Keep the point alive</text><text x="242" y="567" font-size="18">Hit the point to win, roll a 7 to lose, or keep throwing.</text>
+    <circle cx="195" cy="638" r="24" fill="#9b2f29"/><text x="187" y="647" fill="#fff1cf" font-size="22" font-weight="bold">4</text>
+    <text x="242" y="633" font-size="25" font-weight="bold">Bills in the middle</text><text x="242" y="662" font-size="18">Put down a bill, then watch it move into THE POT.</text>
+  </g>
+  <rect x="858" y="350" width="280" height="236" rx="8" fill="#e9d9ac" stroke="#b8a879" stroke-width="2"/>
+  <text x="888" y="391" fill="#8e2c27" font-family="Arial Black, sans-serif" font-size="17" letter-spacing="3">HOUSE NOTES</text>
+  <text x="888" y="432" fill="#342d24" font-family="Georgia, serif" font-size="22">No casino polish.</text>
+  <text x="888" y="468" fill="#342d24" font-family="Arial, sans-serif" font-size="16">Just two dice, loose bills,</text>
+  <text x="888" y="494" fill="#342d24" font-family="Arial, sans-serif" font-size="16">and somebody calling it.</text>
+  <path d="M888 525q85-32 168 0" fill="none" stroke="#9b2f29" stroke-width="3"/>
+  <text x="62" y="822" fill="#a99b80" font-family="Arial, sans-serif" font-size="16" letter-spacing="2">RULES SCREEN · UPCOMING FEATURE · CONCEPT</text>
+</svg>
