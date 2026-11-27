@@ -1,0 +1,34 @@
+---
+title: 'From Agentic Development to Agentic Engineering'
+date: 2026-11-27
+published: false
+konamiOnly: true
+---
+
+## The next problem is orchestration
+
+Software engineers are spending more time thinking about how to coordinate agents and less time writing every line of code themselves. For personal projects, iterative agentic development already looks promising: an agent can build a feature, show the result, and improve it from feedback.
+
+But this workflow has a weak point. Work is easy to lose when sessions end. A useful orchestrator would preserve the project’s history across sessions, track what each agent is doing, and help resume unfinished work.
+
+I think there are two stages. **Agentic development** uses agents to build and refine software. **Agentic engineering** gives agents enough context and responsibility to carry work through implementation, testing, and iteration with minimal human intervention. The human still sets the goal, reviews the result, and makes the important decisions.
+
+## Keep the overview without losing the details
+
+An orchestrator can keep the overall vision in view, but it can also become a bottleneck. Near the end of a feature, the work may need detailed discussion that fills the orchestrator’s context with implementation specifics. The ideal workflow would let me start with an orchestrator, then hand a feature to a focused agent or session when I need to work through the details. The orchestrator should retain the outcome and bring it back into the larger project context.
+
+The same problem appears in the interface. When several agents open browser windows for different features, it is hard to tell which window belongs to which task. This gets worse in Storybook, where the important difference may be one selected component in a sidebar. A workspace that keeps each agent beside its browser could make the relationship clear. CMUX may be worth revisiting, although its notifications previously went to the wrong session. I stopped using it for that reason, not because the idea was bad.
+
+## Work should be clear, not over-prescribed
+
+Project tracking has a similar tradeoff. Large work-stream stories are easy to understand, but they can hide implementation and quality-assurance details. Many small child tasks preserve those details, but clutter the board and create extra QA work.
+
+One approach I want to keep testing is to define the work stream, then let the engineer decide how to break it down. That preserves ownership and room for creativity. It also avoids making collaborators feel like they are only carrying out a prewritten task list. The challenge is to keep enough detail for tracking and QA without turning the board into a wall of subtasks.
+
+## Build a workflow that works away from the desk
+
+Agentic engineering becomes more useful when I can check on work outside normal hours without sitting at my laptop. A phone companion could help me see whether agents are progressing or waiting for input. At work, that depends on security and infrastructure approvals: remote servers and phone access are not yet available, and the corporate VPN does not connect devices directly.
+
+There are still useful experiments I can run locally. I want to compare models, including local models, and explore when an orchestrator should choose a slower, inexpensive local model such as Flint. On my 96 GB M3 Max MacBook, generation is around 40 tokens per second, although prompt processing is slow. Token Monitor helps measure throughput and resource use, and Kapitza gives me a way to run Flint. OpenClaw approval is still pending at work; today, Claude Unleashed provides a persistent session but is limited to one workspace.
+
+The larger shift is from being present for every iteration to designing work that agents can carry forward safely. That requires better continuity, clearer handoffs, useful status signals, and tasks that are understandable without prescribing every move. If we get those pieces right, the engineer can spend less time shepherding sessions and more time shaping the work.
