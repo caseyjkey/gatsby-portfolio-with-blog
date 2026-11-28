@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 889" role="img" aria-labelledby="title desc">
+  <title id="title">Street Dice connect wallet screen concept</title>
+  <desc id="desc">A planned Street Dice wallet connection screen with a back-alley table aesthetic.</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#29201d"/><stop offset="1" stop-color="#0e0e0d"/></linearGradient>
+    <linearGradient id="card" x2="0" y2="1"><stop stop-color="#eee0b9"/><stop offset="1" stop-color="#c9b683"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".55"/></filter>
+  </defs>
+  <rect width="1280" height="889" fill="url(#bg)"/>
+  <circle cx="1060" cy="150" r="170" fill="#9b2f29" opacity=".17"/><circle cx="190" cy="760" r="220" fill="#bd8b32" opacity=".1"/>
+  <text x="62" y="74" fill="#f3dfaa" font-family="Arial Black, sans-serif" font-size="32" letter-spacing="5">STREET DICE</text>
+  <text x="62" y="101" fill="#a99b80" font-family="Arial, sans-serif" font-size="15" letter-spacing="3">PLAYER BANKROLL</text>
+  <rect x="1012" y="44" width="198" height="43" rx="5" fill="#9b2f29" transform="rotate(3 1012 44)"/>
+  <text x="1030" y="72" fill="#fff1cf" font-family="Arial Black, sans-serif" font-size="16" letter-spacing="2">UPCOMING</text>
+  <rect x="270" y="162" width="740" height="550" rx="18" fill="url(#card)" filter="url(#shadow)"/>
+  <text x="370" y="282" fill="#2b241c" font-family="Georgia, serif" font-size="48" font-weight="bold">Bring your bankroll</text>
+  <text x="370" y="321" fill="#8e2c27" font-family="Arial Black, sans-serif" font-size="16" letter-spacing="3">CONNECT WALLET · PLANNED</text>
+  <path d="M370 346h540" stroke="#b8a879" stroke-width="2"/>
+  <g transform="translate(370 397)">
+    <rect width="540" height="74" rx="8" fill="#25211d"/>
+    <circle cx="39" cy="37" r="19" fill="#bd8b32"/><path d="M39 20v34M27 28h24M27 46h24" stroke="#fff1cf" stroke-width="3"/>
+    <text x="78" y="33" fill="#fff1cf" font-family="Arial Black, sans-serif" font-size="17">CONNECT WALLET</text>
+    <text x="78" y="55" fill="#bcb09a" font-family="Arial, sans-serif" font-size="14">Link a bankroll for future on-chain play</text>
+    <text x="480" y="44" fill="#bd8b32" font-family="Arial Black, sans-serif" font-size="26">›</text>
+  </g>
+  <text x="370" y="530" fill="#4a4032" font-family="Arial, sans-serif" font-size="17">Planned for a future version:</text>
+  <text x="390" y="566" fill="#4a4032" font-family="Arial, sans-serif" font-size="16">• optional wallet sign-in</text>
+  <text x="390" y="596" fill="#4a4032" font-family="Arial, sans-serif" font-size="16">• transparent bankroll history</text>
+  <text x="390" y="626" fill="#4a4032" font-family="Arial, sans-serif" font-size="16">• no custody of player funds</text>
+  <text x="62" y="822" fill="#a99b80" font-family="Arial, sans-serif" font-size="16" letter-spacing="2">WALLET SCREEN · UPCOMING FEATURE · CONCEPT ONLY</text>
+</svg>

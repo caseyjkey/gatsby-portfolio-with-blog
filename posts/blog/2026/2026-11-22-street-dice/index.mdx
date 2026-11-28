@@ -1,0 +1,18 @@
+---
+title: 'I Built a Back-Alley Craps Table for the Konami Cabinet'
+date: 2026-11-22
+published: true
+konamiOnly: true
+---
+
+There is a particular kind of game that only needs two dice, a flat surface, and somebody willing to put a crumpled bill in the middle.
+
+I wanted **Street Dice** to feel like that—not like a casino lobby and not like a generic dice demo. The result is a small React game with a dark, worn-in table, paper-money bets, a visible pot, and a memorial note for Takeoff tucked into the interface.
+
+The first pass taught me that game rules are less forgiving than UI polish. The app was already handling the basic come-out and point outcomes, but the High/Low shooter choice was being ignored, tied shooter rolls were not restarting cleanly, and payouts could use the current betting player instead of the actual shooter. Those are the kinds of bugs that look fine until somebody calls the roll out loud.
+
+I separated shooter identity from betting identity, made High and Low actually mean different things, treated ties as rerolls, and replaced the number input with bills from $1 to $100. The pot now shows the money entering the game, while side-bet markings are present as a future house-rule rail without claiming that those bets are implemented.
+
+The project is hidden behind the portfolio's Konami mode. If you know the sequence, you can find the table; if not, it stays tucked away with the other experiments.
+
+[Play Street Dice](https://dice.keycasey.com) | [Read the project write-up](/projects/2026-11-streetdice/)
