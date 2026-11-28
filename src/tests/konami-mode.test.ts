@@ -42,6 +42,11 @@ describe('Konami mode', () => {
     ]);
   });
 
+  test('tracks successful keyboard and mobile unlocks separately', () => {
+    expect(konami).toContain("trackKonamiUnlock('keyboard')");
+    expect(konami).toContain("trackKonamiUnlock('mobile_header')");
+  });
+
   test('supports five mobile home-header taps only when at the top of home', () => {
     expect(mobileTap).toContain('MOBILE_HOME_HEADER_TAP_COUNT = 5');
     expect(mobileTap).toContain("pathname === '/' || pathname === '/index.html'");

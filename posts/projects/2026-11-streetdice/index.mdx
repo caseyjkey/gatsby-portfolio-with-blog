@@ -1,0 +1,45 @@
+---
+title: 'Street Dice: A Back-Alley Craps Table'
+date: 2026-11-22
+published: true
+konamiOnly: true
+---
+
+**React dice game** | November 2026 - Present
+
+## Overview
+
+**Street Dice** is a two-player browser game built around the feeling of a late-night sidewalk game: a dark table, a couple of dice, loose bills, and just enough noise around the roll to make the next throw feel important.
+
+The game keeps the familiar structure of simplified street craps. Players choose whether the higher or lower opening roll wins the shooter, roll the come-out, establish a point when needed, and keep rolling until the shooter hits the point or throws seven. Bets are represented as paper bills rather than a sterile amount field, with both players' money landing in a visible pot.
+
+## Making the Table Feel Human
+
+The visual language is intentionally rough around the edges:
+
+- dark concrete and faded brick instead of casino green;
+- hand-lettered memorial tape for Takeoff;
+- paper-money cards for $1, $5, $10, $20, $50, and $100;
+- a pot that shows who has actually put money down;
+- side-bet markings for future house rules without pretending they are live yet.
+
+The goal was not to make a casino simulator. It was to make the little game between rolls feel like it has a place, a history, and two people leaning over it.
+
+## Rules and State
+
+The game follows the standard simplified craps outcomes after the shooter is chosen:
+
+- **7 or 11** on the come-out wins immediately;
+- **2, 3, or 12** loses immediately;
+- **4, 5, 6, 8, 9, or 10** establishes the point;
+- the point wins, a **7** loses, and every other total keeps the point alive.
+
+The state model keeps shooter identity separate from the player currently placing a bet. That distinction matters: the player rolling the dice should receive the win, while a losing shooter should hand the pot to the other player.
+
+## What Is Coming Next
+
+The gallery includes two concept screens for the next pass: a rules page that explains the table in plain language, and a wallet connection page for a possible future bankroll system. Both are deliberately marked as planned and are not live functionality yet.
+
+## Links
+
+[Play Street Dice](https://dice.keycasey.com) | [GitHub](https://github.com/caseyjkey/street-dice)
